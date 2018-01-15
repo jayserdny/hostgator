@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MVC5_Seneca.ViewModels.AddEditUserRolesViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <td>               
+               <strong>Role</strong>                   
+            </td>
+            <td>
+                <strong>User</strong>
+            </td>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role) 
+            </td>
+            <td>
+                @item.User.FirstName @item.User.LastName
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }    
+    </table>
+
+    <table>
+        <tr>
+            <td>
+                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
