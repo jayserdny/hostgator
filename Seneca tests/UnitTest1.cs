@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Diagnostics;
+using MVC5_Seneca.Models;
 
 namespace Seneca_tests
 {
@@ -29,13 +30,13 @@ namespace Seneca_tests
                 Debug.WriteLine(db.Database.Connection.ConnectionString);
                 db.Database.Log = Console.Write;
                 Student student = (from s in db.Students where s.FirstName == "Jayden" select s).Single();
-                User user = (from u in db.Users where u.Name == "p" select u).Single();
+                ApplicationUser user = (from u in db.Users where u.UserName == "p" select u).Single();
 
                 TutorNote note = db.TutorNotes.Create();
                 note.Date = DateTime.Now;
                 note.SessionNote = "xxx";
                 note.Student = student;
-                note.User = user;
+                note.ApplicationUser = user;
 
                 db.TutorNotes.Add(note);
 
@@ -44,7 +45,7 @@ namespace Seneca_tests
                 TutorNote foundNote = (from n in db.TutorNotes where n.SessionNote == "xxx" select n).SingleOrDefault();
                 Assert.IsNotNull(foundNote);
                 Assert.AreEqual(student, foundNote.Student);
-                Assert.AreEqual(user, foundNote.User);
+                Assert.AreEqual(user, foundNote.ApplicationUser);
                 Assert.IsTrue(student.TutorNotes.Contains(foundNote));
             }
         }

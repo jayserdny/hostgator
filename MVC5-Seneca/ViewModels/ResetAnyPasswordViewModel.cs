@@ -11,7 +11,7 @@ namespace MVC5_Seneca.ViewModels
      public class ResetAnyPasswordViewModel
     {
        public List<SelectListItem> Users { get; set; }
-       public User User { get; set; }
+       public ApplicationIdentity User { get; set; }
        public string Name { get; set; }   // UserName
        public string FirstName { get; set; }
        public string LastName { get; set; }

@@ -2,10 +2,12 @@
 
 @{
     Layout = null;
-    if (Session["userId"] == null)
-    {
-        Response.Redirect("~/Login.Index");
-    }
+    //if (Session["userId"] == null)
+    //if (System.Web.HttpContext.Current.User.Identity.Name == null)
+    //if(!Request.IsAuthenticated)
+    //{
+    //    Response.Redirect("~/Account.Login");
+    //}
 }
 
 <!DOCTYPE html>
@@ -17,23 +19,30 @@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
     @*<script src="@Url.Content("/Scripts/UserInfo.js")"></script>*@
+    <style>
+        p.indent {
+            padding-left: 1em
+        }
+    </style>
 </head>
 <body>
 
     <div>
         <table>
             <tr>
-                <td>&nbsp; User Name:&nbsp @Session["userName"].ToString() </td>
+                @*<td>&nbsp; User Name:&nbsp @Session["userName"].ToString() </td>*@
+                <td>&nbsp;&nbsp; User Name:&nbsp; @User.Identity.Name</td>
             </tr>
             <tr>
-                <td style="text-decoration:underline"><strong>&nbsp;Seneca Heights Education Program Dashboard</strong></td>
+                <td>
+                    <p style="text-decoration:underline" class="indent"><strong>Seneca Heights Education Program Dashboard</strong></p>
+                </td>
             </tr>
-            <tr></tr>
         </table>
     </div>
 
-    @if ((bool)Session["Administrator"] == true)
-    {
+    @*@if ((bool)Session["Administrator"] == true)
+    {*@
     <div class="col-md-3">
         Administator Menu<br />
         <a href="@Url.Action("MaintainUsers", "Home")">Maintain Users</a><br />
@@ -49,14 +58,19 @@
         <a href="@Url.Action("ResetAnyPassword", "Home")">Reset Any Password</a><br />
         <br />
     </div>
-    }
+    @*}*@
 
-        <div class="col-md-3">
-            Tutor Menu<br />
-            <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Info</a><br />
-            <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
-            <a href="@Url.Action("Logout", "Home")">LogOut</a>
-        </div>
+    <div class="col-md-3">
+        Tutor Menu<br />
+        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Info</a><br />
+        <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
+        @*<a href="@Url.Action("LogOff", "Account")">LogOut</a>*@
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+        @Html.AntiForgeryToken()    
+            <a href="javascript:document.getElementById('logoutForm').submit()">LogOut</a>        
+        }
+    </div>
 
 </body>
 </html>

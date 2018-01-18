@@ -1,10 +1,12 @@
-﻿using MVC5_Seneca.EntityModels;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using MVC5_Seneca.EntityModels;
+using MVC5_Seneca.Models;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace MVC5_Seneca.DataAccessLayer
 {
-    public class SenecaContext : DbContext
+    public class SenecaContext : IdentityDbContext <ApplicationUser>
     {
         public static void EnableMigrations()
         {
@@ -18,20 +20,25 @@ namespace MVC5_Seneca.DataAccessLayer
         {
         }
         public DbSet<Student> Students { get; set; }
-        public DbSet<Parent> Parents { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Parent> Parents { get; set; } 
         public DbSet<Teacher> Teachers { get; set; }        
         public DbSet<Staff> StaffMembers { get; set; } 
         public DbSet<DocumentType> DocumentTypes { get; set; } 
-        public DbSet<StudentReport> StudentReports { get; set; }
+        public DbSet<StudentReport> StudentReports { get; set; }      
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }   
         public System.Data.Entity.DbSet<MVC5_Seneca.Models.School> Schools { get; set; }        
 
-        public System.Data.Entity.DbSet<MVC5_Seneca.Models.UserRole> UserRoles { get; set; } 
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TutorNote> TutorNotes { get; set; }
 
-        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TutorNote> TutorNotes { get; set; }                                                                                     
+        public static SenecaContext Create()
+        {
+            return new SenecaContext();
+        }
+
     }
 }

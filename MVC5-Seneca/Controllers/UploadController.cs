@@ -10,16 +10,17 @@ using MVC5_Seneca.DataAccessLayer;
 
 namespace MVC5_Seneca.Controllers
 {
-    public class UploadController : Controller
+   public class UploadController : Controller
     {
         private SenecaContext db = new SenecaContext();
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             return View();
         }
 
         // POST: Upload
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Administrator")]
         public ActionResult Upload(HttpPostedFileBase file)
         {
             try

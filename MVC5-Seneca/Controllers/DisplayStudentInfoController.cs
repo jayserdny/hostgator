@@ -9,6 +9,7 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
+using MVC5_Seneca.Models;
 using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
 
@@ -42,6 +43,7 @@ namespace MVC5_Seneca.Controllers
             return View(model);
         }        
      
+        [Authorize(Roles = "Administrator,Primary Tutor")]
         public ActionResult GetStudentDetails(int id /* drop down value */)
         {   
             Student student = (from s in db.Students where s.Id == id select s).Single();
@@ -59,7 +61,7 @@ namespace MVC5_Seneca.Controllers
         {
             Student student = db.Students.Find(Id);
             Parent parent = db.Parents.Find(student.Parent.Id);
-            User user = db.Users.Find(@Session["userId"]);
+            //ApplicationUser = db.Users.Find(@Session["userId"]);
             //return Redirect("mailto:prowny@aol.com");
             return Json(new { url = "mailto:prowny@aol.com" });
             //return null;

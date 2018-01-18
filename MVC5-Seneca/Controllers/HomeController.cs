@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MVC5_Seneca.DataAccessLayer;
 
 namespace MVC5_Seneca.Controllers
 {
     public class HomeController : Controller
-    {
+    {                                                                                 
         // GET: Home 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public ActionResult Index()
         {
-            if (Session["userId"] == null)
+            //if (Session["userId"] == null)
+            //{
+            //    //return RedirectToAction("Index", "Login"); 
+            //    return RedirectToAction("Login", "Account");
+            //}
+            if (!Request.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Login");  
+                return RedirectToAction("Login", "Account");
             }
             return View();
         }
@@ -48,6 +54,7 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "Schools");
         }  
+        [Authorize(Roles = "Administrator")]
         public ActionResult UploadStudentReports()
         {
             return RedirectToAction("Index", "Upload");
@@ -88,9 +95,8 @@ namespace MVC5_Seneca.Controllers
         public ActionResult LogOut()
         {
             Session.Abandon();
-            Session.RemoveAll();
-            Session["userId"] = null;
-            return RedirectToAction("Index", "Login");
+            Session.RemoveAll();    
+            return RedirectToAction("Login", "Account");
         }
     }
 }

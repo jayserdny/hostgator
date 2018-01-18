@@ -19,7 +19,7 @@ namespace MVC5_Seneca.ViewModels
         // Must send TutorNotes as iCollection, and construct SelectListItems in jscript:
         [JsonProperty] public ICollection<TutorNote> TutorNotes { get; set; }
 
-        [JsonProperty] public virtual User User { get; set; }   
+        [JsonProperty] public virtual ApplicationIdentity User { get; set; }   
         [JsonProperty] public int User_Id { get; set; }
         [JsonProperty] public virtual Student Student { get; set; }
         [JsonProperty] public int Student_Id { get; set; }

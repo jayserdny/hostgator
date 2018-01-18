@@ -13,7 +13,7 @@ namespace MVC5_Seneca.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201801151621214_Initialize"; }
+            get { return "201801181714336_Initialize"; }
         }
         
         string IMigrationMetadata.Source

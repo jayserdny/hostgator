@@ -56,9 +56,9 @@ namespace MVC5_Seneca.ViewModels
                     {
                         return RedirectToAction("Index", "Login");
                     }
-                    int userId = (int)Session["userId"];
-                    var user = db.Users.Where(x => x.Id == userId).FirstOrDefault();
-                    user.PasswordHash = App_Code.EncryptSHA256.EncodeSHA256(CMP.NewPassword1,user.PasswordSalt);
+                    String userName = Session["userName"].ToString();
+                    var user = db.Users.Where(x => x.UserName == userName).FirstOrDefault();
+                    //user.PasswordHash = App_Code.EncryptSHA256.EncodeSHA256(CMP.NewPassword1,user.PasswordSalt);
                  
                     db.SaveChanges();
               

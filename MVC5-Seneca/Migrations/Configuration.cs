@@ -1,4 +1,4 @@
-namespace MVC5_Seneca.Migrations
+﻿namespace MVC5_Seneca.Migrations
 {
     using System;
     using System.Data.Entity;
@@ -7,6 +7,8 @@ namespace MVC5_Seneca.Migrations
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using MVC5_Seneca.EntityModels;
     using MVC5_Seneca.Models;
 
@@ -35,6 +37,40 @@ namespace MVC5_Seneca.Migrations
             Debug.Unindent();
         }
 
+        private void AddRole(MVC5_Seneca.DataAccessLayer.SenecaContext context, String name)
+        {
+            if (!context.Roles.Any(r => r.Name == name))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole(name);
+                manager.Create(role);
+            }
+        }
+
+        private void AddAdministrator(MVC5_Seneca.DataAccessLayer.SenecaContext context,
+            String userName, String passwordHash, String securityStamp, String email = "",
+            Boolean LockoutEnabled = true, string phoneNumber = "", 
+            String firstName = "", String lastName = "", Boolean active = true)
+        {  
+            if (!context.Users.Any(u => u.UserName == userName))           
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var appUser = new ApplicationUser();
+                appUser.UserName = userName;
+                appUser.Active = active;
+                appUser.Email = email;
+                appUser.EmailConfirmed = (email != "");
+                appUser.PhoneNumber = phoneNumber;      
+                appUser.PhoneNumberConfirmed = (phoneNumber != "");
+                appUser.PasswordHash = passwordHash;
+                appUser.SecurityStamp = securityStamp;
+                manager.Create(appUser);
+                manager.AddToRole(appUser.Id, "Administrator");
+            }
+        }   
+
         // In writing sample or seed data, try to avoid using Id keys. (Find some other unique field
         // or use Composite Primary Keys.)  
         protected override void Seed(MVC5_Seneca.DataAccessLayer.SenecaContext context)
@@ -45,48 +81,18 @@ namespace MVC5_Seneca.Migrations
             {
                 // Launch the debugger when 'Sequence contains no elements' error, to find out where:
                 // System.Diagnostics.Debugger.Launch();
+                AddRole(context, "Administrator");
+                AddRole(context, "Primary Tutor");
+                AddRole(context, "Associate Tutor");
+                AddRole(context, "Receive Registration Email");
+                AddRole(context, "Manager");
 
-                context.Users.AddOrUpdate(x => x.Name,
-                new User()
-                {
-                    Name = "p",
-                    PasswordSalt = "SFoKiqpBioF7snJvANc6gkPi",
-                    PasswordHash = "32-EF-66-B6-AE-4B-9F-08-25-D2-82-82-5D-01-3C-B1-17-07-5B-85-03-BB-A5-40-DE-8E-2F-FB-3A-D4-F5-92",
-                    Active = true,
-                    FirstName = "Peter",
-                    LastName = "Rowny",
-                    CityStateZip = "Bethesda, MD  20817",
-                    HomePhone = "111-222-3333",
-                    CellPhone = "222-333-4444",
-                    Email = "peter@rowny.com"
-                },
-                new User()
-                {
-                    Name = "prowny",
-                    PasswordSalt = "mSN7NYhH6Hdu87JOnjBBoZ7f",
-                    PasswordHash = "56-68-AB-A7-2B-E2-6A-D1-98-1D-C7-C4-F6-41-B5-50-1F-9E-69-57-88-21-13-95-16-30-A2-31-DA-B1-35-AB",
-                    Active = true,
-                    FirstName = "Peter",
-                    LastName = "Rowny",
-                    CityStateZip = "Bethesda, MD  20817",
-                    HomePhone = "111-222-3333",
-                    CellPhone = "222-333-4444",
-                    Email = "peter@rowny.com"
-                },
-                new User()
-                {
-                    Name = "dave",
-                    PasswordSalt = "ViKDYBrKWxrN3udWDuOy0YB0",
-                    PasswordHash = "45-27-91-CB-FA-65-93-3A-6A-4C-62-A5-5B-C6-41-4F-DA-44-27-C9-2F-91-21-CB-F4-88-31-38-26-73-10-15",
-                    Active = true,
-                    FirstName = "David",
-                    LastName = "Weinstein",
-                    CityStateZip = "",
-                    HomePhone = "",
-                    CellPhone = "(555) 555-6666",
-                    Email = "davem1234@gmail.com"
-                });
-                context.SaveChanges();
+                AddAdministrator(context,"p", "AMxcdoBNYrk+PEZUwbAK46Uk1ffoFyqKbyQ1Rn+JIKxk0B2ZdBbCNjEx7jFYIns2Ug==", "c6adf2b0-03a5-4c43-bf59-069c8b8b25a2",
+                    "prowny@aol.com",true,"3013655823","Peter", "Rowny", true);
+                AddAdministrator(context, "dave", "AHeU6mfmXAYrBfr4IsIfgmghgwXRteBzHTu8TcT1GmeXZdqk1JN9w3Js+QeOYmrMFQ==", "ef00f25e-9c8f-4023-a824-8c05065b9fe0",
+                    "davemwein@gmail.com",true, "2402741896‬", "Dave","Weinstein",true);
+                AddAdministrator(context, "prowny", "ABF43OX0r8HcjPLxkQIxBwUnrtl2W4nA2khEGdEJn4eTxwvmZVxU+tTlJ7tl69Zq3w==", "1efd5200-0df4-4760-b892-c54a4b3d7dd8",
+                    "peter@rowny.com",true, "2408885159", "Peter", "Rowny", true);
 
                 context.Parents.AddOrUpdate(x => x.FirstName,
                      new Parent()
@@ -250,14 +256,14 @@ namespace MVC5_Seneca.Migrations
                 context.SaveChanges();
 
                 var student = (from s in context.Students where s.FirstName == "Trinity" select s).Single();
-                var documenttype = (from t in context.DocumentTypes where t.Name == "IreadyReport" select t).Single();
+                var documentType = (from t in context.DocumentTypes where t.Name == "IreadyReport" select t).Single();
                 context.StudentReports.AddOrUpdate(x => x.DocumentDate,
                 new StudentReport()
                 {
                     DocumentDate = DateTime.ParseExact("2017-06-15", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     Comments = "Trinity needs work on math and algebraic equations.",
                     Student = student,
-                    DocumentType = documenttype,
+                    DocumentType = documentType,
                     DocumentLink = "/iReportFiles/Trinity06-15-17-M.pdf"
                 },
                 new StudentReport()
@@ -265,37 +271,27 @@ namespace MVC5_Seneca.Migrations
                     DocumentDate = DateTime.ParseExact("2017-06-06", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     Comments = "Trinity needs help with spelling.",
                     Student = student,
-                    DocumentType = documenttype,
+                    DocumentType = documentType,
                     DocumentLink = "/iReportFiles/Trinity06-06-17-R.pdf"
-                });
-
-                var user0 = (from v in context.Users where v.Name == "p" select v).Single();
-                var user1 = (from v in context.Users where v.Name == "dave" select v).Single();
-                var user2 = (from v in context.Users where v.Name == "prowny" select v).Single();
+                });                                                                                                                                                      
+                var user1 = (from v in context.Users where v.UserName == "dave" select v).Single();
+                var user2 = (from v in context.Users where v.UserName == "prowny" select v).Single();
                 context.TutorNotes.AddOrUpdate(x => x.SessionNote,
                 new TutorNote()
                 {
                     Date = new DateTime(2017, 06, 15),
                     Student = student,
-                    User = user1,
+                    ApplicationUser = user1,
                     SessionNote = "Spent the session getting to know Trinity. She \"doesn't like math\".   Spent the session getting to know Trinity. She \"doesn't like math\".  (Testing repeat)"
                 },
                 new TutorNote()
                 {
                     Date = new DateTime(2017, 06, 06),
                     Student = student,
-                    User = user2,
+                    ApplicationUser = user2,
                     SessionNote = "Trinity can now add 2-digit numbers!"
                 });
-                context.SaveChanges();
-
-                context.UserRoles.AddOrUpdate(x => x.Id,
-                new UserRole()
-                {
-                    Role = "Administrator",
-                    User = user0
-                });
-                context.SaveChanges();
+                context.SaveChanges();               
             }
 
             catch (DbEntityValidationException ex)

@@ -50,7 +50,7 @@ namespace MVC5_Seneca.Controllers
                 studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString() });
             }
             List<SelectListItem> userList = new List<SelectListItem>();
-            foreach (User user in db.Users)
+            foreach (ApplicationUser user in db.Users)
             {
                 userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id.ToString() });
             }
@@ -72,7 +72,7 @@ namespace MVC5_Seneca.Controllers
 
                 tutorNote.Date = viewModel.Date;
                 tutorNote.SessionNote = viewModel.SessionNote;
-                tutorNote.User = (from u in db.Users where u.Id == viewModel.User.Id select u).Single();
+                tutorNote.ApplicationUser = (from u in db.Users where u.UserName == viewModel.User.FullName select u).Single();
                 tutorNote.Student = (from s in db.Students where s.Id == viewModel.Id select s).Single();
                 db.TutorNotes.Add(tutorNote);
                 db.SaveChanges();
@@ -96,9 +96,9 @@ namespace MVC5_Seneca.Controllers
 
             var viewModel = new AddEditTutorNoteViewModel();
             List<SelectListItem> userList = new List<SelectListItem>();
-            foreach (User user in db.Users)
+            foreach (ApplicationUser user in db.Users)
             {
-                if (user.Id == tutorNote.User.Id)
+                if (user.UserName == tutorNote.ApplicationUser.UserName)
                     userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id.ToString(), Selected = true });
                 else
                     userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id.ToString(), Selected = false });
@@ -114,7 +114,7 @@ namespace MVC5_Seneca.Controllers
             }
             viewModel.Id = tutorNote.Id;
             viewModel.Date = tutorNote.Date;
-            viewModel.User = tutorNote.User;
+            //viewModel.User = tutorNote.ApplicationUser;
             viewModel.Users = userList;
             viewModel.Students = studentList;
             return View(viewModel);
@@ -131,7 +131,7 @@ namespace MVC5_Seneca.Controllers
                 tutorNote.Date = viewModel.Date;
                 tutorNote.SessionNote = viewModel.SessionNote;
                 tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student.Id select s).Single();
-                tutorNote.User = (from u in db.Users where u.Id == viewModel.User.Id select u).Single();                
+                tutorNote.ApplicationUser = (from u in db.Users where u.Id == viewModel.User.FullName select u).Single();                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -169,7 +169,7 @@ namespace MVC5_Seneca.Controllers
             var tutorNote = new TutorNote();
             tutorNote.Date = viewModel.Date;
             tutorNote.SessionNote = viewModel.SessionNote;
-            tutorNote.User = (from u in db.Users where u.Id == viewModel.User_Id select u).Single();
+            tutorNote.ApplicationUser = (from u in db.Users where u.UserName == viewModel.User.FullName select u).Single();
             tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student_Id select s).Single();
             db.TutorNotes.Add(tutorNote);    
             db.SaveChanges();
