@@ -25,29 +25,6 @@ namespace MVC5_Seneca.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>Administrator</string>
-  <string>Receive Registration Email</string>
-  <string>Tutor</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection UserRoles {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UserRoles"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Receive Registration Email")]
-        public string RegistrationEmailReceiverRole {
-            get {
-                return ((string)(this["RegistrationEmailReceiverRole"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("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")]
         public string SendGridClient {
             get {
@@ -57,7 +34,18 @@ namespace MVC5_Seneca.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/iReports/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DefaultEndpointsProtocol=https;AccountName=senecablob;AccountKey=RehmqcmxzC8y0k6P" +
+            "jgoCIZExUA9WVZ1zcIPZYDawdoBUZygN77OrL0xNNJ3tvqwym+68kMsX0xjTWYvNh73JtA==;Endpoin" +
+            "tSuffix=core.windows.net")]
+        public string StorageConnectionString {
+            get {
+                return ((string)(this["StorageConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/StudentReportFiles/")]
         public string DocumentStoragePath {
             get {
                 return ((string)(this["DocumentStoragePath"]));

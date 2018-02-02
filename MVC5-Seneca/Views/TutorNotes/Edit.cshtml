@@ -41,7 +41,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Student.Id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-5">
-                 @Html.DropDownListFor(x => x.Student.Id, new SelectList(Model.Students, "Id", "Text"))
+                 @Html.DropDownListFor(x => x.Student.Id, new SelectList(Model.Students, "Value", "Text"))
                  @*@Html.DropDownListFor(model => model.Student.Id, Model.Students.Select(s => new SelectListItem() { Text = String.Format("{0}", s.Text, s.Value  }), null, new { @class = "form-control" })*@
                  @Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })
 
@@ -51,7 +51,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.User.Id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-5">
-                @Html.DropDownListFor(x => x.User.Id, new SelectList(Model.Users, "Id", "Text"))
+                @Html.DropDownListFor(x => x.User.Id, new SelectList(Model.Users, "Value", "Text"))
                 @Html.ValidationMessageFor(x => x.User.Id, "", new { @class = "text-danger" })
             </div>
         </div>

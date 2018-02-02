@@ -1,6 +1,5 @@
 ﻿ @model MVC5_Seneca.Models.LoginViewModel
-@{
-    //ViewBag.Title = "Log in";
+@{        
     Layout = null;
 }
 
@@ -25,13 +24,6 @@
         <hr />
         <label class="field-validation-error">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</label>
 
-        @*<div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-        </div>
-        </div>*@
         <p style="text-decoration:underline"><strong>Seneca Heights Education Program</strong></p>
         <p>@Html.ActionLink("Register", "Register")</p>
         <div class="form-group">
@@ -56,6 +48,9 @@
             </div>
         </div>
     </div>*@
+        <div>
+            <label class="field-validation-error">@Model.ErrorMessage</label>
+        </div>         
         <div class="form-group">
             <br>
             <div class="col-md-offset-2 col-md-10">

@@ -58,11 +58,8 @@
                 @using (Html.BeginForm("Index", "StudentReports", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.LabelFor(model => model.DocumentLink, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @*@Html.EditorFor(model => model.DocumentLink, new { htmlAttributes = new { @class = "form-control", @type = "file" } })*@
-                       
-                        @Html.TextBox("file","",new { type="file"})
-                        @*@Html.ValidationMessageFor(model => model.PostedFile, "", new { @class = "text-danger" })*@
+                    <div class="col-md-10">                        
+                        @Html.TextBox("file","",new { type="file"})                        
                     </div>
                 }
             </div>
@@ -75,7 +72,7 @@
                 </div>
             </div>
 
-            <div><br /></div>
+            <br />
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-5">

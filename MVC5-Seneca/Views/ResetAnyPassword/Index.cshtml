@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.ViewModels.ResetAnyPasswordViewModel
+﻿@model MVC5_Seneca.Models.ResetAnyPasswordViewModel
 
 @{
     Layout = null;
@@ -34,7 +34,7 @@
                 </tr>
                 <tr>
                     <td><strong>Id:</strong></td>
-                    <td>@Html.DropDownList("user_Id", Model.Users)</td>
+                    <td>@Html.DropDownList("user_Id", Model.UserNames)</td>
                 </tr>
                 <tr>
                     <td id="userName"></td>
@@ -46,13 +46,12 @@
     </div>
 
     <div id="EnterNewPasswordDiv" style="display:none">
-        <br>
         <table>
             <tr>
                 <td><strong>Enter New Password:&nbsp;</strong></td>
                 <td>
                 <td>
-                    @Html.EditorFor(model => model.NewPassword, new { id = "newPassword"})
+                    @Html.TextBoxFor(model => model.Password, new { id = "newPassword" })
                 </td>
                 <td>
                     <a href="#" id="SaveNewPassword"> <img src="~/Images/save-button.png" style="border:none" /> </a>
@@ -73,14 +72,14 @@
     </script>
 
     <script type="text/javascript">
-        $("#SaveNewPassword").click (function () {
+        $("#SaveNewPassword").click(function () {
             SaveNewPassword();
         });
     </script>
 
     <script type="text/javascript">
         $("#userEmail").click(function () {
-            EmailToUser(_latestAuthor_Email);
+            EmailToUser();
         });
     </script>
 

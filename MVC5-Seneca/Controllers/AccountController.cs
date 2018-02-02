@@ -5,13 +5,21 @@ using System.Web.Mvc;
 using MVC5_Seneca.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;     
+using Microsoft.Owin.Security;
+using MVC5_Seneca.DataAccessLayer;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using MVC5_Seneca.ViewModels;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System;
 
 namespace MVC5_Seneca.Controllers
-{
+{     
     [Authorize]
     public class AccountController : Controller
     {
+        SenecaContext db = new SenecaContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -48,14 +56,18 @@ namespace MVC5_Seneca.Controllers
                 _userManager = value;
             }
         }
-
-        //
+         
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
+        public ActionResult Login(string returnUrl, string errorMessage)
+        {              
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            LoginViewModel model = new LoginViewModel();
+            if (errorMessage != null)
+            {
+                model.ErrorMessage = errorMessage;
+            }
+            return View(model);        
         }
        
         // POST: /Account/Login
@@ -74,7 +86,7 @@ namespace MVC5_Seneca.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
-                case SignInStatus.Success:
+                case SignInStatus.Success:                      
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -86,8 +98,7 @@ namespace MVC5_Seneca.Controllers
                     return View(model);
             }
         }
-
-        //
+        
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
@@ -99,8 +110,7 @@ namespace MVC5_Seneca.Controllers
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-
-        //
+        
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
@@ -130,7 +140,6 @@ namespace MVC5_Seneca.Controllers
             }
         }
 
-        //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
@@ -138,7 +147,6 @@ namespace MVC5_Seneca.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -148,29 +156,52 @@ namespace MVC5_Seneca.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, FirstName = model.FirstName, LastName=model.LastName, PhoneNumber=model.PhoneNumber, Email = model.Email };
-                user.PhoneNumberConfirmed = true;
-                user.EmailConfirmed = true;
+                user.PhoneNumberConfirmed = true;   // (default)
+                user.EmailConfirmed = true;        // (default)
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                 
 
-                    return RedirectToAction("Index", "Home");
+
+
+                    //SenecaContext db = new SenecaContext(); // already declared for this class
+                    var receiverRole ="Receive Registration Email";
+                    var _Roles = (from r in db.Roles where r.Name == receiverRole select r).ToList();
+                    var usersInRole = (from u in db.Users join r in db.Roles on receiverRole equals r.Name select u).ToList();
+
+                    UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                   
+                    foreach (ApplicationUser _user in db.Users)
+                    {
+                        bool isReceiver = await UserManager.IsInRoleAsync(_user.Id, receiverRole).ConfigureAwait(false);
+                        if (isReceiver)
+                        {
+                            var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
+                            var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Administrator, SHEP");
+                            var subject = "SHEP: Seneca Heights Education Project";
+                            var to = new EmailAddress(_user.Email, user.FirstName);
+                            var plainTextContent = "New Registration: " + user.FirstName + " " + user.LastName + " " + user.Email;
+                            string htmlContent = null;
+                            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+                        }
+                    }
+                    return RedirectToAction("Index", "Login");
                 }
                 AddErrors(result);
-            }
-
+            }     
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
@@ -182,16 +213,14 @@ namespace MVC5_Seneca.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
-
-        //
+    
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
-
-        //
+    
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
@@ -232,10 +261,15 @@ namespace MVC5_Seneca.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("Error") : View();
-        }
-
-        //
+            //return code == null ? View("Error") : View();
+            // this is Reset MY password
+            ResetPasswordViewModel viewModel = new ResetPasswordViewModel
+            {
+                UserName = User.Identity.Name
+            };
+            return View(viewModel);
+        }                       
+                    
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
@@ -243,16 +277,19 @@ namespace MVC5_Seneca.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
+            {                   
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            model.UserName = User.Identity.Name;
+            var user = await UserManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            code = code.Replace(" ", "+");    // Stackoverflow sometime fix
+            var result = await UserManager.ResetPasswordAsync(user.Id, code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
@@ -261,15 +298,91 @@ namespace MVC5_Seneca.Controllers
             return View();
         }
 
-        //
+        public ActionResult ResetAnyPassword(string code)
+        {
+            // this is Reset ANY password
+            var viewModel = new Models.ResetAnyPasswordViewModel
+            {
+                UserNames = GetUserNamesList()
+            };
+            return View(viewModel);
+        }
+
+        private List<SelectListItem> GetUserNamesList()
+        {
+            var userList = db.Users.ToList();
+            List<SelectListItem> userNames = new List<SelectListItem>();
+            foreach (var user in userList)
+            {
+                SelectListItem userName = new SelectListItem
+                {
+                    Text = user.UserName,
+                    Value = user.UserName
+                };
+                userNames.Add(userName);
+            }
+            return userNames;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ResetAnyPassword(ResetAnyPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.UserNames = GetUserNamesList();
+                return View(model);
+            }                                                                 
+            var user = await UserManager.FindByNameAsync(model.UserName);
+            //if (user == null)
+            //{
+            //    // Don't reveal that the user does not exist
+            //    return RedirectToAction("ResetAnyPasswordConfirmation", "Account");
+            //}
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            code = code.Replace(" ", "+");    // Stackoverflow sometime fix
+            var result = await UserManager.ResetPasswordAsync(user.Id, code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetAnyPasswordConfirmation", "Account",model);
+            }
+            AddErrors(result);
+            return View();
+        }     
+
+        public ActionResult ResetAnyPasswordConfirmation(ResetAnyPasswordViewModel model)
+        {
+            var x = model.UserName;
+            return View(model);
+        }
+
+        public async Task <ActionResult> EmailPasswordReset(string userName, string newPwd)
+        {            
+            var user = (from u in db.Users where u.UserName == userName select u).Single();          
+
+            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                      
+            var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
+            var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Administrator, SHEP");
+            var subject = "SHEP: Seneca Heights Education Project";
+            var to = new EmailAddress(user.Email, user.FirstName);
+            var plainTextContent = "Temporary New Credential: " + newPwd + " "
+                + Environment.NewLine + "  Use this to log into the website, and immediately change it to your desired value."
+                + Environment.NewLine + "  Please do not reply to this email.";
+            string htmlContent = null;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+                
+            return RedirectToAction("Index", "Home");
+        }       
+
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return View();
         }
-
-        //
+   
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
@@ -279,8 +392,7 @@ namespace MVC5_Seneca.Controllers
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
-
-        //
+        
         // GET: /Account/SendCode
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
@@ -294,8 +406,7 @@ namespace MVC5_Seneca.Controllers
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-
-        //
+      
         // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
@@ -315,7 +426,6 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
@@ -345,7 +455,6 @@ namespace MVC5_Seneca.Controllers
             }
         }
 
-        //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
@@ -383,7 +492,6 @@ namespace MVC5_Seneca.Controllers
             return View(model);
         }
 
-        //
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -392,15 +500,13 @@ namespace MVC5_Seneca.Controllers
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Account");
         }
-
-        //
+ 
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
             return View();
-        }
-
+        }     
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -416,10 +522,15 @@ namespace MVC5_Seneca.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
-            }
-
+            } 
             base.Dispose(disposing);
         }
+        public ActionResult ReturnToDashboard()
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+
 
         #region Helpers
         // Used for XSRF protection when adding external logins
@@ -442,7 +553,7 @@ namespace MVC5_Seneca.Controllers
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
-        {
+        {      
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);

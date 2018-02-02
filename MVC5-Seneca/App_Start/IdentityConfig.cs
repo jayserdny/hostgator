@@ -48,7 +48,7 @@ namespace MVC5_Seneca
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
+                RequireUniqueEmail = false
             };
 
             // Configure validation logic for passwords
@@ -87,6 +87,8 @@ namespace MVC5_Seneca
             }
             return manager;
         }
+   
+
     }
 
     // Configure the application sign-in manager which is used in this application.
@@ -107,4 +109,5 @@ namespace MVC5_Seneca
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+  
 }

@@ -24,7 +24,8 @@
         #parentEmail {
             color: blue;
             text-decoration: underline;
-        }  
+        }
+
         #AuthorEmail {
             color: blue;
             text-decoration: underline;
@@ -34,40 +35,60 @@
 <body>
     <div id="Main">
         @using (Html.BeginForm("Index", "DisplayStudentInfo", FormMethod.Post))
-    {
-        <h4>User Name: @Session["userName"].ToString()</h4>
-        <table>
-            <tr>
-                <td></td>
-                <td style="text-decoration:underline"><strong>Seneca Heights Education Program</strong></td>
-            </tr>
-            <tr>
-                <td><strong>Id:</strong></td>
-                <td>@Html.DropDownList("student_Id", Model.Students)</td>
-                <td><strong id="motherFather"></strong></td>
-                <td id="parentFirstName"></td>
-                <td><strong id="parentPhoneLabel"></strong></td>
-                <td id="parentPhone"></td>
-                <td><strong id="parentEmailLabel"></strong></td>
-                <td id="parentEmail"></td>
-            </tr>
-        </table>
-}
+        {                                                                                                                        
+            <table>
+                <tr>
+                    &nbsp;&nbsp; User Name:&nbsp;@User.Identity.Name
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-decoration:underline">
+                        <strong>Seneca Heights Education Program</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Id:</strong>
+                    </td>
+                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select ID-")</td>
+                    <td>
+                        <strong id="motherFather"></strong>
+                    </td>
+                    <td id="parentFirstName"></td>
+                    <td>
+                        <strong id="parentPhoneLabel"></strong>
+                    </td>
+                    <td id="parentPhone"></td>
+                    <td>
+                        <strong id="parentEmailLabel"></strong>
+                    </td>
+                    <td id="parentEmail"></td>
+                </tr>
+            </table>
+        }
     </div>
 
     <div id="DocumentsDiv" style="display:none">
         <table>
-            <tr><td><strong id="DocumentSelectLabel"></strong></td></tr>
+            <tr>                       
+                <td>
+                    <strong id="DocumentSelectLabel"></strong>
+                </td>
+            </tr>
             <tr>
                 <td>
                     @Html.DropDownList("reportsDDL", new SelectList(string.Empty, "Value", "Text"),
-                                             "--Select Report--", new { style = "width:200px" })
+                                                  "--Select Report--", new { style = "width:250px" })
                 </td>
-                <td><strong id="DocumentLinkLabel"></strong></td>
+                <td>
+                    <strong id="DocumentLinkLabel"></strong>
+                </td>
                 <td>
                     <a href="#" id="GetDocumentPDF" target="_blank"> <img src="~/Images/PDF10.png" style="border:none" /> </a>
                 </td>
-                <td><strong id="DocumentCommentLabel"></strong></td>
+                <td>
+                    <strong id="DocumentCommentLabel"></strong>
+                </td>
                 <td id="DocumentComment"></td>
             </tr>
         </table>
@@ -75,13 +96,19 @@
 
     <div id="DisplayTutorNotesDiv" style="display:none">
         <table>
-            <tr><td><strong id="TutorNotesSelectLabel"></strong></td></tr>
+            <tr>
+                <td>
+                    <strong id="TutorNotesSelectLabel"></strong>
+                </td>
+            </tr>
             <tr>
                 <td>
                     @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                                             "--Select Note--", new { style = "width:200px" })
+                        "--Select Note--", new { style = "width:250px" })
                 </td>
-                <td><strong id="SessionNoteLabel"></strong></td>
+                <td>
+                    <strong id="SessionNoteLabel"></strong>
+                </td>
                 <td id="SessionNoteText"></td>
                 <td>
                     <a href="#" id="EditSessionNote"> <img src="~/Images/edit-button.png" style="border:none" /> </a>
@@ -89,9 +116,9 @@
             </tr>
             <tr>
                 @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
-                <td id="SessionUserId" style="display:none">@Session["userId"].ToString()</td>
-                <td></td>
-                <td id="EmailAuthorLabel" style="display:none">
+                <td id="SessionUserName" style="display:none">@User.Identity.Name</td>
+                <td id="SessionUserId" style="display:none">@Model.User_Id</td>
+                <td id="EmailAuthorLabel" align="right" style="display:none">
                     <strong>Tutor:</strong>
                 </td>
                 <td id="AuthorEmail" style="display:none"></td>
@@ -103,7 +130,9 @@
         <table>
             <tr>
                 <td width="50px"></td>
-                <td><strong id="EditSessionNoteLabel"></strong></td>
+                <td>
+                    <strong id="EditSessionNoteLabel"></strong>
+                </td>
                 <td>
                     @Html.TextArea("_EditSessionNoteText", null, new { id = "EditSessionNoteText", style = "width: 500px;", cols = 35, @rows = 3 })
                 </td>
@@ -117,15 +146,23 @@
     <div id="EnterTutorNotesDiv" style="display:none">
         <br />
         <table>
-            <tr><td><strong id="EnterTutorNotesLabel"></strong></td></tr>
+            <tr>
+                <td>
+                    <strong id="EnterTutorNotesLabel"></strong>
+                </td>
+            </tr>
         </table>
         <table>
             <tr>
-                <td><strong>Date:</strong></td>
+                <td>
+                    <strong>Date:</strong>
+                </td>
                 <td>
                     @Html.TextBox("EnterSessionDate  ", DateTime.Now.ToString("MM/dd/yyyy"), new { id = "SessionDate", style = "width: 75px;", @class = "date-picker" })
                 </td>
-                <td><strong>Note:</strong></td>
+                <td>
+                    <strong>Note:</strong>
+                </td>
                 <td>
                     @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 500px;", cols = 35, @rows = 3 })
                 </td>
@@ -141,7 +178,6 @@
         <br />
         <a href="@Url.Action("Logout", "Home")">LogOut</a>
     </div>
-
 
     <script type='text/javascript'>
         $(function () {
@@ -159,13 +195,12 @@
 
     <script type="text/javascript">
         $("#SessionNotesDDL").change(UpdateSessionNote);
-
     </script>
 
     <script type="text/javascript">
-                $("#SaveSessionNote").click (function () {
-                SaveSessionNote(@Session["userId"], _student_Id);
-                });
+        $("#SaveSessionNote").click(function () {
+            SaveSessionNote(_student_Id);
+        });
     </script>
 
     <script type="text/javascript">

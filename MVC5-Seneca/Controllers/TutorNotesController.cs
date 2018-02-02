@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.Models;
@@ -38,48 +39,7 @@ namespace MVC5_Seneca.Controllers
                 return HttpNotFound();
             }
             return View(tutorNote);
-        }
-
-        // GET: TutorNotes/Create
-        public ActionResult Create()
-        {
-            var viewModel = new AddEditTutorNoteViewModel();
-            List<SelectListItem> studentList = new List<SelectListItem>();
-            foreach (Student student in db.Students)
-            {
-                studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString() });
-            }
-            List<SelectListItem> userList = new List<SelectListItem>();
-            foreach (ApplicationUser user in db.Users)
-            {
-                userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id.ToString() });
-            }
-            viewModel.Date = DateTime.Today;
-            viewModel.Students = studentList;
-            viewModel.Users = userList;
-
-            return View(viewModel);
-        }
-
-        // POST: TutorNotes/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,User,Student,Date,SessionNote")]  AddEditTutorNoteViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                TutorNote tutorNote = new TutorNote();
-
-                tutorNote.Date = viewModel.Date;
-                tutorNote.SessionNote = viewModel.SessionNote;
-                tutorNote.ApplicationUser = (from u in db.Users where u.UserName == viewModel.User.FullName select u).Single();
-                tutorNote.Student = (from s in db.Students where s.Id == viewModel.Id select s).Single();
-                db.TutorNotes.Add(tutorNote);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(viewModel);
-        }
+        }   
 
         // GET: TutorNotes/Edit/5
         public ActionResult Edit(int? id)
@@ -131,7 +91,7 @@ namespace MVC5_Seneca.Controllers
                 tutorNote.Date = viewModel.Date;
                 tutorNote.SessionNote = viewModel.SessionNote;
                 tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student.Id select s).Single();
-                tutorNote.ApplicationUser = (from u in db.Users where u.Id == viewModel.User.FullName select u).Single();                
+                tutorNote.ApplicationUser = (from u in db.Users where u.Id == viewModel.User.Id select u).Single();                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -164,21 +124,28 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SaveTutorNote([Bind(Include = "User_Id,Student_Id,Date,SessionNote")]  AddEditTutorNoteViewModel viewModel)
+        //public ActionResult SaveTutorNote([Bind(Include = "User_Id,Student_Id,Date,SessionNote")]  AddEditTutorNoteViewModel viewModel)
+        public ActionResult SaveTutorNote(int Student_Id, DateTime Date, string SessionNote) // AddEditTutorNoteViewModel viewModel)
         {
-            var tutorNote = new TutorNote();
-            tutorNote.Date = viewModel.Date;
-            tutorNote.SessionNote = viewModel.SessionNote;
-            tutorNote.ApplicationUser = (from u in db.Users where u.UserName == viewModel.User.FullName select u).Single();
-            tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student_Id select s).Single();
-            db.TutorNotes.Add(tutorNote);    
+            string userId = User.Identity.GetUserId();
+            var tutorNote = new TutorNote
+            {
+                Date = Date,
+                SessionNote = SessionNote,
+                ApplicationUser = (from u in db.Users where u.Id == userId select u).Single(),
+                Student = (from s in db.Students where s.Id == Student_Id select s).Single()
+            };
+            db.TutorNotes.Add(tutorNote);
             db.SaveChanges();
 
-            AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel();
-            note.Id = tutorNote.Id;
-            note.SessionNote = tutorNote.SessionNote;
-            note.TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList();           
-             
+            AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel
+            {
+                Id = tutorNote.Id,
+                User = tutorNote.ApplicationUser,
+                SessionNote = tutorNote.SessionNote,
+                TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
+            };
+
             String json = JsonConvert.SerializeObject(note, Formatting.Indented);
  
             return Content(json, "application/json");
@@ -198,10 +165,12 @@ namespace MVC5_Seneca.Controllers
             tutorNote.SessionNote = sessionNote;
             db.SaveChanges();
 
-            AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel();
-            note.Id = tutorNote.Id;
-            note.SessionNote = tutorNote.SessionNote;
-            note.TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList();
+            AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel
+            {
+                Id = tutorNote.Id,
+                SessionNote = tutorNote.SessionNote,
+                TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
+            };
             String json = JsonConvert.SerializeObject(note, Formatting.Indented);
 
             return Content(json, "application/json");

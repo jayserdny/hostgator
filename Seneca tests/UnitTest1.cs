@@ -9,6 +9,10 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Diagnostics;
 using MVC5_Seneca.Models;
+using Microsoft.Azure; //Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types;using Microsoft.Azure; //Namespace for CloudConfigurationManager
 
 namespace Seneca_tests
 {
@@ -68,6 +72,32 @@ namespace Seneca_tests
             var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
+        }
+
+        [TestMethod]
+        public void SASutility()
+        // SAS == Shared Access 
+        // return a url to access report for 10 minutes:
+        {
+            var sasConstraints = new SharedAccessBlobPolicy
+            {
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(10),
+                Permissions = SharedAccessBlobPermissions.Read
+            };
+
+            // Parse the connection string and return a reference to the storage account.
+            var connectionString = Seneca_tests.Properties.Settings.Default.StorageConnectionString;
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            // Retrieve a reference to a container.
+            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+            // Retrieve reference to a blob named "myblob".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference("Trinity06-15-17-M.pdf");
+
+            var sasBlobToken = blockBlob.GetSharedAccessSignature(sasConstraints);
+
+           var x = blockBlob.Uri + sasBlobToken;
         }
     }
 }

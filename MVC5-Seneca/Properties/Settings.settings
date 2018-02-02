@@ -2,22 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MVC5_Seneca.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="UserRoles" Type="System.Collections.Specialized.StringCollection" Scope="Application">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;Administrator&lt;/string&gt;
-  &lt;string&gt;Receive Registration Email&lt;/string&gt;
-  &lt;string&gt;Tutor&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="RegistrationEmailReceiverRole" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Receive Registration Email</Value>
-    </Setting>
     <Setting Name="SendGridClient" Type="System.String" Scope="Application">
       <Value Profile="(Default)">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</Value>
     </Setting>
+    <Setting Name="StorageConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">DefaultEndpointsProtocol=https;AccountName=senecablob;AccountKey=RehmqcmxzC8y0k6PjgoCIZExUA9WVZ1zcIPZYDawdoBUZygN77OrL0xNNJ3tvqwym+68kMsX0xjTWYvNh73JtA==;EndpointSuffix=core.windows.net</Value>
+    </Setting>
     <Setting Name="DocumentStoragePath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">/iReports/</Value>
+      <Value Profile="(Default)">/StudentReportFiles/</Value>
     </Setting>
   </Settings>
 </SettingsFile>

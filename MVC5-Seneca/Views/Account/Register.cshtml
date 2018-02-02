@@ -21,7 +21,7 @@
         @Html.AntiForgeryToken()
         <hr />
         <label class="field-validation-error">@Html.ValidationSummary("", new { @class = "text-danger" })</label>
-
+        <p style="text-decoration:underline"><strong>Seneca Heights Education Program</strong></p>
         <div class="form-group">
             @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">

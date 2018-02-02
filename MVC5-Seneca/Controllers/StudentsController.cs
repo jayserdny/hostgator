@@ -56,8 +56,8 @@ namespace MVC5_Seneca.Controllers
             {
                parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString() });
             }
-            viewModel.Parents = parentList;           
-           
+            viewModel.Parents = parentList;
+            //viewModel.BirthDate = DateTime.Now.AddYears(-10);
             return View(viewModel);
         }
 
@@ -66,19 +66,21 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent")] AddEditStudentViewModel viewModel) 
         {
-            if (ModelState.IsValid)               
+            if (ModelState.IsValid && viewModel.FirstName != null)               
             {
-                Student student = new Student();
-                student.FirstName = viewModel.FirstName;
-                student.Gender = viewModel.Gender;
-                student.BirthDate = viewModel.BirthDate;
-                student.Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single();
-                student.School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single();
+                Student student = new Student
+                {
+                    FirstName = viewModel.FirstName,
+                    Gender = viewModel.Gender,
+                    BirthDate = viewModel.BirthDate,
+                    Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
+                    School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single()
+                };
                 db.Students.Add(student);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }     
-            return View(viewModel);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Students/Edit/5

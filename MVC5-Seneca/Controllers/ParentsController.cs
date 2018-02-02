@@ -37,8 +37,10 @@ namespace MVC5_Seneca.Controllers
         // GET: Parents/Create
         public ActionResult Create()
         {
-            AddEditParentViewModel model = new AddEditParentViewModel();
-            model.SelectedMotherFather = "M";  // default
+            AddEditParentViewModel model = new AddEditParentViewModel
+            {
+                SelectedMotherFather = "M"  // default
+            };
             return View(model);
         }
 
@@ -77,15 +79,16 @@ namespace MVC5_Seneca.Controllers
                 return HttpNotFound();
             }
 
-            var viewModel = new AddEditParentViewModel();
-
-            viewModel.Id = parent.Id;            
-            viewModel.Address = parent.Address;
-            viewModel.CellPhone = parent.CellPhone;
-            viewModel.Email = parent.Email;
-            viewModel.FirstName = parent.FirstName;
-            viewModel.HomePhone = parent.HomePhone;
-            viewModel.SelectedMotherFather = parent.MotherFather;
+            var viewModel = new AddEditParentViewModel
+            {
+                Id = parent.Id,
+                Address = parent.Address,
+                CellPhone = parent.CellPhone,
+                Email = parent.Email,
+                FirstName = parent.FirstName,
+                HomePhone = parent.HomePhone,
+                SelectedMotherFather = parent.MotherFather
+            };
             return View(viewModel);
         }
 

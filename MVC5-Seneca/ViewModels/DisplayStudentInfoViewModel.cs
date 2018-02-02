@@ -15,7 +15,7 @@ namespace MVC5_Seneca.ViewModels
     {
         // Input fields needed by the .cshtml file to display the form
         [JsonProperty] public List<SelectListItem> Students { get; set; }
-        [JsonProperty] public List<SelectListItem> Reports { get; set; }
+        [JsonProperty] public List<SelectListItem> Reports { get  ; set; }
 
         [JsonProperty] public List<Parent> Parents;
       
@@ -26,6 +26,7 @@ namespace MVC5_Seneca.ViewModels
         [DisplayName("Student:"),JsonProperty] 
         public Student Student { get; set; }
         [JsonProperty] public ApplicationIdentity User { get; set; }  // to go with new Session Note  
+        [JsonProperty] public string User_Id { get; set; }  // to go with new Session Note  
 
         [DisplayName("Parent:")]
         [JsonProperty] public Parent Parent { get; set; }

@@ -30,7 +30,7 @@ namespace MVC5_Seneca.ViewModels
         public string Comments { get; set; }
 
         [DataType(DataType.Upload)]
-        [Display(Name = "Upload File")]
+        [Display(Name = "Uploaded File")]
         [Required(ErrorMessage = "Please choose file to upload.")]
         public string DocumentLink { get; set; }
 

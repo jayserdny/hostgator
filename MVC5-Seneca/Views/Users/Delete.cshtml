@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.EntityModels.User
+﻿@model MVC5_Seneca.Models.ApplicationUser
 
 @{
     Layout = null;
@@ -18,29 +18,37 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.UserName)
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.PasswordSalt)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.PasswordHash)
+                @Html.DisplayFor(model => model.UserName)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.PasswordSalt)
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Active)
             </dt>
 
             <dd>
                 @Html.DisplayFor(model => model.Active)
             </dd>
-    
+
         </dl>
     
         @using (Html.BeginForm()) {

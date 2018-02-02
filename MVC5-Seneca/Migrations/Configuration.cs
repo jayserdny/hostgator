@@ -37,7 +37,7 @@
             Debug.Unindent();
         }
 
-        private void AddRole(MVC5_Seneca.DataAccessLayer.SenecaContext context, String name)
+        private void AddIdentityRole(MVC5_Seneca.DataAccessLayer.SenecaContext context, String name)
         {
             if (!context.Roles.Any(r => r.Name == name))
             {
@@ -51,23 +51,27 @@
         private void AddAdministrator(MVC5_Seneca.DataAccessLayer.SenecaContext context,
             String userName, String passwordHash, String securityStamp, String email = "",
             Boolean LockoutEnabled = true, string phoneNumber = "", 
-            String firstName = "", String lastName = "", Boolean active = true)
+            String firstName = "", String lastName = "")
         {  
             if (!context.Users.Any(u => u.UserName == userName))           
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var appUser = new ApplicationUser();
-                appUser.UserName = userName;
-                appUser.Active = active;
-                appUser.Email = email;
-                appUser.EmailConfirmed = (email != "");
-                appUser.PhoneNumber = phoneNumber;      
-                appUser.PhoneNumberConfirmed = (phoneNumber != "");
-                appUser.PasswordHash = passwordHash;
-                appUser.SecurityStamp = securityStamp;
+                var appUser = new ApplicationUser
+                {
+                    UserName = userName,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
+                    EmailConfirmed = (email != ""),
+                    PhoneNumber = phoneNumber,
+                    PhoneNumberConfirmed = (phoneNumber != ""),
+                    PasswordHash = passwordHash,
+                    SecurityStamp = securityStamp
+                };
                 manager.Create(appUser);
                 manager.AddToRole(appUser.Id, "Administrator");
+                manager.AddToRole(appUser.Id, "Active");
             }
         }   
 
@@ -81,28 +85,21 @@
             {
                 // Launch the debugger when 'Sequence contains no elements' error, to find out where:
                 // System.Diagnostics.Debugger.Launch();
-                AddRole(context, "Administrator");
-                AddRole(context, "Primary Tutor");
-                AddRole(context, "Associate Tutor");
-                AddRole(context, "Receive Registration Email");
-                AddRole(context, "Manager");
+                AddIdentityRole(context, "Active");
+                AddIdentityRole(context, "Administrator");
+                AddIdentityRole(context, "PrimaryTutor");
+                AddIdentityRole(context, "AssociateTutor");
+                AddIdentityRole(context, "ReceiveRegistrationEmail");
+                AddIdentityRole(context, "Manager");
 
                 AddAdministrator(context,"p", "AMxcdoBNYrk+PEZUwbAK46Uk1ffoFyqKbyQ1Rn+JIKxk0B2ZdBbCNjEx7jFYIns2Ug==", "c6adf2b0-03a5-4c43-bf59-069c8b8b25a2",
-                    "prowny@aol.com",true,"3013655823","Peter", "Rowny", true);
+                    "prowny@aol.com",true,"3013655823","Peter", "Rowny");
                 AddAdministrator(context, "dave", "AHeU6mfmXAYrBfr4IsIfgmghgwXRteBzHTu8TcT1GmeXZdqk1JN9w3Js+QeOYmrMFQ==", "ef00f25e-9c8f-4023-a824-8c05065b9fe0",
-                    "davemwein@gmail.com",true, "2402741896‬", "Dave","Weinstein",true);
+                    "davemwein@gmail.com",true, "2402741896‬", "Dave","Weinstein");
                 AddAdministrator(context, "prowny", "ABF43OX0r8HcjPLxkQIxBwUnrtl2W4nA2khEGdEJn4eTxwvmZVxU+tTlJ7tl69Zq3w==", "1efd5200-0df4-4760-b892-c54a4b3d7dd8",
-                    "peter@rowny.com",true, "2408885159", "Peter", "Rowny", true);
+                    "peter@rowny.com",true, "2408885159", "Peter", "Rowny");
 
-                context.Parents.AddOrUpdate(x => x.FirstName,
-                     new Parent()
-                     {
-                         MotherFather = "M",
-                         FirstName = "-Not Selected-",  // for top of dropdownlists
-                         HomePhone = null,
-                         CellPhone = null,
-                         Email = null
-                     },
+                context.Parents.AddOrUpdate(x => x.FirstName,                     
                 new Parent()
                 {
                     MotherFather = "M",
@@ -160,24 +157,11 @@
                     Email = null
                 });
 
-                context.Schools.AddOrUpdate(x => x.Name,
-                new School() { Name = "-Not Selected-" },   // for top of dropdownlists
+                context.Schools.AddOrUpdate(x => x.Name,                                        
                 new School() { Name = "Watkins Mill Elementary" },
                 new School() { Name = "Watkins Mill High School" });
 
                 context.SaveChanges();
-
-                var schoolNotSelected = (from s in context.Schools where s.Name == "-Not Selected-" select s).Single();
-                var parentNotSelected = (from p in context.Parents where p.FirstName == "-Not Selected-" select p).Single();
-                context.Students.AddOrUpdate(x => x.FirstName,
-                    new Student
-                    {
-                        FirstName = "-Select ID-",
-                        School = schoolNotSelected,
-                        Parent = parentNotSelected
-                    });
-                context.SaveChanges();
-
 
                 var parentSamantha = (from p in context.Parents where p.FirstName == "Samantha" select p).Single();
                 var parentShantia = (from p in context.Parents where p.FirstName == "Shantia" select p).Single();
@@ -236,22 +220,22 @@
                     Gender = "F",
                     BirthDate = DateTime.ParseExact("2007-10-20", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     School = school1,
-                    Parent = parentNotSelected
+                    Parent = parentSamantha
                 });
                 context.SaveChanges();
 
-                context.DocumentTypes.AddOrUpdate(x => x.Name,
-                    new DocumentType()
-                    {
-                        Name = "-Not Selected-"
-                    },
+                context.DocumentTypes.AddOrUpdate(x => x.Name,                 
                     new DocumentType()
                     {
                         Name = "ReportCard"
                     },
+                     new DocumentType()
+                     {
+                         Name = "IreadyReport"
+                     },
                     new DocumentType()
                     {
-                        Name = "IreadyReport"
+                        Name = "Worksheet"
                     });
                 context.SaveChanges();
 
@@ -264,7 +248,7 @@
                     Comments = "Trinity needs work on math and algebraic equations.",
                     Student = student,
                     DocumentType = documentType,
-                    DocumentLink = "/iReportFiles/Trinity06-15-17-M.pdf"
+                    DocumentLink = "Trinity06-15-17-M.pdf"
                 },
                 new StudentReport()
                 {
@@ -272,7 +256,7 @@
                     Comments = "Trinity needs help with spelling.",
                     Student = student,
                     DocumentType = documentType,
-                    DocumentLink = "/iReportFiles/Trinity06-06-17-R.pdf"
+                    DocumentLink = "Trinity06-06-17-R.pdf"
                 });                                                                                                                                                      
                 var user1 = (from v in context.Users where v.UserName == "dave" select v).Single();
                 var user2 = (from v in context.Users where v.UserName == "prowny" select v).Single();

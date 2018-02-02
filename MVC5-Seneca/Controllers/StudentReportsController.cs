@@ -12,6 +12,10 @@ using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
+using Microsoft.Azure; //Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -49,7 +53,7 @@ namespace MVC5_Seneca.Controllers
             {
                 studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString() });
             }
-            model.Students = studentList;
+            model.Students = studentList.OrderBy(s => s.Text);
 
             List<SelectListItem> documentTypeList = new List<SelectListItem>();
             foreach (DocumentType documentType in db.DocumentTypes)
@@ -67,14 +71,14 @@ namespace MVC5_Seneca.Controllers
         {              
             if (ModelState.IsValid)
             {
-                StudentReport studentReport = new StudentReport();
-                studentReport.DocumentDate = model.DocumentDate;
-                studentReport.Comments = model.Comments;
-                studentReport.DocumentLink = Properties.Settings.Default.DocumentStoragePath + model.DocumentLink;
-                studentReport.DocumentType = (from d in db.DocumentTypes where d.Id == model.DocumentType.Id select d).Single();
-                studentReport.Student = (from s in db.Students where s.Id == model.Student.Id select s).Single();
-
-                var x = model.PostedFile.ContentLength;
+                StudentReport studentReport = new StudentReport
+                {
+                    DocumentDate = model.DocumentDate,
+                    Comments = model.Comments,
+                    DocumentLink = Properties.Settings.Default.DocumentStoragePath + model.DocumentLink,
+                    DocumentType = (from d in db.DocumentTypes where d.Id == model.DocumentType.Id select d).Single(),
+                    Student = (from s in db.Students where s.Id == model.Student.Id select s).Single()
+                };
 
                 db.StudentReports.Add(studentReport);
                 db.SaveChanges();
@@ -170,6 +174,15 @@ namespace MVC5_Seneca.Controllers
             StudentReport studentReport = db.StudentReports.Find(id);
             db.StudentReports.Remove(studentReport);
             db.SaveChanges();
+
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+            CloudBlockBlob blob = container.GetBlockBlobReference(studentReport.DocumentLink);
+            if (blob.Exists())
+            {
+                blob.Delete();
+            }
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()
@@ -184,6 +197,45 @@ namespace MVC5_Seneca.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }       
+        }
+
+        public ActionResult ViewReport(int id)
+        {
+            if (!Request.IsAuthenticated)
+            {
+                return new HttpUnauthorizedResult();    //("Index", "Account");
+            }
+            else
+            {
+                var report = db.StudentReports.Find(id);
+                var blobLink = SASutility(report);
+                return Redirect(blobLink);
+            }
+        }
+        private string SASutility(StudentReport report)
+        // SAS == Shared Access Signature
+        // return a url to access report for 10 minutes:
+        {
+            //var url = "https://senecablob.blob.core.windows.net/studentreports/" + report.DocumentLink;
+            var sasConstraints = new SharedAccessBlobPolicy
+            {
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(10),
+                Permissions = SharedAccessBlobPermissions.Read
+            };
+
+            // Parse the connection string and return a reference to the storage account.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            // Retrieve a reference to a container.
+            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+            // Retrieve reference to a blob named "myblob".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(report.DocumentLink);
+                                                                                                                     
+            var sasBlobToken = blockBlob.GetSharedAccessSignature(sasConstraints);
+
+            return blockBlob.Uri + sasBlobToken;
+        }
+                                                                
     }
 }

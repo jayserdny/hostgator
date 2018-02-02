@@ -1,13 +1,7 @@
-﻿@model MVC5_Seneca.EntityModels.User
+﻿@model MVC5_Seneca.Models.ApplicationUser
 
 @{
     Layout = null;
-    //if (Session["userId"] == null)
-    //if (System.Web.HttpContext.Current.User.Identity.Name == null)
-    //if(!Request.IsAuthenticated)
-    //{
-    //    Response.Redirect("~/Account.Login");
-    //}
 }
 
 <!DOCTYPE html>
@@ -17,8 +11,6 @@
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
-    @*<script src="@Url.Content("/Scripts/UserInfo.js")"></script>*@
     <style>
         p.indent {
             padding-left: 1em
@@ -30,7 +22,6 @@
     <div>
         <table>
             <tr>
-                @*<td>&nbsp; User Name:&nbsp @Session["userName"].ToString() </td>*@
                 <td>&nbsp;&nbsp; User Name:&nbsp; @User.Identity.Name</td>
             </tr>
             <tr>
@@ -41,8 +32,8 @@
         </table>
     </div>
 
-    @*@if ((bool)Session["Administrator"] == true)
-    {*@
+    @if (User.IsInRole("Administrator"))
+    {
     <div class="col-md-3">
         Administator Menu<br />
         <a href="@Url.Action("MaintainUsers", "Home")">Maintain Users</a><br />
@@ -54,17 +45,17 @@
         <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Reports</a><br />
         <a href="@Url.Action("MaintainSchools", "Home")">Maintain Schools</a><br />
         <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain UserRoles</a><br />
-        <a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />
-        <a href="@Url.Action("ResetAnyPassword", "Home")">Reset Any Password</a><br />
+        @*<a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />*@
+        <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
+        @*<a href="@Url.Action("AddIdentityRole", "Home")">Add Identitly Role</a><br />*@
         <br />
     </div>
-    @*}*@
+    }
 
     <div class="col-md-3">
         Tutor Menu<br />
         <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Info</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
-        @*<a href="@Url.Action("LogOff", "Account")">LogOut</a>*@
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
         @Html.AntiForgeryToken()    

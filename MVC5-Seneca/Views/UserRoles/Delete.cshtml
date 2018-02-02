@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.Models.UserRole
+﻿@model MVC5_Seneca.ViewModels.AddEditUserRolesViewModel 
 
 @{
     Layout = null;
@@ -18,20 +18,29 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Role)
+                <strong>User Id</strong>
             </dt>
-    
+
             <dd>
-                @Html.DisplayFor(model => model.Role)
+                @Html.DisplayFor(model => model.User.UserName)   
             </dd>
-    
+            <dt>
+                <strong>Role</strong>
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)  
+            </dd>
         </dl>
-    
-        @using (Html.BeginForm()) {
+
+        @using (Html.BeginForm())
+        {
             @Html.AntiForgeryToken()
-    
+
             <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-default" /> |
+                <input type="submit" value="Delete" class="btn btn-default" /> 
+                <br />
+                <br />
                 @Html.ActionLink("Back to List", "Index")
             </div>
         }

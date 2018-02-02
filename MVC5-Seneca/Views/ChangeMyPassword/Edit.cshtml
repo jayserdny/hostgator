@@ -2,10 +2,10 @@
 
 @{
     Layout = null;
-    if (Session["userId"] == null)
-    {
-        Response.Redirect("~/Login.Index");
-    }
+    //if (!User.Identity.IsAuthenticated])
+    //{
+    //    Response.Redirect("~/Login.Index");
+    //}
 }
 
 <!DOCTYPE html>
@@ -31,7 +31,7 @@
     {       
      <div id="changepassword-div" class="form-horizontal">
         <h4>Change My Password</h4>
-        <h4>for User Name: @Session["userName"].ToString()</h4>
+        <h4>for User Name: @User.Identity.Name</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

@@ -8,6 +8,14 @@ var _latestStudentFirstName;
 var _latestParentEmail;
 var _latestTutorNote_Id;
 var _latestAuthor_Email;
+var weekday = new Array(7);
+weekday[0] = "Sun";
+weekday[1] = "Mon";
+weekday[2] = "Tue";
+weekday[3] = "Wed";
+weekday[4] = "Thu";
+weekday[5] = "Fri";
+weekday[6] = "Sat";
 
 function UpdateStudentDetails(event)
 {
@@ -15,6 +23,7 @@ function UpdateStudentDetails(event)
     $("#SessionNoteText").text("");
     var student_Id = $(this).val();
     _student_Id = student_Id;
+  
     $.ajax({
         url: "/DisplayStudentInfo/GetStudentDetails",
         data: { id: student_Id },
@@ -69,22 +78,29 @@ function UpdateStudentDetails(event)
             $("#parentEmail").text(parentEmail);
 
             $("#reportsDDL").empty();
+            $("#DocumentCommentLabel").hide();
+            $("#DocumentComment").hide();
+            $("#DocumentLinkLabel").hide();
+            $("#GetDocumentPDF").hide();
             $("#DocumentsDiv").hide();
 
-            $("#SessionNotesDDL").empty();
-            tutorSessionNotes = [];
-            $("#DisplayTutorNotesDiv").hide();
+            $("#SessionNoteLabel").hide();
+            $("#SessionNoteText").hide();
+            $("#EditSessionNote").hide();
+            $("#EmailAuthorLabel").hide();
+            $("#AuthorEmail").hide();   
            
             $("#reportsDDL").append('<option value = "' + '">' + "--Select Report--" + '</option > ');
             reportComments = [];
             reportIds = [];
-            reportLinks = [];
+            reportLinks = [];            
             $.each(data.Reports, function (i, Report) {
-               var x = Report.DocumentDate.substring(0, 10);               
+                var x = Report.DocumentDate.substring(0, 10);               
                 var dt =x.slice(0, 10).split('-');              
                 reportLinks.push(Report.DocumentLink);
-                reportComments.push(Report.Comments);
+                reportComments.push(Report.Comments);                 
                 reportIds.push(Report.Id);
+               
                 $("#reportsDDL").append('<option value = "' + '">' 
                     + dt[1] + "/" + dt[2] + "/" + dt[0] + " " // How to reformat date to MM/dd/yyyy?
                     + Report.DocumentType.Name
@@ -93,94 +109,128 @@ function UpdateStudentDetails(event)
             if (reportLinks.length !== 0) {
                 $("#DocumentSelectLabel").text("Documents");
                 $("#DocumentsDiv").show();
-                $("#DocumentLinkLabel").text("  PDF Report: ");
-                $("#DocumentCommentLabel").text("  Comments: ");
+                $("#DocumentLinkLabel").text("  PDF Report: ");  
+                $("#DocumentCommentLabel").text("  Comments: ");               
             }
             else {
                 $("#DocumentsDiv").hide();
             }
-            }
-        }); // $.ajax({
+        },
+        error: function (data) {
+            $("#DocumentsDiv").hide();
+        }  
+    }); // $.ajax({ 
+    GetTutorNotes();
+}  // function UpdateStudentDetails(event)
 
+function GetTutorNotes()
+{
     $.ajax({
         url: "/TutorNotes/GetTutorComments",
-        data: { id: student_Id },
+        data: { id: _student_Id },
         type: "GET",
         dataType: "JSON",
         success: function (comments) {
+            $("#SessionNotesDDL").empty();
             tutorSessionNotes = [];
             tutorNoteIds = [];
-                $("#SessionNotesDDL").append('<option value = "' + '">' + "--Select Note--" + '</option > ');
-                $.each(comments, function (i, note) {
-                    var x = note.Date.substring(0, 10);
-                    var dt = x.slice(0, 10).split('-');              
-                    tutorSessionNotes.push(note.SessionNote);
-                    tutorNoteIds.push(note.Id);
-                    $("#SessionNotesDDL").append('<option value = "' + '">'                   
-                        + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
-                        + "Tutor: " + note.User.FirstName + " "
-                        + note.User.LastName                        
-                        + '</option>');
-                });                
-                if (tutorSessionNotes.length !== 0)
-                {
-                    $("#DisplayTutorNotesDiv").show();
-                    $("#TutorNotesSelectLabel").text("Previous Tutor Session Notes:");                    
-                    $("#SessionNoteLabel").text("  Session Note: ");                    
-                }
-                else
-                {
-                    $("#DisplayTutorNotesDiv").hide();
-                }
+            $("#SessionNotesDDL").append('<option value = "' + '">' + "--Select Note--" + '</option > ');
+            $.each(comments, function (i, note) {
+                var x = note.Date.substring(0, 10);
+                var dt = x.slice(0, 10).split('-');
+                tutorSessionNotes.push(note.SessionNote);
+                tutorNoteIds.push(note.Id);
+                var xx = new Date(Date.parse(note.Date));
+                var dow = xx.getDay();
+                $("#SessionNotesDDL").append('<option value = "' + '">'
+                    + weekday[dow] + " "
+                    + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
+                    + "Tutor: " + note.ApplicationUser.FirstName + " "
+                    + note.ApplicationUser.LastName
+                    + '</option>');     // + "Tutor: " 
+            });
+            if (tutorSessionNotes.length !== 0) {
+                $("#DisplayTutorNotesDiv").show();
+                $("#TutorNotesSelectLabel").text("Previous Tutor Session Notes");
+                $("#SessionNoteLabel").text("  Session Note: ");
+            }
+            else {
+                $("#DisplayTutorNotesDiv").hide();
+            }
         },
-        error: function (data)
-        {
+        error: function (data) {
             $("#DisplayTutorNotesDiv").hide();
-        }       
+        }
+    });   // $.ajax({
+} //function GetTutorNotes()
 
-    }); // $.ajax({
-   
-}  // function UpdateStudentDetails(event)
+function UpdateDocumentLink(event) {    
+    var rpts = $("#reportsDDL option:selected");
+    var xx = rpts[0].index;
+    if (rpts[0].index === 0) {
+        $("#DocumentCommentLabel").hide();
+        $("#DocumentComment").hide();
+        $("#GetDocumentPDF").hide();
+        $("#DocumentLinkLabel").hide();
+        $("#GetDocumentPDF").hide();      
+    }
+    else {
+        $("#DocumentComment").text(reportComments[rpts[0].index - 1]);    
 
-function f(event) {    
-    var rpts = $("#reportsDDL option:selected");     
-    $("#DocumentComment").text(reportComments[rpts[0].index - 1]);
-    $("#GetDocumentPDF").attr("href", reportLinks[rpts[0].index - 1]);    
+        $("#GetDocumentPDF").attr("href", "/StudentReports/ViewReport/" + reportIds[rpts[0].index - 1]);
+        $("#DocumentComment").show();
+        $("#GetDocumentPDF").show();
+        $("#DocumentLinkLabel").show();
+        $("#GetDocumentPDF").show();
+    }
 }
 
 function UpdateSessionNote(event) {
     var nts = $("#SessionNotesDDL option:selected");
-    $("#SessionNoteText").text(tutorSessionNotes[nts[0].index - 1]);
-    $.ajax({
-        url: "/TutorNotes/GetTutorNote",
-        data:
-        {
-            Id: tutorNoteIds[nts[0].index-1]
-        },
-        type: "POST",
-        dataType: "JSON",
-        success: function (note) {
-            if (note.User.Id !== Number($("#SessionUserId").text()))
-            { /*Don't show authors's email if it's the same person as the user:*/
-            _latestAuthor_Email = note.User.Email;
-            $("#EmailAuthorLabel").show();
-            $("#AuthorEmail").text(note.User.Email);
-            $("#AuthorEmail").show();
+    if (nts[0].index === 0) {
+        $("#SessionNoteLabel").hide();
+        $("#SessionNoteText").hide();
+        $("#EditSessionNote").hide();
+        $("#EmailAuthorLabel").hide();
+        $("#AuthorEmail").hide();     
+    }
+    else
+    {
+            $("#SessionNoteText").text(tutorSessionNotes[nts[0].index - 1]);
+            $.ajax({
+            url: "/TutorNotes/GetTutorNote",
+            data:
+            {
+                Id: tutorNoteIds[nts[0].index - 1]
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (note) {
+                var x = $("#SessionUserId").text();
+                _latestAuthor_Email = note.ApplicationUser.Email;
+                $("#SessionNoteLabel").show();
+                $("#SessionNoteText").show();
+                $("#EditSessionNote").show();
+                if (note.ApplicationUser.Id !== $("#SessionUserId").text()) { /*Don't show authors's email if it's the same person as the user:*/
+                    $("#EmailAuthorLabel").show();
+                    $("#AuthorEmail").text(note.ApplicationUser.Email);
+                    $("#AuthorEmail").show();                     
+                }
+            },
+            Error: function (response) {
+                var yyy = "dummy";
             }
-        },
-        Error: function (response) {
-            var yyy = "dummy";
-        }        
-    });
-}
+        });
+    }
+}    
 
-function SaveSessionNote(usrId, stId)
-{
+function SaveSessionNote(stId)
+{                                                                   
     $.ajax({
         url: "/TutorNotes/SaveTutorNote",
         data:
         {
-            User_Id: usrId, Student_Id: stId,
+            Student_Id: stId,
             Date: $("#SessionDate").val(), SessionNote: $("#NewSessionNote").val()
         },
         type: "POST",
@@ -209,11 +259,14 @@ function SaveSessionNote(usrId, stId)
                 }             
                 tutorSessionNotes.push(_note.SessionNote);
                 tutorNoteIds.push(_note.Id);
+                var xx = new Date(Date.parse(_note.Date));
+                var dow = xx.getDay();
                 $("#SessionNotesDDL").append('<option value = "' + '">'
+                    + weekday[dow] + " "
                     + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
-                    + "Tutor: " + _note.User.FirstName + " "
-                    + _note.User.LastName
-                    + '</option>');
+                    + "Tutor: " + _note.ApplicationUser.FirstName + " "
+                    + _note.ApplicationUser.LastName
+                    + '</option>');      
             });
             // Reset selected item of tutor notes dropdownlist:
             $("#SessionNotesDDL")[0].selectedIndex = noteToSelect;
@@ -284,11 +337,14 @@ function SaveEditedSessionNote(text)
                 }
                 tutorSessionNotes.push(_note.SessionNote);
                 tutorNoteIds.push(_note.Id);
+                var xx = new Date(Date.parse(_note.Date));
+                var dow = xx.getDay();
                 $("#SessionNotesDDL").append('<option value = "' + '">'
+                    + weekday[dow] + " "
                     + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
-                    + "Tutor: " + _note.User.FirstName + " "
-                    + _note.User.LastName
-                    + '</option>');
+                    + "Tutor: " + _note.ApplicationUser.FirstName + " "
+                    + _note.ApplicationUser.LastName
+                    + '</option>');   
             });
             // Reset selected item of tutor notes dropdownlist:
             $("#SessionNotesDDL")[0].selectedIndex = noteToSelect;
@@ -315,7 +371,7 @@ function EmailToParent(Id)
 
 function EmailToAuthor(_latestAuthor_Email)
 {
-    var subject = "?subject=Student" + "%20" + _latestStudentFirstName;
+    var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
     var url = "mailto:" + _latestAuthor_Email + subject;    
     window.open(url, '_blank');   
 }

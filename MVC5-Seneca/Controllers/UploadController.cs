@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
 using MVC5_Seneca.DataAccessLayer;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -16,32 +18,91 @@ namespace MVC5_Seneca.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            return View();
+            var model = new UploadFileViewModel();
+
+            string errMsg = NewMethod();
+            if (errMsg != null)
+            {
+                model.ErrorMessage = errMsg;
+            }
+
+            var sortedStudents = db.Students.OrderBy(s => s.FirstName);
+            model.Students = sortedStudents.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.FirstName
+            })
+            .ToList();
+
+            var documentTypes = db.DocumentTypes.ToList();
+            model.DocumentTypes = db.DocumentTypes.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name
+            })
+            .ToList();
+
+            return View(model);
+        }
+
+        private string NewMethod()
+        {
+            return TempData["ErrorMessage"] as string;
         }
 
         // POST: Upload
         [HttpPost, Authorize(Roles = "Administrator")]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult Upload(/*UploadFileViewModel model*/HttpPostedFileBase file, int? student_Id, int? documentType_Id)
         {
-            try
+            if (student_Id == null ) 
             {
+                TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
+                return RedirectToAction("Index");
+            }
+            if (documentType_Id == null)
+            {
+                TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
+                return RedirectToAction("Index");
+            }          
+
+            try
+            {      
                 if (file != null)              
                 {
-                    //var fileName = Path.GetFileName(file.FileName);
-                    //var path = Path.Combine("~/iReportFiles", fileName);
-                    string trailingPath = Path.GetFileName(file.FileName);
-                    //string path = Server.MapPath(" ") + "\\" + trailingPath;
-                    string path = Path.Combine(Server.MapPath("iReportFiles"), trailingPath);
-                    path = path.Replace("\\Upload", "");
+                    var fileName = Path.GetFileName(file.FileName);            
+                    string path =Server.MapPath(" ") + "\\" + fileName;                                    
+                    path = path.Replace("\\Upload", "\\UploadFiles");
+                    path = path.Replace("\\","/");
                     file.SaveAs(path);
-                   
-                    int i = path.IndexOf("iReportFiles");
-                    path = path.Remove(0, i - 1);
-                    var studentReport = new StudentReport();
-                    studentReport.DocumentLink = path.Replace(@"\", "/");
-                    studentReport.Student = db.Students.Find(1);   // 1 = Id of 'Select ID'
-                    studentReport.DocumentType = db.DocumentTypes.Find(1);   // 1 = I of '--Not Selected--'
-                    studentReport.DocumentDate = DateTime.Now;
+
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+                    CloudBlockBlob blob = container.GetBlockBlobReference(fileName);
+
+                    if (blob.Exists())
+                    {
+                        TempData["ErrorMessage"] = "There is already a file with this name. Re-enter all.";
+                        return RedirectToAction("Index");
+                    }
+
+                    blob.Properties.ContentType = "application/pdf";     
+                    using (var fileStream = System.IO.File.OpenRead(path))
+                    {
+                        blob.UploadFromStream(fileStream);
+                    }
+
+                    System.IO.File.Delete(path);
+
+                    int i = path.IndexOf("UploadFiles");
+                    path = path.Remove(0, i + 12);
+                    var studentReport = new StudentReport
+                    {
+                        DocumentLink = path.Replace(@"\", "/"),
+                        Student = db.Students.Find(student_Id),
+                        DocumentType = db.DocumentTypes.Find(documentType_Id),
+                        DocumentDate = DateTime.Now
+                    };
                     db.StudentReports.Add(studentReport);
                     db.SaveChanges(); 
                     
@@ -55,36 +116,10 @@ namespace MVC5_Seneca.Controllers
                 return null;
             }
         }
+        public ActionResult ReturnToDashboard()
+        {
+            return RedirectToAction("Index", "Home");
+        }
 
-        //public ActionResult Edit(int id)
-        //{
-        //    StudentReport studentReport = db.StudentReports.Find(id);
-        //    var viewModel = new AddEditStudentReportViewModel();    
-        //    List<SelectListItem> studentList = new List<SelectListItem>();
-        //    foreach (Student student in db.Students)
-        //    {
-        //        if (studentReport.Student.Id == student.Id)
-        //            studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = true });
-        //        else
-        //            studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = false });
-        //    }                                                                                              
-        //    List<SelectListItem> documentTypeList = new List<SelectListItem>();
-        //    foreach (DocumentType documentType in db.DocumentTypes)
-        //    {
-        //        if (studentReport.DocumentType.Id == documentType.Id)
-        //            documentTypeList.Add(new SelectListItem { Text = documentType.Name, Value = documentType.Id.ToString(), Selected = true });
-        //        else
-        //            documentTypeList.Add(new SelectListItem { Text = documentType.Name, Value = documentType.Id.ToString(), Selected = false });
-        //    }
-        //    viewModel.Id = studentReport.Id;
-        //    viewModel.Student = studentReport.Student;
-        //    viewModel.Comments = studentReport.Comments;
-        //    viewModel.DocumentType = studentReport.DocumentType;
-        //    viewModel.DocumentDate = studentReport.DocumentDate;
-        //    viewModel.DocumentLink = studentReport.DocumentLink;
-        //    viewModel.DocumentTypes = documentTypeList;
-        //    viewModel.Students = studentList;
-        //    return View(viewModel);
-        //}
     }
 }

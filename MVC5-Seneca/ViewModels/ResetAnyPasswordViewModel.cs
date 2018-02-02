@@ -15,8 +15,9 @@ namespace MVC5_Seneca.ViewModels
        public string Name { get; set; }   // UserName
        public string FirstName { get; set; }
        public string LastName { get; set; }
-       public string Email { get; set; }
-       public string PasswordSalt { get; set; }
+       public string Email { get; set; } 
+        public string PhoneNumber { get; set; }
+        public string Securitytamp { get; set; }
        public string NewPassword { get; set; }
     }
 }

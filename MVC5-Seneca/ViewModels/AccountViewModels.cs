@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;     
 
 namespace MVC5_Seneca.Models
 {
@@ -47,15 +49,10 @@ namespace MVC5_Seneca.Models
     }
 
     public class LoginViewModel
-    {
-        //[Required]
-        //[Display(Name = "Email")]
-        //[EmailAddress]
-        //public string Email { get; set; }
-
+    {  
         [Required]
         [Display(Name = "UserName")]           
-        public string UserName { get; set; }           
+        public string UserName { get; set; }            
 
         [Required]
         [DataType(DataType.Password)]
@@ -63,7 +60,9 @@ namespace MVC5_Seneca.Models
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        public bool RememberMe { get; set; }   
+
+        public string ErrorMessage { get; set; }
     }
 
     public class RegisterViewModel
@@ -95,31 +94,54 @@ namespace MVC5_Seneca.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
     public class ResetPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Email")]
+        //public string Email { get; set; }
+
+        //[Required]
+        [Display(Name = "User Name:")]
+        public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.")]       /*, MinimumLength = 6)]*/
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.")]   
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; } 
         public string Code { get; set; }
     }
 
+    public class ResetAnyPasswordViewModel
+    {
+        public IEnumerable<SelectListItem> UserNames { get; set; }
+
+        [Required]
+        [Display(Name = "User Name:")]
+        public string UserName { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+        public string Code { get; set; }
+    }  
     public class ForgotPasswordViewModel
     {
         [Required]

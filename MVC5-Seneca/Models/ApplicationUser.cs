@@ -11,10 +11,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace MVC5_Seneca.Models
 {
     public class ApplicationUser : IdentityUser
-    {
-        [DisplayName("Active")]
-        public Boolean Active {get; set;}
-
+    { 
         [DisplayName("First Name")]
         public string FirstName { get; set; }
 

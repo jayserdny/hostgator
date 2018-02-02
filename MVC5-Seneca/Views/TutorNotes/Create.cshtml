@@ -21,20 +21,20 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.User.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.User.Id, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-5">
-                    @Html.DropDownListFor(u => Model.User.Id, Model.Users)
+                    @Html.DropDownListFor(u => Model.Users, Model.Users)
                     Model.Users.Select(u => new SelectListItem())
-                    @Html.ValidationMessageFor(x => x.User.Id, "", new { @class = "text-danger" })
+                    @*@Html.ValidationMessageFor(x => x.User.Id, "", new { @class = "text-danger" })*@
                 </div>
             </div>            
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Student.Id, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-5">
-                    @Html.DropDownListFor(s => Model.Student.Id, Model.Students)
+                    @Html.DropDownListFor(s => Model.Students, Model.Students)
                     Model.Students.Select(s => new SelectListItem())
-                    @Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })
+                    @*@Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })*@
                 </div>
             </div>
     

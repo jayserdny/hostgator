@@ -24,8 +24,7 @@ namespace MVC5_Seneca.ViewModels
         [DataType(DataType.Password)]
         [DisplayName("Re-enter New Password")]
         [Required(ErrorMessage = "This field is required.")]
-        public string NewPassword2 { get; set; }
-        
+        public string NewPassword2 { get; set; }          
         public string ErrorMessage { get; set; }
     }
 }

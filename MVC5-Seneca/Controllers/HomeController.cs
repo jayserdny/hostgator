@@ -1,26 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using MVC5_Seneca.DataAccessLayer;
+using MVC5_Seneca.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Linq;
+using System.Threading.Tasks;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using MVC5_Seneca.ViewModels;                        
 
 namespace MVC5_Seneca.Controllers
 {
     public class HomeController : Controller
-    {                                                                                 
+    {
+        SenecaContext db = new SenecaContext();
         // GET: Home 
         //[AllowAnonymous]
         public ActionResult Index()
-        {
-            //if (Session["userId"] == null)
-            //{
-            //    //return RedirectToAction("Index", "Login"); 
-            //    return RedirectToAction("Login", "Account");
-            //}
+        {  
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Login", "Account");
+            }            
+          
+            if (!User.IsInRole("Active"))        
+            {
+                return RedirectToAction("Login", "Account", new { errorMessage = "This account is awaiting confirmation." });
             }
             return View();
         }
@@ -80,7 +89,7 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult ChangeMyPassword()
         {
-            return RedirectToAction("Edit", "ChangeMyPassword");
+            return RedirectToAction("ResetPassword", "Account");
         }
 
         public ActionResult DisplayStudentInfo()
@@ -90,13 +99,47 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult ResetAnyPassword()
         {
-            return RedirectToAction("Index", "ResetAnyPassword");
+            return RedirectToAction("ResetAnyPassword", "Account");
+        }
+
+        public ActionResult AddIdentityRole()
+        {
+            AddIdentityRoleViewModel viewModel = new AddIdentityRoleViewModel
+            {
+                Name = "Routine Not Implemented"
+            };
+            return View(viewModel);
+        }
+
+        public ActionResult IdentityRoleSave(string name)
+        {
+            // TODO - save role example in configuration SEED routine
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult IdentityRoleSave([Bind(Include = "Name")] AddIdentityRoleViewModel viewModel)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult ReturnToDashboard()
+        {
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult LogOut()
         {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Session.Abandon();
             Session.RemoveAll();    
             return RedirectToAction("Login", "Account");
+        }
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
         }
     }
 }

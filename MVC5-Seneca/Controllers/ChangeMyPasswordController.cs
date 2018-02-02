@@ -20,8 +20,7 @@ namespace MVC5_Seneca.ViewModels
         {
             // return to login page after password update:
             Session.Abandon();
-            Session.RemoveAll();
-            Session["userId"] = null;
+            Session.RemoveAll();    
             return RedirectToAction("Index", "Login");
         }
         
