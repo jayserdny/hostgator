@@ -500,6 +500,10 @@
     <Compile Include="Migrations\201801261424525_AddActiveRole.Designer.cs">
       <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802031625002_AddTutors.cs" />
+    <Compile Include="Migrations\201802031625002_AddTutors.Designer.cs">
+      <DependentUpon>201802031625002_AddTutors.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Location.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -982,6 +986,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801261424525_AddActiveRole.resx">
       <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802031625002_AddTutors.resx">
+      <DependentUpon>201802031625002_AddTutors.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Collections.Generic;    
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.Models;
+using System.ComponentModel.DataAnnotations;    
+using MVC5_Seneca.Models;                                 
 using Newtonsoft.Json;
 
 namespace MVC5_Seneca.EntityModels
@@ -36,5 +32,8 @@ namespace MVC5_Seneca.EntityModels
 
         public virtual  ICollection<TutorNote> TutorNotes { get; set; }
 
+        public ApplicationUser PrimaryTutor { get; set; }
+
+        public ICollection<ApplicationUser> Tutors { get; set; } 
     }
 }
