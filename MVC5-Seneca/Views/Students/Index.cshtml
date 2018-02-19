@@ -12,6 +12,7 @@
     <title>Index</title>
 </head>
 <body>
+    <h4>Add/Edit Students</h4>
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
@@ -28,32 +29,31 @@
             </th>
             <th></th>
         </tr>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
-    }    
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </table>
-    <table>
-        <tr>
-            <td>
-                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
-            </td>
-        </tr>
-    </table>
+    <div id="ReturnToDashboard">
+        @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })       
+    </div>
 </body>
 </html>

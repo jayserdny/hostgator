@@ -55,11 +55,15 @@
     <div class="col-md-3">
         Tutor Menu<br />
         <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Info</a><br />
+        <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Students</a><br />
+        <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parents</a><br />
+        <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
+
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
-        @Html.AntiForgeryToken()    
-            <a href="javascript:document.getElementById('logoutForm').submit()">LogOut</a>        
+        @Html.AntiForgeryToken()
+        <a href="javascript:document.getElementById('logoutForm').submit()">LogOut</a>
         }
     </div>
 

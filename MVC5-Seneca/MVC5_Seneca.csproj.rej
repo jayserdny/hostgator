@@ -1,0 +1,12 @@
+diff a/MVC5-Seneca/MVC5_Seneca.csproj b/MVC5-Seneca/MVC5_Seneca.csproj	(rejected hunks)
+@@ -500,6 +500,10 @@
+     <Compile Include="Migrations\201801261424525_AddActiveRole.Designer.cs">
+       <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
+     </Compile>
++    <Compile Include="Migrations\201802031625002_AddTutors.cs" />
++    <Compile Include="Migrations\201802031625002_AddTutors.Designer.cs">
++      <DependentUpon>201802031625002_AddTutors.cs</DependentUpon>
++    </Compile>
+     <Compile Include="Models\Location.cs" />
+     <Compile Include="Startup.cs" />
+     <Compile Include="ViewModels\AccountViewModels.cs" />

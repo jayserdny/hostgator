@@ -123,58 +123,89 @@ namespace MVC5_Seneca.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        //public ActionResult SaveTutorNote([Bind(Include = "User_Id,Student_Id,Date,SessionNote")]  AddEditTutorNoteViewModel viewModel)
+                                                                                                                                                                                                                               
         public ActionResult SaveTutorNote(int Student_Id, DateTime Date, string SessionNote) // AddEditTutorNoteViewModel viewModel)
         {
-            string userId = User.Identity.GetUserId();
-            var tutorNote = new TutorNote
+            Boolean SaveThisNote = true;
+            var x = SessionNote;
+            if (x.Length == 0)
             {
-                Date = Date,
-                SessionNote = SessionNote,
-                ApplicationUser = (from u in db.Users where u.Id == userId select u).Single(),
-                Student = (from s in db.Students where s.Id == Student_Id select s).Single()
-            };
-            db.TutorNotes.Add(tutorNote);
-            db.SaveChanges();
-
-            AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel
+                SaveThisNote = false;
+            }
+           
+            if (SaveThisNote)
             {
-                Id = tutorNote.Id,
-                User = tutorNote.ApplicationUser,
-                SessionNote = tutorNote.SessionNote,
-                TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
-            };
+                string userId = User.Identity.GetUserId();
+                var tutorNote = new TutorNote
+                {
+                    Date = Date,
+                    SessionNote = SessionNote,
+                    ApplicationUser = (from u in db.Users where u.Id == userId select u).Single(),
+                    Student = (from s in db.Students where s.Id == Student_Id select s).Single()
+                };
+                db.TutorNotes.Add(tutorNote);
+                db.SaveChanges();
 
-            String json = JsonConvert.SerializeObject(note, Formatting.Indented);
- 
-            return Content(json, "application/json");
+                AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel()
+                {
+                    Id = tutorNote.Id,
+                    User = tutorNote.ApplicationUser,
+                    SessionNote = tutorNote.SessionNote,
+                    TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
+                };
+                String json = JsonConvert.SerializeObject(note, Formatting.Indented);
+                return Content(json, "application/json");
+            }
+            // Error : no new note was saved.
+            AddEditTutorNoteViewModel _note = new AddEditTutorNoteViewModel()
+            {
+                //Id = 0,                
+                TutorNotes = (from t in db.TutorNotes where t.Student.Id == Student_Id orderby t.Date descending select t).ToList()
+            };
+            String _json = JsonConvert.SerializeObject(_note, Formatting.Indented);
+            return Content(_json, "application/json");
         }
-
         public ActionResult EditTutorSessionNote(int? id, string sessionNote)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TutorNote tutorNote = db.TutorNotes.Find(id);
+
+            TutorNote tutorNote = db.TutorNotes.Find(id);            
             if (tutorNote == null)
             {
                 return HttpNotFound();
             }
-            tutorNote.SessionNote = sessionNote;
-            db.SaveChanges();
+            var student_Id = tutorNote.Student.Id;   // keep this in case we delete the note
 
-            AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel
+            Boolean SaveThisNote = true;       
+            if (sessionNote.Length == 0){SaveThisNote = false;} 
+            if (SaveThisNote)
             {
-                Id = tutorNote.Id,
-                SessionNote = tutorNote.SessionNote,
-                TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
-            };
-            String json = JsonConvert.SerializeObject(note, Formatting.Indented);
+                tutorNote.SessionNote = sessionNote;
+                db.SaveChanges();
 
-            return Content(json, "application/json");
-        }
+                AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel
+                {
+                    //Id = tutorNote.Id,
+                    //SessionNote = tutorNote.SessionNote,
+                    TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
+                };
+                String json = JsonConvert.SerializeObject(note, Formatting.Indented);
+                return Content(json, "application/json");
+            }
+            // delete this note
+            db.TutorNotes.Remove(tutorNote);
+            db.SaveChanges();
+            AddEditTutorNoteViewModel _note = new AddEditTutorNoteViewModel
+            {
+                //Id = 0,                
+                TutorNotes = (from t in db.TutorNotes where t.Student.Id == student_Id orderby t.Date descending select t).ToList()
+            };
+            String _json = JsonConvert.SerializeObject(_note, Formatting.Indented);
+            return Content(_json, "application/json"); 
+            }
 
         public ActionResult GetTutorComments(int id /* Student */)
         {

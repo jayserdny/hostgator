@@ -12,6 +12,8 @@ using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.Models;
 using MVC5_Seneca.ViewModels;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -22,7 +24,7 @@ namespace MVC5_Seneca.Controllers
         // GET: Students
         public ActionResult Index()
         {
-            return View(db.Students.ToList());         
+            return View(db.Students.OrderBy(f => f.FirstName).ToList());         
         }
 
         // GET: Students/Details/5
@@ -52,11 +54,22 @@ namespace MVC5_Seneca.Controllers
             viewModel.Schools = schoolList;
 
             List<SelectListItem> parentList = new List<SelectListItem>();
-            foreach (Parent parent in db.Parents)
+            var sortedParents = db.Parents.OrderBy(p => p.FirstName).ToList();
+            foreach (Parent parent in sortedParents)
             {
                parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString() });
             }
+
+            List<SelectListItem> userList = new List<SelectListItem>();
+            var sortedUsers = db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
+            foreach (ApplicationUser user in sortedUsers)
+            {
+                userList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString() });
+            }
+
             viewModel.Parents = parentList;
+            viewModel.Schools = schoolList;
+            viewModel.Users = userList;
             //viewModel.BirthDate = DateTime.Now.AddYears(-10);
             return View(viewModel);
         }
@@ -64,9 +77,12 @@ namespace MVC5_Seneca.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent")] AddEditStudentViewModel viewModel) 
+        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
         {
-            if (ModelState.IsValid && viewModel.FirstName != null)               
+            if (ModelState.IsValid 
+                && viewModel.FirstName != null               
+                && viewModel.School != null
+                && viewModel.Parent != null)    
             {
                 Student student = new Student
                 {
@@ -74,13 +90,18 @@ namespace MVC5_Seneca.Controllers
                     Gender = viewModel.Gender,
                     BirthDate = viewModel.BirthDate,
                     Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
-                    School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single()
+                    School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single()                   
                 };
+                if (viewModel.PrimaryTutor.Id != null)
+                {
+                    student.PrimaryTutor = (from t in db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                }
+
                 db.Students.Add(student);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Create");
         }
 
         // GET: Students/Edit/5
@@ -109,36 +130,78 @@ namespace MVC5_Seneca.Controllers
             viewModel.Schools = schoolList;
 
             List<SelectListItem> parentList = new List<SelectListItem>();
-            foreach (Parent parent in db.Parents)
-            {
-                if (parent.Id == student.Parent.Id)
-                    parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString(), Selected = true });
-                else
+            var sortedParents = db.Parents.OrderBy(p => p.FirstName).ToList();
+            foreach (Parent parent in sortedParents)
+                if (student.Parent == null)
+                {
                     parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString(), Selected = false });
-            }
+                }
+                else
+                { 
+                    if (parent.Id == student.Parent.Id)
+                        parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString(), Selected = true });
+                    else                 
+                        parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString(), Selected = false });
+                }
+
+            List<SelectListItem> primaryTutorList = new List<SelectListItem>
+            {  
+                new SelectListItem { Text = "- Select ID -", Value = "0", Selected = true }
+            }; 
+            var sortedUsers = db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
+            foreach (ApplicationUser user in sortedUsers)
+                if (student.PrimaryTutor == null)
+                {
+                    primaryTutorList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString(), Selected = false });
+                }
+                else
+                {
+                    if (user.Id == student.PrimaryTutor.Id)
+                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString(), Selected = true });
+                    else
+                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString(), Selected = false });
+                }
+            
             viewModel.Id = student.Id;
             viewModel.Parents = parentList;
+            viewModel.Schools = schoolList;
+            viewModel.Users = primaryTutorList;
             viewModel.FirstName = student.FirstName;
             viewModel.Gender = student.Gender;
             viewModel.BirthDate = student.BirthDate;
             viewModel.Parent = student.Parent;
             viewModel.School = student.School;
+            viewModel.PrimaryTutor = student.PrimaryTutor;
             return View(viewModel);
         }
 
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent ")] AddEditStudentViewModel viewModel) 
+        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
         {
             if (ModelState.IsValid)
             {
-                var student = db.Students.Find(viewModel.Id);                
+                var student = db.Students.Find(viewModel.Id);
                 student.FirstName = viewModel.FirstName;
                 student.Gender = viewModel.Gender;
                 student.BirthDate = viewModel.BirthDate;
-                student.Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single();
-                student.School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single();
+                if (viewModel.Parent != null)
+                    { student.Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single(); }
+                if (viewModel.School != null)
+                    { student.School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single(); }
+                if (viewModel.PrimaryTutor.Id != null && viewModel.PrimaryTutor.Id.ToString() != "0")
+                {
+                    student.PrimaryTutor = (from t in db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                }
+                else
+                {
+                    student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
+                    //db.SaveChanges();         // TODO - why is this line inconsistent?
+                    var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
+                    db.Database.ExecuteSqlCommand(sql);
+                    return RedirectToAction("Index");
+                }
                 db.SaveChanges();
              
                 return RedirectToAction("Index");
@@ -166,6 +229,20 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            // TODO check that all uploads and session notes are removed:
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+            foreach (StudentReport report in db.StudentReports.Where(r => r.Student.Id == id))
+            {
+                CloudBlockBlob blob = container.GetBlockBlobReference(report.DocumentLink);
+                if (blob.Exists())
+                {
+                    blob.Delete();
+                }     
+            }
+            db.StudentReports.RemoveRange(db.StudentReports.Where(r => r.Student.Id == id));
+            db.TutorNotes.RemoveRange(db.TutorNotes.Where(t => t.Student.Id == id));          
             Student student = db.Students.Find(id);
             db.Students.Remove(student);
             db.SaveChanges();

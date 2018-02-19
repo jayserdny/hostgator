@@ -91,7 +91,7 @@ namespace MVC5_Seneca.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl,  model.RememberMe });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -173,7 +173,7 @@ namespace MVC5_Seneca.Controllers
 
 
                     //SenecaContext db = new SenecaContext(); // already declared for this class
-                    var receiverRole ="Receive Registration Email";
+                    var receiverRole ="ReceiveRegistrationEmail";
                     var _Roles = (from r in db.Roles where r.Name == receiverRole select r).ToList();
                     var usersInRole = (from u in db.Users join r in db.Roles on receiverRole equals r.Name select u).ToList();
 
@@ -194,7 +194,7 @@ namespace MVC5_Seneca.Controllers
                             var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
                         }
                     }
-                    return RedirectToAction("Index", "Login");
+                    return RedirectToAction("Login", "Account");
                 }
                 AddErrors(result);
             }     
@@ -423,7 +423,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return View("Error");
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
         }
 
         // GET: /Account/ExternalLoginCallback

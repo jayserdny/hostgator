@@ -1,11 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Newtonsoft.Json;
 using MVC5_Seneca.Models;
+using Newtonsoft.Json;
 
 namespace MVC5_Seneca.EntityModels
 {

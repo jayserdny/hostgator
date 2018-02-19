@@ -1,15 +1,15 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
 using MVC5_Seneca.Models;
 
 namespace MVC5_Seneca.EntityModels
 {
     public class Teacher
     {
+        public Teacher(string firstName)
+        {
+            FirstName = firstName;
+        }
+
         public int Id { get; set; }
 
         [DisplayName ("Last Name")]

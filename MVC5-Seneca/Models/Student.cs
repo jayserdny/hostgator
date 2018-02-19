@@ -14,11 +14,11 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("First Name"), JsonProperty]
         public string FirstName { get; set; }
 
-        [DisplayName("M/F"), JsonProperty]
+        [DisplayName("M  /  F"), JsonProperty]
         public string Gender { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DisplayName("Birthday"), JsonProperty]
         public DateTime? BirthDate { get; set; }     
   
@@ -32,8 +32,8 @@ namespace MVC5_Seneca.EntityModels
 
         public virtual  ICollection<TutorNote> TutorNotes { get; set; }
 
-        public ApplicationUser PrimaryTutor { get; set; }
+        [JsonProperty] public virtual ApplicationUser PrimaryTutor { get; set; }
 
-        public ICollection<ApplicationUser> Tutors { get; set; } 
+        public virtual ICollection<ApplicationUser> Tutors { get; set; } 
     }
 }

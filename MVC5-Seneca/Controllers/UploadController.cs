@@ -15,7 +15,7 @@ namespace MVC5_Seneca.Controllers
    public class UploadController : Controller
     {
         private SenecaContext db = new SenecaContext();
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Active")]
         public ActionResult Index()
         {
             var model = new UploadFileViewModel();
@@ -51,8 +51,8 @@ namespace MVC5_Seneca.Controllers
         }
 
         // POST: Upload
-        [HttpPost, Authorize(Roles = "Administrator")]
-        public ActionResult Upload(/*UploadFileViewModel model*/HttpPostedFileBase file, int? student_Id, int? documentType_Id)
+        [HttpPost, Authorize(Roles = "Active")]
+        public ActionResult Upload(HttpPostedFileBase file, int? student_Id, int? documentType_Id)      //*UploadFileViewModel model*/
         {
             if (student_Id == null ) 
             {
@@ -107,8 +107,15 @@ namespace MVC5_Seneca.Controllers
                     db.SaveChanges(); 
                     
                     return RedirectToAction("Edit","StudentReports", new {id = studentReport.Id });
-                }                                                                                                 
-                return RedirectToAction("Index");
+                } // If(File != null)
+                if (User.IsInRole("Administrator"))
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home"); // Dashboard                 
+                }
             }
             catch (Exception ex)
             {

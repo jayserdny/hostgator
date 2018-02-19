@@ -63,7 +63,7 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "Schools");
         }  
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Active")]
         public ActionResult UploadStudentReports()
         {
             return RedirectToAction("Index", "Upload");
@@ -112,8 +112,7 @@ namespace MVC5_Seneca.Controllers
         }
 
         public ActionResult IdentityRoleSave(string name)
-        {
-            // TODO - save role example in configuration SEED routine
+        {                                                                                           
             return RedirectToAction("Index", "Home");
         }
 

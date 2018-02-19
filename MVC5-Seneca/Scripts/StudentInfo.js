@@ -1,4 +1,5 @@
-﻿var reportComments = [];  // empty array
+﻿// #region Declarations
+var reportComments = [];  // empty array
 var reportLinks = []; // empty array 
 var reportIds=[];  // contains Id url of currently selected report
 var tutorSessionNotes = []; // empty array
@@ -8,19 +9,16 @@ var _latestStudentFirstName;
 var _latestParentEmail;
 var _latestTutorNote_Id;
 var _latestAuthor_Email;
+var _latestPrimaryTutor_Email; 
 var weekday = new Array(7);
-weekday[0] = "Sun";
-weekday[1] = "Mon";
-weekday[2] = "Tue";
-weekday[3] = "Wed";
-weekday[4] = "Thu";
-weekday[5] = "Fri";
-weekday[6] = "Sat";
+weekday[0] = "Sun"; weekday[1] = "Mon";weekday[2] = "Tue";weekday[3] = "Wed";weekday[4] = "Thu";weekday[5] = "Fri";weekday[6] = "Sat";
+// #endregion
 
 function UpdateStudentDetails(event)
 {
     $("#DocumentComment").text("");
     $("#SessionNoteText").text("");
+    $("#NewSessionNote").text("");
     var student_Id = $(this).val();
     _student_Id = student_Id;
   
@@ -30,8 +28,9 @@ function UpdateStudentDetails(event)
         type: "GET",
         dataType: "JSON",
         success: function (data) {
+            $("#NewSessionNote").text("");
             $("#EnterTutorNotesDiv").show();
-            $("#EnterTutorNotesLabel").text("Enter Tutor Session Note");
+            $("#EnterTutorNotesLabel").text("Enter New Tutor Session Note");
 
             _latestStudentFirstName = data.FirstName;
 
@@ -45,37 +44,56 @@ function UpdateStudentDetails(event)
 
             var phone = "";
             var phoneLabel = "";
-            if (data.Parent.CellPhone !== null)
-            {
+            if (data.Parent.CellPhone !== null) {
                 phone = data.Parent.CellPhone;
                 phoneLabel = "   Cell Phone: ";
             }
-            else if (data.Parent.HomePhone !== null)
-            {
+            else if (data.Parent.HomePhone !== null) {
                 phone = data.Parent.HomePhone;
                 phoneLabel = "   Home Phone: ";
             }
-            else
-            {
+            else {
                 phone = "";
                 phoneLabel = "";
             }
             $("#parentPhoneLabel").text(phoneLabel);
             $("#parentPhone").text(phone);
-            
 
             var parentEmailLabel;
             var parentEmail;
             if (data.Parent.Email !== null)
                 parentEmailLabel = "   Email: ",
-                parentEmail = data.Parent.Email,
-                _latestParentEmail = parentEmail;
+                    parentEmail = data.Parent.Email,
+                    _latestParentEmail = parentEmail;
             else
                 parentEmailLabel = "",
-                parentEmail = "",    // Don't show labels or 'null' if no email
-                _latestParentEmail = "";
+                    parentEmail = "",    // Don't show labels or 'null' if no email
+                    _latestParentEmail = "";
             $("#parentEmailLabel").text(parentEmailLabel);
             $("#parentEmail").text(parentEmail);
+
+            if (data.PrimaryTutor !== null) {
+                if (data.PrimaryTutor.PhoneNumber !== null) {
+                    $("#primaryTutorPhone").text(data.PrimaryTutor.PhoneNumber);
+                }
+                else {
+                    $("#primaryTutorPhone").text("");
+                }
+                if (data.PrimaryTutor.Email !== null) {
+                    _latestPrimaryTutor_Email = data.PrimaryTutor.Email;
+                    $("#primaryTutorEmail").text(data.PrimaryTutor.Email);
+                }
+                else {
+                    $("#primaryTutoEmail").text("");
+                }
+
+                $("#primaryTutorName").text(data.PrimaryTutor.FirstName + " " + data.PrimaryTutor.LastName);
+                $("#primaryTutorRow").show();
+            }
+            else
+            {
+                $("#primaryTutorRow").hide();
+            }
 
             $("#reportsDDL").empty();
             $("#DocumentCommentLabel").hide();
@@ -121,16 +139,16 @@ function UpdateStudentDetails(event)
         }  
     }); // $.ajax({ 
     GetTutorNotes();
-}  // function UpdateStudentDetails(event)
+}  
 
 function GetTutorNotes()
-{
-    $.ajax({
+{   
+    $.ajax({ 
         url: "/TutorNotes/GetTutorComments",
         data: { id: _student_Id },
         type: "GET",
         dataType: "JSON",
-        success: function (comments) {
+        success: function (comments) {   
             $("#SessionNotesDDL").empty();
             tutorSessionNotes = [];
             tutorNoteIds = [];
@@ -147,7 +165,7 @@ function GetTutorNotes()
                     + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
                     + "Tutor: " + note.ApplicationUser.FirstName + " "
                     + note.ApplicationUser.LastName
-                    + '</option>');     // + "Tutor: " 
+                    + '</option>');   
             });
             if (tutorSessionNotes.length !== 0) {
                 $("#DisplayTutorNotesDiv").show();
@@ -162,7 +180,7 @@ function GetTutorNotes()
             $("#DisplayTutorNotesDiv").hide();
         }
     });   // $.ajax({
-} //function GetTutorNotes()
+} 
 
 function UpdateDocumentLink(event) {    
     var rpts = $("#reportsDDL option:selected");
@@ -211,6 +229,8 @@ function UpdateSessionNote(event) {
                 $("#SessionNoteLabel").show();
                 $("#SessionNoteText").show();
                 $("#EditSessionNote").show();
+                $("#EmailAuthorLabel").hide();
+                $("#AuthorEmail").hide(); 
                 if (note.ApplicationUser.Id !== $("#SessionUserId").text()) { /*Don't show authors's email if it's the same person as the user:*/
                     $("#EmailAuthorLabel").show();
                     $("#AuthorEmail").text(note.ApplicationUser.Email);
@@ -255,7 +275,8 @@ function SaveSessionNote(stId)
                 j += 1;
                 var selOption = "";
                 if (_note.Id === _latestTutorNote_Id) {
-                    noteToSelect = j - 1;         
+                    //noteToSelect = j - 1; 
+                    noteToSelect = j;
                 }             
                 tutorSessionNotes.push(_note.SessionNote);
                 tutorNoteIds.push(_note.Id);
@@ -270,13 +291,14 @@ function SaveSessionNote(stId)
             });
             // Reset selected item of tutor notes dropdownlist:
             $("#SessionNotesDDL")[0].selectedIndex = noteToSelect;
-            $("#SessionNoteText").text(note.SessionNote);
-            //$("#SessionNotesDDL").prop('selected', true);  // didn't work
-            //$("#SessionNotesDDL").attr('selected', 'selected');  // didn't work
-
-            $("#DisplayTutorNotesDiv").show();
-            $("#NewSessionNote").val("");          
-
+            if (noteToSelect !== 0) {
+                $("#SessionNoteText").text(note.SessionNote);
+                $("#SessionNoteText").show();
+                $("#SessionNoteLabel").show();
+                //$("#EditSessionNote").show();
+                $("#DisplayTutorNotesDiv").show();
+                $("#NewSessionNote").val("");
+            }
             var tt = "dummy";
         },
         Error: function(response)
@@ -312,8 +334,7 @@ function SaveEditedSessionNote(text)
         type: "POST",
         dataType: "JSON",
         success: function (note)
-        {
-            //$("#SessionNoteText").text(noteText);
+        {                                                                 
             $("#EditSessionNoteDiv").hide();
             _latestTutorNote_Id = noteToEditId;
 
@@ -374,4 +395,10 @@ function EmailToAuthor(_latestAuthor_Email)
     var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
     var url = "mailto:" + _latestAuthor_Email + subject;    
     window.open(url, '_blank');   
+}
+
+function EmailToPrimaryTutor(_latestPrimaryTutor_Email) {
+    var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
+    var url = "mailto:" + _latestPrimaryTutor_Email + subject;
+    window.open(url, '_blank');
 }

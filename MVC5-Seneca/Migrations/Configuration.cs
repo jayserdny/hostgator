@@ -48,16 +48,17 @@
             }
         }
 
-        private void AddAdministrator(MVC5_Seneca.DataAccessLayer.SenecaContext context,
+        private ApplicationUser  AddAdministrator(MVC5_Seneca.DataAccessLayer.SenecaContext context,
             String userName, String passwordHash, String securityStamp, String email = "",
             Boolean LockoutEnabled = true, string phoneNumber = "", 
             String firstName = "", String lastName = "")
-        {  
-            if (!context.Users.Any(u => u.UserName == userName))           
+        {
+            var appUser = context.Users.Where(u => u.UserName == userName).FirstOrDefault();
+            if (appUser == null)         
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var appUser = new ApplicationUser
+                appUser = new ApplicationUser
                 {
                     UserName = userName,
                     FirstName = firstName,
@@ -73,6 +74,7 @@
                 manager.AddToRole(appUser.Id, "Administrator");
                 manager.AddToRole(appUser.Id, "Active");
             }
+            return appUser;
         }   
 
         // In writing sample or seed data, try to avoid using Id keys. (Find some other unique field
@@ -96,7 +98,7 @@
                     "prowny@aol.com",true,"3013655823","Peter", "Rowny");
                 AddAdministrator(context, "dave", "AHeU6mfmXAYrBfr4IsIfgmghgwXRteBzHTu8TcT1GmeXZdqk1JN9w3Js+QeOYmrMFQ==", "ef00f25e-9c8f-4023-a824-8c05065b9fe0",
                     "davemwein@gmail.com",true, "2402741896‬", "Dave","Weinstein");
-                AddAdministrator(context, "prowny", "ABF43OX0r8HcjPLxkQIxBwUnrtl2W4nA2khEGdEJn4eTxwvmZVxU+tTlJ7tl69Zq3w==", "1efd5200-0df4-4760-b892-c54a4b3d7dd8",
+                var PeterRowny = AddAdministrator(context, "prowny", "ABF43OX0r8HcjPLxkQIxBwUnrtl2W4nA2khEGdEJn4eTxwvmZVxU+tTlJ7tl69Zq3w==", "1efd5200-0df4-4760-b892-c54a4b3d7dd8",
                     "peter@rowny.com",true, "2408885159", "Peter", "Rowny");
 
                 context.Parents.AddOrUpdate(x => x.FirstName,                     
@@ -220,7 +222,8 @@
                     Gender = "F",
                     BirthDate = DateTime.ParseExact("2007-10-20", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     School = school1,
-                    Parent = parentSamantha
+                    Parent = parentSamantha,
+                    PrimaryTutor = PeterRowny
                 });
                 context.SaveChanges();
 

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.Models;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Diagnostics;
 
 namespace MVC5_Seneca.DataAccessLayer
 {
@@ -18,6 +20,7 @@ namespace MVC5_Seneca.DataAccessLayer
         }
         public SenecaContext() : base("SenecaContext")
         {
+            Database.Log = msg => Debug.Write(msg);
         }
         public DbSet<Student> Students { get; set; }
         public DbSet<Parent> Parents { get; set; } 

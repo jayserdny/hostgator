@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;     
-using System.Data;
-using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.Models;
 using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
 
@@ -23,7 +15,7 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "Home");
         }
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext db = new SenecaContext();
         public ActionResult Index()   
         {
             DisplayStudentInfoViewModel model = new DisplayStudentInfoViewModel
@@ -59,16 +51,12 @@ namespace MVC5_Seneca.Controllers
         [Authorize(Roles = "Active")]
         public ActionResult GetStudentDetails(int id /* drop down value */)
         {   
-            Student student = (from s in db.Students where s.Id == id select s).Single();    
-            //student.Reports.Clear();                   
-            //var reports = (from r in db.StudentReports.Where(r => r.Student.Id == id) orderby r.DocumentDate descending select r).ToList();           
-            //foreach (StudentReport report in reports)
-            //{
-            //    student.Reports.Add(report);               
-            //}
+            Student student = (from s in db.Students where s.Id == id select s).Single();        
   
             try
             {
+                //var settings = new JsonSerializerSettings();
+                //settings.ContractResolver = new ShouldSerializeContractResolver();
                 String json = JsonConvert.SerializeObject(student, Formatting.Indented);
                 return Content(json, "application/json");
             }

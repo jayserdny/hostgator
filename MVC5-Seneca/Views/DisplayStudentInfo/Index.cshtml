@@ -1,4 +1,6 @@
-﻿@model MVC5_Seneca.ViewModels.DisplayStudentInfoViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using FormMethod = System.Web.Mvc.FormMethod
+@model MVC5_Seneca.ViewModels.DisplayStudentInfoViewModel
 
 @{
     Layout = null;
@@ -10,11 +12,10 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>DisplayStudentInfoViewModel</title>
-    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-
     @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
     <script src="@Url.Content("/Scripts/StudentInfo.js")"></script>
 
@@ -24,9 +25,12 @@
         #parentEmail {
             color: blue;
             text-decoration: underline;
-        }
-
+        }  
         #AuthorEmail {
+            color: blue;
+            text-decoration: underline;
+        }
+        #primaryTutorEmail {
             color: blue;
             text-decoration: underline;
         }
@@ -35,21 +39,21 @@
 <body>
     <div id="Main">
         @using (Html.BeginForm("Index", "DisplayStudentInfo", FormMethod.Post))
-        {                                                                                                                        
+        {
             <table>
                 <tr>
                     &nbsp;&nbsp; User Name:&nbsp;@User.Identity.Name
                 </tr>
                 <tr>
                     <td></td>
+                    <td></td>
+                    <td></td>
                     <td style="text-decoration:underline">
                         <strong>Seneca Heights Education Program</strong>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <strong>Id:</strong>
-                    </td>
+                    <td><strong>Id:</strong></td>
                     <td>@Html.DropDownList("student_Id", Model.Students, "-Select ID-")</td>
                     <td>
                         <strong id="motherFather"></strong>
@@ -64,13 +68,25 @@
                     </td>
                     <td id="parentEmail"></td>
                 </tr>
+                <tr id="primaryTutorRow" style="display:none">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right"><strong>Tutor: </strong></td>
+                    <td id="primaryTutorName"></td>
+                    <td style="text-align:right"><strong>Phone: </strong> </td>
+                    <td id="primaryTutorPhone"></td>
+                    <td style="text-align:right"><strong>Email:</strong> </td>
+                    <td id="primaryTutorEmail"></td>
+                </tr>
             </table>
         }
     </div>
 
     <div id="DocumentsDiv" style="display:none">
         <table>
-            <tr>                       
+            <tr>
                 <td>
                     <strong id="DocumentSelectLabel"></strong>
                 </td>
@@ -78,7 +94,7 @@
             <tr>
                 <td>
                     @Html.DropDownList("reportsDDL", new SelectList(string.Empty, "Value", "Text"),
-                                                  "--Select Report--", new { style = "width:250px" })
+                                                                      "--Select Report--", new { style = "width:275px" })
                 </td>
                 <td>
                     <strong id="DocumentLinkLabel"></strong>
@@ -104,22 +120,32 @@
             <tr>
                 <td>
                     @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                        "--Select Note--", new { style = "width:250px" })
+                                            "--Select Note--", new { style = "width:275px" })
                 </td>
                 <td>
                     <strong id="SessionNoteLabel"></strong>
                 </td>
-                <td id="SessionNoteText"></td>
                 <td>
-                    <a href="#" id="EditSessionNote"> <img src="~/Images/edit-button.png" style="border:none" /> </a>
+                    @Html.TextArea("_EditSessionNoteText", Model.SessionNote, new
+                    {
+                        id = "SessionNoteText",
+                        style = "width: 400px;",
+                        cols = 35,
+                        rows = 3,
+                        Title = "Tip: You may delete this note by saving a blank text."
+                    })
+                </td>
+                <td>
+                    <a href="#" id="EditSessionNote">Save Edits</a>
                 </td>
             </tr>
             <tr>
                 @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
                 <td id="SessionUserName" style="display:none">@User.Identity.Name</td>
                 <td id="SessionUserId" style="display:none">@Model.User_Id</td>
+                <td></td>
                 <td id="EmailAuthorLabel" align="right" style="display:none">
-                    <strong>Tutor:</strong>
+                    <strong>Tutor Email:</strong>
                 </td>
                 <td id="AuthorEmail" style="display:none"></td>
             </tr>
@@ -132,9 +158,6 @@
                 <td width="50px"></td>
                 <td>
                     <strong id="EditSessionNoteLabel"></strong>
-                </td>
-                <td>
-                    @Html.TextArea("_EditSessionNoteText", null, new { id = "EditSessionNoteText", style = "width: 500px;", cols = 35, @rows = 3 })
                 </td>
                 <td>
                     <a href="#" id="SaveEditedSessionNote"> <img src="~/Images/save-button.png" style="border:none" /> </a>
@@ -164,7 +187,7 @@
                     <strong>Note:</strong>
                 </td>
                 <td>
-                    @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 500px;", cols = 35, @rows = 3 })
+                    @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 400px;", cols = 35, rows = 3 })
                 </td>
                 <td>
                     <a href="#" id="SaveSessionNote"> <img src="~/Images/save-button.png" style="border:none" /> </a>
@@ -200,19 +223,23 @@
     <script type="text/javascript">
         $("#SaveSessionNote").click(function () {
             SaveSessionNote(_student_Id);
+            GetTutorNotes();
         });
     </script>
 
     <script type="text/javascript">
         $("#EditSessionNote").click(function () {
-            EditSessionNote(_student_Id);
+            var text = $("#SessionNoteText");
+            SaveEditedSessionNote(text);
+            GetTutorNotes();
         });
     </script>
 
     <script type="text/javascript">
         $("#SaveEditedSessionNote").click(function () {
-            var text = $("#EditSessionNoteText")
+            var text = $("#EditSessionNoteText");
             SaveEditedSessionNote(text);
+            //GetTutorNotes();
         });
     </script>
 
@@ -225,6 +252,12 @@
     <script type="text/javascript">
         $("#AuthorEmail").click(function () {
             EmailToAuthor(_latestAuthor_Email);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#primaryTutorEmail").click(function () {
+            EmailToPrimaryTutor(_latestPrimaryTutor_Email);
         });
     </script>
 

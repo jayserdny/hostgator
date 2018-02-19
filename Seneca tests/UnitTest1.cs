@@ -27,7 +27,7 @@ namespace Seneca_tests
         }
 
         [TestMethod]
-        public void TestSaveStudentTutorNote() 
+        public void TestSaveStudentTutorNote()
         {
             using (SenecaContext db = new SenecaContext())
             {
@@ -62,7 +62,7 @@ namespace Seneca_tests
         //}
 
         [TestMethod]
-        public async Task TestSendGrid() 
+        public async Task TestSendGrid()
         {
             var client = new SendGridClient("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");
             var from = new EmailAddress("Admin@senecaheightseducationprogram.org", "Administrator, SHEP");
@@ -97,7 +97,18 @@ namespace Seneca_tests
 
             var sasBlobToken = blockBlob.GetSharedAccessSignature(sasConstraints);
 
-           var x = blockBlob.Uri + sasBlobToken;
+            var x = blockBlob.Uri + sasBlobToken;
+        }
+
+        [TestMethod]
+        public void TestNullPrimaryTutor()        
+        {
+            using (SenecaContext db = new SenecaContext())
+            {
+                var student =db.Students.Find(6);
+                student.PrimaryTutor = null;
+                db.SaveChanges();
+            }
         }
     }
 }

@@ -26,7 +26,14 @@ namespace MVC5_Seneca.Controllers
         // GET: StudentReports
         public ActionResult Index()
         {
-            return View(db.StudentReports.ToList());
+            if (User.IsInRole("Administrator"))
+            {
+                return View(db.StudentReports.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");   // Dashboard
+            }
         }
 
         // GET: StudentReports/Details/5
@@ -146,7 +153,14 @@ namespace MVC5_Seneca.Controllers
                 studentReport.DocumentType = (from d in db.DocumentTypes where d.Id == viewModel.DocumentType.Id select d).Single();
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                if (User.IsInRole("Administrator"))
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");  // Dashboard
+                }
             }
             return View(viewModel); 
         }
