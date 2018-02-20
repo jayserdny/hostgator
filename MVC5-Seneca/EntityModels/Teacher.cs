@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using MVC5_Seneca.Models;
 
 namespace MVC5_Seneca.EntityModels
 {
@@ -7,8 +6,7 @@ namespace MVC5_Seneca.EntityModels
     {
         public Teacher(string firstName)
         {
-            FirstName = firstName;
-        }
+            FirstName = firstName; }
 
         public int Id { get; set; }
 
@@ -16,8 +14,7 @@ namespace MVC5_Seneca.EntityModels
         public string LastName { get; set; }
 
         [DisplayName("First Name")]
-        public string FirstName { get; set; }
-
+        public string FirstName { get; set; }  
         public School School { get; set; }
 
         [DisplayName("Work Phone")]
@@ -25,7 +22,6 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("Cell Phone")]
         public string CellPhone { get; set; }
-
         public string Email { get; set; }  
     }
 }

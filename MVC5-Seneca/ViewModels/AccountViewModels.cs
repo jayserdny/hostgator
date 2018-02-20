@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;     
 
@@ -142,6 +141,7 @@ namespace MVC5_Seneca.Models
         public string ConfirmPassword { get; set; }
         public string Code { get; set; }
     }  
+
     public class ForgotPasswordViewModel
     {
         [Required]

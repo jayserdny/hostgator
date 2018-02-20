@@ -151,7 +151,7 @@
         </table>
     </div>
 
-    <div id="EditSessionNoteDiv" style="display:none">
+    @*<div id="EditSessionNoteDiv" style="display:none">
         <table>
             <tr>
                 <td width="50px"></td>
@@ -159,11 +159,13 @@
                     <strong id="EditSessionNoteLabel"></strong>
                 </td>
                 <td>
-                    <a href="#" id="SaveEditedSessionNote"> <img src="~/Images/save-button.png" style="border:none" /> </a>
+                    <a href="#" id="SaveEditedSessionNote">
+                        <img src="~/Images/save-button.png" style="border:none" alt=""/>
+                    </a>
                 </td>
             </tr>
         </table>
-    </div>
+    </div>*@
 
     <div id="EnterTutorNotesDiv" style="display:none">
         <br />
@@ -221,7 +223,7 @@
 
     <script type="text/javascript">
         $("#SaveSessionNote").click(function () {
-            SaveSessionNote(_student_Id);
+            SaveSessionNote(_studentId);
             GetTutorNotes();
         });
     </script>
@@ -244,7 +246,7 @@
 
     <script type="text/javascript">
         $("#parentEmail").click(function () {
-            EmailToParent(_student_Id);
+            EmailToParent(_studentId);
         });
     </script>
 

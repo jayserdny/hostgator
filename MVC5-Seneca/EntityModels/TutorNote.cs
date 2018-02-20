@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using MVC5_Seneca.Models;
 using Newtonsoft.Json;
 
 namespace MVC5_Seneca.EntityModels

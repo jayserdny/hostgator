@@ -1,16 +1,8 @@
-﻿using System.Net;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MVC5_Seneca.DataAccessLayer;
-using MVC5_Seneca.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Linq;
-using System.Threading.Tasks;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using MVC5_Seneca.ViewModels;                        
 
 namespace MVC5_Seneca.Controllers

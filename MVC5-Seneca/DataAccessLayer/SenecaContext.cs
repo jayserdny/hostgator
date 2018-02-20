@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.Models;
-using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
@@ -34,7 +32,7 @@ namespace MVC5_Seneca.DataAccessLayer
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }   
-        public System.Data.Entity.DbSet<MVC5_Seneca.Models.School> Schools { get; set; }        
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.School> Schools { get; set; }        
 
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TutorNote> TutorNotes { get; set; }
 

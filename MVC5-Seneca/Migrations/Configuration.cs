@@ -1,7 +1,6 @@
 ﻿namespace MVC5_Seneca.Migrations
 {
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
@@ -10,7 +9,6 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using MVC5_Seneca.EntityModels;
-    using MVC5_Seneca.Models;
 
     public sealed class Configuration : DbMigrationsConfiguration<MVC5_Seneca.DataAccessLayer.SenecaContext>
     {
@@ -159,10 +157,8 @@
                     Email = null
                 });
 
-                context.Schools.AddOrUpdate(x => x.Name,                                        
-                new School() { Name = "Watkins Mill Elementary" },
-                new School() { Name = "Watkins Mill High School" });
-
+                context.Schools.AddOrUpdate(x => x.Name, new School() { Name = "Watkins Mill Elementary" },
+                new School() { Name = "Watkins Mill High School" }); 
                 context.SaveChanges();
 
                 var parentSamantha = (from p in context.Parents where p.FirstName == "Samantha" select p).Single();

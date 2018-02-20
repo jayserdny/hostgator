@@ -1,21 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using MVC5_Seneca.EntityModels;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Reflection;
-using MVC5_Seneca.Models;
 
-namespace MVC5_Seneca.Models
+namespace MVC5_Seneca.EntityModels
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class ApplicationUser : IdentityUser

@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
-using MVC5_Seneca.Models;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
-using System.Data.Entity.Migrations;
-using System.Security.Claims;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using System.Threading.Tasks;           
 using Microsoft.AspNet.Identity.EntityFramework;
-using MVC5_Seneca.Controllers;        
 
 namespace MVC5_Seneca
 {

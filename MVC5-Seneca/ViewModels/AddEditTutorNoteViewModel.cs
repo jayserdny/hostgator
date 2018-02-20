@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using MVC5_Seneca.EntityModels;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using MVC5_Seneca.Models;
 
 namespace MVC5_Seneca.ViewModels
 {

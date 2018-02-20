@@ -4,8 +4,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using MVC5_Seneca.Models;
-using MVC5_Seneca.DataAccessLayer;     
+using MVC5_Seneca.DataAccessLayer;
+using MVC5_Seneca.EntityModels;
 
 namespace MVC5_Seneca
 {

@@ -9,7 +9,7 @@ using Microsoft.Owin.Security;
 using MVC5_Seneca.DataAccessLayer;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using MVC5_Seneca.ViewModels;
+using MVC5_Seneca.EntityModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System;

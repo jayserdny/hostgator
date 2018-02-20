@@ -7,10 +7,7 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System.Diagnostics;
-using MVC5_Seneca.Models;
-using Microsoft.Azure; //Namespace for CloudConfigurationManager
-using Microsoft.WindowsAzure; // Namespace for CloudConfigurationManager
+using System.Diagnostics;                                
 using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types;using Microsoft.Azure; //Namespace for CloudConfigurationManager
 

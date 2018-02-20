@@ -1,29 +1,22 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.Models;
 using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
 
-namespace MVC5_Seneca.Controllers 
+namespace MVC5_Seneca.Controllers
 {
     public class TutorNotesController : Controller
     {
         private SenecaContext db = new SenecaContext();
 
         // GET: TutorNotes
-        public ActionResult Index()
-        {
-            return View(db.TutorNotes.ToList());
-        }
+        public ActionResult Index() => View(db.TutorNotes.ToList());
 
         // GET: TutorNotes/Details/5
         public ActionResult Details(int? id)
@@ -32,7 +25,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TutorNote tutorNote = db.TutorNotes.Find(id);
+            var tutorNote = db.TutorNotes.Find(id);
             if (tutorNote == null)
             {
                 return HttpNotFound();
@@ -58,9 +51,9 @@ namespace MVC5_Seneca.Controllers
             foreach (ApplicationUser user in db.Users)
             {
                 if (user.UserName == tutorNote.ApplicationUser.UserName)
-                    userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id.ToString(), Selected = true });
+                    userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id, Selected = true });
                 else
-                    userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id.ToString(), Selected = false });
+                    userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id, Selected = false });
             } 
 
             List<SelectListItem> studentList = new List<SelectListItem>();
@@ -117,53 +110,36 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TutorNote tutorNote = db.TutorNotes.Find(id);
+            var tutorNote = db.TutorNotes.Find(id);
             db.TutorNotes.Remove(tutorNote);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
                                                                                                                                                                                                                                
-        public ActionResult SaveTutorNote(int Student_Id, DateTime Date, string SessionNote) // AddEditTutorNoteViewModel viewModel)
+        public ActionResult SaveTutorNote(int studentId, DateTime date, string sessionNote) 
         {
-            Boolean SaveThisNote = true;
-            var x = SessionNote;
-            if (x.Length == 0)
+            if (sessionNote.Length != 0)
             {
-                SaveThisNote = false;
-            }
-           
-            if (SaveThisNote)
-            {
-                string userId = User.Identity.GetUserId();
+                var userId = User.Identity.GetUserId();
                 var tutorNote = new TutorNote
                 {
-                    Date = Date,
-                    SessionNote = SessionNote,
+                    Date = date,
+                    SessionNote = sessionNote,
                     ApplicationUser = (from u in db.Users where u.Id == userId select u).Single(),
-                    Student = (from s in db.Students where s.Id == Student_Id select s).Single()
+                    Student = (from s in db.Students where s.Id == studentId select s).Single()
                 };
                 db.TutorNotes.Add(tutorNote);
                 db.SaveChanges();
-
-                AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel()
-                {
-                    Id = tutorNote.Id,
-                    User = tutorNote.ApplicationUser,
-                    SessionNote = tutorNote.SessionNote,
-                    TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
-                };
-                String json = JsonConvert.SerializeObject(note, Formatting.Indented);
-                return Content(json, "application/json");
             }
-            // Error : no new note was saved.
-            AddEditTutorNoteViewModel _note = new AddEditTutorNoteViewModel()
-            {
-                //Id = 0,                
-                TutorNotes = (from t in db.TutorNotes where t.Student.Id == Student_Id orderby t.Date descending select t).ToList()
-            };
-            String _json = JsonConvert.SerializeObject(_note, Formatting.Indented);
-            return Content(_json, "application/json");
+
+            var notes = new AddEditTutorNoteViewModel()
+                {
+                    TutorNotes = (from t in db.TutorNotes where t.Student.Id == studentId orderby t.Date descending select t).ToList()
+                };
+                String json = JsonConvert.SerializeObject(notes, Formatting.Indented);
+                return Content(json, "application/json");
         }
+
         public ActionResult EditTutorSessionNote(int? id, string sessionNote)
         {
             if (id == null)
@@ -176,35 +152,25 @@ namespace MVC5_Seneca.Controllers
             {
                 return HttpNotFound();
             }
-            var student_Id = tutorNote.Student.Id;   // keep this in case we delete the note
-
-            Boolean SaveThisNote = true;       
-            if (sessionNote.Length == 0){SaveThisNote = false;} 
-            if (SaveThisNote)
+            var studentId = tutorNote.Student.Id;   // keep this in case we delete the note
+     
+            if (sessionNote.Length == 0)
+            { // delete this note
+                db.TutorNotes.Remove(tutorNote);
+            } 
+            else                   
             {
-                tutorNote.SessionNote = sessionNote;
-                db.SaveChanges();
-
-                AddEditTutorNoteViewModel note = new AddEditTutorNoteViewModel
-                {
-                    //Id = tutorNote.Id,
-                    //SessionNote = tutorNote.SessionNote,
-                    TutorNotes = (from t in db.TutorNotes where t.Student.Id == tutorNote.Student.Id orderby t.Date descending select t).ToList()
-                };
-                String json = JsonConvert.SerializeObject(note, Formatting.Indented);
-                return Content(json, "application/json");
+                tutorNote.SessionNote = sessionNote;       
             }
-            // delete this note
-            db.TutorNotes.Remove(tutorNote);
-            db.SaveChanges();
-            AddEditTutorNoteViewModel _note = new AddEditTutorNoteViewModel
+            db.SaveChanges();    
+
+            var notes = new AddEditTutorNoteViewModel
             {
-                //Id = 0,                
-                TutorNotes = (from t in db.TutorNotes where t.Student.Id == student_Id orderby t.Date descending select t).ToList()
+                TutorNotes = (from t in db.TutorNotes where t.Student.Id == studentId orderby t.Date descending select t).ToList()
             };
-            String _json = JsonConvert.SerializeObject(_note, Formatting.Indented);
-            return Content(_json, "application/json"); 
-            }
+            String json = JsonConvert.SerializeObject(notes, Formatting.Indented);
+            return Content(json, "application/json");
+        }
 
         public ActionResult GetTutorComments(int id /* Student */)
         {
@@ -223,7 +189,7 @@ namespace MVC5_Seneca.Controllers
         }
         public ActionResult GetTutorNote(int? id)
         {
-            TutorNote note = db.TutorNotes.Find(id);
+            var note = db.TutorNotes.Find(id);
             if (note != null)
             {
                 String json = JsonConvert.SerializeObject(note, Formatting.Indented);

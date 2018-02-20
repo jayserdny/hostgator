@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using MVC5_Seneca.Models;
-using MVC5_Seneca.EntityModels;
 using System.Web.Mvc;
 
 namespace MVC5_Seneca.ViewModels
 {
     public class CreateUserRegistrationViewModel
-    {
-        // Input fields needed by the Create.cshtml file to display the form
-
-
-        // Output fields used by the .cshtml file to return form results
-
+    {                                                                                                                 
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This field is required.")]
         public string Name { get; set; }
 
+        [DisplayName("Password")]
         [Required(ErrorMessage = "This field is required.")]
-        [DisplayName("Password")]    
         public string PasswordHash { get; set; }
 
         [HiddenInput(DisplayValue = false)]

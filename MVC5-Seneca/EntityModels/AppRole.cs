@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace MVC5_Seneca.Models
+namespace MVC5_Seneca.EntityModels
 {
     public class ApplicationRole :  IdentityRole
     {

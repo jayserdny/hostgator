@@ -1,10 +1,6 @@
 ﻿using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using MVC5_Seneca.ViewModels;
-using System.ComponentModel;
-using System;
-using MVC5_Seneca.Models;
 
 namespace MVC5_Seneca.ViewModels
 {
