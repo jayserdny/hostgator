@@ -35,10 +35,10 @@
                 @Model.ErrorMessage
             </div>
             <div class="editor-field">
-                @Html.TextBox("file", "", new { type = "file", style = "width: 250" })
+                @Html.TextBox("file", "", new { type = "file", style = "width: 250", accept="application/pdf" }) (.PDF Files Only!)
             </div>
             <br />
-            <div class="editor-field">
+            <div>
                 <input type="submit" value="Upload" />
             </div>
         </fieldset>
