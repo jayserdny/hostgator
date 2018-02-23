@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.ViewModels;
-using Newtonsoft.Json;
-using Microsoft.Azure; //Namespace for CloudConfigurationManager
-using Microsoft.WindowsAzure; // Namespace for CloudConfigurationManager
+using MVC5_Seneca.ViewModels;             
 using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types;
 
@@ -139,7 +132,7 @@ namespace MVC5_Seneca.Controllers
         // POST: StudentReports/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Student,DocumentDate,DocumentType,DocumentLink,Comments")] StudentReport viewModel)
+        public ActionResult Edit([Bind(Include = "Id,Student,DocumentDate,DocumentType,DocumentLink,Comments")] AddEditStudentReportViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -225,7 +218,7 @@ namespace MVC5_Seneca.Controllers
                 return Redirect(blobLink);
             }
         }
-        private string SASutility(StudentReport report)
+        private static string SASutility(StudentReport report)
         // SAS == Shared Access Signature
         // return a url to access report for 10 minutes:
         {

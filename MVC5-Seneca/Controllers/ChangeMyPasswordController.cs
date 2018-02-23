@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MVC5_Seneca.DataAccessLayer;
-using System.Security.Cryptography;
-using System.Text;
+using MVC5_Seneca.ViewModels;
 
-namespace MVC5_Seneca.ViewModels
+namespace MVC5_Seneca.Controllers
 {
     public class ChangeMyPasswordController : Controller
     {

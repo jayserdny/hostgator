@@ -22,8 +22,7 @@ namespace MVC5_Seneca.ViewModels
         [DisplayName("Document Date")]
         [DisplayFormat(DataFormatString = "{0:d}")]
        
-        [Required(ErrorMessage = "Please enter date.")]
-        //[DataType(DataType.Date)]
+        [Required(ErrorMessage = "Please enter date.")]   
         public DateTime? DocumentDate { get; set; }
 
         [DataType(DataType.MultilineText)]       

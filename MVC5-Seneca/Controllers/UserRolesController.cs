@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
-using Microsoft.AspNet.Identity;
-using System.Threading.Tasks;           
-using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace MVC5_Seneca
+namespace MVC5_Seneca.Controllers
 {
     public class UserRolesController : Controller
     {
@@ -18,9 +18,7 @@ namespace MVC5_Seneca
 
         // GET: Roles
         public ActionResult Index()
-        {
-            List<UserNameRole> UserRoleNames = new List<UserNameRole>();
-
+        {  
             AddEditUserRolesViewModel model = new AddEditUserRolesViewModel
             {
                 UserNameRoles = new List<UserNameRole>()
@@ -36,7 +34,8 @@ namespace MVC5_Seneca
                     {
                         Name = user.UserName + ": " + user.FirstName + " "
                                 + user.LastName + " / " + _role.Name,
-                        Id = user.Id + "|" + _role.Id
+                        Id = user.Id + "|" + _role.Id,
+                        Email = user.Email
                     };
                     model.UserNameRoles.Add(userNameRole);
                 }

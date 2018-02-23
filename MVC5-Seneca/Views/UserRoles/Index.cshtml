@@ -9,38 +9,53 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Index</title> 
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <td>
-                &nbsp;&nbsp; User Name:&nbsp; @User.Identity.Name
-            </td>         
-        </tr>      
-        
-    @foreach (var item in Model.UserNameRoles) {       
-        <tr>
-            <td>
-                @item.Name 
-            </td>
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>   
-    }   
-    </table>
+<table class="table">
+    <tr>
+        <td>
+            &nbsp;&nbsp; User Name:&nbsp; @User.Identity.Name
+        </td>
+    </tr>
+</table>
+        <h4>Maintain User Roles</h4>
+        <p>
+            @Html.ActionLink("Create New User Role", "Create")
+        </p>
+<table class="table">   
+    <tr>
+        <td>User Name: Name / Role</td>
+        <td></td>
+        <td>Email (to notify activated user)</td>
+    </tr>
+    @foreach (var item in Model.UserNameRoles)
+        { 
+            <tr>
+                <td>
+                    @item.Name
+                </td> 
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })  |
+                </td>
+                <td id="UserEmail">
+                    @if (item.Name.Contains("Active"))
+                    {
+                        @*@item.Email*@      
+                        <a href="mailto:@(item.Email)?Subject=Activation%20Notice%20-%20Seneca%20Housing%20Education%20Program&Body=Your%20account%20has%20been%20activated.">@item.Email</a>
+                    }
+                </td>
+            </tr>
+    }
+        </table>
 
-    <table>
-        <tr>
-            <td>
-                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
-            </td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+</table> 
+
 </body>
 </html>

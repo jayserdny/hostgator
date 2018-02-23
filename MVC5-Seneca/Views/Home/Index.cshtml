@@ -34,7 +34,7 @@
 
     @if (User.IsInRole("Administrator"))
     {
-    <div class="col-md-3">
+    <div>
         Administator Menu<br />
         <a href="@Url.Action("MaintainUsers", "Home")">Maintain Users</a><br />
         <a href="@Url.Action("MaintainStudents", "Home")">Maintain Students</a><br />
@@ -44,7 +44,7 @@
         <a href="@Url.Action("MaintainStudentReports", "Home")">Maintain Student Reports</a><br />
         <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Reports</a><br />
         <a href="@Url.Action("MaintainSchools", "Home")">Maintain Schools</a><br />
-        <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain UserRoles</a><br />
+        <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain User Roles</a><br />
         @*<a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />*@
         <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
         @*<a href="@Url.Action("AddIdentityRole", "Home")">Add Identitly Role</a><br />*@
@@ -52,7 +52,7 @@
     </div>
     }
 
-    <div class="col-md-3">
+    <div>
         Tutor Menu<br />
         <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Info</a><br />
         <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Students</a><br />

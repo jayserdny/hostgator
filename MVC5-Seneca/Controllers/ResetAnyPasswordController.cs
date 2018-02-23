@@ -10,7 +10,7 @@ using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.Models;
 using Newtonsoft.Json;
 
-namespace MVC5_Seneca
+namespace MVC5_Seneca.Controllers
 {
     public class ResetAnyPasswordController : Controller
     {  

@@ -1,12 +1,10 @@
 ﻿@using FormMethod = System.Web.Mvc.FormMethod
-@model MVC5_Seneca.ViewModels.DisplayStudentInfoViewModel
+@model MVC5_Seneca.ViewModels.DisplayStudentInfoViewModel  
 
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -69,9 +67,7 @@
                 </tr>
                 <tr id="primaryTutorRow" style="display:none">
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td></td>  
                     <td style="text-align:right"><strong>Tutor: </strong></td>
                     <td id="primaryTutorName"></td>
                     <td style="text-align:right"><strong>Phone: </strong> </td>
@@ -109,63 +105,48 @@
         </table>
     </div>
 
-    <div id="DisplayTutorNotesDiv" style="display:none">
-        <table>
-            <tr>
-                <td>
-                    <strong id="TutorNotesSelectLabel"></strong>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                                            "--Select Note--", new { style = "width:275px" })
-                </td>
-                <td>
-                    <strong id="SessionNoteLabel"></strong>
-                </td>
-                <td>
-                    @Html.TextArea("_EditSessionNoteText", Model.SessionNote, new
-                    {
-                        id = "SessionNoteText",
-                        style = "width: 400px;",
-                        cols = 35,
-                        rows = 3,
-                        Title = "Tip: You may delete this note by saving a blank text."
-                    })
-                </td>
-                <td>
-                    <a href="#" id="EditSessionNote">Save Edits</a>
-                </td>
-            </tr>
-            <tr>
-                @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
-                <td id="SessionUserName" style="display:none">@User.Identity.Name</td>
-                <td id="SessionUserId" style="display:none">@Model.User_Id</td>
-                <td></td>
-                <td id="EmailAuthorLabel" align="right" style="display:none">
-                    <strong>Tutor Email:</strong>
-                </td>
-                <td id="AuthorEmail" style="display:none"></td>
-            </tr>
-        </table>
-    </div>
-
-    @*<div id="EditSessionNoteDiv" style="display:none">
-        <table>
-            <tr>
-                <td width="50px"></td>
-                <td>
-                    <strong id="EditSessionNoteLabel"></strong>
-                </td>
-                <td>
-                    <a href="#" id="SaveEditedSessionNote">
-                        <img src="~/Images/save-button.png" style="border:none" alt=""/>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>*@
+<div id="DisplayTutorNotesDiv" style="display: none">
+    <br/>
+    <table>
+        <tr>
+            <td>
+                <strong id="TutorNotesSelectLabel"></strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
+                    "--Select Note--", new {style = "width:275px"})
+            </td>
+            <td>
+                <strong id="SessionNoteLabel"></strong>
+            </td>
+            <td>
+                @Html.TextArea("SessionNoteText", Model.SessionNote, new
+                {
+                    id = "SessionNoteText",
+                    style = "width: 400px;",
+                    cols = 35,
+                    rows = 3,
+                    Title = "Tip: You may delete this note by saving a blank text."
+                })
+            </td>
+            <td>
+                <a href="#" id="SessionNoteSaveEdits">Save Edits</a>
+            </td>
+        </tr>
+        <tr>
+            @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
+            <td id="SessionUserName" style="display: none">@User.Identity.Name</td>
+            <td id="SessionUserId" style="display: none">@Model.User_Id</td>
+            <td></td>
+            <td id="EmailAuthorLabel" text-align="right" style="display: none">
+                <strong>Tutor Email:</strong>
+            </td>
+            <td id="AuthorEmail" style="display: none"></td>
+        </tr>
+    </table>
+</div>
 
     <div id="EnterTutorNotesDiv" style="display:none">
         <br />
@@ -224,23 +205,14 @@
     <script type="text/javascript">
         $("#SaveSessionNote").click(function () {
             SaveSessionNote(_studentId);
-            GetTutorNotes();
-        });
-    </script>
-
-    <script type="text/javascript">
-        $("#EditSessionNote").click(function () {
-            var text = $("#SessionNoteText");
-            SaveEditedSessionNote(text);
-            GetTutorNotes();
-        });
-    </script>
-
-    <script type="text/javascript">
-        $("#SaveEditedSessionNote").click(function () {
-            var text = $("#EditSessionNoteText");
-            SaveEditedSessionNote(text);
             //GetTutorNotes();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#SessionNoteSaveEdits").click(function () {
+            var text = $("#SessionNoteText");
+            SaveEditedSessionNote(text);         
         });
     </script>
 

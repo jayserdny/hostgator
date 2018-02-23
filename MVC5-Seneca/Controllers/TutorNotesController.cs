@@ -130,14 +130,15 @@ namespace MVC5_Seneca.Controllers
                 };
                 db.TutorNotes.Add(tutorNote);
                 db.SaveChanges();
-            }
-
-            var notes = new AddEditTutorNoteViewModel()
-                {
-                    TutorNotes = (from t in db.TutorNotes where t.Student.Id == studentId orderby t.Date descending select t).ToList()
-                };
-                String json = JsonConvert.SerializeObject(notes, Formatting.Indented);
+                String json = JsonConvert.SerializeObject(tutorNote, Formatting.Indented);
                 return Content(json, "application/json");
+            }
+            else
+            {
+                String json = null;
+                return Content(json, "application/json");
+            };
+               
         }
 
         public ActionResult EditTutorSessionNote(int? id, string sessionNote)
@@ -152,24 +153,28 @@ namespace MVC5_Seneca.Controllers
             {
                 return HttpNotFound();
             }
-            var studentId = tutorNote.Student.Id;   // keep this in case we delete the note
+
+            //var studentId = tutorNote.Student.Id;   // keep this in case we delete the note
      
             if (sessionNote.Length == 0)
             { // delete this note
                 db.TutorNotes.Remove(tutorNote);
+                db.SaveChanges();
+                // create a new empty note, because Ajax Error: not hit.
+                var note = new TutorNote
+                {
+                    Id = 0
+                };
+                String json = JsonConvert.SerializeObject(note, Formatting.Indented);
+                return Content(json, "application/json");
             } 
             else                   
             {
-                tutorNote.SessionNote = sessionNote;       
-            }
-            db.SaveChanges();    
-
-            var notes = new AddEditTutorNoteViewModel
-            {
-                TutorNotes = (from t in db.TutorNotes where t.Student.Id == studentId orderby t.Date descending select t).ToList()
-            };
-            String json = JsonConvert.SerializeObject(notes, Formatting.Indented);
-            return Content(json, "application/json");
+                tutorNote.SessionNote = sessionNote;
+                db.SaveChanges();
+                String json = JsonConvert.SerializeObject(tutorNote, Formatting.Indented);
+                return Content(json, "application/json");
+            } 
         }
 
         public ActionResult GetTutorComments(int id /* Student */)

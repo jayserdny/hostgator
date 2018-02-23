@@ -8,10 +8,8 @@ using MVC5_Seneca.ViewModels;
 namespace MVC5_Seneca.Controllers
 {
     public class HomeController : Controller
-    {
-        SenecaContext db = new SenecaContext();
-        // GET: Home 
-        //[AllowAnonymous]
+    {                                                                          
+        // GET: Home           
         public ActionResult Index()
         {  
             if (!Request.IsAuthenticated)
@@ -36,8 +34,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainParents()
         {
             return RedirectToAction("Index", "Parents");
-        }
-        
+        }        
         public ActionResult MaintainStaff()
         {
             return RedirectToAction("Index", "Staffs");
@@ -49,22 +46,21 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainStudentReports()
         {;
             return RedirectToAction("Index", "StudentReports");
-        }
-
+        }            
         public ActionResult MaintainSchools()
         {
             return RedirectToAction("Index", "Schools");
         }  
+
         [Authorize(Roles = "Active")]
         public ActionResult UploadStudentReports()
         {
             return RedirectToAction("Index", "Upload");
-        }
-
+        }                         
         public ActionResult MaintainUserRoles() 
         {
             return RedirectToAction("Index", "UserRoles");
-        }
+        }   
 
         //public ActionResult MaintainLocations()
         //{
@@ -77,8 +73,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DisplayProfileReports()
         {
             return RedirectToAction("Index", "StudentReports");
-        }
-
+        } 
         public ActionResult ChangeMyPassword()
         {
             return RedirectToAction("ResetPassword", "Account");
@@ -101,13 +96,11 @@ namespace MVC5_Seneca.Controllers
                 Name = "Routine Not Implemented"
             };
             return View(viewModel);
-        }
-
+        }   
         public ActionResult IdentityRoleSave(string name)
         {                                                                                           
             return RedirectToAction("Index", "Home");
-        }
-
+        }   
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult IdentityRoleSave([Bind(Include = "Name")] AddIdentityRoleViewModel viewModel)

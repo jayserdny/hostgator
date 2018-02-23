@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 
-namespace MVC5_Seneca.Views
+namespace MVC5_Seneca.Controllers
 {
     public class SchoolsController : Controller
     {
