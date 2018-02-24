@@ -36,7 +36,9 @@ namespace MVC5_Seneca.Controllers
         public ActionResult GetStudentDetails(int id /* drop down value */)
         {   
             Student student = (from s in db.Students where s.Id == id select s).Single();        
-  
+            // Put the reports in date order descending:
+            student.Reports = student.Reports.OrderByDescending(r => r.DocumentDate).ToList();
+
             try
             {                                                                                                                   
                 String json = JsonConvert.SerializeObject(student, Formatting.Indented);

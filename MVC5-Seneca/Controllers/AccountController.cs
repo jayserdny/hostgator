@@ -168,11 +168,7 @@ namespace MVC5_Seneca.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                 
 
-
-
-                    //SenecaContext db = new SenecaContext(); // already declared for this class
                     var receiverRole ="ReceiveRegistrationEmail";
                     var _Roles = (from r in db.Roles where r.Name == receiverRole select r).ToList();
                     var usersInRole = (from u in db.Users join r in db.Roles on receiverRole equals r.Name select u).ToList();

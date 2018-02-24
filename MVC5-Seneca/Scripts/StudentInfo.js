@@ -122,7 +122,7 @@ function UpdateStudentDetails()
                 reportIds.push(report.Id);
                
                 $("#reportsDDL").append('<option value = "' + '">' 
-                    + dt[1] + "/" + dt[2] + "/" + dt[0] + " " // How to reformat date to MM/dd/yyyy?
+                    + dt[1] + "/" + dt[2] + "/" + dt[0] + " " 
                     + report.DocumentType.Name
                     + '</option>');
             }); 
