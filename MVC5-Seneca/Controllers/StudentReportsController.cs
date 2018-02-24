@@ -214,11 +214,11 @@ namespace MVC5_Seneca.Controllers
             else
             {
                 var report = db.StudentReports.Find(id);
-                var blobLink = SASutility(report);
+                var blobLink = SaSutility(report);
                 return Redirect(blobLink);
             }
         }
-        private static string SASutility(StudentReport report)
+        private static string SaSutility(StudentReport report)
         // SAS == Shared Access Signature
         // return a url to access report for 10 minutes:
         {

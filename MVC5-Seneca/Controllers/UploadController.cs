@@ -66,13 +66,13 @@ namespace MVC5_Seneca.Controllers
             }          
 
             try
-            {      
-                if (file != null)              
+            {
+                if (file != null)
                 {
-                    var fileName = Path.GetFileName(file.FileName);            
-                    string path =Server.MapPath(" ") + "\\" + fileName;                                    
+                    var fileName = Path.GetFileName(file.FileName);
+                    string path = Server.MapPath(" ") + "\\" + fileName;
                     path = path.Replace("\\Upload", "\\UploadFiles");
-                    path = path.Replace("\\","/");
+                    path = path.Replace("\\", "/");
                     file.SaveAs(path);
 
                     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
@@ -86,7 +86,15 @@ namespace MVC5_Seneca.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    blob.Properties.ContentType = "application/pdf";     
+                    if (fileName.ToUpper().Substring(fileName.Length - 3, 3) == "MP4")
+                    {
+                        blob.Properties.ContentType = "video/mp4";
+                    }
+                    else
+                    {
+                        blob.Properties.ContentType = "application/pdf";
+                    }
+
                     using (var fileStream = System.IO.File.OpenRead(path))
                     {
                         blob.UploadFromStream(fileStream);
