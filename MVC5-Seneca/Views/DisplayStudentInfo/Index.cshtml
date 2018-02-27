@@ -38,20 +38,21 @@
         @using (Html.BeginForm("Index", "DisplayStudentInfo", FormMethod.Post))
         {
             <table>
-                <tr>
+                @*<tr>
                     &nbsp;&nbsp; Tutor:&nbsp;@User.Identity.Name
-                </tr>
+                </tr>*@
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td style="text-decoration:underline">
-                        <strong>Seneca Heights Education Program</strong>
+                        <strong>Seneca Heights Education Program Student Information</strong>
                     </td>
                 </tr>
+            </table> 
+            <br/>
+            <table>
                 <tr>
                     <td><strong>Id:</strong></td>
-                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select ID-")</td>
+                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
                     <td>
                         <strong id="motherFather"></strong>
                     </td>

@@ -57,7 +57,8 @@ namespace MVC5_Seneca.Controllers
             var sortedUsers = db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             foreach (ApplicationUser user in sortedUsers)
             {
-                userList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString() });
+                if (user.Id != null)
+                    userList.Add(new SelectListItem {Text = user.LastName + @", " + user.FirstName, Value = user.Id});
             }
 
             viewModel.Parents = parentList;
@@ -139,20 +140,20 @@ namespace MVC5_Seneca.Controllers
 
             List<SelectListItem> primaryTutorList = new List<SelectListItem>
             {  
-                new SelectListItem { Text = "- Select ID -", Value = "0", Selected = true }
+                new SelectListItem { Text = @"- Select ID -", Value = "0", Selected = true }
             }; 
             var sortedUsers = db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             foreach (ApplicationUser user in sortedUsers)
                 if (student.PrimaryTutor == null)
                 {
-                    primaryTutorList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString(), Selected = false });
+                    primaryTutorList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = false });
                 }
                 else
                 {
                     if (user.Id == student.PrimaryTutor.Id)
-                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString(), Selected = true });
+                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = true });
                     else
-                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + ", " + user.FirstName, Value = user.Id.ToString(), Selected = false });
+                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = false });
                 }
             
             viewModel.Id = student.Id;
@@ -176,25 +177,36 @@ namespace MVC5_Seneca.Controllers
             if (ModelState.IsValid)
             {
                 var student = db.Students.Find(viewModel.Id);
-                student.FirstName = viewModel.FirstName;
-                student.Gender = viewModel.Gender;
-                student.BirthDate = viewModel.BirthDate;
-                if (viewModel.Parent != null)
-                    { student.Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single(); }
-                if (viewModel.School != null)
-                    { student.School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single(); }
-                if (viewModel.PrimaryTutor.Id != null && viewModel.PrimaryTutor.Id.ToString() != "0")
+                if (student != null)
                 {
-                    student.PrimaryTutor = (from t in db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                    student.FirstName = viewModel.FirstName;
+                    student.Gender = viewModel.Gender;
+                    student.BirthDate = viewModel.BirthDate;
+                    if (viewModel.Parent != null)
+                    {
+                        student.Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single();
+                    }
+
+                    if (viewModel.School != null)
+                    {
+                        student.School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single();
+                    }
+
+                    if (viewModel.PrimaryTutor.Id != null && viewModel.PrimaryTutor.Id != "0")
+                    {
+                        student.PrimaryTutor =
+                            (from t in db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                    }
+                    else
+                    {
+                        student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
+                        //db.SaveChanges();         // TODO - why is this line inconsistent?
+                        var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
+                        db.Database.ExecuteSqlCommand(sql);
+                        return RedirectToAction("Index");
+                    }
                 }
-                else
-                {
-                    student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
-                    //db.SaveChanges();         // TODO - why is this line inconsistent?
-                    var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
-                    db.Database.ExecuteSqlCommand(sql);
-                    return RedirectToAction("Index");
-                }
+
                 db.SaveChanges();
              
                 return RedirectToAction("Index");
@@ -237,7 +249,7 @@ namespace MVC5_Seneca.Controllers
             db.StudentReports.RemoveRange(db.StudentReports.Where(r => r.Student.Id == id));
             db.TutorNotes.RemoveRange(db.TutorNotes.Where(t => t.Student.Id == id));          
             Student student = db.Students.Find(id);
-            db.Students.Remove(student);
+            if (student != null) db.Students.Remove(student);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

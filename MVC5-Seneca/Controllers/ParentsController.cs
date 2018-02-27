@@ -1,6 +1,4 @@
-﻿using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
@@ -102,12 +100,16 @@ namespace MVC5_Seneca.Controllers
             if (ModelState.IsValid) 
             {
                 var parent = db.Parents.Find(viewModel.Id);
-                parent.FirstName = viewModel.FirstName;
-                parent.Address = viewModel.Address;
-                parent.HomePhone = viewModel.HomePhone;
-                parent.CellPhone = viewModel.CellPhone;
-                parent.Email = viewModel.Email;
-                parent.MotherFather = viewModel.SelectedMotherFather;
+                if (parent != null)
+                {
+                    parent.FirstName = viewModel.FirstName;
+                    parent.Address = viewModel.Address;
+                    parent.HomePhone = viewModel.HomePhone;
+                    parent.CellPhone = viewModel.CellPhone;
+                    parent.Email = viewModel.Email;
+                    parent.MotherFather = viewModel.SelectedMotherFather;
+                }
+
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -136,7 +138,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Parent parent = db.Parents.Find(id);
-            db.Parents.Remove(parent);
+            if (parent != null) db.Parents.Remove(parent);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

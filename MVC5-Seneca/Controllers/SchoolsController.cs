@@ -9,12 +9,12 @@ namespace MVC5_Seneca.Controllers
 {
     public class SchoolsController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: Schools
         public ActionResult Index()
         {
-            return View(db.Schools.ToList());
+            return View(_db.Schools.ToList());
         }
 
         // GET: Schools/Details/5
@@ -24,7 +24,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = db.Schools.Find(id);
+            School school = _db.Schools.Find(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -47,8 +47,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Schools.Add(school);
-                db.SaveChanges();
+                _db.Schools.Add(school);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +62,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = db.Schools.Find(id);
+            School school = _db.Schools.Find(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -79,8 +79,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(school).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(school).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(school);
@@ -93,7 +93,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = db.Schools.Find(id);
+            School school = _db.Schools.Find(id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -106,9 +106,9 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            School school = db.Schools.Find(id);
-            db.Schools.Remove(school);
-            db.SaveChanges();
+            School school = _db.Schools.Find(id);
+            if (school != null) _db.Schools.Remove(school);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +120,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

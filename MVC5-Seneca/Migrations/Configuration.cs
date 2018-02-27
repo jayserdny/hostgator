@@ -8,9 +8,9 @@
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using MVC5_Seneca.EntityModels;
+    using EntityModels;
 
-    public sealed class Configuration : DbMigrationsConfiguration<MVC5_Seneca.DataAccessLayer.SenecaContext>
+    public sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.SenecaContext>
     {
         public Configuration()
         {
@@ -35,7 +35,7 @@
             Debug.Unindent();
         }
 
-        private void AddIdentityRole(MVC5_Seneca.DataAccessLayer.SenecaContext context, String name)
+        private void AddIdentityRole(DataAccessLayer.SenecaContext context, String name)
         {
             if (!context.Roles.Any(r => r.Name == name))
             {
@@ -46,12 +46,11 @@
             }
         }
 
-        private ApplicationUser  AddAdministrator(MVC5_Seneca.DataAccessLayer.SenecaContext context,
-            String userName, String passwordHash, String securityStamp, String email = "",
-            Boolean LockoutEnabled = true, string phoneNumber = "", 
+        private ApplicationUser  AddAdministrator(DataAccessLayer.SenecaContext context,
+            String userName, String passwordHash, String securityStamp, String email = "", string phoneNumber = "", 
             String firstName = "", String lastName = "")
         {
-            var appUser = context.Users.Where(u => u.UserName == userName).FirstOrDefault();
+            var appUser = context.Users.FirstOrDefault(u => u.UserName == userName);
             if (appUser == null)         
             {
                 var store = new UserStore<ApplicationUser>(context);
@@ -77,7 +76,7 @@
 
         // In writing sample or seed data, try to avoid using Id keys. (Find some other unique field
         // or use Composite Primary Keys.)  
-        protected override void Seed(MVC5_Seneca.DataAccessLayer.SenecaContext context)
+        protected override void Seed(DataAccessLayer.SenecaContext context)
         {
 
             //  This method will be called after migrating to the latest version.
@@ -93,11 +92,11 @@
                 AddIdentityRole(context, "Manager");
 
                 AddAdministrator(context,"p", "AMxcdoBNYrk+PEZUwbAK46Uk1ffoFyqKbyQ1Rn+JIKxk0B2ZdBbCNjEx7jFYIns2Ug==", "c6adf2b0-03a5-4c43-bf59-069c8b8b25a2",
-                    "prowny@aol.com",true,"3013655823","Peter", "Rowny");
+                    "prowny@aol.com","3013655823","Peter", "Rowny");
                 AddAdministrator(context, "dave", "AHeU6mfmXAYrBfr4IsIfgmghgwXRteBzHTu8TcT1GmeXZdqk1JN9w3Js+QeOYmrMFQ==", "ef00f25e-9c8f-4023-a824-8c05065b9fe0",
-                    "davemwein@gmail.com",true, "2402741896‬", "Dave","Weinstein");
-                var PeterRowny = AddAdministrator(context, "prowny", "ABF43OX0r8HcjPLxkQIxBwUnrtl2W4nA2khEGdEJn4eTxwvmZVxU+tTlJ7tl69Zq3w==", "1efd5200-0df4-4760-b892-c54a4b3d7dd8",
-                    "peter@rowny.com",true, "2408885159", "Peter", "Rowny");
+                    "davemwein@gmail.com", "2402741896‬", "Dave","Weinstein");
+                var peterRowny = AddAdministrator(context, "prowny", "ABF43OX0r8HcjPLxkQIxBwUnrtl2W4nA2khEGdEJn4eTxwvmZVxU+tTlJ7tl69Zq3w==", "1efd5200-0df4-4760-b892-c54a4b3d7dd8",
+                    "peter@rowny.com", "2408885159", "Peter", "Rowny");
 
                 context.Parents.AddOrUpdate(x => x.FirstName,                     
                 new Parent()
@@ -164,9 +163,6 @@
                 var parentSamantha = (from p in context.Parents where p.FirstName == "Samantha" select p).Single();
                 var parentShantia = (from p in context.Parents where p.FirstName == "Shantia" select p).Single();
                 var parentTracey = (from p in context.Parents where p.FirstName == "Tracey" select p).Single();
-                var parentDenisse = (from p in context.Parents where p.FirstName == "Denisse" select p).Single();
-                var parentJasmine = (from p in context.Parents where p.FirstName == "Jasmine" select p).Single();
-                var parentShakia = (from p in context.Parents where p.FirstName == "Shakia" select p).Single();
                 var parentBrendance = (from p in context.Parents where p.FirstName == "Brendance" select p).Single();
 
                 var school1 = (from s in context.Schools where s.Name == "Watkins Mill Elementary" select s).Single();
@@ -219,7 +215,7 @@
                     BirthDate = DateTime.ParseExact("2007-10-20", "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     School = school1,
                     Parent = parentSamantha,
-                    PrimaryTutor = PeterRowny
+                    PrimaryTutor = peterRowny
                 });
                 context.SaveChanges();
 
@@ -279,7 +275,7 @@
 
             catch (DbEntityValidationException ex)
             {
-                System.Diagnostics.Debugger.Launch();
+                Debugger.Launch();
                 WriteExceptionToDebugger(ex);
             }
         }

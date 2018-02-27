@@ -14,7 +14,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class UserRolesController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private SenecaContext _db = new SenecaContext();
 
         // GET: Roles
         public ActionResult Index()
@@ -24,12 +24,12 @@ namespace MVC5_Seneca.Controllers
                 UserNameRoles = new List<UserNameRole>()
             };
 
-            var users = db.Users.ToList();
+            var users = _db.Users.ToList();
             foreach (var user in users)
             {
                 foreach (var role in user.Roles)
                 {
-                    var _role = (from r in db.Roles where (r.Id == role.RoleId) select r).Single();
+                    var _role = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
                     UserNameRole userNameRole = new UserNameRole
                     {
                         Name = user.UserName + ": " + user.FirstName + " "
@@ -48,14 +48,14 @@ namespace MVC5_Seneca.Controllers
         {
             AddEditUserRolesViewModel viewModel = new AddEditUserRolesViewModel();
 
-            var userRoles = (from r in db.Roles select r).ToList();
+            var userRoles = (from r in _db.Roles select r).ToList();
             List<SelectListItem> Roles = new List<SelectListItem>();
             foreach (var role in userRoles)
             {
                 Roles.Add(new SelectListItem() { Text = role.Name, Value = role.Id });
             }
 
-            var users = (from u in db.Users select u).ToList();
+            var users = (from u in _db.Users select u).ToList();
             List<SelectListItem> Users = new List<SelectListItem>();
             foreach (var user in users)
             {
@@ -77,12 +77,12 @@ namespace MVC5_Seneca.Controllers
 
             if (ModelState.IsValid)
             {
-                var roleStore = new RoleStore<IdentityRole>(db);
+                var roleStore = new RoleStore<IdentityRole>(_db);
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-                var userStore = new UserStore<ApplicationUser>(db);
+                var userStore = new UserStore<ApplicationUser>(_db);
                 var userManager = new UserManager<ApplicationUser>(userStore);
-                var role = db.Roles.Find(model.UserRole.Id);
+                var role = _db.Roles.Find(model.UserRole.Id);
                 userManager.AddToRole(model.User.Id, role.Name);
 
                 return RedirectToAction("Index", "UserRoles");
@@ -101,18 +101,18 @@ namespace MVC5_Seneca.Controllers
             string[] splitId = id.Split('|');
             var userId = splitId[0];
             var roleId = splitId[1];
-            var role = (from r in db.Roles where (r.Id == roleId) select r).Single();
+            var role = (from r in _db.Roles where (r.Id == roleId) select r).Single();
             if (role == null)
             {
                 return HttpNotFound();
             }
             var model = new AddEditUserRolesViewModel();
 
-            var _user = db.Users.Find(userId);
+            var _user = _db.Users.Find(userId);
             model.Name = _user.FirstName + " " + _user.LastName;
 
             List<SelectListItem> listRoles = new List<SelectListItem>();
-            var userRoles = (from r in db.Roles select r).ToList();
+            var userRoles = (from r in _db.Roles select r).ToList();
 
             //if (studentReport.Student.Id == student.Id)
             //    studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = true });
@@ -192,8 +192,8 @@ namespace MVC5_Seneca.Controllers
             string[] splitId = id.Split('|');
             var userId = splitId[0];
             var roleId = splitId[1];
-            var role = (from r in db.Roles where (r.Id == roleId) select r).Single();
-            ApplicationUser user = (from u in db.Users.Where(u => u.Id == userId) select u).Single();
+            var role = (from r in _db.Roles where (r.Id == roleId) select r).Single();
+            ApplicationUser user = (from u in _db.Users.Where(u => u.Id == userId) select u).Single();
             if (user == null)
             {
                 return HttpNotFound();
@@ -216,10 +216,10 @@ namespace MVC5_Seneca.Controllers
             var userId = splitId[0];
             var roleId = splitId[1];
             var roles = new string [1];
-            var role = db.Roles.Find(roleId);
+            var role = _db.Roles.Find(roleId);
             roles[0] = role.Name;
                                                                                                                                                                                                  
-            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
             await UserManager.RemoveFromRolesAsync(userId, roles).ConfigureAwait(false);                                                                            
             return RedirectToAction("Index");
         }

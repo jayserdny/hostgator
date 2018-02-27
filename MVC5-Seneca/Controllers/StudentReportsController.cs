@@ -13,14 +13,14 @@ namespace MVC5_Seneca.Controllers
 {
     public class StudentReportsController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: StudentReports
         public ActionResult Index()
         {
             if (User.IsInRole("Administrator"))
             {
-                return View(db.StudentReports.ToList());
+                return View(_db.StudentReports.ToList());
             }
             else
             {
@@ -35,7 +35,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StudentReport studentReport = db.StudentReports.Find(id);
+            StudentReport studentReport = _db.StudentReports.Find(id);
             if (studentReport == null)
             {
                 return HttpNotFound();
@@ -48,14 +48,14 @@ namespace MVC5_Seneca.Controllers
         {
             AddEditStudentReportViewModel  model = new AddEditStudentReportViewModel();
             List<SelectListItem> studentList = new List<SelectListItem>();
-            foreach (Student student in db.Students)
+            foreach (Student student in _db.Students)
             {
                 studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString() });
             }
             model.Students = studentList.OrderBy(s => s.Text);
 
             List<SelectListItem> documentTypeList = new List<SelectListItem>();
-            foreach (DocumentType documentType in db.DocumentTypes)
+            foreach (DocumentType documentType in _db.DocumentTypes)
             {
                 documentTypeList.Add(new SelectListItem { Text = documentType.Name, Value = documentType.Id.ToString() });
             }
@@ -75,12 +75,12 @@ namespace MVC5_Seneca.Controllers
                     DocumentDate = model.DocumentDate,
                     Comments = model.Comments,
                     DocumentLink = Properties.Settings.Default.DocumentStoragePath + model.DocumentLink,
-                    DocumentType = (from d in db.DocumentTypes where d.Id == model.DocumentType.Id select d).Single(),
-                    Student = (from s in db.Students where s.Id == model.Student.Id select s).Single()
+                    DocumentType = (from d in _db.DocumentTypes where d.Id == model.DocumentType.Id select d).Single(),
+                    Student = (from s in _db.Students where s.Id == model.Student.Id select s).Single()
                 };
 
-                db.StudentReports.Add(studentReport);
-                db.SaveChanges();
+                _db.StudentReports.Add(studentReport);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -93,7 +93,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StudentReport studentReport = db.StudentReports.Find(id);
+            StudentReport studentReport = _db.StudentReports.Find(id);
             if (studentReport == null)
             {
                 return HttpNotFound();
@@ -102,7 +102,7 @@ namespace MVC5_Seneca.Controllers
             var viewModel = new AddEditStudentReportViewModel();
 
             List<SelectListItem> studentList = new List<SelectListItem>();
-            foreach (Student student in db.Students)
+            foreach (Student student in _db.Students)
             {
                 if (studentReport.Student.Id == student.Id)
                     studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = true });
@@ -111,7 +111,7 @@ namespace MVC5_Seneca.Controllers
             }
 
             List<SelectListItem> documentTypeList = new List<SelectListItem>();
-            foreach (DocumentType documentType in db.DocumentTypes)
+            foreach (DocumentType documentType in _db.DocumentTypes)
             {
                 if (studentReport.DocumentType.Id == documentType.Id)
                     documentTypeList.Add(new SelectListItem { Text = documentType.Name, Value = documentType.Id.ToString(), Selected = true });
@@ -136,14 +136,20 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                var studentReport = db.StudentReports.Find(viewModel.Id);
-                studentReport.DocumentDate = viewModel.DocumentDate;
-                studentReport.DocumentType = viewModel.DocumentType;
-                studentReport.Comments = viewModel.Comments;
-                studentReport.DocumentLink = viewModel.DocumentLink;
-                studentReport.Student = (from s in db.Students where s.Id == viewModel.Student.Id select s).Single();
-                studentReport.DocumentType = (from d in db.DocumentTypes where d.Id == viewModel.DocumentType.Id select d).Single();
-                db.SaveChanges();
+                var studentReport = _db.StudentReports.Find(viewModel.Id);
+                if (studentReport != null)
+                {
+                    studentReport.DocumentDate = viewModel.DocumentDate;
+                    studentReport.DocumentType = viewModel.DocumentType;
+                    studentReport.Comments = viewModel.Comments;
+                    studentReport.DocumentLink = viewModel.DocumentLink;
+                    studentReport.Student =
+                        (from s in _db.Students where s.Id == viewModel.Student.Id select s).Single();
+                    studentReport.DocumentType =
+                        (from d in _db.DocumentTypes where d.Id == viewModel.DocumentType.Id select d).Single();
+                }
+
+                _db.SaveChanges();
 
                 if (User.IsInRole("Administrator"))
                 {
@@ -164,7 +170,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            StudentReport studentReport = db.StudentReports.Find(id);
+            StudentReport studentReport = _db.StudentReports.Find(id);
             if (studentReport == null)
             {
                 return HttpNotFound();
@@ -177,18 +183,23 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            StudentReport studentReport = db.StudentReports.Find(id);
-            db.StudentReports.Remove(studentReport);
-            db.SaveChanges();
-
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
-            CloudBlockBlob blob = container.GetBlockBlobReference(studentReport.DocumentLink);
-            if (blob.Exists())
+            StudentReport studentReport = _db.StudentReports.Find(id);
+            if (studentReport != null)
             {
-                blob.Delete();
+                _db.StudentReports.Remove(studentReport);
+                _db.SaveChanges();
+
+                CloudStorageAccount storageAccount =
+                    CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+                CloudBlockBlob blob = container.GetBlockBlobReference(studentReport.DocumentLink);
+                if (blob.Exists())
+                {
+                    blob.Delete();
+                }
             }
+
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()
@@ -200,7 +211,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -213,7 +224,7 @@ namespace MVC5_Seneca.Controllers
             }
             else
             {
-                var report = db.StudentReports.Find(id);
+                var report = _db.StudentReports.Find(id);
                 var blobLink = SaSutility(report);
                 return Redirect(blobLink);
             }

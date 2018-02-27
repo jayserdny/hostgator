@@ -4,7 +4,8 @@ namespace MVC5_Seneca.EntityModels
 {
     public class ApplicationRole :  IdentityRole
     {
-        public ApplicationRole() : base() { }
+        public ApplicationRole()
+        { }
         public ApplicationRole(string name) : base(name) { }
     }
 }

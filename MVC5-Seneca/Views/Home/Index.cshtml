@@ -1,5 +1,4 @@
-﻿@model MVC5_Seneca.EntityModels.ApplicationUser
-
+﻿@model MVC5_Seneca.EntityModels.ApplicationUser   
 @{
     Layout = null;
 }
@@ -25,7 +24,7 @@
     <div>
         <table>
             <tr>
-                <td>&nbsp;&nbsp; Tutor:&nbsp; @User.Identity.Name</td>
+                <td>&nbsp;&nbsp; Welcome  @User.Identity.Name!</td>
             </tr>
             <tr>
                 <td>
@@ -55,19 +54,21 @@
     </div>
     }
 
-    <div>
-        Tutor Menu<br />
+<div>                                                                                                              
+
+    Tutor Menu<br />
         <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />
-        <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Students</a><br />
-        <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parents</a><br />
+        <a href="@Url.Action("Contacts", "Home")">Contacts</a><br />
+        <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a><br />
+        <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a><br />
         <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
 
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-        {
+    {
         @Html.AntiForgeryToken()
         <a href="javascript:document.getElementById('logoutForm').submit()">LogOut</a>
-        }
+}
     </div>
 
 </body>

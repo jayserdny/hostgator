@@ -51,9 +51,9 @@ namespace MVC5_Seneca.Controllers
             foreach (ApplicationUser user in db.Users)
             {
                 if (user.UserName == tutorNote.ApplicationUser.UserName)
-                    userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id, Selected = true });
+                    userList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = true });
                 else
-                    userList.Add(new SelectListItem { Text = user.FirstName + " " + user.LastName, Value = user.Id, Selected = false });
+                    userList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
             } 
 
             List<SelectListItem> studentList = new List<SelectListItem>();
@@ -80,10 +80,14 @@ namespace MVC5_Seneca.Controllers
             if (ModelState.IsValid)
             {
                 var tutorNote = db.TutorNotes.Find(viewModel.Id);
-                tutorNote.Date = viewModel.Date;
-                tutorNote.SessionNote = viewModel.SessionNote;
-                tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student.Id select s).Single();
-                tutorNote.ApplicationUser = (from u in db.Users where u.Id == viewModel.User.Id select u).Single();                
+                if (tutorNote != null)
+                {
+                    tutorNote.Date = viewModel.Date;
+                    tutorNote.SessionNote = viewModel.SessionNote;
+                    tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student.Id select s).Single();
+                    tutorNote.ApplicationUser = (from u in db.Users where u.Id == viewModel.User.Id select u).Single();
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -111,7 +115,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var tutorNote = db.TutorNotes.Find(id);
-            db.TutorNotes.Remove(tutorNote);
+            if (tutorNote != null) db.TutorNotes.Remove(tutorNote);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -135,10 +139,8 @@ namespace MVC5_Seneca.Controllers
             }
             else
             {
-                String json = null;
-                return Content(json, "application/json");
-            };
-               
+                return Content(null, "application/json");
+            }
         }
 
         public ActionResult EditTutorSessionNote(int? id, string sessionNote)

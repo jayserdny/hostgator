@@ -21,6 +21,14 @@ function UpdateStudentDetails()
     $("#DocumentComment").text("");
     $("#SessionNoteText").val("");
     $("#NewSessionNote").val("");
+    $("#motherFather").text("");
+    $("#parentFirstName").text("");
+    $("#parentPhoneLabel").text("");
+    $("#parentPhone").text("");
+    $("#parentEmailLabel").text("");
+    $("#parentEmail").text("");
+    $("#primaryTutorRow").hide();
+
     var studentId = $(this).val();
     _studentId = studentId;
   
@@ -32,7 +40,7 @@ function UpdateStudentDetails()
         success: function (data) {
             $("#NewSessionNote").val("");
             $("#EnterTutorNotesDiv").show();
-            $("#EnterTutorNotesLabel").text("Enter New Tutor Session Note");
+            $("#EnterTutorNotesLabel").text("Enter New Tutor Session Note"); 
 
             _latestStudentFirstName = data.FirstName;
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
@@ -13,12 +9,12 @@ namespace MVC5_Seneca.Controllers
 {
     public class StaffsController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: Staffs
         public ActionResult Index()
         {
-            return View(db.StaffMembers.ToList());
+            return View(_db.StaffMembers.ToList());
         }
 
         // GET: Staffs/Details/5
@@ -28,7 +24,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Staff staff = db.StaffMembers.Find(id);
+            Staff staff = _db.StaffMembers.Find(id);
             if (staff == null)
             {
                 return HttpNotFound();
@@ -51,8 +47,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.StaffMembers.Add(staff);
-                db.SaveChanges();
+                _db.StaffMembers.Add(staff);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +62,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Staff staff = db.StaffMembers.Find(id);
+            Staff staff = _db.StaffMembers.Find(id);
             if (staff == null)
             {
                 return HttpNotFound();
@@ -83,8 +79,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(staff).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(staff).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(staff);
@@ -97,7 +93,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Staff staff = db.StaffMembers.Find(id);
+            Staff staff = _db.StaffMembers.Find(id);
             if (staff == null)
             {
                 return HttpNotFound();
@@ -110,9 +106,9 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Staff staff = db.StaffMembers.Find(id);
-            db.StaffMembers.Remove(staff);
-            db.SaveChanges();
+            Staff staff = _db.StaffMembers.Find(id);
+            if (staff != null) _db.StaffMembers.Remove(staff);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()
@@ -124,7 +120,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

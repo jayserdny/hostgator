@@ -2,8 +2,7 @@
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using MVC5_Seneca.DataAccessLayer;
-using MVC5_Seneca.ViewModels;                        
+using MVC5_Seneca.ViewModels;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -44,7 +43,7 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", "DocumentTypes");
         }
         public ActionResult MaintainStudentReports()
-        {;
+        {
             return RedirectToAction("Index", "StudentReports");
         }            
         public ActionResult MaintainSchools()
@@ -60,7 +59,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainUserRoles() 
         {
             return RedirectToAction("Index", "UserRoles");
-        }   
+        }       
 
         //public ActionResult MaintainLocations()
         //{
@@ -70,6 +69,10 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "TutorNotes");
         }
+        public ActionResult Contacts()
+        {
+            return RedirectToAction("Index", "Contacts");
+        }
         public ActionResult DisplayProfileReports()
         {
             return RedirectToAction("Index", "StudentReports");
@@ -77,18 +80,15 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ChangeMyPassword()
         {
             return RedirectToAction("ResetPassword", "Account");
-        }
-
+        }     
         public ActionResult DisplayStudentInfo()
         {
             return RedirectToAction("Index","DisplayStudentInfo");
-        }
-
+        }        
         public ActionResult ResetAnyPassword()
         {
             return RedirectToAction("ResetAnyPassword", "Account");
-        }
-
+        }       
         public ActionResult AddIdentityRole()
         {
             AddIdentityRoleViewModel viewModel = new AddIdentityRoleViewModel

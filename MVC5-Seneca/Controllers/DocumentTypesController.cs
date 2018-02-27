@@ -9,12 +9,12 @@ namespace MVC5_Seneca.Controllers
 {
     public class DocumentTypesController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: DocumentTypes
         public ActionResult Index()
         {
-            return View(db.DocumentTypes.ToList());
+            return View(_db.DocumentTypes.ToList());
         }
 
         // GET: DocumentTypes/Details/5
@@ -24,7 +24,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DocumentType documentType = db.DocumentTypes.Find(id);
+            DocumentType documentType = _db.DocumentTypes.Find(id);
             if (documentType == null)
             {
                 return HttpNotFound();
@@ -45,8 +45,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.DocumentTypes.Add(documentType);
-                db.SaveChanges();
+                _db.DocumentTypes.Add(documentType);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -60,7 +60,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DocumentType documentType = db.DocumentTypes.Find(id);
+            DocumentType documentType = _db.DocumentTypes.Find(id);
             if (documentType == null)
             {
                 return HttpNotFound();
@@ -77,8 +77,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(documentType).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(documentType).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(documentType);
@@ -91,7 +91,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DocumentType documentType = db.DocumentTypes.Find(id);
+            DocumentType documentType = _db.DocumentTypes.Find(id);
             if (documentType == null)
             {
                 return HttpNotFound();
@@ -104,9 +104,9 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DocumentType documentType = db.DocumentTypes.Find(id);
-            db.DocumentTypes.Remove(documentType);
-            db.SaveChanges();
+            DocumentType documentType = _db.DocumentTypes.Find(id);
+            if (documentType != null) _db.DocumentTypes.Remove(documentType);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()
@@ -117,7 +117,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

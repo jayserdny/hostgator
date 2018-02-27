@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using MVC5_Seneca.ViewModels;
 
@@ -7,7 +6,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class ChangeMyPasswordController : Controller
     {
-        public static Boolean pageExpired;
+        public static Boolean PageExpired;
         // GET: ChangeMyPassword/Index
         public ActionResult Index()
         {
@@ -20,7 +19,7 @@ namespace MVC5_Seneca.Controllers
         // GET: ChangeMyPassword/Edit
         public ActionResult Edit()
         {
-            pageExpired = false;
+            PageExpired = false;
             return View();
         }
 
@@ -29,36 +28,31 @@ namespace MVC5_Seneca.Controllers
         [HttpPost]
         public ActionResult Authorize(ChangeMyPasswordViewModel changeMyPasswordViewModel)
         {
-            ChangeMyPasswordViewModel CMP = changeMyPasswordViewModel;
-            if (CMP.NewPassword1 != CMP.NewPassword2)
+            ChangeMyPasswordViewModel cmp = changeMyPasswordViewModel;
+            if (cmp.NewPassword1 != cmp.NewPassword2)
             {
                 changeMyPasswordViewModel.ErrorMessage = "Passwords do not match!";
                 return View("Edit", changeMyPasswordViewModel);
             }
-            else
+
+            using (DataAccessLayer.SenecaContext db = new DataAccessLayer.SenecaContext())
             {
-                using (MVC5_Seneca.DataAccessLayer.SenecaContext db = new MVC5_Seneca.DataAccessLayer.SenecaContext())
+                if (PageExpired)
                 {
-                    if (pageExpired)
-                    {
-                        changeMyPasswordViewModel.ErrorMessage = "Page expired.";                     
-                        return View("Edit", changeMyPasswordViewModel);
-                    }
-                    if (Session["userId"] == null)
-                    {
-                        return RedirectToAction("Index", "Login");
-                    }
-                    String userName = Session["userName"].ToString();
-                    var user = db.Users.Where(x => x.UserName == userName).FirstOrDefault();
-                    //user.PasswordHash = App_Code.EncryptSHA256.EncodeSHA256(CMP.NewPassword1,user.PasswordSalt);
-                 
-                    db.SaveChanges();
-              
-                    changeMyPasswordViewModel.ErrorMessage = "PASSWORD SUCCESFULLY CHANGED.";
-                    pageExpired = true;
+                    changeMyPasswordViewModel.ErrorMessage = "Page expired.";                     
                     return View("Edit", changeMyPasswordViewModel);
-                }                
-            }            
+                }
+                if (Session["userId"] == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }                                                               
+                 
+                db.SaveChanges();
+              
+                changeMyPasswordViewModel.ErrorMessage = "PASSWORD SUCCESFULLY CHANGED.";
+                PageExpired = true;
+                return View("Edit", changeMyPasswordViewModel);
+            }
         }
 
         public ActionResult ReturnToDashboard()

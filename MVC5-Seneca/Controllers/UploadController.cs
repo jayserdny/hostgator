@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -34,7 +33,6 @@ namespace MVC5_Seneca.Controllers
             })
             .ToList();
 
-            var documentTypes = db.DocumentTypes.ToList();
             model.DocumentTypes = db.DocumentTypes.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
@@ -52,14 +50,14 @@ namespace MVC5_Seneca.Controllers
 
         // POST: Upload
         [HttpPost, Authorize(Roles = "Active")]
-        public ActionResult Upload(HttpPostedFileBase file, int? student_Id, int? documentType_Id)      //*UploadFileViewModel model*/
+        public ActionResult Upload(HttpPostedFileBase file, int? studentId, int? documentTypeId)      //*UploadFileViewModel model*/
         {
-            if (student_Id == null ) 
+            if (studentId == null ) 
             {
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
             }
-            if (documentType_Id == null)
+            if (documentTypeId == null)
             {
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
@@ -86,7 +84,7 @@ namespace MVC5_Seneca.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    if (fileName.ToUpper().Substring(fileName.Length - 3, 3) == "MP4")
+                    if (fileName != null && fileName.ToUpper().Substring(fileName.Length - 3, 3) == "MP4")
                     {
                         blob.Properties.ContentType = "video/mp4";
                     }
@@ -102,13 +100,13 @@ namespace MVC5_Seneca.Controllers
 
                     System.IO.File.Delete(path);
 
-                    int i = path.IndexOf("UploadFiles");
+                    int i = path.IndexOf("UploadFiles", StringComparison.Ordinal);
                     path = path.Remove(0, i + 12);
                     var studentReport = new StudentReport
                     {
                         DocumentLink = path.Replace(@"\", "/"),
-                        Student = db.Students.Find(student_Id),
-                        DocumentType = db.DocumentTypes.Find(documentType_Id),
+                        Student = db.Students.Find(studentId),
+                        DocumentType = db.DocumentTypes.Find(documentTypeId),
                         DocumentDate = DateTime.Now
                     };
                     db.StudentReports.Add(studentReport);
@@ -125,9 +123,8 @@ namespace MVC5_Seneca.Controllers
                     return RedirectToAction("Index", "Home"); // Dashboard                 
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var tt = ex;
                 return null;
             }
         }
