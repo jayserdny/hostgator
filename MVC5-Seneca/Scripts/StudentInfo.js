@@ -197,7 +197,8 @@ function GetTutorNotes()
                     var xx = new Date(Date.parse(note.Date));
                     var dow = xx.getDay();
                     $("#SessionNotesDDL").append('<option value = "' + '">'
-                        + weekday[dow] + " " + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
+                        //+ weekday[dow] + " "
+                        + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
                         + "Tutor: " + note.ApplicationUser.FirstName + " "
                         + note.ApplicationUser.LastName + '</option>');
                 });
@@ -321,7 +322,7 @@ function SaveSessionNote(stuId)
                 var xx = new Date(Date.parse(_note.Date));
                 var dow = xx.getDay();
                 $("#SessionNotesDDL").append('<option value = "' + '">'
-                    + weekday[dow] + " "
+                    //+ weekday[dow] + " "
                     + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
                     + "Tutor: " + _note.ApplicationUser.FirstName + " "
                     + _note.ApplicationUser.LastName
@@ -382,8 +383,9 @@ function SaveEditedSessionNote(text)
                         }
                         var xx = new Date(Date.parse(_note.Date));
                         var dow = xx.getDay();
-                        $("#SessionNotesDDL").append('<option value = "' +
-                            '">' + weekday[dow] + " " + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
+                        $("#SessionNotesDDL").append('<option value = "' + '">'
+                            //+ weekday[dow] + " "
+                            + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
                             + "Tutor: " + _note.ApplicationUser.FirstName + " "
                             + _note.ApplicationUser.LastName + '</option>');
                 });
