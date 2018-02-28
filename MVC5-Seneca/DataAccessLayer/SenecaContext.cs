@@ -32,9 +32,9 @@ namespace MVC5_Seneca.DataAccessLayer
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }   
-        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.School> Schools { get; set; }        
+        public DbSet<School> Schools { get; set; }        
 
-        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TutorNote> TutorNotes { get; set; }
+        public DbSet<TutorNote> TutorNotes { get; set; }
 
         public static SenecaContext Create()
         {

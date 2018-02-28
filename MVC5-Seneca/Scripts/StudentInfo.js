@@ -1,4 +1,4 @@
-﻿// #region Declarations
+﻿// #region                                                              
 var noteToSelectText;
 var _loadArraysInProgress = false;  // flag to ignore calls from SessionNotessDDL.change
 var reportComments = [];  // empty array
@@ -28,10 +28,14 @@ function UpdateStudentDetails()
     $("#parentEmailLabel").text("");
     $("#parentEmail").text("");
     $("#primaryTutorRow").hide();
-
+    $("#Save-Button").hide();
     var studentId = $(this).val();
     _studentId = studentId;
-  
+
+    var updateAllowed = $("#UpdateAllowed").text();
+    var t = updateAllowed;
+   
+
     $.ajax({
         url: "/DisplayStudentInfo/GetStudentDetails",
         data: { id: studentId },
@@ -44,6 +48,9 @@ function UpdateStudentDetails()
 
             _latestStudentFirstName = data.FirstName;
 
+            if ($("#UpdateAllowed").text() === "true") {
+                $("#Save-Button").show();
+            }
             var parent;
             if (data.Parent.MotherFather === "M")
                 parent = "Mother: ";
@@ -144,7 +151,7 @@ function UpdateStudentDetails()
                 $("#DocumentsDiv").hide();
             }
         },
-        error: function (data) {
+        error: function () {
             $("#DocumentsDiv").hide();
         }  
     }); // $.ajax({ 
@@ -165,7 +172,7 @@ function LoadTutorNoteArrays(waitForMe) {
                 });
             waitForMe();
         },
-        error: function (data) {
+        error: function () {
           var dummy = "";
         }
     });
@@ -180,7 +187,7 @@ function GetTutorNotes()
         data: { id: _studentId },
         type: "GET",
         dataType: "JSON",
-        success: function (data) {   
+        success: function () {   
             $("#SessionNotesDDL").empty();
             $("#SessionNotesDDL").append('<option value = "' + '">' + "--Select Note--" + '</option > ');
             LoadTutorNoteArrays(function() {
@@ -200,10 +207,8 @@ function GetTutorNotes()
                     $("#SessionNoteLabel").text("  Session Note: ");
                 }
             });
-                {
-                    $("#DisplayTutorNotesDiv").hide();
-                }
-                },
+            $("#DisplayTutorNotesDiv").hide();
+        },
                     Error: function (data)
                 {
                     $("#DisplayTutorNotesDiv").hide();
@@ -257,11 +262,14 @@ function UpdateSessionNote(event) {
                     _latestAuthor_Email = note.ApplicationUser.Email;
                     $("#SessionNoteLabel").show();
                     $("#SessionNoteText").show();
-                    $("#SessionNoteSaveEdits").show();
+                    if (note.UpdateAllowed)
+                    {
+                        $("#SessionNoteSaveEdits").show();
+                    }  
                     $("#EmailAuthorLabel").hide();
                     $("#AuthorEmail").hide();
-                    if (note.ApplicationUser.Id !== $("#SessionUserId").text()
-                    ) { /*Don't show authors's email if it's the same person as the user:*/
+                    if (note.ApplicationUser.Id !== $("#SessionUserId").text())
+                    { /*Don't show authors's email if it's the same person as the user:*/
                         $("#EmailAuthorLabel").show();
                         $("#AuthorEmail").text(note.ApplicationUser.Email);
                         $("#AuthorEmail").show();

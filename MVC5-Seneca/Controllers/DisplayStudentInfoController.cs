@@ -10,11 +10,7 @@ using Newtonsoft.Json;
 namespace MVC5_Seneca.Controllers
 {
     public class DisplayStudentInfoController : Controller
-    {
-        public ActionResult ReturnToDashboard()
-        {
-            return RedirectToAction("Index", "Home");
-        }
+    { 
         private readonly SenecaContext _db = new SenecaContext();
         public ActionResult Index()   
         {
@@ -28,8 +24,15 @@ namespace MVC5_Seneca.Controllers
                 Value = s.Id.ToString(),
                 Text = s.FirstName
             })
-            .ToList();                                                                                     
-           return View(model);
+            .ToList();
+
+            model.UpdateAllowed = "false";
+            if (User.IsInRole("Administrator") || User.IsInRole("Tutor"))
+            {
+                model.UpdateAllowed = "true";
+            }
+
+            return View(model);
         }        
      
         [Authorize(Roles = "Active")]
@@ -48,6 +51,10 @@ namespace MVC5_Seneca.Controllers
             {
                 return null;
             }
+        }
+        public ActionResult ReturnToDashboard()
+        {
+            return RedirectToAction("Index", "Home");
         }
     }    
 }

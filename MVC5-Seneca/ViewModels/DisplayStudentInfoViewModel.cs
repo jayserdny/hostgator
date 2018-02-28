@@ -20,8 +20,8 @@ namespace MVC5_Seneca.ViewModels
         [JsonProperty] public List<DocumentType> DocumentTypes { get; set; }
 
         // Output fields used by the .cshtml file to return form results
-        [DisplayName("Student:"),JsonProperty] 
-        public Student Student { get; set; }
+        [DisplayName("Student:")]
+        [JsonProperty] public Student Student { get; set; }
         [JsonProperty] public ApplicationIdentity User { get; set; }  // to go with new Session Note  
         [JsonProperty] public string User_Id { get; set; }  // to go with new Session Note  
 
@@ -34,7 +34,8 @@ namespace MVC5_Seneca.ViewModels
         [DisplayFormat(DataFormatString = "{0:d}")]
         [JsonProperty] public DateTime? SessionNoteDate { get; set; }
 
-        [JsonProperty] public string SessionNote { get; set; }  
+        [JsonProperty] public string SessionNote { get; set; }   
 
+        public virtual string UpdateAllowed { get; set; }        
     }
 }

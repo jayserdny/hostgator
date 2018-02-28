@@ -45,7 +45,8 @@
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td style="text-decoration:underline">
                         <strong>Seneca Heights Education Program Student Information</strong>
-                    </td>
+                    </td> 
+                    <td id="UpdateAllowed" style="display: none">@Model.UpdateAllowed</td> @*To hide Save-Button*@
                 </tr>
             </table> 
             <br/>
@@ -106,48 +107,48 @@
         </table>
     </div>
 
-<div id="DisplayTutorNotesDiv" style="display: none">
-    <br/>
-    <table>
-        <tr>
-            <td>
-                <strong id="TutorNotesSelectLabel"></strong>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                    "--Select Note--", new {style = "width:275px"})
-            </td>
-            <td>
-                <strong id="SessionNoteLabel"></strong>
-            </td>
-            <td>
-                @Html.TextArea("SessionNoteText", Model.SessionNote, new
-                {
-                    id = "SessionNoteText",
-                    style = "width: 400px;",
-                    cols = 35,
-                    rows = 3,
-                    Title = "Tip: You may delete this note by saving a blank text."
-                })
-            </td>
-            <td>
-                <a href="#" id="SessionNoteSaveEdits">Save Edits</a>
-            </td>
-        </tr>
-        <tr>
-            @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
-            <td id="SessionUserName" style="display: none">@User.Identity.Name</td>
-            <td id="SessionUserId" style="display: none">@Model.User_Id</td>
-            <td></td>
-            <td id="EmailAuthorLabel" text-align="right" style="display: none">
-                <strong>Tutor Email:</strong>
-            </td>
-            <td id="AuthorEmail" style="display: none"></td>
-        </tr>
-    </table>
-</div>
+    <div id="DisplayTutorNotesDiv" style="display: none">
+        <br/>
+        <table>
+            <tr>
+                <td>
+                    <strong id="TutorNotesSelectLabel"></strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
+                        "--Select Note--", new {style = "width:275px"})
+                </td>
+                <td>
+                    <strong id="SessionNoteLabel"></strong>
+                </td>
+                <td>
+                    @Html.TextArea("SessionNoteText", Model.SessionNote, new
+                    {
+                        id = "SessionNoteText",
+                        style = "width: 400px;",
+                        cols = 35,
+                        rows = 3,
+                        Title = "Tip: You may delete this note by saving a blank text."
+                    })
+                </td>
+                <td>
+                    <a href="#" id="SessionNoteSaveEdits">Save Edits</a>
+                </td>
+            </tr>
+            <tr>
+                @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
+                <td id="SessionUserName" style="display: none">@User.Identity.Name</td>
+                <td id="SessionUserId" style="display: none">@Model.User_Id</td>
+                <td></td>
+                <td id="EmailAuthorLabel" text-align="right" style="display: none">
+                    <strong>Tutor Email:</strong>
+                </td>
+                <td id="AuthorEmail" style="display: none"></td>
+            </tr>
+        </table>
+    </div>
 
     <div id="EnterTutorNotesDiv" style="display:none">
         <br />
@@ -172,7 +173,7 @@
                 <td>
                     @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 400px;", cols = 35, rows = 3 })
                 </td>
-                <td>
+                <td id="Save-Button">
                     <a href="#" id="SaveSessionNote"> <img src="~/Images/save-button.png" style="border:none" /> </a>
                 </td>
             </tr>

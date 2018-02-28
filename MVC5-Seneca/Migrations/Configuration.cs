@@ -86,8 +86,7 @@
                 // System.Diagnostics.Debugger.Launch();
                 AddIdentityRole(context, "Active");
                 AddIdentityRole(context, "Administrator");
-                AddIdentityRole(context, "PrimaryTutor");
-                AddIdentityRole(context, "AssociateTutor");
+                AddIdentityRole(context, "Tutor");                 
                 AddIdentityRole(context, "ReceiveRegistrationEmail");
                 AddIdentityRole(context, "Manager");
 

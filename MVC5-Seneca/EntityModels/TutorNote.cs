@@ -18,5 +18,7 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Session Note"), JsonProperty]
         public String SessionNote { get; set; }
 
+        public virtual Boolean UpdateAllowed { get; set; }
+
     }
 }

@@ -9,7 +9,6 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <style>
         p.indent {
             padding-left: 1em
@@ -46,7 +45,7 @@
         <a href="@Url.Action("MaintainStudentReports", "Home")">Maintain Student Reports</a><br />
         <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Reports</a><br />
         <a href="@Url.Action("MaintainSchools", "Home")">Maintain Schools</a><br />
-        <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain User Roles</a><br />
+        <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain User Permissions (&quot;Roles&quot;)</a><br />
         @*<a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />*@
         <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
         @*<a href="@Url.Action("AddIdentityRole", "Home")">Add Identitly Role</a><br />*@
@@ -54,20 +53,28 @@
     </div>
     }
 
-<div>                                                                                                              
+    <div>
 
-    Tutor Menu<br />
-        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />
-        <a href="@Url.Action("Contacts", "Home")">Contacts</a><br />
-        <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a><br />
-        <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a><br />
-        <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a><br />
-        <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
-
+        Tutor Menu<br />
+        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br /> 
+        <a href="@Url.Action("Contacts", "Home")">Contacts</a><br /> 
+          
+        @if (User.IsInRole("Tutor" ))
+        {
+            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
+            <br/>
+            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
+            <br/>
+            <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
+            <br/>
+        }
+        
+        <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />   
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
+        <br/>
         @Html.AntiForgeryToken()
-        <a href="javascript:document.getElementById('logoutForm').submit()">LogOut</a>
+        <a href="@Url.Action("Logout", "Home")">LogOut</a>
 }
     </div>
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
+using System.Web.Mvc;           
 using Microsoft.AspNet.Identity;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
@@ -13,10 +13,10 @@ namespace MVC5_Seneca.Controllers
 {
     public class TutorNotesController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private SenecaContext _db = new SenecaContext();
 
         // GET: TutorNotes
-        public ActionResult Index() => View(db.TutorNotes.ToList());
+        public ActionResult Index() => View(_db.TutorNotes.ToList());
 
         // GET: TutorNotes/Details/5
         public ActionResult Details(int? id)
@@ -25,7 +25,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var tutorNote = db.TutorNotes.Find(id);
+            var tutorNote = _db.TutorNotes.Find(id);
             if (tutorNote == null)
             {
                 return HttpNotFound();
@@ -40,7 +40,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TutorNote tutorNote = db.TutorNotes.Find(id);
+            TutorNote tutorNote = _db.TutorNotes.Find(id);
             if (tutorNote == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace MVC5_Seneca.Controllers
 
             var viewModel = new AddEditTutorNoteViewModel();
             List<SelectListItem> userList = new List<SelectListItem>();
-            foreach (ApplicationUser user in db.Users)
+            foreach (ApplicationUser user in _db.Users)
             {
                 if (user.UserName == tutorNote.ApplicationUser.UserName)
                     userList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = true });
@@ -57,7 +57,7 @@ namespace MVC5_Seneca.Controllers
             } 
 
             List<SelectListItem> studentList = new List<SelectListItem>();
-            foreach (Student student in db.Students)
+            foreach (Student student in _db.Students)
             {
                 if (student.Id == tutorNote.Student.Id)
                     studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = true });
@@ -79,16 +79,16 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tutorNote = db.TutorNotes.Find(viewModel.Id);
+                var tutorNote = _db.TutorNotes.Find(viewModel.Id);
                 if (tutorNote != null)
                 {
                     tutorNote.Date = viewModel.Date;
                     tutorNote.SessionNote = viewModel.SessionNote;
-                    tutorNote.Student = (from s in db.Students where s.Id == viewModel.Student.Id select s).Single();
-                    tutorNote.ApplicationUser = (from u in db.Users where u.Id == viewModel.User.Id select u).Single();
+                    tutorNote.Student = (from s in _db.Students where s.Id == viewModel.Student.Id select s).Single();
+                    tutorNote.ApplicationUser = (from u in _db.Users where u.Id == viewModel.User.Id select u).Single();
                 }
 
-                db.SaveChanges();
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(viewModel);
@@ -101,7 +101,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TutorNote tutorNote = db.TutorNotes.Find(id);
+            TutorNote tutorNote = _db.TutorNotes.Find(id);
             if (tutorNote == null)
             {
                 return HttpNotFound();
@@ -114,9 +114,9 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var tutorNote = db.TutorNotes.Find(id);
-            if (tutorNote != null) db.TutorNotes.Remove(tutorNote);
-            db.SaveChanges();
+            var tutorNote = _db.TutorNotes.Find(id);
+            if (tutorNote != null) _db.TutorNotes.Remove(tutorNote);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
                                                                                                                                                                                                                                
@@ -129,11 +129,11 @@ namespace MVC5_Seneca.Controllers
                 {
                     Date = date,
                     SessionNote = sessionNote,
-                    ApplicationUser = (from u in db.Users where u.Id == userId select u).Single(),
-                    Student = (from s in db.Students where s.Id == studentId select s).Single()
+                    ApplicationUser = (from u in _db.Users where u.Id == userId select u).Single(),
+                    Student = (from s in _db.Students where s.Id == studentId select s).Single()
                 };
-                db.TutorNotes.Add(tutorNote);
-                db.SaveChanges();
+                _db.TutorNotes.Add(tutorNote);
+                _db.SaveChanges();
                 String json = JsonConvert.SerializeObject(tutorNote, Formatting.Indented);
                 return Content(json, "application/json");
             }
@@ -150,7 +150,7 @@ namespace MVC5_Seneca.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            TutorNote tutorNote = db.TutorNotes.Find(id);            
+            TutorNote tutorNote = _db.TutorNotes.Find(id);            
             if (tutorNote == null)
             {
                 return HttpNotFound();
@@ -160,8 +160,8 @@ namespace MVC5_Seneca.Controllers
      
             if (sessionNote.Length == 0)
             { // delete this note
-                db.TutorNotes.Remove(tutorNote);
-                db.SaveChanges();
+                _db.TutorNotes.Remove(tutorNote);
+                _db.SaveChanges();
                 // create a new empty note, because Ajax Error: not hit.
                 var note = new TutorNote
                 {
@@ -173,7 +173,7 @@ namespace MVC5_Seneca.Controllers
             else                   
             {
                 tutorNote.SessionNote = sessionNote;
-                db.SaveChanges();
+                _db.SaveChanges();
                 String json = JsonConvert.SerializeObject(tutorNote, Formatting.Indented);
                 return Content(json, "application/json");
             } 
@@ -181,7 +181,7 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult GetTutorComments(int id /* Student */)
         {
-            var comments = (from t in db.TutorNotes orderby t.Date descending where t.Student.Id == id select t).ToList();
+            var comments = (from t in _db.TutorNotes orderby t.Date descending where t.Student.Id == id select t).ToList();
             try
             {
                 String json = JsonConvert.SerializeObject(comments, Formatting.Indented);
@@ -196,9 +196,15 @@ namespace MVC5_Seneca.Controllers
         }
         public ActionResult GetTutorNote(int? id)
         {
-            var note = db.TutorNotes.Find(id);
+            var note = _db.TutorNotes.Find(id);
             if (note != null)
-            {
+            {    
+                note.UpdateAllowed = false;
+                if (User.IsInRole("Administrator") || User.IsInRole("Tutor"))
+                {
+                    note.UpdateAllowed = true;
+                }
+
                 String json = JsonConvert.SerializeObject(note, Formatting.Indented);
                 return Content(json, "application/json");
             }
@@ -208,7 +214,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

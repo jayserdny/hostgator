@@ -24,7 +24,7 @@ namespace MVC5_Seneca.Controllers
                 UserNameRoles = new List<UserNameRole>()
             };
 
-            var users = _db.Users.ToList();
+            var users = _db.Users.OrderBy(u => u.LastName).ToList();
             foreach (var user in users)
             {
                 foreach (var role in user.Roles)
@@ -59,7 +59,7 @@ namespace MVC5_Seneca.Controllers
             List<SelectListItem> Users = new List<SelectListItem>();
             foreach (var user in users)
             {
-                Users.Add(new SelectListItem() { Text = user.UserName + " " + user.FirstName + " " + user.LastName, Value = user.Id.ToString() });
+                Users.Add(new SelectListItem() { Text = user.UserName + @" " + user.FirstName + @" " + user.LastName, Value = user.Id });
             }
 
             viewModel.UserRoles = Roles;
@@ -73,12 +73,11 @@ namespace MVC5_Seneca.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Create(AddEditUserRolesViewModel model)
-        {
-
+        {   
             if (ModelState.IsValid)
             {
-                var roleStore = new RoleStore<IdentityRole>(_db);
-                var roleManager = new RoleManager<IdentityRole>(roleStore);
+                //var roleStore = new RoleStore<IdentityRole>(_db);
+                //var roleManager = new RoleManager<IdentityRole>(roleStore);
 
                 var userStore = new UserStore<ApplicationUser>(_db);
                 var userManager = new UserManager<ApplicationUser>(userStore);
@@ -108,23 +107,11 @@ namespace MVC5_Seneca.Controllers
             }
             var model = new AddEditUserRolesViewModel();
 
-            var _user = _db.Users.Find(userId);
-            model.Name = _user.FirstName + " " + _user.LastName;
+            var user = _db.Users.Find(userId);
+            model.Name = user.FirstName + " " + user.LastName;
 
-            List<SelectListItem> listRoles = new List<SelectListItem>();
-            var userRoles = (from r in _db.Roles select r).ToList();
-
-            //if (studentReport.Student.Id == student.Id)
-            //    studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = true });
-            //else
-            //    studentList.Add(new SelectListItem { Text = student.FirstName, Value = student.Id.ToString(), Selected = false });
-            //foreach (var _role in userRoles)
-            //    if (_role. == )
-            //{
-            //    listRoles.Add(new SelectListItem() { Text = _role.Name });
-            //}  
-            //model.UserRoles = listRoles;      
-
+            //List<SelectListItem> listRoles = new List<SelectListItem>();
+            //var userRoles = (from r in _db.Roles select r).ToList();
             return View(model);
         }
 
