@@ -59,7 +59,12 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainUserRoles() 
         {
             return RedirectToAction("Index", "UserRoles");
-        }       
+        }
+
+        public ActionResult MaintainTipsCategories()
+        {
+            return RedirectToAction("Index", "TipsCategories");
+        }
 
         //public ActionResult MaintainLocations()
         //{

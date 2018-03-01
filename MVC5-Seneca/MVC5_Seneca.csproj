@@ -359,9 +359,11 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\TipsCategoriesController.cs" />
     <Compile Include="Controllers\UsersController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="EntityModels\TipsCategory.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.Designer.cs">
       <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
@@ -380,6 +382,10 @@
     <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.cs" />
     <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.Designer.cs">
       <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803011706523_AddTipsCategories.cs" />
+    <Compile Include="Migrations\201803011706523_AddTipsCategories.Designer.cs">
+      <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -852,6 +858,11 @@
     <Content Include="Views\Contacts\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\TipsCategories\Create.cshtml" />
+    <Content Include="Views\TipsCategories\Delete.cshtml" />
+    <Content Include="Views\TipsCategories\Details.cshtml" />
+    <Content Include="Views\TipsCategories\Edit.cshtml" />
+    <Content Include="Views\TipsCategories\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -885,6 +896,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.resx">
       <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803011706523_AddTipsCategories.resx">
+      <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
