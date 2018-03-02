@@ -42,5 +42,7 @@ namespace MVC5_Seneca.DataAccessLayer
         }
 
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TipsCategory> TipsCategories { get; set; }
+
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TipDocument> TipDocuments { get; set; }
     }
 }

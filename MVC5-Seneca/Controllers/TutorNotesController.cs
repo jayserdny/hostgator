@@ -13,7 +13,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class TutorNotesController : Controller
     {
-        private SenecaContext _db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: TutorNotes
         public ActionResult Index() => View(_db.TutorNotes.ToList());

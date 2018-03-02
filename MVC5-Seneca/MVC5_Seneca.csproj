@@ -363,6 +363,7 @@
     <Compile Include="Controllers\UsersController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="EntityModels\TipDocument.cs" />
     <Compile Include="EntityModels\TipsCategory.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.Designer.cs">
@@ -387,12 +388,21 @@
     <Compile Include="Migrations\201803011706523_AddTipsCategories.Designer.cs">
       <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803012158133_AddTipDocuments.cs" />
+    <Compile Include="Migrations\201803012158133_AddTipDocuments.Designer.cs">
+      <DependentUpon>201803012158133_AddTipDocuments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803021404120_AddTipDocuments1.cs" />
+    <Compile Include="Migrations\201803021404120_AddTipDocuments1.Designer.cs">
+      <DependentUpon>201803021404120_AddTipDocuments1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Startup.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\TipDocumentsController.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -863,6 +873,11 @@
     <Content Include="Views\TipsCategories\Details.cshtml" />
     <Content Include="Views\TipsCategories\Edit.cshtml" />
     <Content Include="Views\TipsCategories\Index.cshtml" />
+    <Content Include="Views\TipDocuments\Create.cshtml" />
+    <Content Include="Views\TipDocuments\Delete.cshtml" />
+    <Content Include="Views\TipDocuments\Details.cshtml" />
+    <Content Include="Views\TipDocuments\Edit.cshtml" />
+    <Content Include="Views\TipDocuments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -899,6 +914,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803011706523_AddTipsCategories.resx">
       <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803012158133_AddTipDocuments.resx">
+      <DependentUpon>201803012158133_AddTipDocuments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803021404120_AddTipDocuments1.resx">
+      <DependentUpon>201803021404120_AddTipDocuments1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

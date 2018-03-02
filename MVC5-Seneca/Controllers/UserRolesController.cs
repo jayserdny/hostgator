@@ -14,7 +14,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class UserRolesController : Controller
     {
-        private SenecaContext _db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: Roles
         public ActionResult Index()

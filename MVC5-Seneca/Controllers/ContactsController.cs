@@ -12,7 +12,7 @@ namespace MVC5_Seneca.Controllers
     public class ContactsController : Controller
     {
         // GET: Contacts
-        private SenecaContext _db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         public ActionResult Index()
         {

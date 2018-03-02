@@ -9,112 +9,113 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 
-namespace MVC5_Seneca.Controllers
+namespace MVC5_Seneca
 {
-    public class TipsCategoriesController : Controller
+    public class TipDocumentsController : Controller
     {
-        private readonly SenecaContext db = new SenecaContext();
+        private SenecaContext db = new SenecaContext();
 
-        // GET: TipsCategories
+        // GET: TipDocuments
         public ActionResult Index()
         {
-            return View(db.TipsCategories.ToList());
+            return View(db.TipDocuments.ToList());
         }
 
-        // GET: TipsCategories/Details/5
+        // GET: TipDocuments/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TipsCategory tipsCategory = db.TipsCategories.Find(id);
-            if (tipsCategory == null)
+            TipDocument tipDocument = db.TipDocuments.Find(id);
+            if (tipDocument == null)
             {
                 return HttpNotFound();
             }
-            return View(tipsCategory);
+            return View(tipDocument);
         }
 
-        // GET: TipsCategories/Create
+        // GET: TipDocuments/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: TipsCategories/Create
+        // POST: TipDocuments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] TipsCategory tipsCategory)
+        public ActionResult Create([Bind(Include = "Id,Name,DocumentLink,User")] TipDocument tipDocument)
         {
             if (ModelState.IsValid)
             {
-                db.TipsCategories.Add(tipsCategory);
+                db.TipDocuments.Add(tipDocument);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(tipsCategory);
+            return View(tipDocument);
         }
 
-        // GET: TipsCategories/Edit/5
+        // GET: TipDocuments/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TipsCategory tipsCategory = db.TipsCategories.Find(id);
-            if (tipsCategory == null)
+            TipDocument tipDocument = db.TipDocuments.Find(id);
+            if (tipDocument == null)
             {
                 return HttpNotFound();
             }
-            return View(tipsCategory);
+            return View(tipDocument);
         }
 
-        // POST: TipsCategories/Edit/5
+        // POST: TipDocuments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] TipsCategory tipsCategory)
+        public ActionResult Edit([Bind(Include = "Id,Name,DocumentLink,User")] TipDocument tipDocument)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tipsCategory).State = EntityState.Modified;
+                db.Entry(tipDocument).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tipsCategory);
+            return View(tipDocument);
         }
 
-        // GET: TipsCategories/Delete/5
+        // GET: TipDocuments/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TipsCategory tipsCategory = db.TipsCategories.Find(id);
-            if (tipsCategory == null)
+            TipDocument tipDocument = db.TipDocuments.Find(id);
+            if (tipDocument == null)
             {
                 return HttpNotFound();
             }
-            return View(tipsCategory);
+            return View(tipDocument);
         }
 
-        // POST: TipsCategories/Delete/5
+        // POST: TipDocuments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TipsCategory tipsCategory = db.TipsCategories.Find(id);
-            db.TipsCategories.Remove(tipsCategory);
+            TipDocument tipDocument = db.TipDocuments.Find(id);
+            db.TipDocuments.Remove(tipDocument);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
         public ActionResult ReturnToDashboard()
         {
             return RedirectToAction("Index", "Home");

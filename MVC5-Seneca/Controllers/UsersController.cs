@@ -9,7 +9,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class UsersController : Controller
     {
-        SenecaContext db = new SenecaContext();
+        readonly SenecaContext db = new SenecaContext();
 
         // GET: Users
         public ActionResult Index()
