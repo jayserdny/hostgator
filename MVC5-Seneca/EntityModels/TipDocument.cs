@@ -7,7 +7,7 @@ namespace MVC5_Seneca.EntityModels
         [JsonProperty] public int Id { get; set; }
         [JsonProperty] public virtual TipsCategory Category { get; set; }
         [JsonProperty] public string Name { get; set; }
-        [JsonProperty] public string DocumentLink { get; set; }
-        [JsonProperty] public ApplicationIdentity User { get; set; }    // who submitted this tip
+        [JsonProperty] public string DocumentLink { get; set; }                           
+        [JsonProperty] public virtual ApplicationUser User { get; set; }    // who submitted this tip
     }
 }

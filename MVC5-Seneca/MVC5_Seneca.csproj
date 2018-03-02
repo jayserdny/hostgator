@@ -384,17 +384,13 @@
     <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.Designer.cs">
       <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803011706523_AddTipsCategories.cs" />
-    <Compile Include="Migrations\201803011706523_AddTipsCategories.Designer.cs">
-      <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
+    <Compile Include="Migrations\201803021643099_AddTeachingTips.cs" />
+    <Compile Include="Migrations\201803021643099_AddTeachingTips.Designer.cs">
+      <DependentUpon>201803021643099_AddTeachingTips.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803012158133_AddTipDocuments.cs" />
-    <Compile Include="Migrations\201803012158133_AddTipDocuments.Designer.cs">
-      <DependentUpon>201803012158133_AddTipDocuments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803021404120_AddTipDocuments1.cs" />
-    <Compile Include="Migrations\201803021404120_AddTipDocuments1.Designer.cs">
-      <DependentUpon>201803021404120_AddTipDocuments1.cs</DependentUpon>
+    <Compile Include="Migrations\201803021729066_RetryTipDocuments.cs" />
+    <Compile Include="Migrations\201803021729066_RetryTipDocuments.Designer.cs">
+      <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -912,14 +908,11 @@
     <EmbeddedResource Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.resx">
       <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803011706523_AddTipsCategories.resx">
-      <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803021643099_AddTeachingTips.resx">
+      <DependentUpon>201803021643099_AddTeachingTips.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803012158133_AddTipDocuments.resx">
-      <DependentUpon>201803012158133_AddTipDocuments.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803021404120_AddTipDocuments1.resx">
-      <DependentUpon>201803021404120_AddTipDocuments1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803021729066_RetryTipDocuments.resx">
+      <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

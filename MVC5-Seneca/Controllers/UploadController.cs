@@ -13,7 +13,7 @@ namespace MVC5_Seneca.Controllers
 {
    public class UploadController : Controller
     {
-        private readonly SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
         [Authorize(Roles = "Active")]
         public ActionResult Index()
         {
@@ -25,7 +25,7 @@ namespace MVC5_Seneca.Controllers
                 model.ErrorMessage = errMsg;
             }
 
-            var sortedStudents = db.Students.OrderBy(s => s.FirstName);
+            var sortedStudents = _db.Students.OrderBy(s => s.FirstName);
             model.Students = sortedStudents.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
@@ -33,7 +33,7 @@ namespace MVC5_Seneca.Controllers
             })
             .ToList();
 
-            model.DocumentTypes = db.DocumentTypes.Select(s => new SelectListItem
+            model.DocumentTypes = _db.DocumentTypes.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.Name
@@ -50,14 +50,14 @@ namespace MVC5_Seneca.Controllers
 
         // POST: Upload
         [HttpPost, Authorize(Roles = "Active")]
-        public ActionResult Upload(HttpPostedFileBase file, int? studentId, int? documentTypeId)      //*UploadFileViewModel model*/
+        public ActionResult Upload(HttpPostedFileBase file, int? student_Id, int? documentType_Id)      //*UploadFileViewModel model*/
         {
-            if (studentId == null ) 
+            if (student_Id == null ) 
             {
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
             }
-            if (documentTypeId == null)
+            if (documentType_Id == null)
             {
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
@@ -105,12 +105,12 @@ namespace MVC5_Seneca.Controllers
                     var studentReport = new StudentReport
                     {
                         DocumentLink = path.Replace(@"\", "/"),
-                        Student = db.Students.Find(studentId),
-                        DocumentType = db.DocumentTypes.Find(documentTypeId),
+                        Student = _db.Students.Find(student_Id),
+                        DocumentType = _db.DocumentTypes.Find(documentType_Id),
                         DocumentDate = DateTime.Now
                     };
-                    db.StudentReports.Add(studentReport);
-                    db.SaveChanges(); 
+                    _db.StudentReports.Add(studentReport);
+                    _db.SaveChanges(); 
                     
                     return RedirectToAction("Edit","StudentReports", new {id = studentReport.Id });
                 } // If(File != null)
