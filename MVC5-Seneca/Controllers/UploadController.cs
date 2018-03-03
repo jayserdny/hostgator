@@ -48,8 +48,7 @@ namespace MVC5_Seneca.Controllers
             return TempData["ErrorMessage"] as string;
         }
 
-        // POST: Upload
-        [HttpPost, Authorize(Roles = "Active")]
+        // POST: Upload                                  
         public ActionResult Upload(HttpPostedFileBase file, int? student_Id, int? documentType_Id)      //*UploadFileViewModel model*/
         {
             if (student_Id == null ) 
@@ -102,6 +101,7 @@ namespace MVC5_Seneca.Controllers
 
                     int i = path.IndexOf("UploadFiles", StringComparison.Ordinal);
                     path = path.Remove(0, i + 12);
+
                     var studentReport = new StudentReport
                     {
                         DocumentLink = path.Replace(@"\", "/"),

@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.EntityModels.TipDocument
+﻿@model MVC5_Seneca.ViewModels.AddEditTipDocumentViewModel
 
 @{
     Layout = null;
@@ -12,48 +12,49 @@
     <title>Create</title>
 </head>
 <body>
-    @using (Html.BeginForm()) 
+    @*@using (Html.BeginForm())*@
+    @using (Html.BeginForm("Create", "TipDocuments", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        
-        <div class="form-horizontal">
-            <h4>TipDocument</h4>
+
+        <div>
+            <h4>New Teaching Tip Document</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            
             <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Category)
+                <div class="col-md-5">
+                    @Html.DropDownList("categoryId", Model.Categories, "Select")   (Required)
+                    @Html.ValidationMessageFor(model => model.Category.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name)
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
+            </div> 
+            <br/>
+            <div style="color: red">
+                @Model.ErrorMessage
             </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.DocumentLink, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.DocumentLink, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DocumentLink, "", new { @class = "text-danger" })
-                </div>
+            <div>
+                @Html.TextBox("file", "", new { type = "file", style = "width: 250", accept = "application/pdf" }) (.PDF Files Only!)
             </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+            <br/>
+            <div>
+                <div>
+                    <input type="submit" value="Create" />
                 </div>
             </div>
         </div>
-    }
-    
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+        <br/>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }  
 </body>
 </html>

@@ -13,12 +13,15 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New Teaching Tip", "Create")
     </p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
+        </th> 
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DocumentLink)
@@ -33,13 +36,17 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td> 
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DocumentLink)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User)
+                @Html.DisplayFor(modelItem => item.User.LastName)
             </td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })
