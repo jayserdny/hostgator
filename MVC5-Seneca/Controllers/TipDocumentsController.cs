@@ -159,23 +159,41 @@ namespace MVC5_Seneca.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<SelectListItem> categoryList = new List<SelectListItem>();
+            foreach (TipsCategory tipCategory in _db.TipsCategories)
+            {
+                if (tipDocument.Category.Id == tipCategory.Id)
+                    categoryList.Add(new SelectListItem { Text = tipCategory.Name, Value = tipCategory.Id.ToString(), Selected = true });
+                else
+                    categoryList.Add(new SelectListItem { Text = tipCategory.Name, Value = tipCategory.Id.ToString(), Selected = false });
+            }
+
+            tipDocument.Categories = categoryList;
+
             return View(tipDocument);
         }
 
-        // POST: TipDocuments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: TipDocuments/Edit/5     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DocumentLink,User")] TipDocument tipDocument)
+        public ActionResult Edit([Bind(Include = "Id,Name,Category,DocumentLink,User")] TipDocument viewModel)
         {
             if (ModelState.IsValid)
-            {
-                _db.Entry(tipDocument).State = EntityState.Modified;
+            { 
+                var tipDocument = _db.TipDocuments.Find(viewModel.Id);
+                if (tipDocument != null)
+                {
+                    tipDocument.Name = viewModel.Name;
+                    tipDocument.DocumentLink = viewModel.DocumentLink;
+                    tipDocument.User = (from u in _db.Users where u.Id == viewModel.User.Id select u).Single();
+                    tipDocument.Category = (from c in _db.TipsCategories where c.Id == viewModel.Category.Id select c).Single();
+                }
+
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tipDocument);
+            return RedirectToAction("Index");
         }
 
         // GET: TipDocuments/Delete/5

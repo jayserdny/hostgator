@@ -359,7 +359,12 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Controllers\TipsCategoriesController.cs" />
+    <Compile Include="Controllers\TeachingTipsController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Controllers\TipsCategoriesController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Controllers\UsersController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -396,13 +401,19 @@
     <Compile Include="Migrations\201803022053202_RetryTipDocuments1.Designer.cs">
       <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803041216495_RetryTipsDocuments2.cs" />
+    <Compile Include="Migrations\201803041216495_RetryTipsDocuments2.Designer.cs">
+      <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Startup.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Controllers\TipDocumentsController.cs" />
+    <Compile Include="Controllers\TipDocumentsController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="ViewModels\AccountViewModels.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -458,6 +469,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModels\ContactsDisplayViewModel.cs" />
+    <Compile Include="ViewModels\TeachingTipsViewModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="ViewModels\UploadFileViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -924,6 +938,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\TeachingTips\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -966,6 +981,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803022053202_RetryTipDocuments1.resx">
       <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803041216495_RetryTipsDocuments2.resx">
+      <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

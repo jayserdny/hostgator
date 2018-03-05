@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using Newtonsoft.Json;
 namespace MVC5_Seneca.EntityModels
 {
@@ -11,6 +12,6 @@ namespace MVC5_Seneca.EntityModels
         [JsonProperty] public string DocumentLink { get; set; }                           
         [JsonProperty] public virtual ApplicationUser User { get; set; }    // who submitted this tip
 
-        [JsonProperty] public virtual ICollection<TipsCategory> Categories { get; set; }        
+        [JsonProperty] public virtual IEnumerable<SelectListItem> Categories { get; set; }        
     }
 }

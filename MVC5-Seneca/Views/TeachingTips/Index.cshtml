@@ -1,0 +1,42 @@
+﻿@model MVC5_Seneca.ViewModels.TeachingTipsViewModel  
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TeachingTips</title>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td style="text-decoration:underline">
+                    <strong>Seneca Heights Education Program Teaching Tips</strong>
+                </td> 
+            </tr>  
+            <tr>
+                <td>
+                    <strong>(Work in progress...)</strong>
+                </td>
+            </tr>
+        </table> 
+    </div> 
+    <br/>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
