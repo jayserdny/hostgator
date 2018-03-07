@@ -629,6 +629,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Scripts\TeachingTips.js" />
     <Content Include="Scripts\jquery-3.3.1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

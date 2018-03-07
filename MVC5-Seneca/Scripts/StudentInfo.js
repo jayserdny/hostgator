@@ -228,10 +228,9 @@ function UpdateDocumentLink(event) {
         $("#GetDocumentPDF").hide();      
     }
     else {
-        $("#DocumentComment").text(reportComments[rpts[0].index - 1]);    
-
+        $("#DocumentComment").text(reportComments[rpts[0].index - 1]);   
         $("#GetDocumentPDF").attr("href", "/StudentReports/ViewReport/" + reportIds[rpts[0].index - 1]);
-        $("#DocumentComment").show();
+        $("#DocumentComment").show();        
         $("#GetDocumentPDF").show();
         $("#DocumentLinkLabel").show();
         $("#GetDocumentPDF").show();
