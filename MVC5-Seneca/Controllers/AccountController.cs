@@ -297,7 +297,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ResetAnyPassword(string code)
         {
             // this is Reset ANY password
-            var viewModel = new Models.ResetAnyPasswordViewModel
+            var viewModel = new ResetAnyPasswordViewModel
             {
                 UserNames = GetUserNamesList()
             };

@@ -36,24 +36,7 @@
                     @Html.ValidationMessageFor(model => model.DocumentDate, "", new { @class = "text-danger" })
                 </div>
             </div>
-
-            @*<div id="Student", class="form-group">
-                @Html.LabelFor(model => model.Student, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(x => Model.Student.Id, Model.Students)
-                    @Html.ValidationMessageFor(x => x.Student.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div id="DocumentType", class="form-group">
-                @Html.LabelFor(model => model.DocumentType, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-3">
-                    @Html.DropDownListFor(x => x.DocumentType.Id, Model.DocumentTypes)
-
-                    @Html.ValidationMessageFor(x => x.DocumentType.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
+         
             <div id="DocumentLink">
                 @using (Html.BeginForm("Index", "StudentReports", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {

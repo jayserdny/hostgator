@@ -1,0 +1,52 @@
+﻿@model MVC5_Seneca.ViewModels.TeachingTipsViewModel  
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TeachingTips</title> 
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    <script src="@Url.Content("/Scripts/StudentInfo.js")"></script>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td id="Documents">@Html.HiddenFor(model => model.Documents)</td>
+                <td id="Categories">@Html.HiddenFor((model => model.Categories))</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td style="text-decoration: underline">
+                    <strong>Seneca Heights Education Program Teaching Tips</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>(Work in progress...)</strong>
+                </td>
+            </tr>
+        </table>
+    </div> 
+
+    @foreach (var item in Model.Documents)
+    {
+        <div>@Html.Raw(item)</div>
+    }
+
+    <br />
+    <div>
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

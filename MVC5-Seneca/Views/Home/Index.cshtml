@@ -47,6 +47,7 @@
         <a href="@Url.Action("MaintainSchools", "Home")">Maintain Schools</a><br />
         <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain User Permissions (&quot;Roles&quot;)</a><br />
         <a href="@Url.Action("MaintainTipsCategories", "Home")">Maintain Tips Categories</a><br />
+        <a href="@Url.Action("UploadTeachingTips", "Home")">Maintain Teaching Tips</a><br />
         @*<a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />*@
         <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
         @*<a href="@Url.Action("AddIdentityRole", "Home")">Add Identitly Role</a><br />*@
@@ -57,7 +58,8 @@
     <div>
 
         Tutor Menu<br />
-        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br /> 
+        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />  
+        <a href="@Url.Action("Index", "TeachingTips")">Teaching Tips</a><br /> 
         <a href="@Url.Action("Contacts", "Home")">Contacts</a><br /> 
           
         @if (User.IsInRole("Tutor" ))

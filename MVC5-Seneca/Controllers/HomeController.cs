@@ -66,6 +66,11 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", "TipsCategories");
         }
 
+        public ActionResult UploadTeachingTips()
+        {
+            return RedirectToAction("Index", "TipDocuments");
+        }
+
         //public ActionResult MaintainLocations()
         //{
         //    return RedirectToAction("Index", "Locations");

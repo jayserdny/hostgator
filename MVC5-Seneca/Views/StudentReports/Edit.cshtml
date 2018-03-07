@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Edit Student Report</title>
+    <title>EditStudentReport</title>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -29,8 +29,8 @@
                 $("#GetDocumentPDF").attr("href", "/StudentReports/ViewReport/" + @Model.Id);
             })
         </script>
-        <div class="form-horizontal">
-            <h4>StudentReport</h4>
+        <div>
+            <h4>Edit Student Report</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.Id)
@@ -62,7 +62,7 @@
             <div>                 
                 <div class="col-md-10">
                     @Html.LabelFor(model => model.DocumentLink, htmlAttributes: new { @class = "control-label col-md-2" })
-                    @Html.TextBoxFor(model => model.DocumentLink, new { style = "width:300px" })                                     
+                    @Html.TextBoxFor(model => model.DocumentLink, new {@readonly = true, style = "width:300px" })                                     
                     <a href="#" id="GetDocumentPDF" target="_blank"> <img src="~/Images/PDF10.png" style="border:none" /> </a>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
                 </div>
             </div>
-
+            <br/>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-default" />
@@ -82,11 +82,11 @@
             </div>
         </div>
     }
-
+    <br/>
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>
-     
+    <br/>
     <div>
         @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })        
     </div>

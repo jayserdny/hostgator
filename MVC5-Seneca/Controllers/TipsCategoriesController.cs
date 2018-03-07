@@ -13,7 +13,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class TipsCategoriesController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext db = new SenecaContext();
 
         // GET: TipsCategories
         public ActionResult Index()

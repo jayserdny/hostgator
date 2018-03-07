@@ -12,12 +12,12 @@ namespace MVC5_Seneca.Controllers
 {
     public class StudentsController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: Students
         public ActionResult Index()
         {
-            return View(db.Students.OrderBy(f => f.FirstName).ToList());         
+            return View(_db.Students.OrderBy(f => f.FirstName).ToList());         
         }
 
         // GET: Students/Details/5
@@ -27,7 +27,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = _db.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -40,21 +40,21 @@ namespace MVC5_Seneca.Controllers
         {
             var viewModel = new AddEditStudentViewModel();               
             List<SelectListItem> schoolList = new List<SelectListItem>();
-            foreach (School school in db.Schools)
+            foreach (School school in _db.Schools)
             { 
                 schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString()});            
             }
             viewModel.Schools = schoolList;
 
             List<SelectListItem> parentList = new List<SelectListItem>();
-            var sortedParents = db.Parents.OrderBy(p => p.FirstName).ToList();
+            var sortedParents = _db.Parents.OrderBy(p => p.FirstName).ToList();
             foreach (Parent parent in sortedParents)
             {
                parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString() });
             }
 
             List<SelectListItem> userList = new List<SelectListItem>();
-            var sortedUsers = db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
+            var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             foreach (ApplicationUser user in sortedUsers)
             {
                 if (user.Id != null)
@@ -83,16 +83,16 @@ namespace MVC5_Seneca.Controllers
                     FirstName = viewModel.FirstName,
                     Gender = viewModel.Gender,
                     BirthDate = viewModel.BirthDate,
-                    Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
-                    School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single()                   
+                    Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
+                    School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()                   
                 };
                 if (viewModel.PrimaryTutor.Id != null)
                 {
-                    student.PrimaryTutor = (from t in db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                    student.PrimaryTutor = (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
                 }
 
-                db.Students.Add(student);
-                db.SaveChanges();
+                _db.Students.Add(student);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Create");
@@ -105,7 +105,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = _db.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -114,7 +114,7 @@ namespace MVC5_Seneca.Controllers
             var viewModel = new AddEditStudentViewModel();
 
             List<SelectListItem> schoolList = new List<SelectListItem>();
-            foreach (School school in db.Schools)
+            foreach (School school in _db.Schools)
             {
                 if (school.Id == student.School.Id)
                     schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = true });
@@ -124,7 +124,7 @@ namespace MVC5_Seneca.Controllers
             viewModel.Schools = schoolList;
 
             List<SelectListItem> parentList = new List<SelectListItem>();
-            var sortedParents = db.Parents.OrderBy(p => p.FirstName).ToList();
+            var sortedParents = _db.Parents.OrderBy(p => p.FirstName).ToList();
             foreach (Parent parent in sortedParents)
                 if (student.Parent == null)
                 {
@@ -142,7 +142,7 @@ namespace MVC5_Seneca.Controllers
             {  
                 new SelectListItem { Text = @"- Select ID -", Value = "0", Selected = true }
             }; 
-            var sortedUsers = db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
+            var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             foreach (ApplicationUser user in sortedUsers)
                 if (student.PrimaryTutor == null)
                 {
@@ -176,7 +176,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                var student = db.Students.Find(viewModel.Id);
+                var student = _db.Students.Find(viewModel.Id);
                 if (student != null)
                 {
                     student.FirstName = viewModel.FirstName;
@@ -184,30 +184,30 @@ namespace MVC5_Seneca.Controllers
                     student.BirthDate = viewModel.BirthDate;
                     if (viewModel.Parent != null)
                     {
-                        student.Parent = (from p in db.Parents where p.Id == viewModel.Parent.Id select p).Single();
+                        student.Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single();
                     }
 
                     if (viewModel.School != null)
                     {
-                        student.School = (from s in db.Schools where s.Id == viewModel.School.Id select s).Single();
+                        student.School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single();
                     }
 
                     if (viewModel.PrimaryTutor.Id != null && viewModel.PrimaryTutor.Id != "0")
                     {
                         student.PrimaryTutor =
-                            (from t in db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                            (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
                     }
                     else
                     {
                         student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
                         //db.SaveChanges();         // TODO - why is this line inconsistent?
                         var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
-                        db.Database.ExecuteSqlCommand(sql);
+                        _db.Database.ExecuteSqlCommand(sql);
                         return RedirectToAction("Index");
                     }
                 }
 
-                db.SaveChanges();
+                _db.SaveChanges();
              
                 return RedirectToAction("Index");
             }
@@ -221,7 +221,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = _db.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
@@ -238,7 +238,7 @@ namespace MVC5_Seneca.Controllers
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
-            foreach (StudentReport report in db.StudentReports.Where(r => r.Student.Id == id))
+            foreach (StudentReport report in _db.StudentReports.Where(r => r.Student.Id == id))
             {
                 CloudBlockBlob blob = container.GetBlockBlobReference(report.DocumentLink);
                 if (blob.Exists())
@@ -246,11 +246,11 @@ namespace MVC5_Seneca.Controllers
                     blob.Delete();
                 }     
             }
-            db.StudentReports.RemoveRange(db.StudentReports.Where(r => r.Student.Id == id));
-            db.TutorNotes.RemoveRange(db.TutorNotes.Where(t => t.Student.Id == id));          
-            Student student = db.Students.Find(id);
-            if (student != null) db.Students.Remove(student);
-            db.SaveChanges();
+            _db.StudentReports.RemoveRange(_db.StudentReports.Where(r => r.Student.Id == id));
+            _db.TutorNotes.RemoveRange(_db.TutorNotes.Where(t => t.Student.Id == id));          
+            Student student = _db.Students.Find(id);
+            if (student != null) _db.Students.Remove(student);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()
@@ -262,7 +262,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

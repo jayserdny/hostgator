@@ -14,7 +14,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class ResetAnyPasswordController : Controller
     {  
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext db = new SenecaContext();
 
         public ActionResult Index()
         {

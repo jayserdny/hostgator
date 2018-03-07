@@ -9,7 +9,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class ParentsController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext db = new SenecaContext();
 
         // GET: Parents
         public ActionResult Index()

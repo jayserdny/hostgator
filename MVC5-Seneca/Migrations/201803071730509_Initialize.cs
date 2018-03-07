@@ -199,6 +199,22 @@ namespace MVC5_Seneca.Migrations
                 .Index(t => t.School_Id);
             
             CreateTable(
+                "dbo.TipDocument",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        DocumentLink = c.String(),
+                        Category_Id = c.Int(),
+                        User_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TipsCategory", t => t.Category_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
+                .Index(t => t.Category_Id)
+                .Index(t => t.User_Id);
+            
+            CreateTable(
                 "dbo.TipsCategory",
                 c => new
                     {
@@ -211,6 +227,8 @@ namespace MVC5_Seneca.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.TipDocument", "User_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.TipDocument", "Category_Id", "dbo.TipsCategory");
             DropForeignKey("dbo.Teacher", "School_Id", "dbo.School");
             DropForeignKey("dbo.AspNetUsers", "Student_Id", "dbo.Student");
             DropForeignKey("dbo.TutorNote", "Student_Id", "dbo.Student");
@@ -224,6 +242,8 @@ namespace MVC5_Seneca.Migrations
             DropForeignKey("dbo.Student", "Parent_Id", "dbo.Parent");
             DropForeignKey("dbo.StudentReport", "DocumentType_Id", "dbo.DocumentType");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropIndex("dbo.TipDocument", new[] { "User_Id" });
+            DropIndex("dbo.TipDocument", new[] { "Category_Id" });
             DropIndex("dbo.Teacher", new[] { "School_Id" });
             DropIndex("dbo.TutorNote", new[] { "Student_Id" });
             DropIndex("dbo.TutorNote", new[] { "ApplicationUser_Id" });
@@ -240,6 +260,7 @@ namespace MVC5_Seneca.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropTable("dbo.TipsCategory");
+            DropTable("dbo.TipDocument");
             DropTable("dbo.Teacher");
             DropTable("dbo.TutorNote");
             DropTable("dbo.AspNetUserLogins");
