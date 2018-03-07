@@ -103,53 +103,42 @@ namespace MVC5_Seneca.Migrations
                         Gender = c.String(),
                         BirthDate = c.DateTime(),
                         Parent_Id = c.Int(),
+                        PrimaryTutor_Id = c.String(maxLength: 128),
                         School_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Parent", t => t.Parent_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.PrimaryTutor_Id)
                 .ForeignKey("dbo.School", t => t.School_Id)
                 .Index(t => t.Parent_Id)
+                .Index(t => t.PrimaryTutor_Id)
                 .Index(t => t.School_Id);
-            
-            CreateTable(
-                "dbo.TutorNote",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Date = c.DateTime(),
-                        SessionNote = c.String(),
-                        ApplicationUser_Id = c.String(maxLength: 128),
-                        Student_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
-                .ForeignKey("dbo.Student", t => t.Student_Id)
-                .Index(t => t.ApplicationUser_Id)
-                .Index(t => t.Student_Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
-                        Active = c.Boolean(nullable: false),
                         FirstName = c.String(),
                         LastName = c.String(),
                         Location = c.String(),
                         Email = c.String(maxLength: 256),
+                        UserName = c.String(nullable: false, maxLength: 256),
+                        PhoneNumber = c.String(),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
                         SecurityStamp = c.String(),
-                        PhoneNumber = c.String(),
                         PhoneNumberConfirmed = c.Boolean(nullable: false),
                         TwoFactorEnabled = c.Boolean(nullable: false),
                         LockoutEndDateUtc = c.DateTime(),
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
-                        UserName = c.String(nullable: false, maxLength: 256),
+                        Student_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .Index(t => t.UserName, unique: true, name: "UserNameIndex")
+                .Index(t => t.Student_Id);
             
             CreateTable(
                 "dbo.AspNetUserClaims",
@@ -177,6 +166,23 @@ namespace MVC5_Seneca.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
+                "dbo.TutorNote",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Date = c.DateTime(),
+                        SessionNote = c.String(),
+                        UpdateAllowed = c.Boolean(nullable: false),
+                        ApplicationUser_Id = c.String(maxLength: 128),
+                        Student_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .Index(t => t.ApplicationUser_Id)
+                .Index(t => t.Student_Id);
+            
+            CreateTable(
                 "dbo.Teacher",
                 c => new
                     {
@@ -192,39 +198,53 @@ namespace MVC5_Seneca.Migrations
                 .ForeignKey("dbo.School", t => t.School_Id)
                 .Index(t => t.School_Id);
             
+            CreateTable(
+                "dbo.TipsCategory",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.Teacher", "School_Id", "dbo.School");
+            DropForeignKey("dbo.AspNetUsers", "Student_Id", "dbo.Student");
             DropForeignKey("dbo.TutorNote", "Student_Id", "dbo.Student");
             DropForeignKey("dbo.TutorNote", "ApplicationUser_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Student", "School_Id", "dbo.School");
             DropForeignKey("dbo.StudentReport", "Student_Id", "dbo.Student");
+            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Student", "PrimaryTutor_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Student", "Parent_Id", "dbo.Parent");
             DropForeignKey("dbo.StudentReport", "DocumentType_Id", "dbo.DocumentType");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropIndex("dbo.Teacher", new[] { "School_Id" });
-            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.TutorNote", new[] { "Student_Id" });
             DropIndex("dbo.TutorNote", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
+            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
+            DropIndex("dbo.AspNetUsers", new[] { "Student_Id" });
+            DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.Student", new[] { "School_Id" });
+            DropIndex("dbo.Student", new[] { "PrimaryTutor_Id" });
             DropIndex("dbo.Student", new[] { "Parent_Id" });
             DropIndex("dbo.StudentReport", new[] { "Student_Id" });
             DropIndex("dbo.StudentReport", new[] { "DocumentType_Id" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropTable("dbo.TipsCategory");
             DropTable("dbo.Teacher");
+            DropTable("dbo.TutorNote");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.TutorNote");
             DropTable("dbo.Student");
             DropTable("dbo.StudentReport");
             DropTable("dbo.Staff");

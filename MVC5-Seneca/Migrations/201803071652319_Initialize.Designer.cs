@@ -7,13 +7,13 @@ namespace MVC5_Seneca.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddTipsCategories : IMigrationMetadata
+    public sealed partial class Initialize : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTipsCategories));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialize));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803011706523_AddTipsCategories"; }
+            get { return "201803071652319_Initialize"; }
         }
         
         string IMigrationMetadata.Source

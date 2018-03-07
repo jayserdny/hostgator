@@ -365,28 +365,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TipsCategory.cs" />
-    <Compile Include="Migrations\201801191404409_Initialize.cs" />
-    <Compile Include="Migrations\201801191404409_Initialize.Designer.cs">
-      <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801261424525_AddActiveRole.cs" />
-    <Compile Include="Migrations\201801261424525_AddActiveRole.Designer.cs">
-      <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802051920202_PrimaryTutor.cs" />
-    <Compile Include="Migrations\201802051920202_PrimaryTutor.Designer.cs">
-      <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
-    </Compile>
     <Compile Include="EntityModels\Location.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.cs" />
-    <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.Designer.cs">
-      <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803011706523_AddTipsCategories.cs" />
-    <Compile Include="Migrations\201803011706523_AddTipsCategories.Designer.cs">
-      <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
+    <Compile Include="Migrations\201803071652319_Initialize.cs" />
+    <Compile Include="Migrations\201803071652319_Initialize.Designer.cs">
+      <DependentUpon>201803071652319_Initialize.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -884,27 +868,13 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801191404409_Initialize.resx">
-      <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801261424525_AddActiveRole.resx">
-      <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802051920202_PrimaryTutor.resx">
-      <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.resx">
-      <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803011706523_AddTipsCategories.resx">
-      <DependentUpon>201803011706523_AddTipsCategories.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201803071652319_Initialize.resx">
+      <DependentUpon>201803071652319_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
