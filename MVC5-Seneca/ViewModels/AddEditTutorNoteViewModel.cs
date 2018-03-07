@@ -24,6 +24,6 @@ namespace MVC5_Seneca.ViewModels
         [JsonProperty] public String SessionNote { get; set; }
 
         [JsonProperty] public virtual TutorNote TutorNote { get; set; }      
-        [JsonProperty] public DateTime? Date { get; set; }
+        [JsonProperty] public DateTime? Date { get; set; } 
     }
 }
