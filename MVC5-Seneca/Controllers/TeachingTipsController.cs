@@ -62,9 +62,7 @@ namespace MVC5_Seneca.Controllers
                             if (sortedTips[i].Category.Name == oldCategoryName)
                             {  
                                 iDoc++;
-                                // <a href="#" id="GetDocumentPDF" target="_blank"> <img src="~/Images/PDF10.png" style="border:none" /> </a>
-                                // html = sortedTips[i].Name + " <a href=\"/TeachingTips/ViewDocument/" + sortedTips[i].Id + " \"target=\"_blank\"> <img src=\"~/Images/PDF10.png\" style=\"border: none\" /> </a>";
-                                html = sortedTips[i].Name + " <a href=\"/TeachingTips/ViewDocument/" + sortedTips[i].Id + " \" target=\"_blank\"> <img src=\"@Url.Content(\"~/Images/PDF10.png\")\" style=\"border:none\"> </a>";
+                                html = sortedTips[i].Name + " <a href=\"/TeachingTips/ViewDocument/" + sortedTips[i].Id + " \" target=\"_blank\"> <img src=\"/Images/PDF10.png\" style=\"border:none\"> </a>";
                                 htmlStrings[iDoc] = html; 
                                 iTipsDocument++;
                             }   
