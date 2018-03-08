@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC5_Seneca", "MVC5-Seneca\MVC5_Seneca.csproj", "{01F353D6-19F8-4534-A270-872ACA3606B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seneca tests", "Seneca tests\Seneca tests.csproj", "{9AB3EB2D-F5E5-4F1A-851E-B884C755DA1A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{01F353D6-19F8-4534-A270-872ACA3606B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01F353D6-19F8-4534-A270-872ACA3606B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01F353D6-19F8-4534-A270-872ACA3606B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AB3EB2D-F5E5-4F1A-851E-B884C755DA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AB3EB2D-F5E5-4F1A-851E-B884C755DA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AB3EB2D-F5E5-4F1A-851E-B884C755DA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AB3EB2D-F5E5-4F1A-851E-B884C755DA1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

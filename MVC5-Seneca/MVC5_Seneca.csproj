@@ -373,9 +373,41 @@
     <Compile Include="EntityModels\Location.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Migrations\201803071730509_Initialize.cs" />
-    <Compile Include="Migrations\201803071730509_Initialize.Designer.cs">
-      <DependentUpon>201803071730509_Initialize.cs</DependentUpon>
+    <Compile Include="Migrations\201801191404409_Initialize.cs" />
+    <Compile Include="Migrations\201801191404409_Initialize.designer.cs">
+      <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801261424525_AddActiveRole.cs" />
+    <Compile Include="Migrations\201801261424525_AddActiveRole.designer.cs">
+      <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802051920202_PrimaryTutor.cs" />
+    <Compile Include="Migrations\201802051920202_PrimaryTutor.designer.cs">
+      <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.cs" />
+    <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.designer.cs">
+      <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803021643099_AddTeachingTips.cs" />
+    <Compile Include="Migrations\201803021643099_AddTeachingTips.Designer.cs">
+      <DependentUpon>201803021643099_AddTeachingTips.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803021729066_RetryTipDocuments.cs" />
+    <Compile Include="Migrations\201803021729066_RetryTipDocuments.Designer.cs">
+      <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803022053202_RetryTipDocuments1.cs" />
+    <Compile Include="Migrations\201803022053202_RetryTipDocuments1.Designer.cs">
+      <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803041216495_RetryTipsDocuments2.cs" />
+    <Compile Include="Migrations\201803041216495_RetryTipsDocuments2.Designer.cs">
+      <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803080109595_Reinitialize.cs" />
+    <Compile Include="Migrations\201803080109595_Reinitialize.Designer.cs">
+      <DependentUpon>201803080109595_Reinitialize.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -975,6 +1007,7 @@
   <ItemGroup>
     <None Include="packages.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -992,8 +1025,32 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803071730509_Initialize.resx">
-      <DependentUpon>201803071730509_Initialize.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801191404409_Initialize.resx">
+      <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801261424525_AddActiveRole.resx">
+      <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802051920202_PrimaryTutor.resx">
+      <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.resx">
+      <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803021643099_AddTeachingTips.resx">
+      <DependentUpon>201803021643099_AddTeachingTips.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803021729066_RetryTipDocuments.resx">
+      <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803022053202_RetryTipDocuments1.resx">
+      <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803041216495_RetryTipsDocuments2.resx">
+      <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803080109595_Reinitialize.resx">
+      <DependentUpon>201803080109595_Reinitialize.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
