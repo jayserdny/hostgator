@@ -30,15 +30,16 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Name)
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.TextAreaFor(model => model.Name, new { style = "width:500px; height:15px" })                         
                     @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.DocumentLink)
+                Document Name (not updateable)
+                @*@Html.LabelFor(model => model.DocumentLink)*@
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.DocumentLink, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.TextBoxFor(model => model.DocumentLink, new {@readonly = true, style = "width:300px"})
                     @Html.ValidationMessageFor(model => model.DocumentLink, "", new {@class = "text-danger"})
                 </div>
             </div>
