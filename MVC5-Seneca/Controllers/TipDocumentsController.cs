@@ -100,7 +100,7 @@ namespace MVC5_Seneca.Controllers
                     if (blob.Exists())
                     {
                         TempData["ErrorMessage"] = "There is already a file with this name. Re-enter all.";
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Create");
                     }
 
                     if (fileName != null && fileName.ToUpper().Substring(fileName.Length - 3, 3) == "MP4")

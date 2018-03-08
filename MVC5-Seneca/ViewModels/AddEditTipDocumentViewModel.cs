@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,7 +12,9 @@ namespace MVC5_Seneca.ViewModels
     {
         public int Id { get; set; }
         public virtual IEnumerable<SelectListItem> Categories { get; set; }
-        public virtual TipsCategory Category { get; set; } 
+        public virtual TipsCategory Category { get; set; }
+
+        [DisplayName("Title")]
         public string Name { get; set; }
         public string DocumentLink { get; set; }
         public virtual ApplicationUser User { get; set; }
