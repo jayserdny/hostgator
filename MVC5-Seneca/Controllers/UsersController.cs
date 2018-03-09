@@ -50,7 +50,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserName,Active,FirstName,LastName,PhoneNumber,Email")] ApplicationUser user)
+        public ActionResult Edit([Bind(Include = "UserName,Active,FirstName,LastName,Title,PhoneNumber,Email")] ApplicationUser user)
         {
             if (ModelState.IsValid)
             {
@@ -58,6 +58,7 @@ namespace MVC5_Seneca.Controllers
                 saveUser.UserName = user.UserName;   
                 saveUser.FirstName = user.FirstName;
                 saveUser.LastName = user.LastName;
+                saveUser.Title = user.Title;
                 saveUser.PhoneNumber = user.PhoneNumber;
                 saveUser.Email = user.Email;
 
