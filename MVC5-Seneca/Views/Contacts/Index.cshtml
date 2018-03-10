@@ -21,7 +21,8 @@
         @foreach (var admin in Model.Administrators)
         {
         <tr>
-            <td>@Html.DisplayFor(a => admin.FirstName) @Html.DisplayFor(a => admin.LastName)&nbsp;&nbsp;&nbsp;</td>
+            <td>@Html.DisplayFor(a => admin.FirstName) @Html.DisplayFor(a => admin.LastName)&nbsp;&nbsp;&nbsp;</td> 
+            <td>@Html.DisplayFor(s => admin.Title) &nbsp; &nbsp;&nbsp;</td>
             <td>@Html.DisplayFor(a => admin.PhoneNumber)&nbsp;&nbsp;&nbsp;</td>
             <td><a href="mailto:@(admin.Email)?Subject=Seneca%20Heights%20Education%20Program">@admin.Email</a></td>
         </tr>
