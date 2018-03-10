@@ -71,7 +71,8 @@
             <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
             <br/>
         }
-        
+       
+        <a href="@Url.Action("UpdateMyProfile", "Home")">Update My Profile</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />   
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {

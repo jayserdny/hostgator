@@ -86,7 +86,13 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DisplayProfileReports()
         {
             return RedirectToAction("Index", "StudentReports");
-        } 
+        }
+
+        public ActionResult UpdateMyProfile()
+        {
+            return RedirectToAction("Edit", "UpdateMyProfile");
+        }
+
         public ActionResult ChangeMyPassword()
         {
             return RedirectToAction("ResetPassword", "Account");
