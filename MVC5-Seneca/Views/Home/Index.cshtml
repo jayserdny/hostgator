@@ -70,7 +70,16 @@
             <br/>
             <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
             <br/>
-        }
+        } 
+        
+        @if (User.IsInRole("Staff" ))
+        {
+            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
+            <br/>
+            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a> 
+            <br/>
+        } 
+
        
         <a href="@Url.Action("UpdateMyProfile", "Home")">Update My Profile</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />   
