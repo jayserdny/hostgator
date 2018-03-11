@@ -103,15 +103,13 @@ namespace MVC5_Seneca.Controllers
 
         private void WriteToLoginTable(string userName, string status)
         {
-            var login = new Login();
-            login.UserName = userName;
+            var login = new Login {UserName = userName};
             if (db.Users.Any(u => u.UserName == userName))
             {
                 var user = (from u in db.Users where u.UserName == userName select u).Single();
                 login.FirstName = user.FirstName;
                 login.LastName = user.LastName;
-            }
-
+            }   
             login.Status = status;
             login.DateTime=DateTime.Now;
             db.Login.Add(login);
