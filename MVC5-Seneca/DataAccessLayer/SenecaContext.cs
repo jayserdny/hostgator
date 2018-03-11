@@ -35,6 +35,7 @@ namespace MVC5_Seneca.DataAccessLayer
         public DbSet<School> Schools { get; set; }        
 
         public DbSet<TutorNote> TutorNotes { get; set; }
+        public DbSet<Login> Login { get; set; }
 
         public static SenecaContext Create()
         {

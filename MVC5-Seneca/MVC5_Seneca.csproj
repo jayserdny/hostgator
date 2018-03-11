@@ -369,6 +369,7 @@
     <Compile Include="Controllers\UsersController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="EntityModels\Login.cs" />
     <Compile Include="EntityModels\TipDocument.cs" />
     <Compile Include="EntityModels\TipsCategory.cs" />
     <Compile Include="EntityModels\Location.cs">
@@ -413,6 +414,10 @@
     <Compile Include="Migrations\201803092210550_ChangeUserLocationToTitle.cs" />
     <Compile Include="Migrations\201803092210550_ChangeUserLocationToTitle.Designer.cs">
       <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803111658255_LoginTable.cs" />
+    <Compile Include="Migrations\201803111658255_LoginTable.Designer.cs">
+      <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1075,6 +1080,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803092210550_ChangeUserLocationToTitle.resx">
       <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803111658255_LoginTable.resx">
+      <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
