@@ -104,7 +104,13 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ResetAnyPassword()
         {
             return RedirectToAction("ResetAnyPassword", "Account");
-        }       
+        }
+
+        public ActionResult LoginLog()
+        {
+            return RedirectToAction("Index", "Logins");
+        }
+
         public ActionResult AddIdentityRole()
         {
             AddIdentityRoleViewModel viewModel = new AddIdentityRoleViewModel

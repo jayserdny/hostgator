@@ -359,6 +359,7 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -367,6 +368,9 @@
     </Compile>
     <Compile Include="Controllers\UpdateMyProfileController.cs" />
     <Compile Include="Controllers\UsersController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TipDocument.cs" />
@@ -413,6 +417,10 @@
     <Compile Include="Migrations\201803092210550_ChangeUserLocationToTitle.cs" />
     <Compile Include="Migrations\201803092210550_ChangeUserLocationToTitle.Designer.cs">
       <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803111658255_LoginTable.cs" />
+    <Compile Include="Migrations\201803111658255_LoginTable.Designer.cs">
+      <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1018,6 +1026,11 @@
     <Content Include="Views\UpdateMyProfile\Edit.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Logins\Create.cshtml" />
+    <Content Include="Views\Logins\Delete.cshtml" />
+    <Content Include="Views\Logins\Details.cshtml" />
+    <Content Include="Views\Logins\Edit.cshtml" />
+    <Content Include="Views\Logins\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1075,6 +1088,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803092210550_ChangeUserLocationToTitle.resx">
       <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803111658255_LoginTable.resx">
+      <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

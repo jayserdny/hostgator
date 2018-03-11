@@ -13,6 +13,7 @@ using MVC5_Seneca.EntityModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System;
+using System.Data.Entity.Core.Common.EntitySql;
 
 namespace MVC5_Seneca.Controllers
 {     
@@ -84,21 +85,37 @@ namespace MVC5_Seneca.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            WriteToLoginTable(model.UserName, result.ToString());
             switch (result)
             {
-                case SignInStatus.Success:                      
+                case SignInStatus.Success: 
                     return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
+                case SignInStatus.LockedOut:       
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl,  model.RememberMe });
                 case SignInStatus.Failure:
-                default:
+                default:                                                           
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
         }
-        
+
+        private void WriteToLoginTable(string userName, string status)
+        {
+            var login = new Login {UserName = userName};
+            if (db.Users.Any(u => u.UserName == userName))
+            {
+                var user = (from u in db.Users where u.UserName == userName select u).Single();
+                login.FirstName = user.FirstName;
+                login.LastName = user.LastName;
+            }   
+            login.Status = status;
+            login.DateTime=DateTime.Now;
+            db.Login.Add(login);
+            db.SaveChanges();
+        }  
+
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
