@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
@@ -13,12 +9,12 @@ namespace MVC5_Seneca.Controllers
 {
     public class LoginsController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext _db = new SenecaContext();
 
         // GET: Logins
         public ActionResult Index()
         {
-            var model = db.Login.OrderByDescending(x => x.DateTime).Take(1000);
+            var model = _db.Login.OrderByDescending(x => x.DateTime).Take(1000);
             return View(model);
         }
 
@@ -29,7 +25,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Login login = db.Login.Find(id);
+            Login login = _db.Login.Find(id);
             if (login == null)
             {
                 return HttpNotFound();
@@ -52,8 +48,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Login.Add(login);
-                db.SaveChanges();
+                _db.Login.Add(login);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +63,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Login login = db.Login.Find(id);
+            Login login = _db.Login.Find(id);
             if (login == null)
             {
                 return HttpNotFound();
@@ -84,8 +80,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(login).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(login).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(login);
@@ -98,7 +94,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Login login = db.Login.Find(id);
+            Login login = _db.Login.Find(id);
             if (login == null)
             {
                 return HttpNotFound();
@@ -111,9 +107,9 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Login login = db.Login.Find(id);
-            db.Login.Remove(login);
-            db.SaveChanges();
+            Login login = _db.Login.Find(id);
+            _db.Login.Remove(login);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -126,7 +122,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
