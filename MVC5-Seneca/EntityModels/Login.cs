@@ -16,7 +16,7 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Last Name")]
         public string LastName { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy hh:mm tt}")]
         public DateTime DateTime { get; set; }
 
         public string Status { get; set; }

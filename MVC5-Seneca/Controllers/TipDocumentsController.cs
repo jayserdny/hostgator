@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -214,13 +213,27 @@ namespace MVC5_Seneca.Controllers
         // POST: TipDocuments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+    public ActionResult DeleteConfirmed(int id)
+    {
+        TipDocument tipDocument = _db.TipDocuments.Find(id);
+        if (tipDocument != null)
         {
-            TipDocument tipDocument = _db.TipDocuments.Find(id);
-            if (tipDocument != null) _db.TipDocuments.Remove(tipDocument);
+            _db.TipDocuments.Remove(tipDocument);
             _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
+            CloudStorageAccount storageAccount =
+                CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("teachingtips");
+            CloudBlockBlob blob = container.GetBlockBlobReference(tipDocument.DocumentLink);
+            if (blob.Exists())
+            {
+                blob.Delete();
+            }
+        }     
+
+        return RedirectToAction("Index");
+    }
 
         public ActionResult ReturnToDashboard()
         {
