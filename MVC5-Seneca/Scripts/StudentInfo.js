@@ -125,7 +125,7 @@ function UpdateStudentDetails()
             $("#EmailAuthorLabel").hide();
             $("#AuthorEmail").hide();   
            
-            $("#reportsDDL").append('<option value = "' + '">' + "--Select Report--" + '</option > ');
+            $("#reportsDDL").append('<option value = "' + '">' + "--Select Report (" +  data.Reports.length  +  ")--" + '</option > ');
             reportComments = [];
             reportIds = [];
             reportLinks = [];            
@@ -194,8 +194,8 @@ function GetTutorNotes()
                 tutorSessionNotes.forEach(function(note) {
                     var x = note.Date.substring(0, 10);
                     var dt = x.slice(0, 10).split('-');
-                    var xx = new Date(Date.parse(note.Date));
-                    var dow = xx.getDay();
+                    var xx = new Date(Date.parse(note.Date)); 
+                    var dow = xx.getDay();    
                     $("#SessionNotesDDL").append('<option value = "' + '">'
                         //+ weekday[dow] + " "
                         + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
