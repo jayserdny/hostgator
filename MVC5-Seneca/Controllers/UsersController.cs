@@ -14,7 +14,7 @@ namespace MVC5_Seneca.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(db.Users.OrderBy(u => u.LastName));
         }
 
         //    // GET: Users/Details/5

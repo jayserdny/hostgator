@@ -121,13 +121,13 @@ namespace MVC5_Seneca.Controllers
         }
                                                                                                                                                                                                                                
         public ActionResult SaveTutorNote(int studentId, DateTime date, string sessionNote) 
-        {
+        {                                                                                                                                                       
             if (sessionNote.Length != 0)
             {
                 var userId = User.Identity.GetUserId();
                 var tutorNote = new TutorNote
                 {
-                    Date = date,
+                    Date =date.AddHours(5),
                     SessionNote = sessionNote,
                     ApplicationUser = (from u in _db.Users where u.Id == userId select u).Single(),
                     Student = (from s in _db.Students where s.Id == studentId select s).Single()
