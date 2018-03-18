@@ -422,6 +422,10 @@
     <Compile Include="Migrations\201803111658255_LoginTable.Designer.cs">
       <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803181735297_GradeLevelSpecialClass.cs" />
+    <Compile Include="Migrations\201803181735297_GradeLevelSpecialClass.Designer.cs">
+      <DependentUpon>201803181735297_GradeLevelSpecialClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1091,6 +1095,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803111658255_LoginTable.resx">
       <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803181735297_GradeLevelSpecialClass.resx">
+      <DependentUpon>201803181735297_GradeLevelSpecialClass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -63,11 +63,11 @@ function UpdateStudentDetails()
             var phoneLabel = "";
             if (data.Parent.CellPhone !== null) {
                 phone = data.Parent.CellPhone;
-                phoneLabel = "   Cell Phone: ";
+                phoneLabel = " Phone: ";
             }
             else if (data.Parent.HomePhone !== null) {
                 phone = data.Parent.HomePhone;
-                phoneLabel = "   Home Phone: ";
+                phoneLabel = " Phone: ";
             }
             else {
                 phone = "";
@@ -75,6 +75,24 @@ function UpdateStudentDetails()
             }
             $("#parentPhoneLabel").text(phoneLabel);
             $("#parentPhone").text(phone);
+
+            var gradeLevelLabel = "";
+            var gradeLevel = "";
+            if (data.GradeLevel > 0) {
+                gradeLevelLabel = "Grade Level: ";
+                gradeLevel = data.GradeLevel;
+            }
+            $("#gradeLevelLabel").text(gradeLevelLabel);
+            $("#gradeLevel").text(gradeLevel);
+
+            var specialClassLabel = "";
+            var specialClass = "";
+            if (data.SpecialClass) {
+                specialClassLabel = "In Special Class: ";
+                specialClass="\u221A";   // tick mark
+            }
+            $("#specialClassLabel").text(specialClassLabel);
+            $("#specialClass").text(specialClass);
 
             var parentEmailLabel;
             var parentEmail;

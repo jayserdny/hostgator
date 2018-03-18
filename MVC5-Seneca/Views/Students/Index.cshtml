@@ -27,6 +27,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.BirthDate)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GradeLevel)
+                </th>                                                                                  
+                <th>
+                    @Html.DisplayNameFor(model => model.SpecialClass)
+                </th>
                 <th></th>
             </tr>
 
@@ -43,7 +49,10 @@
                         @Html.DisplayFor(modelItem => item.BirthDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.BirthDate)
+                        @Html.DisplayFor(modelItem => item.GradeLevel)
+                    </td>   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SpecialClass)
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

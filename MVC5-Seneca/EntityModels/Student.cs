@@ -19,8 +19,14 @@ namespace MVC5_Seneca.EntityModels
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [DisplayName("Birthday"), JsonProperty]
-        public DateTime? BirthDate { get; set; }     
-  
+        public DateTime? BirthDate { get; set; }
+
+        [DisplayName("Grade Level")]
+        [JsonProperty] public int GradeLevel { get; set; }
+
+        [DisplayName("In Special Class")]
+        [JsonProperty] public bool SpecialClass { get; set; }    
+
         [DisplayName("School")]
         [JsonProperty] public virtual School School { get; set; }      
 

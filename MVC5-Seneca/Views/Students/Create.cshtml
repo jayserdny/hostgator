@@ -16,12 +16,12 @@
     {
         @Html.AntiForgeryToken()
         
-    <div class="form-horizontal">
+    <div>
         <h4>Student</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } }) (Required)
                 @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = " col-md-2" })
             <div class="col-md-10">
                 @Html.RadioButtonFor(model => model.Gender, "M")
                 @Html.RadioButtonFor(model => model.Gender, "F")                                
@@ -38,15 +38,31 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = " col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } }) (Not used for anything yet)
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.GradeLevel, htmlAttributes: new { @class = " col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GradeLevel, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.GradeLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>  
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.SpecialClass, htmlAttributes: new { @class = " col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SpecialClass, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SpecialClass, "", new { @class = "text-danger" })
+            </div>
+        </div>  
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Parent, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Parent, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-5">
                 @Html.DropDownListFor(x => x.Parent.Id, new SelectList(Model.Parents, "Value", "Text"), " Select") (Required)
                 @Html.ValidationMessageFor(model => model.Parent.Id, "", new { @class = "text-danger" })
@@ -54,7 +70,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.School, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.School, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-5">
                 @Html.DropDownListFor(x => x.School.Id, new SelectList(Model.Schools, "Value", "Text"), " Select") (Required)
                 @Html.ValidationMessageFor(model => model.School.Id, "", new { @class = "text-danger" })
@@ -62,7 +78,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PrimaryTutor, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PrimaryTutor, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-5">
                 @Html.DropDownListFor(x => x.PrimaryTutor.Id, new SelectList(Model.Users, "Value", "Text"), " Select")
                 @Html.ValidationMessageFor(model => model.PrimaryTutor.Id, "", new { @class = "text-danger" })
@@ -70,8 +86,8 @@
         </div>
         <br />
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="col-md-10">
+                <input type="submit" value="Create" />
             </div>
         </div>
     </div>

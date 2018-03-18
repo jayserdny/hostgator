@@ -61,6 +61,7 @@ namespace MVC5_Seneca.Controllers
                     userList.Add(new SelectListItem {Text = user.LastName + @", " + user.FirstName, Value = user.Id});
             }
 
+            viewModel.SpecialClass = false;
             viewModel.Parents = parentList;
             viewModel.Schools = schoolList;
             viewModel.Users = userList;
@@ -71,7 +72,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
+        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
         {
             if (ModelState.IsValid 
                 && viewModel.FirstName != null               
@@ -83,6 +84,8 @@ namespace MVC5_Seneca.Controllers
                     FirstName = viewModel.FirstName,
                     Gender = viewModel.Gender,
                     BirthDate = viewModel.BirthDate,
+                    GradeLevel = viewModel.GradeLevel,
+                    SpecialClass = viewModel.SpecialClass,
                     Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
                     School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()                   
                 };
@@ -163,6 +166,8 @@ namespace MVC5_Seneca.Controllers
             viewModel.FirstName = student.FirstName;
             viewModel.Gender = student.Gender;
             viewModel.BirthDate = student.BirthDate;
+            viewModel.GradeLevel = (int) student.GradeLevel;
+            viewModel.SpecialClass = (bool) student.SpecialClass;
             viewModel.Parent = student.Parent;
             viewModel.School = student.School;
             viewModel.PrimaryTutor = student.PrimaryTutor;
@@ -172,7 +177,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
+        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
         {
             if (ModelState.IsValid)
             {
@@ -182,6 +187,8 @@ namespace MVC5_Seneca.Controllers
                     student.FirstName = viewModel.FirstName;
                     student.Gender = viewModel.Gender;
                     student.BirthDate = viewModel.BirthDate;
+                    student.GradeLevel = viewModel.GradeLevel;
+                    student.SpecialClass = viewModel.SpecialClass;
                     if (viewModel.Parent != null)
                     {
                         student.Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single();
@@ -197,14 +204,14 @@ namespace MVC5_Seneca.Controllers
                         student.PrimaryTutor =
                             (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
                     }
-                    else
-                    {
-                        student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
-                        //db.SaveChanges();         // TODO - why is this line inconsistent?
-                        var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
-                        _db.Database.ExecuteSqlCommand(sql);
-                        return RedirectToAction("Index");
-                    }
+                    //else
+                    //{
+                    //    student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
+                    //    //db.SaveChanges();         // TODO - why is this line inconsistent?
+                    //    var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
+                    //    _db.Database.ExecuteSqlCommand(sql);
+                    //    //return RedirectToAction("Index");
+                    //}
                 }
 
                 _db.SaveChanges();
