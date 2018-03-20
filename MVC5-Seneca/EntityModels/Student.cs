@@ -22,7 +22,7 @@ namespace MVC5_Seneca.EntityModels
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Grade Level")]
-        [JsonProperty] public int GradeLevel { get; set; }
+        [JsonProperty] public int? GradeLevel { get; set; }
 
         [DisplayName("In Special Class")]
         [JsonProperty] public bool SpecialClass { get; set; }    

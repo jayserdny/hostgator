@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -166,7 +167,11 @@ namespace MVC5_Seneca.Controllers
             viewModel.FirstName = student.FirstName;
             viewModel.Gender = student.Gender;
             viewModel.BirthDate = student.BirthDate;
-            viewModel.GradeLevel = (int) student.GradeLevel;
+            if (viewModel.GradeLevel != null)
+            {                                                                                                                    
+                viewModel.GradeLevel = (int) student.GradeLevel;
+            } 
+            //viewModel.GradeLevel = (int) student.GradeLevel;
             viewModel.SpecialClass = (bool) student.SpecialClass;
             viewModel.Parent = student.Parent;
             viewModel.School = student.School;
@@ -203,15 +208,7 @@ namespace MVC5_Seneca.Controllers
                     {
                         student.PrimaryTutor =
                             (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
-                    }
-                    //else
-                    //{
-                    //    student.PrimaryTutor = null; // ENTITY FRAMEWORK WON'T ALLOW SETTING TO NULL?
-                    //    //db.SaveChanges();         // TODO - why is this line inconsistent?
-                    //    var sql = "UPDATE Student SET PrimaryTutor_Id = null WHERE Id = " + viewModel.Id;
-                    //    _db.Database.ExecuteSqlCommand(sql);
-                    //    //return RedirectToAction("Index");
-                    //}
+                    }  
                 }
 
                 _db.SaveChanges();

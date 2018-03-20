@@ -82,6 +82,14 @@ function UpdateStudentDetails()
                 gradeLevelLabel = "Grade Level: ";
                 gradeLevel = data.GradeLevel;
             }
+            if (data.GradeLevel === 0) {
+                gradeLevelLabel = "Grade Level: ";
+                gradeLevel = "Kindergarten";
+            }
+            if (data.GradeLevel === -1) {
+                gradeLevelLabel = "Grade Level: ";
+                gradeLevel = "Pre-K";
+            }
             $("#gradeLevelLabel").text(gradeLevelLabel);
             $("#gradeLevel").text(gradeLevel);
 

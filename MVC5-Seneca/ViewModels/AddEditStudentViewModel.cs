@@ -26,7 +26,7 @@ namespace MVC5_Seneca.ViewModels
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Grade Level")]
-        public int GradeLevel { get; set; }
+        public int? GradeLevel { get; set; }
 
         [DisplayName("Is In Special Class")]
         public bool SpecialClass { get; set; }
