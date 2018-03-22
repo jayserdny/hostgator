@@ -167,7 +167,7 @@ namespace MVC5_Seneca.Controllers
             viewModel.FirstName = student.FirstName;
             viewModel.Gender = student.Gender;
             viewModel.BirthDate = student.BirthDate;
-            if (viewModel.GradeLevel != null)
+            if (student.GradeLevel != null)
             {                                                                                                                    
                 viewModel.GradeLevel = (int) student.GradeLevel;
             } 
