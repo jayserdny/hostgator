@@ -1,0 +1,46 @@
+﻿@model IEnumerable<MVC5_Seneca.ViewModels.TutorStudentViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Tutor-Student Report</title>
+</head>
+<body>
+    <h3> Tutors and Their Students</h3>
+    <div>
+        <table>
+            <tr>
+                <td><strong>Tutor</strong></td>
+                <td><strong>Student(s)</strong></td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Tutor.FirstName) @Html.DisplayFor(modelItem => item.Tutor.LastName)</td>
+                </tr> 
+                foreach (var student in item.Students)
+                {
+                    <tr>
+                        <td></td> 
+                        <td>@Html.DisplayFor(modelStudent => student.FirstName)</td>
+                    </tr>
+                }
+            }
+
+        </table>
+        <br/>
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table> 
+    </div>
+</body>
+</html>

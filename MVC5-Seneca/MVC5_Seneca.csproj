@@ -366,6 +366,7 @@
     <Compile Include="Controllers\TipsCategoriesController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\TutorStudentController.cs" />
     <Compile Include="Controllers\UpdateMyProfileController.cs" />
     <Compile Include="Controllers\UsersController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -497,6 +498,7 @@
     <Compile Include="ViewModels\TeachingTipsViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModels\TutorStudentViewModel.cs" />
     <Compile Include="ViewModels\UpdateMyProfileViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1039,6 +1041,7 @@
     <Content Include="Views\Logins\Details.cshtml" />
     <Content Include="Views\Logins\Edit.cshtml" />
     <Content Include="Views\Logins\Index.cshtml" />
+    <Content Include="Views\TutorStudent\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
