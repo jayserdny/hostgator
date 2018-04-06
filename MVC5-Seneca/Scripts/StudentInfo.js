@@ -28,6 +28,7 @@ function UpdateStudentDetails()
     $("#parentEmailLabel").text("");
     $("#parentEmail").text("");
     $("#primaryTutorRow").hide();
+    $("#caseManagerRow").hide();
     $("#Save-Button").hide();
     var studentId = $(this).val();
     _studentId = studentId;
@@ -127,7 +128,7 @@ function UpdateStudentDetails()
                     $("#primaryTutorEmail").text(data.PrimaryTutor.Email);
                 }
                 else {
-                    $("#primaryTutoEmail").text("");
+                    $("#primaryTutorEmail").text("");
                 }
 
                 $("#primaryTutorName").text(data.PrimaryTutor.FirstName + " " + data.PrimaryTutor.LastName);
@@ -136,6 +137,38 @@ function UpdateStudentDetails()
             else
             {
                 $("#primaryTutorRow").hide();
+            }
+
+            if (data.Parent !== null) {
+                if (data.Parent.CaseManager !== null) {
+                    phone = "";
+                    phoneLabel = "";
+                    if (data.Parent.CaseManager.CellPhone !== null) {
+                        phone = data.Parent.CaseManager.CellPhone;
+                        phoneLabel = " Phone: ";
+                    }
+                    else if (data.Parent.CaseManager.WorkPhone !== null) {
+                        phone = data.Parent.CaseManager.WorkPhone;
+                        phoneLabel = " Phone: ";
+                    }
+                    else {
+                        phone = "";          
+                    }                                                                              
+                    $("#caseManagerPhone").text(phone);
+                    
+                    if (data.Parent.CaseManager.Email !== null) {
+                        $("#caseManagerEmail").text(data.Parent.CaseManager.Email);
+                    }
+                    else {
+                        $("#caseManagerEmail").text("");
+                    }
+
+                    $("#caseManagerName").text(data.Parent.CaseManager.FirstName + " " + data.Parent.CaseManager.LastName);
+                    $("#caseManagerRow").show();
+                    }
+                else {
+                    $("#caseManagerRow").hide();
+                }
             }
 
             $("#reportsDDL").empty();

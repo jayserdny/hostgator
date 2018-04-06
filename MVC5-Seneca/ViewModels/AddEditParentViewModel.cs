@@ -1,11 +1,18 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using MVC5_Seneca.EntityModels;
+using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+
 
 namespace MVC5_Seneca.ViewModels
 {
     public class AddEditParentViewModel
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+
+        public virtual IEnumerable<SelectListItem> StaffMembers { get; set; }
+
         public string FirstName { get; set; }
         public string MotherFather { get; set; }
 
@@ -23,5 +30,8 @@ namespace MVC5_Seneca.ViewModels
 
         [EmailAddress]
         public string Email { get; set; }
+
+        [DisplayName("Case Manager")]
+        public virtual Staff StaffMember { get; set; }
     }
 }

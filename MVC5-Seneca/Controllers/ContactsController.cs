@@ -49,7 +49,7 @@ namespace MVC5_Seneca.Controllers
                 }
             }
             
-            // Already have 'Staff role' users in staffList; add db.Staff if not users:
+            // Already have 'Staff role' users in staffList; add db.CaseManagers if not users:
             var staffMembers = _db.StaffMembers.ToList();
             foreach (var staffMember in staffMembers)
             {

@@ -50,8 +50,8 @@
             <table>
                 <tr>
                     <td><strong>Id:</strong></td>
-                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
-                    <td>
+                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>  
+                    <td style="text-align:right">
                         <strong id="motherFather"></strong>
                     </td>
                     <td id="parentFirstName"></td>
@@ -83,6 +83,16 @@
                     <td id="primaryTutorPhone"></td>
                     <td style="text-align:right"><strong>Email:</strong> </td>
                     <td id="primaryTutorEmail"></td>
+                </tr>
+                <tr id="caseManagerRow" style="display: none">
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right"><strong>Case Manager: </strong></td>
+                    <td id="caseManagerName"></td> 
+                    <td style="text-align: right"><strong>Phone: </strong></td>
+                    <td id="caseManagerPhone"></td>
+                    <td style="text-align: right"><strong>Email:</strong> </td>
+                    <td id="caseManagerEmail"></td>
                 </tr>
             </table>
         }
@@ -186,10 +196,11 @@
             </tr>
         </table>
     </div>
-
+    <br/>
     <div id="ReturnToDashboard">
         @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
-        <br />
+        <br/>
+        <br/>
         <a href="@Url.Action("Logout", "Home")">LogOut</a>
     </div>
 

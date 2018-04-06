@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.EntityModels;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
@@ -8,6 +9,8 @@ namespace MVC5_Seneca.DataAccessLayer
 {
     public class SenecaContext : IdentityDbContext <ApplicationUser>
     {
+        internal readonly IEnumerable<Staff> Staffs;
+
         public static void EnableMigrations()
         {
             //Database.SetInitializer(new MigrateDatabaseToLatestVersion<SenecaContext>());

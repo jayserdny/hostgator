@@ -26,50 +26,68 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.BirthDate)
+                </th> 
+                <th>
+                    @Html.DisplayNameFor(model => model.School)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.GradeLevel)
                 </th>                                                                                  
                 <th>
                     @Html.DisplayNameFor(model => model.SpecialClass)
+                </th>   
+                <th>
+                    @Html.DisplayNameFor(model => model.Parent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrimaryTutor)
                 </th>
                 <th></th>
             </tr>
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BirthDate)
-                    </td>
-                    <td style="text-align: right">
-                        @switch (item.GradeLevel)
-                        {
-                            case -1:
-                                @Html.Raw("Pre-K");
-                                break;
-                            case 0: 
-                                @Html.Raw("Kindergarten");
-                                break;
-                            default:
-                                @Html.DisplayFor(modelItem => item.GradeLevel);
-                                break;
-                            }                                                                                    
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SpecialClass)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.School.Name)
+                </td>
+                <td style="text-align: center">
+                    @switch (item.GradeLevel)
+        {
+            case -1:
+                @Html.Raw("Pre-K");
+    break;
+case 0:
+            @Html.Raw("Kindergarten");
+break;
+default:
+            @Html.DisplayFor(modelItem => item.GradeLevel);
+break;
+}
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.SpecialClass)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Parent.FirstName)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.PrimaryTutor.LastName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
             }
         </table>
         <div id="ReturnToDashboard">

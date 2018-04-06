@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace MVC5_Seneca.ViewModels
     {
         // Input fields needed by the .cshtml file to display the form
         [JsonProperty] public List<SelectListItem> Students { get; set; }
-        [JsonProperty] public List<SelectListItem> Reports { get  ; set; }
+        [JsonProperty] public virtual ICollection<StudentReport> Reports { get; set; }
 
         [JsonProperty] public List<Parent> Parents;
       
@@ -27,6 +28,10 @@ namespace MVC5_Seneca.ViewModels
 
         [DisplayName("Parent:")]
         [JsonProperty] public Parent Parent { get; set; }
+
+        [DisplayName("Case Manager:")]
+        [JsonProperty]
+        public Staff CaseManager { get; set; }
 
         [DisplayName("Author:")]
         [JsonProperty] public StudentReport Report { get; set; }

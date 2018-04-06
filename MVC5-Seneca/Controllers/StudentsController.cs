@@ -154,10 +154,15 @@ namespace MVC5_Seneca.Controllers
                 }
                 else
                 {
-                    if (user.Id == student.PrimaryTutor.Id)
-                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = true });
-                    else
-                        primaryTutorList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = false });
+                    primaryTutorList.Add(user.Id == student.PrimaryTutor.Id
+                        ? new SelectListItem
+                        {
+                            Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = true
+                        }
+                        : new SelectListItem
+                        {
+                            Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = false
+                        });
                 }
             
             viewModel.Id = student.Id;
@@ -170,8 +175,7 @@ namespace MVC5_Seneca.Controllers
             if (student.GradeLevel != null)
             {                                                                                                                    
                 viewModel.GradeLevel = (int) student.GradeLevel;
-            } 
-            //viewModel.GradeLevel = (int) student.GradeLevel;
+            }                                                                                   
             viewModel.SpecialClass = (bool) student.SpecialClass;
             viewModel.Parent = student.Parent;
             viewModel.School = student.School;

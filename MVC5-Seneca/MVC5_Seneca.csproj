@@ -431,6 +431,10 @@
     <Compile Include="Migrations\201803201857034_AllowNullableGradeLevel.Designer.cs">
       <DependentUpon>201803201857034_AllowNullableGradeLevel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804021304333_AddStaffToParent.cs" />
+    <Compile Include="Migrations\201804021304333_AddStaffToParent.Designer.cs">
+      <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1075,9 +1079,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801261424525_AddActiveRole.resx">
       <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802051920202_PrimaryTutor.resx">
       <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.resx">
       <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
@@ -1087,15 +1093,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803021729066_RetryTipDocuments.resx">
       <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803022053202_RetryTipDocuments1.resx">
       <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803041216495_RetryTipsDocuments2.resx">
       <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803080109595_Reinitialize.resx">
       <DependentUpon>201803080109595_Reinitialize.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803092210550_ChangeUserLocationToTitle.resx">
       <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
@@ -1108,6 +1117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803201857034_AllowNullableGradeLevel.resx">
       <DependentUpon>201803201857034_AllowNullableGradeLevel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804021304333_AddStaffToParent.resx">
+      <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

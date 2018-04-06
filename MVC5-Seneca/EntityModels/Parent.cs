@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace MVC5_Seneca.EntityModels 
@@ -28,6 +29,13 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Email"), JsonProperty]
         public string Email { get; set; }
 
-    }
-    
+        [DisplayName("Case Manager"), JsonProperty]
+        public virtual Staff CaseManager { get; set; }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void SetCaseManager(Staff cm)
+        {
+            CaseManager = cm;
+        }
+    } 
 }

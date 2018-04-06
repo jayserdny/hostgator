@@ -38,8 +38,12 @@ namespace MVC5_Seneca.Controllers
         [Authorize(Roles = "Active")]
         public ActionResult GetStudentDetails(int id /* drop down value */)
         {   
-            Student student = (from s in _db.Students where s.Id == id select s).Single();        
-            // Put the reports in date order descending:
+            Student student = (from s in _db.Students where s.Id == id select s).Single();
+            if (student.Parent != null)
+            {
+                var parent = (from p in _db.Parents where p.Id == student.Parent.Id select p).Single();
+            }
+
             student.Reports = student.Reports.OrderByDescending(r => r.DocumentDate).ToList();
 
             try

@@ -13,7 +13,7 @@ namespace MVC5_Seneca.ViewModels
         // Input fields needed by the Create and Edit .cshtml files 
         public virtual IEnumerable<SelectListItem> Schools { get; set; }
         public virtual IEnumerable<SelectListItem> Parents { get; set; } 
-         public virtual IEnumerable<SelectListItem> Users { get; set; }
+        public virtual IEnumerable<SelectListItem> Users { get; set; }
 
         // Output fields used by the .cshtml file to return form results
         [DisplayName("First Name")]
