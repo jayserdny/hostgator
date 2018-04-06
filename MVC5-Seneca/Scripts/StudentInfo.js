@@ -11,7 +11,8 @@ var _latestStudentFirstName;
 var _latestParentEmail;
 var _latestTutorNote_Id;
 var _latestAuthor_Email;
-var _latestPrimaryTutor_Email; 
+var _latestPrimaryTutor_Email;
+var _latestCaseManager_Email;
 var weekday = new Array(7);
 weekday[0] = "Sun"; weekday[1] = "Mon"; weekday[2] = "Tue"; weekday[3] = "Wed"; weekday[4] = "Thu"; weekday[5] = "Fri"; weekday[6] = "Sat"; 
 // #endregion
@@ -157,6 +158,7 @@ function UpdateStudentDetails()
                     $("#caseManagerPhone").text(phone);
                     
                     if (data.Parent.CaseManager.Email !== null) {
+                        _latestCaseManager_Email = data.Parent.CaseManager.Email;
                         $("#caseManagerEmail").text(data.Parent.CaseManager.Email);
                     }
                     else {
@@ -487,5 +489,11 @@ function EmailToAuthor(latestAuthorEmail)
 function EmailToPrimaryTutor(latestPrimaryTutorEmail) {
     var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
     var url = "mailto:" + latestPrimaryTutorEmail + subject;
+    window.open(url, '_blank');
+}
+
+function EmailToCaseManager(latestCaseManagerEmail) {
+    var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
+    var url = "mailto:" + latestCaseManagerEmail + subject;
     window.open(url, '_blank');
 }
