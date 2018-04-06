@@ -62,11 +62,11 @@ function UpdateStudentDetails()
 
             var phone = "";
             var phoneLabel = "";
-            if (data.Parent.CellPhone !== null) {
+            if (data.Parent.CellPhone !== null && data.Parent.CellPhone !== "") {
                 phone = data.Parent.CellPhone;
                 phoneLabel = " Phone: ";
             }
-            else if (data.Parent.HomePhone !== null) {
+            else if (data.Parent.HomePhone !== null && data.Parent.HomePhone !== "") {
                 phone = data.Parent.HomePhone;
                 phoneLabel = " Phone: ";
             }
@@ -105,7 +105,7 @@ function UpdateStudentDetails()
 
             var parentEmailLabel;
             var parentEmail;
-            if (data.Parent.Email !== null)
+            if (data.Parent.Email !== null && data.Parent.Email != "")
                 parentEmailLabel = "   Email: ",
                     parentEmail = data.Parent.Email,
                     _latestParentEmail = parentEmail;
@@ -143,11 +143,11 @@ function UpdateStudentDetails()
                 if (data.Parent.CaseManager !== null) {
                     phone = "";
                     phoneLabel = "";
-                    if (data.Parent.CaseManager.CellPhone !== null) {
+                    if (data.Parent.CaseManager.CellPhone !== null && data.Parent.CellPhone !== "") {
                         phone = data.Parent.CaseManager.CellPhone;
                         phoneLabel = " Phone: ";
                     }
-                    else if (data.Parent.CaseManager.WorkPhone !== null) {
+                    else if (data.Parent.CaseManager.WorkPhone !== null && data.Parent.CaseManager.WorkPhone !== ""){
                         phone = data.Parent.CaseManager.WorkPhone;
                         phoneLabel = " Phone: ";
                     }
