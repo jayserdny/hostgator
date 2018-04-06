@@ -105,7 +105,7 @@ function UpdateStudentDetails()
 
             var parentEmailLabel;
             var parentEmail;
-            if (data.Parent.Email !== null && data.Parent.Email != "")
+            if (data.Parent.Email !== null && data.Parent.Email !== "")
                 parentEmailLabel = "   Email: ",
                     parentEmail = data.Parent.Email,
                     _latestParentEmail = parentEmail;
@@ -236,7 +236,6 @@ function LoadTutorNoteArrays(waitForMe) {
         }
     });
     tutorSessionNotes = []; tutorNoteIds = [];
-    var xx = "dummy";                                   
 }
 
 function GetTutorNotes()
