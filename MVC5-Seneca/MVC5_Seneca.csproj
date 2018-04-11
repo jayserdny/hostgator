@@ -37,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -356,6 +357,9 @@
     <Compile Include="App_Start\Startup.Auth.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\AssociateTutorsController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -371,6 +375,7 @@
     <Compile Include="Controllers\UsersController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="EntityModels\AssociateTutor.cs" />
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -435,6 +440,10 @@
     <Compile Include="Migrations\201804021304333_AddStaffToParent.Designer.cs">
       <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804071819252_AddAssociateTutors.cs" />
+    <Compile Include="Migrations\201804071819252_AddAssociateTutors.Designer.cs">
+      <DependentUpon>201804071819252_AddAssociateTutors.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -482,6 +491,7 @@
     <Compile Include="Controllers\ResetAnyPasswordController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModels\AddEditAssociateTutorViewModel.cs" />
     <Compile Include="ViewModels\AddEditParentViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -674,6 +684,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="bower.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AddEditAssociateTutor.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -1046,6 +1059,10 @@
     <Content Include="Views\Logins\Edit.cshtml" />
     <Content Include="Views\Logins\Index.cshtml" />
     <Content Include="Views\TutorStudent\Index.cshtml" />
+    <Content Include="Views\AssociateTutors\Create.cshtml" />
+    <Content Include="Views\AssociateTutors\Delete.cshtml" />
+    <Content Include="Views\AssociateTutors\Edit.cshtml" />
+    <Content Include="Views\AssociateTutors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1120,6 +1137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804021304333_AddStaffToParent.resx">
       <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804071819252_AddAssociateTutors.resx">
+      <DependentUpon>201804071819252_AddAssociateTutors.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

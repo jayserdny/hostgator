@@ -29,7 +29,12 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainStudents()
         {
             return RedirectToAction("Index", "Students");
+        } 
+        public ActionResult MaintainAssociateTutors()
+        {
+            return RedirectToAction("Index", "AssociateTutors");
         }
+
         public ActionResult MaintainParents()
         {
             return RedirectToAction("Index", "Parents");
@@ -59,13 +64,11 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainUserRoles() 
         {
             return RedirectToAction("Index", "UserRoles");
-        }
-
+        } 
         public ActionResult MaintainTipsCategories()
         {
             return RedirectToAction("Index", "TipsCategories");
-        }
-
+        }  
         public ActionResult UploadTeachingTips()
         {
             return RedirectToAction("Index", "TipDocuments");
@@ -86,13 +89,11 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DisplayProfileReports()
         {
             return RedirectToAction("Index", "StudentReports");
-        }
-
+        } 
         public ActionResult UpdateMyProfile()
         {
             return RedirectToAction("Edit", "UpdateMyProfile");
-        }
-
+        } 
         public ActionResult ChangeMyPassword()
         {
             return RedirectToAction("ResetPassword", "Account");
@@ -104,13 +105,11 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ResetAnyPassword()
         {
             return RedirectToAction("ResetAnyPassword", "Account");
-        }
-
+        } 
         public ActionResult LoginLog()
         {
             return RedirectToAction("Index", "Logins");
-        }
-
+        }   
         public ActionResult AddIdentityRole()
         {
             AddIdentityRoleViewModel viewModel = new AddIdentityRoleViewModel
@@ -139,8 +138,7 @@ namespace MVC5_Seneca.Controllers
             Session.Abandon();
             Session.RemoveAll();    
             return RedirectToAction("Login", "Account");
-        }
-        private IAuthenticationManager AuthenticationManager
+        }private IAuthenticationManager AuthenticationManager
         {
             get
             {

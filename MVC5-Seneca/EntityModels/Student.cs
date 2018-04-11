@@ -8,7 +8,7 @@ namespace MVC5_Seneca.EntityModels
 {
     [JsonObject(MemberSerialization.OptIn)] public class Student
     {
-        public int Id { get; set; }
+        [JsonProperty] public int Id { get; set; }
 
         [DisplayName("First Name"), JsonProperty]
         public string FirstName { get; set; }

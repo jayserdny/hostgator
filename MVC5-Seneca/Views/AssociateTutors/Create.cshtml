@@ -1,0 +1,65 @@
+﻿@using FormMethod = System.Web.Mvc.FormMethod
+@*@model MVC5_Seneca.ViewModels.AddEditAssociateTutorViewModel*@
+@model MVC5_Seneca.ViewModels.AddEditAssociateTutorViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    <script src="@Url.Content("/Scripts/AddEditAssociateTutor.js")"></script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div>
+        <h4>Associate Tutor</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })      
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tutor, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(x => x.Tutor.Id, new SelectList(Model.Tutors, "Value", "Text"), " Select", new { @id = "tutorsDDL" })
+                @*@Html.DropDownList("tutorsDDL", Model.Tutors, " Select Tutor")*@
+                @Html.ValidationMessageFor(model => model.Tutor.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+        <div id="StudentsDiv">
+            <div class="col-md-5">
+                @Html.DropDownListFor(x => x.Student.Id, new SelectList(Model.Students, "Value", "Text"), " Select Student", new { @id = "studentsDDL" })
+                @*@Html.DropDownList("studentsDDL", new SelectList(string.Empty, "Value", "Text"), " Select Student")*@
+                @Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Create" />
+            </div>
+        </div>
+    </div>
+    }
+    <br />
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    <script type="text/javascript">
+        $("#tutorsDDL").change(UpdateStudentDropdownList);
+    </script>
+
+</body>
+</html>
