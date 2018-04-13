@@ -6,6 +6,7 @@ var reportLinks = []; // empty array
 var reportIds=[];  // contains Id url of currently selected report
 var tutorSessionNotes = []; // empty array
 var tutorNoteIds = []; 
+var associateTutorEmails = [];
 var _studentId; // for parameter passing
 var _latestStudentFirstName;
 var _latestParentEmail;
@@ -171,6 +172,35 @@ function UpdateStudentDetails()
                 else {
                     $("#caseManagerRow").hide();
                 }
+            }
+
+            $("#AssociateTutors").html("");
+            associateTutorEmails = [];
+            var associateTutorHtml = "";
+            if (data.AssociateTutors !== null && data.AssociateTutors.length !== 0)
+            { 
+                for (var index in data.AssociateTutors)
+                {
+                    var tutorName = data.AssociateTutors[index].FirstName + ' ' + data.AssociateTutors[index].LastName;
+                    var tutorPhone = data.AssociateTutors[index].PhoneNumber;
+                    tutorPhone = tutorPhone.replace(/\D/g, '');
+                    if (tutorPhone.length === 10)
+                    {
+                        tutorPhone = '(' + tutorPhone.substring(0, 3) + ') ' + tutorPhone.substring(3, 6) + '-' + tutorPhone.substring(6, 10);
+                    }
+                    else
+                    {
+                        tutorPhone = "";
+                    };
+
+                    var tutorEmail = data.AssociateTutors[index].Email;
+                    associateTutorEmails.push(tutorEmail);
+                    associateTutorHtml += "<tr><td></td><td></td>"
+                        + "<td style='text-align:right'><strong>Associate Tutor:</strong></td ><td>" + tutorName + "</td>"
+                        + "<td><strong>Phone:</strong></td><td>" + tutorPhone + "</td>"
+                        + "<td><strong>Email:</strong></td><td id='AssociateEmail" + index + "'>" + tutorEmail + "</td></tr>";                      
+                }
+                $("#AssociateTutors").html(associateTutorHtml);
             }
 
             $("#reportsDDL").empty();
@@ -489,6 +519,12 @@ function EmailToAuthor(latestAuthorEmail)
 function EmailToPrimaryTutor(latestPrimaryTutorEmail) {
     var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
     var url = "mailto:" + latestPrimaryTutorEmail + subject;
+    window.open(url, '_blank');
+}
+
+function EmailToAssociateTutor(index) {
+    var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
+    var url = "mailto:" + associateTutorEmails[index] + subject;
     window.open(url, '_blank');
 }
 
