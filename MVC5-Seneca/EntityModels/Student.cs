@@ -39,6 +39,6 @@ namespace MVC5_Seneca.EntityModels
 
         [JsonProperty] public virtual ApplicationUser PrimaryTutor { get; set; }
 
-       public virtual ICollection<ApplicationUser> Tutors { get; set; } 
+       [JsonProperty] public virtual ICollection<ApplicationUser> AssociateTutors { get; set; }          
     }
 }

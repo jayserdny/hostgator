@@ -18,20 +18,28 @@
                 <td><strong>Tutor</strong></td>
                 <td><strong>Student(s)</strong></td>
             </tr>
-            @foreach (var item in Model)
+                    @foreach (var item in Model)
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Tutor.FirstName) @Html.DisplayFor(modelItem => item.Tutor.LastName)</td>
-                </tr> 
-                foreach (var student in item.Students)
+                </tr>
+                foreach (var student in item.PrimaryStudents)
                 {
-                    <tr>
-                        <td></td> 
-                        <td>@Html.DisplayFor(modelStudent => student.FirstName)</td>
-                    </tr>
+                        <tr>
+                            <td></td>
+                            <td>@Html.DisplayFor(modelStudent => student.FirstName)</td>
+                            <td>as Primary Tutor</td>
+                        </tr>
                 }
+                foreach (var student in item.AssociateStudents)
+                {
+                        <tr>
+                            <td></td>
+                            <td>@Html.DisplayFor(modelStudent => student.FirstName)</td>
+                            <td>as Associate Tutor</td>
+                        </tr>
+                }  
             }
-
         </table>
         <br/>
         <table>

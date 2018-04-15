@@ -23,11 +23,23 @@
             color: blue;
             text-decoration: underline;
         }  
-        #AuthorEmail {
+        #authorEmail {
             color: blue;
             text-decoration: underline;
         }
         #primaryTutorEmail {
+            color: blue;
+            text-decoration: underline;
+        }                
+        #associateTutor0Email {
+            color: blue;
+            text-decoration: underline;
+        }
+        #associateTutor1Email {
+            color: blue;
+            text-decoration: underline;
+        }
+        #associateTutor2Email {
             color: blue;
             text-decoration: underline;
         }
@@ -46,15 +58,15 @@
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td style="text-decoration:underline">
                         <strong>Seneca Heights Education Program Student Information</strong>
-                    </td> 
+                    </td>
                     <td id="UpdateAllowed" style="display: none">@Model.UpdateAllowed</td> @*To hide Save-Button*@
                 </tr>
-            </table> 
-            <br/>
+            </table>
+            <br />
             <table>
                 <tr>
-                    <td><strong>Id:</strong></td>
-                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>  
+                    <td id="MainColumn1"><strong>Id:</strong></td>
+                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
                     <td style="text-align:right">
                         <strong id="motherFather"></strong>
                     </td>
@@ -66,33 +78,64 @@
                     <td>
                         <strong id="parentEmailLabel"></strong>
                     </td>
-                    <td id="parentEmail"></td> 
+                    <td id="parentEmail"></td>
                     <td>
-                     <strong id="gradeLevelLabel"></strong>
+                        <strong id="gradeLevelLabel"></strong>
                     </td>
                     <td id="gradeLevel"></td>
                     <td>
                         <strong id="specialClassLabel"></strong>
-                    </td>  
+                    </td>
                     <td>
                         <strong id="specialClass"></strong>
                     </td>
-                </tr>
+                </tr>                
                 <tr id="primaryTutorRow" style="display:none">
                     <td></td>
-                    <td></td>  
-                    <td style="text-align:right"><strong>Tutor: </strong></td>
+                    <td></td>
+                    <td style="text-align:right"><strong>Primary Tutor: </strong></td>
                     <td id="primaryTutorName"></td>
                     <td style="text-align:right"><strong>Phone: </strong> </td>
                     <td id="primaryTutorPhone"></td>
                     <td style="text-align:right"><strong>Email:</strong> </td>
                     <td id="primaryTutorEmail"></td>
                 </tr>
-                <tr id="caseManagerRow" style="display: none">
+                @* Associtate tutor rows are not created dynamically because then jscript does not respond to the email click*@ 
+                <tr id="associateTutor0Row" style="display:none">
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right"><strong>Associate Tutor:</strong></td>
+                    <td id="associateTutor0Name"></td>
+                    <td><strong>Phone:</strong></td>
+                    <td id="associateTutor0Phone"></td>
+                    <td><strong>Email:</strong></td>
+                    <td id="associateTutor0Email"></td>
+                </tr>
+                <tr id="associateTutor1Row" style="display:none">
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right"><strong>Associate Tutor:</strong></td>
+                    <td id="associateTutor1Name"></td>
+                    <td><strong>Phone:</strong></td>
+                    <td id="associateTutor1Phone"></td>
+                    <td><strong>Email:</strong></td>
+                    <td id="associateTutor1Email"></td>
+                </tr>
+                <tr id="associateTutor2Row" style="display:none">
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right"><strong>Associate Tutor:</strong></td>
+                    <td id="associateTutor2Name"></td>
+                    <td><strong>Phone:</strong></td>
+                    <td id="associateTutor2Phone"></td>
+                    <td><strong>Email:</strong></td>
+                    <td id="associateTutor2Email"></td>
+                </tr>
+                <tr id="caseManagerRow" style="display:none">
                     <td></td>
                     <td></td>
                     <td style="text-align: right"><strong>Case Manager: </strong></td>
-                    <td id="caseManagerName"></td> 
+                    <td id="caseManagerName"></td>
                     <td style="text-align: right"><strong>Phone: </strong></td>
                     <td id="caseManagerPhone"></td>
                     <td style="text-align: right"><strong>Email:</strong> </td>
@@ -112,7 +155,7 @@
             <tr>
                 <td>
                     @Html.DropDownList("reportsDDL", new SelectList(string.Empty, "Value", "Text"),
-                                                                      "--Select Report--", new { style = "width:275px" })
+                                                                                          "--Select Report--", new { style = "width:275px" })
                 </td>
                 <td>
                     <strong id="DocumentLinkLabel"></strong>
@@ -129,7 +172,7 @@
     </div>
 
     <div id="DisplayTutorNotesDiv" style="display: none">
-        <br/>
+        <br />
         <table>
             <tr>
                 <td>
@@ -139,7 +182,7 @@
             <tr>
                 <td>
                     @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                        "--Select Note--", new {style = "width:275px"})
+                                            "--Select Note--", new { style = "width:275px" })
                 </td>
                 <td>
                     <strong id="SessionNoteLabel"></strong>
@@ -161,12 +204,12 @@
             <tr>
                 @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
                 <td id="SessionUserName" style="display: none">@User.Identity.Name</td>
-                <td id="SessionUserId" style="display: none">@Model.User_Id</td>
+                <td id="SessionUserId" style="display:none">@Model.User_Id</td>
                 <td></td>
-                <td id="EmailAuthorLabel" text-align="right" style="display: none">
+                <td id="EmailAuthorLabel" text-align="right" style="display:none">
                     <strong>Tutor Email:</strong>
                 </td>
-                <td id="AuthorEmail" style="display: none"></td>
+                <td id="authorEmail" style="display:none"></td>
             </tr>
         </table>
     </div>
@@ -200,11 +243,11 @@
             </tr>
         </table>
     </div>
-    <br/>
+    <br />
     <div id="ReturnToDashboard">
         @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
-        <br/>
-        <br/>
+        <br />
+        <br />
         <a href="@Url.Action("Logout", "Home")">LogOut</a>
     </div>
 
@@ -228,39 +271,43 @@
 
     <script type="text/javascript">
         $("#SaveSessionNote").click(function () {
-            SaveSessionNote(_studentId);         
+            SaveSessionNote(_studentId);
         });
     </script>
 
     <script type="text/javascript">
         $("#SessionNoteSaveEdits").click(function () {
             var text = $("#SessionNoteText");
-            SaveEditedSessionNote(text);         
+            SaveEditedSessionNote(text);
         });
     </script>
 
     <script type="text/javascript">
-        $("#parentEmail").click(function () {
-            EmailToParent(_studentId);
-        });
+        $("#parentEmail").click(function () { EmailToParent(_studentId); });
     </script>
 
     <script type="text/javascript">
-        $("#AuthorEmail").click(function () {
-            EmailToAuthor(_latestAuthor_Email);
-        });
+        $("#authorEmail").click(function () { EmailToAuthor(_latestAuthor_Email); });
     </script>
 
     <script type="text/javascript">
-        $("#primaryTutorEmail").click(function () {
-            EmailToPrimaryTutor(_latestPrimaryTutor_Email);
-        });
-    </script> 
+        $("#primaryTutorEmail").click(function () { EmailToPrimaryTutor(_latestPrimaryTutor_Email); });
+    </script>
 
     <script type="text/javascript">
-        $("#caseManagerEmail").click(function () {
-            EmailToCaseManager(_latestCaseManager_Email);
-        });
+        $("#associateTutor0Email").click(function () { EmailToAssociateTutor(0); });
+    </script>
+
+    <script type="text/javascript">
+        $("#associateTutor1Email").click(function () { EmailToAssociateTutor(1); });
+    </script>
+
+    <script type="text/javascript">
+        $("#associateTutor2Email").click(function () { EmailToAssociateTutor(2); });
+    </script>   
+
+    <script type="text/javascript">
+        $("#caseManagerEmail").click(function () { EmailToCaseManager(_latestCaseManager_Email); });
     </script>
 
 </body>

@@ -46,6 +46,23 @@ namespace MVC5_Seneca.Controllers
 
             student.Reports = student.Reports.OrderByDescending(r => r.DocumentDate).ToList();
 
+            foreach (var record in _db.AssociateTutors)
+            {            
+                var sqlString = "";
+                using (var context = new SenecaContext())
+                {
+                    sqlString = "SELECT Student_Id FROM AssociateTutor WHERE Id = " + record.Id;
+                        var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();     
+                    if (studentId == id)
+                    {
+                        sqlString = "SELECT Tutor_Id FROM AssociateTutor WHERE Id = " + record.Id;
+                        var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                        var tutor = _db.Users.Find(tutorId);  
+                        student.AssociateTutors.Add(tutor);
+                    }
+                }
+            }
+
             try
             {                                                                                                                   
                 String json = JsonConvert.SerializeObject(student, Formatting.Indented);

@@ -18,7 +18,8 @@ namespace MVC5_Seneca.ViewModels
         [JsonProperty] public List<Parent> Parents;
       
         [JsonProperty] public List<ApplicationUser> Users;
-        [JsonProperty] public List<DocumentType> DocumentTypes { get; set; }
+        [JsonProperty] public List<DocumentType> DocumentTypes { get; set; } 
+        [JsonProperty] public List<ApplicationUser> AssociateTutors { get; set; }
 
         // Output fields used by the .cshtml file to return form results
         [DisplayName("Student:")]

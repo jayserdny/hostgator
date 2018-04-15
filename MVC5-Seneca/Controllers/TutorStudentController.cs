@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -33,26 +33,46 @@ namespace MVC5_Seneca.Controllers
                     var _role = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
                     if (_role.Name == "Tutor")
                     {
-                        var tutorStudents = new TutorStudentViewModel {Students = new List<Student>()};
+                        var tutorStudents = new TutorStudentViewModel {PrimaryStudents = new List<Student>(), AssociateStudents = new List<Student>()};
                         foreach (Student student in _db.Students)
                         {
                             if (student.PrimaryTutor != null)
                             {
                                 if (student.PrimaryTutor.Id == tutor.Id)
                                 {
-                                    tutorStudents.Students.Add(student);
+                                    tutorStudents.PrimaryStudents.Add(student);
                                 }
                             }
-                        }
+                            if (tutorStudents.PrimaryStudents.Count() != 0)
+                            {
+                                tutorStudents.Tutor = (from u in _db.Users where (u.Id == tutor.Id) select u).Single();
+                            }                           
+                        } // foreach student
 
-                        if (tutorStudents.Students.Count() != 0)
+                        using (var context = new SenecaContext())
+                        {  // Is this tutor an Associate Tutor for other students? 
+                            var sqlString = "SELECT Student_Id FROM AssociateTutor WHERE Tutor_Id = '" + tutor.Id + "'";
+                            var associateTuteeIds = context.Database.SqlQuery<int>(sqlString).ToList();
+                            foreach (int associateTuteeId in associateTuteeIds)
+                            {
+                                Student associateStudent = _db.Students.Find(associateTuteeId);
+                                tutorStudents.AssociateStudents.Add(associateStudent);
+                            }
+                        }
+                        // Tutor can be an associate tutor with no primary student:
+                        if (tutorStudents.PrimaryStudents.Count() == 0 && tutorStudents.AssociateStudents.Count > 0)
                         {
                             tutorStudents.Tutor = (from u in _db.Users where (u.Id == tutor.Id) select u).Single();
+                        }
+
+                        if (tutorStudents.PrimaryStudents.Count() > 0 || tutorStudents.AssociateStudents.Count > 0)
+                        {
                             viewModel.Add(tutorStudents);
                         }
-                    }
-                }
-            } 
+                    } // if role = "Tutor"    
+                }   // foreach (var role in tutor.Roles)
+            }  // foreach (ApplicationUser tutor
+       
             return View(viewModel);
         } 
         public ActionResult ReturnToDashboard()

@@ -30,6 +30,9 @@ function UpdateStudentDetails()
     $("#parentEmailLabel").text("");
     $("#parentEmail").text("");
     $("#primaryTutorRow").hide();
+    $("#associateTutor0Row").hide();
+    $("#associateTutor1Row").hide();
+    $("#associateTutor2Row").hide();
     $("#caseManagerRow").hide();
     $("#Save-Button").hide();
     var studentId = $(this).val();
@@ -116,7 +119,7 @@ function UpdateStudentDetails()
                     parentEmail = "",    // Don't show labels or 'null' if no email
                     _latestParentEmail = "";
             $("#parentEmailLabel").text(parentEmailLabel);
-            $("#parentEmail").text(parentEmail);
+            $("#ParentEmail").text(parentEmail);
 
             if (data.PrimaryTutor !== null) {
                 if (data.PrimaryTutor.PhoneNumber !== null) {
@@ -173,8 +176,7 @@ function UpdateStudentDetails()
                     $("#caseManagerRow").hide();
                 }
             }
-
-            $("#AssociateTutors").html("");
+            
             associateTutorEmails = [];
             var associateTutorHtml = "";
             if (data.AssociateTutors !== null && data.AssociateTutors.length !== 0)
@@ -194,13 +196,25 @@ function UpdateStudentDetails()
                     };
 
                     var tutorEmail = data.AssociateTutors[index].Email;
-                    associateTutorEmails.push(tutorEmail);
-                    associateTutorHtml += "<tr><td></td><td></td>"
-                        + "<td style='text-align:right'><strong>Associate Tutor:</strong></td ><td>" + tutorName + "</td>"
-                        + "<td><strong>Phone:</strong></td><td>" + tutorPhone + "</td>"
-                        + "<td><strong>Email:</strong></td><td id='AssociateEmail" + index + "'>" + tutorEmail + "</td></tr>";                      
-                }
-                $("#AssociateTutors").html(associateTutorHtml);
+                    associateTutorEmails.push(tutorEmail);                  
+                                               
+                    if (index === "0") {
+                        $("#associateTutor0Name").text(tutorName);
+                        $("#associateTutor0Phone").text(tutorPhone);
+                        $("#associateTutor0Email").text(tutorEmail);
+                        $("#associateTutor0Row").show();
+                    } else if (index === "1") {
+                        $("#associateTutor1Name").text(tutorName);
+                        $("#associateTutor1Phone").text(tutorPhone);
+                        $("#associateTutor1Email").text(tutorEmail);
+                        $("#associateTutor1Row").show();
+                    } else if (index === "2") {
+                        $("#associateTutor2Name").text(tutorName);
+                        $("#associateTutor2Phone").text(tutorPhone);
+                        $("#associateTutor2Email").text(tutorEmail);
+                        $("#associateTutor2Row").show();
+                    }     
+                }                  
             }
 
             $("#reportsDDL").empty();
@@ -214,7 +228,7 @@ function UpdateStudentDetails()
             $("#SessionNoteText").hide();
             $("#SessionNoteSaveEdits").hide();
             $("#EmailAuthorLabel").hide();
-            $("#AuthorEmail").hide();   
+            $("#authorEmail").hide();   
            
             $("#reportsDDL").append('<option value = "' + '">' + "--Select Report (" +  data.Reports.length  +  ")--" + '</option > ');
             reportComments = [];
@@ -335,7 +349,7 @@ function UpdateSessionNote(event) {
             $("#SessionNoteText").hide();
             $("#SessionNoteSaveEdits").hide();
             $("#EmailAuthorLabel").hide();
-            $("#AuthorEmail").hide();
+            $("#authorEmail").hide();
         } else {
             $("#SessionNoteText").text(tutorSessionNotes[nts[0].index - 1]);
             $.ajax({
@@ -357,12 +371,12 @@ function UpdateSessionNote(event) {
                         $("#SessionNoteSaveEdits").show();
                     }  
                     $("#EmailAuthorLabel").hide();
-                    $("#AuthorEmail").hide();
+                    $("#authorEmail").hide();
                     if (note.ApplicationUser.Id !== $("#SessionUserId").text())
                     { /*Don't show authors's email if it's the same person as the user:*/
                         $("#EmailAuthorLabel").show();
-                        $("#AuthorEmail").text(note.ApplicationUser.Email);
-                        $("#AuthorEmail").show();
+                        $("#authorEmail").text(note.ApplicationUser.Email);
+                        $("#authorEmail").show();
                     }
                 },
                 Error: function(response) {
