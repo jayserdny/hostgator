@@ -67,6 +67,19 @@
                 <tr>
                     <td id="MainColumn1"><strong>Id:</strong></td>
                     <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
+                    <td>
+                        <strong id="gradeLevelLabel"></strong>
+                    </td>
+                    <td id="gradeLevel"></td>
+                    <td>
+                        <strong id="specialClassLabel"></strong>
+                    </td>
+                    <td>
+                        <strong id="specialClass"></strong>
+                    </td>
+                </tr>
+                 <tr>
+                    <td></td>
                     <td style="text-align:right">
                         <strong id="motherFather"></strong>
                     </td>
@@ -78,20 +91,9 @@
                     <td>
                         <strong id="parentEmailLabel"></strong>
                     </td>
-                    <td id="parentEmail"></td>
-                    <td>
-                        <strong id="gradeLevelLabel"></strong>
-                    </td>
-                    <td id="gradeLevel"></td>
-                    <td>
-                        <strong id="specialClassLabel"></strong>
-                    </td>
-                    <td>
-                        <strong id="specialClass"></strong>
-                    </td>
+                    <td id="parentEmail"></td>                      
                 </tr>                
-                <tr id="primaryTutorRow" style="display:none">
-                    <td></td>
+                <tr id="primaryTutorRow" style="display:none">                    
                     <td></td>
                     <td style="text-align:right"><strong>Primary Tutor: </strong></td>
                     <td id="primaryTutorName"></td>
@@ -101,8 +103,7 @@
                     <td id="primaryTutorEmail"></td>
                 </tr>
                 @* Associtate tutor rows are not created dynamically because then jscript does not respond to the email click*@ 
-                <tr id="associateTutor0Row" style="display:none">
-                    <td></td>
+                <tr id="associateTutor0Row" style="display:none">                    
                     <td></td>
                     <td style="text-align:right"><strong>Associate Tutor:</strong></td>
                     <td id="associateTutor0Name"></td>
@@ -111,8 +112,7 @@
                     <td><strong>Email:</strong></td>
                     <td id="associateTutor0Email"></td>
                 </tr>
-                <tr id="associateTutor1Row" style="display:none">
-                    <td></td>
+                <tr id="associateTutor1Row" style="display:none">                    
                     <td></td>
                     <td style="text-align:right"><strong>Associate Tutor:</strong></td>
                     <td id="associateTutor1Name"></td>
@@ -121,8 +121,7 @@
                     <td><strong>Email:</strong></td>
                     <td id="associateTutor1Email"></td>
                 </tr>
-                <tr id="associateTutor2Row" style="display:none">
-                    <td></td>
+                <tr id="associateTutor2Row" style="display:none">                    
                     <td></td>
                     <td style="text-align:right"><strong>Associate Tutor:</strong></td>
                     <td id="associateTutor2Name"></td>
@@ -131,8 +130,7 @@
                     <td><strong>Email:</strong></td>
                     <td id="associateTutor2Email"></td>
                 </tr>
-                <tr id="caseManagerRow" style="display:none">
-                    <td></td>
+                <tr id="caseManagerRow" style="display:none">                    
                     <td></td>
                     <td style="text-align: right"><strong>Case Manager: </strong></td>
                     <td id="caseManagerName"></td>
