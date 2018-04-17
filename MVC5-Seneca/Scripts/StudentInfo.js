@@ -115,7 +115,7 @@ function UpdateStudentDetails()
                     parentEmail = "",    // Don't show labels or 'null' if no email
                     _latestParentEmail = "";
             $("#parentEmailLabel").text(parentEmailLabel);
-            $("#ParentEmail").text(parentEmail);
+            $("#parentEmail").text(parentEmail);
 
             if (data.PrimaryTutor !== null) {
                 if (data.PrimaryTutor.PhoneNumber !== null) {
