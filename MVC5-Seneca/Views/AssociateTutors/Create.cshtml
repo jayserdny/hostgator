@@ -1,6 +1,6 @@
 ﻿@using FormMethod = System.Web.Mvc.FormMethod
-@*@model MVC5_Seneca.ViewModels.AddEditAssociateTutorViewModel*@
 @model MVC5_Seneca.ViewModels.AddEditAssociateTutorViewModel
+@*@model MVC5_Seneca.EntityModels.AssociateTutor*@
 @{
     Layout = null;
 }
@@ -39,7 +39,6 @@
         <div id="StudentsDiv">
             <div class="col-md-5">
                 @Html.DropDownListFor(x => x.Student.Id, new SelectList(Model.Students, "Value", "Text"), " Select Student", new { @id = "studentsDDL" })
-                @*@Html.DropDownList("studentsDDL", new SelectList(string.Empty, "Value", "Text"), " Select Student")*@
                 @Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })
             </div>
         </div>

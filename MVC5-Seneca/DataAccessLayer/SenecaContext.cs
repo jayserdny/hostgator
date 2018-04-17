@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.EntityModels;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
@@ -8,9 +7,7 @@ using System.Diagnostics;
 namespace MVC5_Seneca.DataAccessLayer
 {
     public class SenecaContext : IdentityDbContext <ApplicationUser>
-    {
-        internal readonly IEnumerable<Staff> Staffs;
-
+    {                             
         public static void EnableMigrations()
         {
             //Database.SetInitializer(new MigrateDatabaseToLatestVersion<SenecaContext>());
@@ -29,26 +26,20 @@ namespace MVC5_Seneca.DataAccessLayer
         public DbSet<Staff> StaffMembers { get; set; } 
         public DbSet<DocumentType> DocumentTypes { get; set; } 
         public DbSet<StudentReport> StudentReports { get; set; }      
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }   
-        public DbSet<School> Schools { get; set; }        
-
+        public DbSet<School> Schools { get; set; }          
         public DbSet<TutorNote> TutorNotes { get; set; }
-        public DbSet<Login> Login { get; set; }
-
+        public DbSet<Login> Login { get; set; }                
         public static SenecaContext Create()
         {
             return new SenecaContext();
-        }
-
+        }                                                                                                                                                                      
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TipsCategory> TipsCategories { get; set; }
-
-        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TipDocument> TipDocuments { get; set; }
-
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TipDocument> TipDocuments { get; set; } 
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.AssociateTutor> AssociateTutors { get; set; }
         public object AssociateTutor { get; internal set; }
     }

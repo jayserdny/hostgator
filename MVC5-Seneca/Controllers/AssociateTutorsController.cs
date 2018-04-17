@@ -73,7 +73,7 @@ namespace MVC5_Seneca
 
             List<SelectListItem> studentList = new List<SelectListItem>
             {
-                new SelectListItem { Text = " Select", Value = "0" }
+                new SelectListItem { Text = @" Select", Value = "0" }
             };
             model.Tutors = tutorList;
             model.Students = studentList;
@@ -89,26 +89,28 @@ namespace MVC5_Seneca
             {
                 ApplicationUser user = _db.Users.Find(associateTutor.Tutor.Id);
                 Student student = _db.Students.Find(associateTutor.Student.Id);
-                AssociateTutor _associateTutor = new AssociateTutor
-                {  
+                AssociateTutor newAssociateTutor = new AssociateTutor     
+                {
                     Tutor = user,
                     Student = student
                 };
-                _db.AssociateTutors.Add(_associateTutor);
+                _db.AssociateTutors.Add(newAssociateTutor);
                 try
                 {
                     _db.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var x = ex;  
+                    var x = ex;
                 }
 
                 return RedirectToAction("Index");
-                } 
-
-            return View(associateTutor);
-         }
+            }
+            else
+            {
+                return RedirectToAction("Create", "AssociateTutors");
+            }
+        }
 
         // GET: AssociateTutors/Edit/5
         public ActionResult Edit(int? id)
