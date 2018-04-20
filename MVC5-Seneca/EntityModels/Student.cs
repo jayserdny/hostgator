@@ -2,6 +2,7 @@
 using System.Collections.Generic;    
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace MVC5_Seneca.EntityModels
@@ -39,6 +40,16 @@ namespace MVC5_Seneca.EntityModels
 
         [JsonProperty] public virtual ApplicationUser PrimaryTutor { get; set; }
 
-       [JsonProperty] public virtual ICollection<ApplicationUser> AssociateTutors { get; set; }          
+        [JsonProperty] public virtual ICollection<ApplicationUser> AssociateTutors { get; set; }
+        
+        // Fields for Who's Tutoring Whom cshtml report: 
+        [NotMapped] [JsonProperty] public int? PrimaryNoteCount { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [NotMapped] [JsonProperty] public DateTime? LastPrimaryNoteDate { get; set; }  
+        [NotMapped] [JsonProperty] public int? AssociateNoteCount { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [NotMapped] [JsonProperty] public DateTime? LastAssociateNoteDate { get; set; }
     }
 }

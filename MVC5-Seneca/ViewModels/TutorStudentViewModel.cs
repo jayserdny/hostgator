@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MVC5_Seneca.EntityModels;
+using Newtonsoft.Json;
 
 namespace MVC5_Seneca.ViewModels
 {
@@ -7,6 +9,6 @@ namespace MVC5_Seneca.ViewModels
     {
         public ApplicationUser Tutor { get; set; }     
         public List<Student> PrimaryStudents { get; set; }       
-        public List<Student> AssociateStudents { get; set; }    
+        public List<Student> AssociateStudents { get; set; }
     }
 }
