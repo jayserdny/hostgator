@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -7,7 +6,6 @@ using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -176,7 +174,7 @@ namespace MVC5_Seneca.Controllers
             {                                                                                                                    
                 viewModel.GradeLevel = (int) student.GradeLevel;
             }                                                                                   
-            viewModel.SpecialClass = (bool) student.SpecialClass;
+            viewModel.SpecialClass = student.SpecialClass;
             viewModel.Parent = student.Parent;
             viewModel.School = student.School;
             viewModel.PrimaryTutor = student.PrimaryTutor;
@@ -241,14 +239,13 @@ namespace MVC5_Seneca.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
-        {
-            // TODO check that all uploads and session notes are removed:
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
-            foreach (StudentReport report in _db.StudentReports.Where(r => r.Student.Id == id))
+        {                                                                                                           
+            var storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference("studentreports");
+            foreach (var report in _db.StudentReports.Where(r => r.Student.Id == id))
             {
-                CloudBlockBlob blob = container.GetBlockBlobReference(report.DocumentLink);
+                var blob = container.GetBlockBlobReference(report.DocumentLink);
                 if (blob.Exists())
                 {
                     blob.Delete();
@@ -256,7 +253,7 @@ namespace MVC5_Seneca.Controllers
             }
             _db.StudentReports.RemoveRange(_db.StudentReports.Where(r => r.Student.Id == id));
             _db.TutorNotes.RemoveRange(_db.TutorNotes.Where(t => t.Student.Id == id));          
-            Student student = _db.Students.Find(id);
+            var student = _db.Students.Find(id);
             if (student != null) _db.Students.Remove(student);
             _db.SaveChanges();
             return RedirectToAction("Index");

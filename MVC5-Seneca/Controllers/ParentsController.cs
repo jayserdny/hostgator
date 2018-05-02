@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Web.Mvc;
+using Microsoft.WindowsAzure.Storage;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
@@ -38,9 +38,8 @@ namespace MVC5_Seneca.Controllers
         // GET: Parents/Create
         public ActionResult Create()
         {
-            var viewModel = new AddEditParentViewModel { };
-            viewModel.SelectedMotherFather = "M";  // default 
-            
+            var viewModel = new AddEditParentViewModel {SelectedMotherFather = "M"}; // M is default 
+
             List<SelectListItem> staffList = new List<SelectListItem>();
             var staffs = _db.StaffMembers.ToList();
             foreach (Staff staff in staffs)
@@ -187,12 +186,40 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Parent parent = _db.Parents.Find(id);
+            var parent = _db.Parents.Find(id);
             if (parent == null)
             {
                 return HttpNotFound();
             }
-            return View(parent);
+            var deleteParent = new AddEditParentViewModel
+            {
+                Id = parent.Id,                           
+                MotherFather = parent.MotherFather,
+                FirstName = parent.FirstName,
+                Address=parent.Address,
+                HomePhone = parent.HomePhone,
+                CellPhone = parent.CellPhone,              
+                Email = parent.Email
+            };
+            var students = _db.Students.Where(s => s.Parent.Id == parent.Id).ToList();
+            if (students.Count > 0)
+            {
+                deleteParent.ErrorMessage = "This will result in the permanant deletion of student(s) ";
+                var firstStudent = true;
+                foreach (var student in students)
+                {
+                    if (firstStudent == false)
+                    {
+                        deleteParent.ErrorMessage += " AND ";        
+                    }
+
+                    deleteParent.ErrorMessage += student.FirstName;
+                    firstStudent = false;
+                }
+                deleteParent.ErrorMessage += " AND all their reports and session notes!";
+            }
+
+            return View(deleteParent);
         }
 
         // POST: Parents/Delete/5
@@ -200,6 +227,30 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var students = _db.Students.Where(s => s.Parent.Id == id).ToList();
+            if (students.Count > 0)
+            {
+                foreach (var child in students)
+                {
+                    var storageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+                    var blobClient = storageAccount.CreateCloudBlobClient();
+                    var container = blobClient.GetContainerReference("studentreports");
+                    foreach (var report in _db.StudentReports.Where(r => r.Student.Id == child.Id))
+                    {
+                        var blob = container.GetBlockBlobReference(report.DocumentLink);
+                        if (blob.Exists())
+                        {
+                            blob.Delete();                                                              
+                        }
+                    }
+                    _db.StudentReports.RemoveRange(_db.StudentReports.Where(r => r.Student.Id == child.Id));
+                    _db.TutorNotes.RemoveRange(_db.TutorNotes.Where(t => t.Student.Id == child.Id));
+                    var student = _db.Students.Find(child.Id);
+                    if (student != null) _db.Students.Remove(student);
+                    _db.SaveChanges();
+                }
+            }  
+          
             Parent parent = _db.Parents.Find(id);
             if (parent != null) _db.Parents.Remove(parent);
             _db.SaveChanges();

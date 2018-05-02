@@ -32,6 +32,7 @@ namespace MVC5_Seneca.ViewModels
         public string Email { get; set; }
 
         [DisplayName("Case Manager")]
-        public virtual Staff StaffMember { get; set; }
+        public virtual Staff StaffMember { get; set; }     
+        public string ErrorMessage { get; set; }
     }
 }

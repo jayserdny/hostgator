@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.EntityModels.Parent
+﻿@model MVC5_Seneca.ViewModels.AddEditParentViewModel
 
 @{
     Layout = null;
@@ -32,46 +32,18 @@
             <dd>
                 @Html.DisplayFor(model => model.FirstName)
             </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Address)
+            
+            <dt style="color:red">
+                <strong>@Html.DisplayFor(model => model.ErrorMessage)</strong>
             </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Address)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.HomePhone)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.HomePhone)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.CellPhone)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.CellPhone)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.Email)
-            </dd>
     
         </dl>
     
         @using (Html.BeginForm()) {
             @Html.AntiForgeryToken()
     
-            <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-default" /> |
+            <div>
+                <input type="submit" value="Delete"> |
                 @Html.ActionLink("Back to List", "Index")
             </div>
         }
