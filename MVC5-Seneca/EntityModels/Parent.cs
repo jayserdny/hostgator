@@ -30,10 +30,10 @@ namespace MVC5_Seneca.EntityModels
         public string Email { get; set; }
 
         [DisplayName("Case Manager"), JsonProperty]
-        public virtual Staff CaseManager { get; set; }
+        public virtual ApplicationUser CaseManager { get; set; }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public void SetCaseManager(Staff cm)
+        public void SetCaseManager(ApplicationUser cm)
         {
             CaseManager = cm;
         }

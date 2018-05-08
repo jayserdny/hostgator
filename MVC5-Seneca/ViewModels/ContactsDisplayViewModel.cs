@@ -7,6 +7,6 @@ namespace MVC5_Seneca.ViewModels
     {
         public virtual ICollection<ApplicationUser> Administrators { get; set; }
 
-        public virtual ICollection <Staff> Staff { get; set; }
+        public virtual ICollection <ApplicationUser> Staff { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace MVC5_Seneca.Controllers
             var adminRoleId = (from r in _db.Roles where (r.Name == "Administrator") select r.Id).Single();
             var listAdministrators = new List<ApplicationUser>();
             var staffRoleId = (from r in _db.Roles where (r.Name == "Staff") select r.Id).Single();
-            var listStaff = new List<Staff>();
+            var listStaff = new List<ApplicationUser>();
 
             var users = _db.Users.ToList();
             foreach (var user in users)
@@ -35,31 +35,18 @@ namespace MVC5_Seneca.Controllers
 
                     if (role.RoleId == staffRoleId)
                     {
-                        var staff = new Staff()
+                        var staff = new ApplicationUser()
                         {
                             FirstName = user.FirstName,
                             LastName = user.LastName,
                             Title = user.Title,
-                            WorkPhone = user.PhoneNumber,
-                            CellPhone = user.PhoneNumber,
+                            PhoneNumber = user.PhoneNumber,        
                             Email = user.Email
                         }; 
                         listStaff.Add(staff);
                     }
                 }
-            }
-            
-            // Already have 'Staff role' users in staffList; add db.CaseManagers if not users:
-            var staffMembers = _db.StaffMembers.ToList();
-            foreach (var staffMember in staffMembers)
-            {
-                var usr = (from u in _db.Users where u.FirstName == staffMember.FirstName 
-                                          && u.LastName == staffMember.LastName select u).Any();
-                if (!usr)
-                {
-                 listStaff.Add(staffMember);
-                }
-            }
+            }        
 
             model.Administrators = listAdministrators;
             model.Staff = listStaff;
