@@ -66,7 +66,7 @@ namespace MVC5_Seneca.Controllers
                 parent.CellPhone = model.CellPhone;
                 if (model.StaffMember != null)
                 {
-                    parent.CaseManager = (from s in _db.StaffMembers where s.Id == model.StaffMember.Id select s).Single();
+                    parent.CaseManager = (from u in _db.Users where u.Id == model.StaffMember.Id select u).Single();
                 }
 
                 _db.Parents.Add(parent);
@@ -101,20 +101,23 @@ namespace MVC5_Seneca.Controllers
             };
 
         List<SelectListItem> staffList = new List<SelectListItem>();
-            var sortedStaff = _db.StaffMembers.OrderBy(s => s.LastName).ThenBy(s => s.FirstName).ToList();
+            var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             staffList.Add(new SelectListItem { Text = @" (none)", Value = "0", Selected = false });
-            foreach (Staff staff in sortedStaff)
-                if (parent.CaseManager == null)
-                {
-                    staffList.Add(new SelectListItem { Text = staff.FirstName + @" " + staff.LastName, Value = staff.Id.ToString(), Selected = false });
-                }
-                else
-                {
-                    if (staff.Id == parent.CaseManager.Id)
-                        staffList.Add(new SelectListItem { Text = staff.FirstName + @" " + staff.LastName, Value = staff.Id.ToString(), Selected = true });
-                    else
-                        staffList.Add(new SelectListItem { Text = staff.FirstName + @" " + staff.LastName, Value = staff.Id.ToString(), Selected = false });
-                }   
+            var staffRoleId = (from r in _db.Roles where (r.Name == "Staff") select r.Id).Single();
+            foreach (var user in sortedUsers)
+                foreach (var role in user.Roles)
+                    if (role.RoleId == staffRoleId)
+                        if (parent.CaseManager == null)
+                        {
+                            staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
+                        }
+                        else
+                        {
+                            if (user.Id == parent.CaseManager.Id)
+                                staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = true });
+                            else
+                                staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
+                        }   
         
             viewModel.StaffMembers = staffList;
             return View(viewModel);
@@ -134,7 +137,7 @@ namespace MVC5_Seneca.Controllers
                 sqlString += "CellPhone = '" + viewModel.CellPhone + "',";
                 sqlString += "Email = '" + viewModel.Email + "',";
                 sqlString += "MotherFather = '" + viewModel.SelectedMotherFather + "',";
-                if (viewModel.StaffMember.Id == 0)
+                if (!string.IsNullOrEmpty(viewModel.StaffMember.Id))
                 {
                     sqlString += "CaseManager_Id = NULL";
                 }
