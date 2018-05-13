@@ -39,14 +39,25 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Create()
         {
             var viewModel = new AddEditParentViewModel {SelectedMotherFather = "M"}; // M is default 
-
+             var staffRoleId = (from r in _db.Roles where (r.Name == "Staff") select r.Id).Single();
             List<SelectListItem> staffList = new List<SelectListItem>();
-            var staffs = _db.StaffMembers.ToList();
-            foreach (Staff staff in staffs)
+            var sortedUsers = _db.Users.OrderBy(u =>u.LastName).ToList();
+            foreach (var user in sortedUsers)
             {
-                staffList.Add(new SelectListItem {Text = staff.LastName + @", " + staff.FirstName, Value = staff.Id.ToString()});
-            }                                    
-            viewModel.StaffMembers = staffList;
+                foreach (var role in user.Roles)
+                {
+                    if (role.RoleId == staffRoleId)
+                    {
+                        staffList.Add(new SelectListItem
+                        {
+                            Text = user.LastName + @", " + user.FirstName,
+                            Value = user.Id
+                        });
+                    }
+                }
+            }
+
+            viewModel.StaffMembers = staffList;   
             return View(viewModel);
         }
 
@@ -64,11 +75,10 @@ namespace MVC5_Seneca.Controllers
                 parent.Address = model.Address;
                 parent.HomePhone = model.HomePhone;
                 parent.CellPhone = model.CellPhone;
-                if (model.StaffMember != null)
+                if (model.CaseManager != null)
                 {
-                    parent.CaseManager = (from u in _db.Users where u.Id == model.StaffMember.Id select u).Single();
+                    parent.CaseManager = _db.Users.Find(model.CaseManager.Id);
                 }
-
                 _db.Parents.Add(parent);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -126,7 +136,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Parents/Edit/5                                                             
         [HttpPost]
         [ValidateAntiForgeryToken, MethodImpl(MethodImplOptions.NoOptimization)]
-        public ActionResult Edit([Bind(Include = "Id,MotherFather,FirstName,Address,HomePhone,CellPhone,Email,SelectedMotherFather,StaffMember")] AddEditParentViewModel viewModel)
+        public ActionResult Edit([Bind(Include = "Id,MotherFather,FirstName,Address,HomePhone,CellPhone,Email,SelectedMotherFather,CaseManager")] AddEditParentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -137,13 +147,13 @@ namespace MVC5_Seneca.Controllers
                 sqlString += "CellPhone = '" + viewModel.CellPhone + "',";
                 sqlString += "Email = '" + viewModel.Email + "',";
                 sqlString += "MotherFather = '" + viewModel.SelectedMotherFather + "',";
-                if (!string.IsNullOrEmpty(viewModel.StaffMember.Id))
+                if (!string.IsNullOrEmpty(viewModel.CaseManager.Id))
                 {
-                    sqlString += "CaseManager_Id = NULL";
+                    sqlString += "CaseManager_Id ='" + viewModel.CaseManager.Id + "'";
                 }
                 else
                 {
-                    sqlString += "CaseManager_Id =" + viewModel.StaffMember.Id;
+                    sqlString += "CaseManager_Id = NULL";
                 } 
                 sqlString += " WHERE Id =" + viewModel.Id; 
                 using (var context = new SenecaContext())

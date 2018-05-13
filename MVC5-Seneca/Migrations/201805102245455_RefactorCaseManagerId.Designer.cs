@@ -7,13 +7,13 @@ namespace MVC5_Seneca.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddStaffToParent : IMigrationMetadata
+    public sealed partial class RefactorCaseManagerId : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddStaffToParent));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RefactorCaseManagerId));
         
         string IMigrationMetadata.Id
         {
-            get { return "201804021304333_AddStaffToParent"; }
+            get { return "201805102245455_RefactorCaseManagerId"; }
         }
         
         string IMigrationMetadata.Source
