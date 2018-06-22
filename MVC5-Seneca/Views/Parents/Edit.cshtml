@@ -73,10 +73,10 @@
             </div>
              
             <div class="form-group">
-                @Html.LabelFor(model => model.CaseManager, htmlAttributes: new { @class = "col-md-2" })
+                @Html.LabelFor(model => model.CaseManagerUser, htmlAttributes: new { @class = "col-md-2" })
                 <div class="col-md-5">
-                    @Html.DropDownListFor(x => x.CaseManager.Id, Model.StaffMembers, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CaseManager.Id, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(x => x.CaseManagerUser.Id, Model.StaffMembers, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CaseManagerUser.Id, "", new { @class = "text-danger" })
                 </div>
             </div>
 

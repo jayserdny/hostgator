@@ -449,13 +449,17 @@
     <Compile Include="Migrations\201803201857034_AllowNullableGradeLevel.Designer.cs">
       <DependentUpon>201803201857034_AllowNullableGradeLevel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804021304333_AddStaffToParent.cs" />
+    <Compile Include="Migrations\201804021304333_AddStaffToParent.designer.cs">
+      <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201804071819252_AddAssociateTutors.cs" />
     <Compile Include="Migrations\201804071819252_AddAssociateTutors.Designer.cs">
       <DependentUpon>201804071819252_AddAssociateTutors.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805102245455_RefactorCaseManagerId.cs" />
-    <Compile Include="Migrations\201805102245455_RefactorCaseManagerId.Designer.cs">
-      <DependentUpon>201805102245455_RefactorCaseManagerId.cs</DependentUpon>
+    <Compile Include="Migrations\201806121759192_AddCaseManagerUser.cs" />
+    <Compile Include="Migrations\201806121759192_AddCaseManagerUser.Designer.cs">
+      <DependentUpon>201806121759192_AddCaseManagerUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1148,11 +1152,15 @@
     <EmbeddedResource Include="Migrations\201803201857034_AllowNullableGradeLevel.resx">
       <DependentUpon>201803201857034_AllowNullableGradeLevel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804021304333_AddStaffToParent.resx">
+      <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804071819252_AddAssociateTutors.resx">
       <DependentUpon>201804071819252_AddAssociateTutors.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805102245455_RefactorCaseManagerId.resx">
-      <DependentUpon>201805102245455_RefactorCaseManagerId.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201806121759192_AddCaseManagerUser.resx">
+      <DependentUpon>201806121759192_AddCaseManagerUser.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

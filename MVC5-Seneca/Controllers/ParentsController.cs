@@ -75,9 +75,9 @@ namespace MVC5_Seneca.Controllers
                 parent.Address = model.Address;
                 parent.HomePhone = model.HomePhone;
                 parent.CellPhone = model.CellPhone;
-                if (model.CaseManager != null)
+                if (model.CaseManagerUser != null)
                 {
-                    parent.CaseManager = _db.Users.Find(model.CaseManager.Id);
+                    parent.CaseManagerUser = _db.Users.Find(model.CaseManagerUser.Id);
                 }
                 _db.Parents.Add(parent);
                 _db.SaveChanges();
@@ -117,13 +117,13 @@ namespace MVC5_Seneca.Controllers
             foreach (var user in sortedUsers)
                 foreach (var role in user.Roles)
                     if (role.RoleId == staffRoleId)
-                        if (parent.CaseManager == null)
+                        if (parent.CaseManagerUser == null)
                         {
                             staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
                         }
                         else
                         {
-                            if (user.Id == parent.CaseManager.Id)
+                            if (user.Id == parent.CaseManagerUser.Id)
                                 staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = true });
                             else
                                 staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
@@ -136,7 +136,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Parents/Edit/5                                                             
         [HttpPost]
         [ValidateAntiForgeryToken, MethodImpl(MethodImplOptions.NoOptimization)]
-        public ActionResult Edit([Bind(Include = "Id,MotherFather,FirstName,Address,HomePhone,CellPhone,Email,SelectedMotherFather,CaseManager")] AddEditParentViewModel viewModel)
+        public ActionResult Edit([Bind(Include = "Id,MotherFather,FirstName,Address,HomePhone,CellPhone,Email,SelectedMotherFather,CaseManagerUser")] AddEditParentViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -147,45 +147,19 @@ namespace MVC5_Seneca.Controllers
                 sqlString += "CellPhone = '" + viewModel.CellPhone + "',";
                 sqlString += "Email = '" + viewModel.Email + "',";
                 sqlString += "MotherFather = '" + viewModel.SelectedMotherFather + "',";
-                if (!string.IsNullOrEmpty(viewModel.CaseManager.Id))
+                if (!string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
                 {
-                    sqlString += "CaseManager_Id ='" + viewModel.CaseManager.Id + "'";
+                    sqlString += "CaseManagerUser_Id ='" + viewModel.CaseManagerUser.Id + "'";
                 }
                 else
                 {
-                    sqlString += "CaseManager_Id = NULL";
+                    sqlString += "CaseManagerUser_Id = NULL";
                 } 
                 sqlString += " WHERE Id =" + viewModel.Id; 
                 using (var context = new SenecaContext())
                 {
                     context.Database.ExecuteSqlCommand(sqlString);
-                }
-
-                //var caseManager = _db.StaffMembers.Find(viewModel.StaffMember.Id);
-                //var parent = _db.Parents.Find(viewModel.Id);
-                //if (parent != null  )
-                //{
-                //    parent.FirstName = viewModel.FirstName;
-                //    parent.Address = viewModel.Address;
-                //    parent.HomePhone = viewModel.HomePhone;
-                //    parent.CellPhone = viewModel.CellPhone;
-                //    parent.Email = viewModel.Email;
-                //    parent.MotherFather = viewModel.SelectedMotherFather;
-                                                                                                                                          
-                // //Does not get hit unless breakpointed:
-                // parent.SetCaseManager(caseManager);
-
-                //if (viewModel.StaffMember.Id == 0)
-                //{
-                //    // Does not get hit unless breakpointed:
-                //    parent.CaseManager = null;
-                //}
-                //else
-                //{
-                //    parent.CaseManager = (from s in _db.StaffMembers where s.Id == viewModel.StaffMember.Id select s).Single();
-                //}
-                //_db.SaveChanges();
-                // } 
+                } 
 
                 return RedirectToAction("Index");
             }
