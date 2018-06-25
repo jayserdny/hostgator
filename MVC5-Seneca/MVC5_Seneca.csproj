@@ -470,6 +470,7 @@
     <Compile Include="Controllers\TipDocumentsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Utilities.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
