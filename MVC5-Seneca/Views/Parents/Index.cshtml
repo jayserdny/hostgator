@@ -37,7 +37,7 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseManager)
+                @Html.DisplayNameFor(model => model.CaseManagerUser)
             </th>
             <th></th>
         </tr>
@@ -63,7 +63,7 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td style="text-align:center;">
-                @Html.DisplayFor(modelItem => item.CaseManager.LastName)
+                @Html.DisplayFor(modelItem => item.CaseManagerUser.LastName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
