@@ -141,15 +141,11 @@ function UpdateStudentDetails()
             }
 
             if (data.Parent !== null) {
-                if (data.Parent.CaseManager !== null) {
+                if (data.Parent.CaseManagerUser !== null) {
                     phone = "";
                     phoneLabel = "";
-                    if (data.Parent.CaseManager.CellPhone !== null && data.Parent.CellPhone !== "") {
-                        phone = data.Parent.CaseManager.CellPhone;
-                        phoneLabel = " Phone: ";
-                    }
-                    else if (data.Parent.CaseManager.WorkPhone !== null && data.Parent.CaseManager.WorkPhone !== ""){
-                        phone = data.Parent.CaseManager.WorkPhone;
+                    if (data.Parent.CaseManagerUser.PhoneNumber !== null) {
+                        phone = data.Parent.CaseManagerUser.PhoneNumber;
                         phoneLabel = " Phone: ";
                     }
                     else {
@@ -157,15 +153,15 @@ function UpdateStudentDetails()
                     }                                                                              
                     $("#caseManagerPhone").text(phone);
                     
-                    if (data.Parent.CaseManager.Email !== null) {
-                        _latestCaseManager_Email = data.Parent.CaseManager.Email;
-                        $("#caseManagerEmail").text(data.Parent.CaseManager.Email);
+                    if (data.Parent.CaseManagerUser.Email !== null) {
+                        _latestCaseManager_Email = data.Parent.CaseManagerUser.Email;
+                        $("#caseManagerEmail").text(data.Parent.CaseManagerUser.Email);
                     }
                     else {
                         $("#caseManagerEmail").text("");
                     }
 
-                    $("#caseManagerName").text(data.Parent.CaseManager.FirstName + " " + data.Parent.CaseManager.LastName);
+                    $("#caseManagerName").text(data.Parent.CaseManagerUser.FirstName + " " + data.Parent.CaseManagerUser.LastName);
                     $("#caseManagerRow").show();
                     }
                 else {

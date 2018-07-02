@@ -61,7 +61,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Parents/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MotherFather,FirstName,Address,HomePhone,CellPhone,Email,SelectedMotherFather,CaseManager")] AddEditParentViewModel model)
+        public ActionResult Create([Bind(Include = "MotherFather,FirstName,Address,HomePhone,CellPhone,Email,SelectedMotherFather,CaseManagerUser")] AddEditParentViewModel model)
         {
             if (ModelState.IsValid)
             {
