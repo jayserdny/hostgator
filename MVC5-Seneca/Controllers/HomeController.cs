@@ -38,11 +38,8 @@ namespace MVC5_Seneca.Controllers
         public ActionResult MaintainParents()
         {
             return RedirectToAction("Index", "Parents");
-        }        
-        public ActionResult MaintainStaff()
-        {
-            return RedirectToAction("Index", "Staffs");
-        }
+        }       
+      
         public ActionResult MaintainDocumentTypes()
         {
             return RedirectToAction("Index", "DocumentTypes");
