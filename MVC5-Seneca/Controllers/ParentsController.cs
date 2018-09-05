@@ -148,9 +148,20 @@ namespace MVC5_Seneca.Controllers
                     parent.CellPhone = viewModel.CellPhone;
                     parent.Email = viewModel.Email;
                     parent.MotherFather = viewModel.SelectedMotherFather;
-                    if (!string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
+                    if (string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
                     {
-                       parent.CaseManagerUser = (from u in _db.Users where u.Id == viewModel.CaseManagerUser.Id select u).Single();
+                        var sqlString = "UPDATE Parent Set CaseManagerUser_Id = NULL ";
+                        sqlString += "WHERE Id =" + viewModel.Id;
+                        using (var context = new SenecaContext()) 
+                        {
+                            context.Database.ExecuteSqlCommand(sqlString);
+                            //parent.CaseManagerUser = null;   // this statement is not peformed by Entity Framework
+                        }
+                    }
+                    else
+                    {
+                        parent.CaseManagerUser =
+                            (from u in _db.Users where u.Id == viewModel.CaseManagerUser.Id select u).Single();
                     }
 
                     _db.SaveChanges();
