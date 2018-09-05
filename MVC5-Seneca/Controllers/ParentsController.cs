@@ -108,12 +108,13 @@ namespace MVC5_Seneca.Controllers
             };
 
         List<SelectListItem> staffList = new List<SelectListItem>();
-            var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
-            staffList.Add(new SelectListItem { Text = @" (none)", Value = "0", Selected = false });
+            var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();  
+            staffList.Add(new SelectListItem { Text = @" (none)", Value = "", Selected = false });
             var staffRoleId = (from r in _db.Roles where (r.Name == "Staff") select r.Id).Single();
             foreach (var user in sortedUsers)
                 foreach (var role in user.Roles)
                     if (role.RoleId == staffRoleId)
+                    {
                         if (parent.CaseManagerUser == null)
                         {
                             staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
@@ -124,8 +125,9 @@ namespace MVC5_Seneca.Controllers
                                 staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = true });
                             else
                                 staffList.Add(new SelectListItem { Text = user.FirstName + @" " + user.LastName, Value = user.Id, Selected = false });
-                        }   
-        
+                        }
+                    }
+
             viewModel.StaffMembers = staffList;
             return View(viewModel);
         }
@@ -137,28 +139,24 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                var sqlString = "UPDATE Parent Set ";
-                sqlString += "FirstName = '" + viewModel.FirstName + "',";
-                sqlString += "Address = '" + viewModel.Address + "',";
-                sqlString += "HomePhone = '" + viewModel.HomePhone + "',";
-                sqlString += "CellPhone = '" + viewModel.CellPhone + "',";
-                sqlString += "Email = '" + viewModel.Email + "',";
-                sqlString += "MotherFather = '" + viewModel.SelectedMotherFather + "',";
-                if (!string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
+                var parent = _db.Parents.Find(viewModel.Id);
+                if (parent != null)
                 {
-                    sqlString += "CaseManagerUser_Id ='" + viewModel.CaseManagerUser.Id + "'";
-                }
-                else
-                {
-                    sqlString += "CaseManagerUser_Id = NULL";
-                } 
-                sqlString += " WHERE Id =" + viewModel.Id; 
-                using (var context = new SenecaContext())
-                {
-                    context.Database.ExecuteSqlCommand(sqlString);
-                } 
+                    parent.FirstName = viewModel.FirstName;
+                    parent.Address = viewModel.Address;
+                    parent.HomePhone = viewModel.HomePhone;
+                    parent.CellPhone = viewModel.CellPhone;
+                    parent.Email = viewModel.Email;
+                    parent.MotherFather = viewModel.SelectedMotherFather;
+                    if (!string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
+                    {
+                       parent.CaseManagerUser = (from u in _db.Users where u.Id == viewModel.CaseManagerUser.Id select u).Single();
+                    }
 
-                return RedirectToAction("Index");
+                    _db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
             return View(viewModel);
         }
