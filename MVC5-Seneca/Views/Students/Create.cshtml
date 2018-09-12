@@ -9,7 +9,12 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
+    <title>Create</title> 
+    <style>
+        .field-validation-error {
+            color: red
+        }
+    </style>
 </head>
 <body>
     @using (Html.BeginForm()) 
@@ -86,8 +91,11 @@
         </div>
         <br />
         <div class="form-group">
+            <div>
+                <label class="field-validation-error">@Model.ErrorMessage</label>
+            </div> 
             <div class="col-md-10">
-                <input type="submit" value="Create" />
+                <input type="submit" value="Create"/>
             </div>
         </div>
     </div>

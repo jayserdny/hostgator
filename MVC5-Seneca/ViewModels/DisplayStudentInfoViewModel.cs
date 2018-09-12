@@ -30,6 +30,9 @@ namespace MVC5_Seneca.ViewModels
         [DisplayName("Parent:")]
         [JsonProperty] public Parent Parent { get; set; }
 
+        [DisplayName("School:")]
+        [JsonProperty] public School School { get; set; }
+
         [DisplayName("Case Manager:")]
         [JsonProperty]
         public Staff CaseManager { get; set; }

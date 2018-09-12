@@ -145,7 +145,7 @@ $.extend( $.fn, {
 			settings, staticRules, existingRules, data, param, filtered;
 
 		// If nothing is selected, return empty object; can't chain anyway
-		if ( element == null ) {
+		if ( element === null ) {
 			return;
 		}
 
@@ -154,7 +154,7 @@ $.extend( $.fn, {
 			element.name = this.attr( "name" );
 		}
 
-		if ( element.form == null ) {
+		if ( element.form === null ) {
 			return;
 		}
 
@@ -1316,12 +1316,12 @@ $.extend( $.validator, {
 		if ( $.validator.autoCreateRanges ) {
 
 			// Auto-create ranges
-			if ( rules.min != null && rules.max != null ) {
+			if ( !(rules.min === null) && rules.max !== null ) {
 				rules.range = [ rules.min, rules.max ];
 				delete rules.min;
 				delete rules.max;
 			}
-			if ( rules.minlength != null && rules.maxlength != null ) {
+			if ( rules.minlength !== null && rules.maxlength !== null ) {
 				rules.rangelength = [ rules.minlength, rules.maxlength ];
 				delete rules.minlength;
 				delete rules.maxlength;

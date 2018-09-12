@@ -42,7 +42,8 @@ namespace MVC5_Seneca.Controllers
             if (student.Parent != null)
             {
                 var parent = (from p in _db.Parents where p.Id == student.Parent.Id select p).Single();
-            }
+                var school = (from s in _db.Schools where s.Id == student.School.Id select s).Single();
+            } 
 
             student.Reports = student.Reports.OrderByDescending(r => r.DocumentDate).ToList();
 

@@ -32,7 +32,7 @@
  * Get CSS computed property of the given element
  * @method
  * @memberof Popper.Utils
- * @argument {Eement} element
+ * @argument {Element} element
  * @argument {String} property
  */
 function getStyleComputedProperty(element, property) {

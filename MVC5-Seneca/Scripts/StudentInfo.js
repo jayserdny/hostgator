@@ -104,6 +104,11 @@ function UpdateStudentDetails()
             $("#specialClassLabel").text(specialClassLabel);
             $("#specialClass").text(specialClass);
 
+            var schoolLabel = "School: ";
+            var school = data.School.Name;
+            $("#schoolLabel").text(schoolLabel);
+            $("#schoolName").text(school);
+
             var parentEmailLabel;
             var parentEmail;
             if (data.Parent.Email !== null && data.Parent.Email !== "")

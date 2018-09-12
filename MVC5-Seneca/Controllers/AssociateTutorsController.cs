@@ -27,7 +27,7 @@ namespace MVC5_Seneca
                     var sqlString = "SELECT Tutor_Id FROM AssociateTutor WHERE Id = " + tutor.Id;
                     var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
                     tutor.Tutor = _db.Users.Find(tutorId);
-
+                   
                     sqlString = "SELECT Student_Id FROM AssociateTutor WHERE Id = " + tutor.Id;
                     var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
                     tutor.Student = _db.Students.Find(studentId);

@@ -62,17 +62,17 @@
                 </td>
                 <td style="text-align: center">
                     @switch (item.GradeLevel)
-        {
-            case -1:
-                @Html.Raw("Pre-K");
-    break;
-case 0:
-            @Html.Raw("Kindergarten");
-break;
-default:
-            @Html.DisplayFor(modelItem => item.GradeLevel);
-break;
-}
+                {
+                    case -1:
+                        @Html.Raw("Pre-K");
+                    break;
+                    case 0:
+                    @Html.Raw("Kindergarten");
+                    break;
+                    default:
+                    @Html.DisplayFor(modelItem => item.GradeLevel);
+                    break;
+                }
                 </td>
                 <td style="text-align: center">
                     @Html.DisplayFor(modelItem => item.SpecialClass)
@@ -81,7 +81,7 @@ break;
                     @Html.DisplayFor(modelItem => item.Parent.FirstName)
                 </td>
                 <td style="text-align: center">
-                    @Html.DisplayFor(modelItem => item.PrimaryTutor.LastName)
+                    @Html.DisplayFor(modelItem => item.PrimaryTutor.FirstName) @Html.DisplayFor(modelItem => item.PrimaryTutor.LastName)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

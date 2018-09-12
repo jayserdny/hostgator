@@ -36,8 +36,10 @@ namespace MVC5_Seneca.ViewModels
 
         [DisplayName("Parent")]
         public virtual Parent Parent { get; set; } 
-        public virtual ICollection<StudentReport> StudentReports { get; set; }         
+        public virtual ICollection<StudentReport> StudentReports { get; set; }
+
+        [DisplayName("Tutor")]
         public virtual ApplicationUser PrimaryTutor { get; set; }   
-        public virtual string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

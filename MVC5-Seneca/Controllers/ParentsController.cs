@@ -148,6 +148,7 @@ namespace MVC5_Seneca.Controllers
                     parent.CellPhone = viewModel.CellPhone;
                     parent.Email = viewModel.Email;
                     parent.MotherFather = viewModel.SelectedMotherFather;
+
                     if (string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
                     {
                         var sqlString = "UPDATE Parent Set CaseManagerUser_Id = NULL ";

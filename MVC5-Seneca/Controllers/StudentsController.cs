@@ -37,7 +37,8 @@ namespace MVC5_Seneca.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
-            var viewModel = new AddEditStudentViewModel();               
+            var viewModel = new AddEditStudentViewModel();
+            //string errMsg = NewMethod();
             List<SelectListItem> schoolList = new List<SelectListItem>();
             foreach (School school in _db.Schools)
             { 
@@ -64,20 +65,57 @@ namespace MVC5_Seneca.Controllers
             viewModel.Parents = parentList;
             viewModel.Schools = schoolList;
             viewModel.Users = userList;
-            //viewModel.BirthDate = DateTime.Now.AddYears(-10);
+            //viewModel.BirthDate = DateTime.Now.AddYears(-10);     
             return View(viewModel);
         }
 
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
+        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel)
         {
-            if (ModelState.IsValid 
-                && viewModel.FirstName != null               
-                && viewModel.School != null
-                && viewModel.Parent != null)    
+            viewModel.ErrorMessage = null;
+            if (viewModel.School.Id == 0)
             {
+                viewModel.ErrorMessage = "School Required!";
+            }
+            if (viewModel.Parent.Id == 0)
+            {
+                viewModel.ErrorMessage = "Parent Required!";
+            }  
+            if (viewModel.FirstName == null)
+            {
+                viewModel.ErrorMessage = "First Name Required!";
+            }
+
+            if (viewModel.ErrorMessage != null)  // rebuild drop-down lists:
+            {
+                List<SelectListItem> schoolList = new List<SelectListItem>();
+                foreach (School school in _db.Schools)
+                {
+                    schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString() });
+                } 
+                viewModel.Schools = schoolList;   
+                List<SelectListItem> parentList = new List<SelectListItem>();
+                var sortedParents = _db.Parents.OrderBy(p => p.FirstName).ToList();
+                foreach (Parent parent in sortedParents)
+                {
+                    parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString() });
+                }
+                viewModel.Parents = parentList;
+                List<SelectListItem> userList = new List<SelectListItem>();
+                var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
+                foreach (ApplicationUser user in sortedUsers)
+                {
+                    if (user.Id != null)
+                        userList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id });
+                }
+                viewModel.Users = userList;
+                return View(viewModel);
+            }
+
+            if (ModelState.IsValid)            
+            { 
                 Student student = new Student
                 {
                     FirstName = viewModel.FirstName,
@@ -88,16 +126,21 @@ namespace MVC5_Seneca.Controllers
                     Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
                     School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()                   
                 };
+
                 if (viewModel.PrimaryTutor.Id != null)
                 {
                     student.PrimaryTutor = (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
                 }
-
+               
                 _db.Students.Add(student);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
-            }
+            }  
             return RedirectToAction("Create");
+        }
+        private string NewMethod()
+        {
+            return TempData["ErrorMessage"] as string;
         }
 
         // GET: Students/Edit/5

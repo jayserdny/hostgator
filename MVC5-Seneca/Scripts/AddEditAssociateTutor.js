@@ -32,7 +32,6 @@ function LoadStudentArrays(waitForMe) {
             waitForMe();
         },
         error: function () {
-            var dummy = "";
         }
     });
     students = []; studentIds = [];
