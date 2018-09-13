@@ -1,4 +1,5 @@
-﻿@model MVC5_Seneca.EntityModels.ApplicationUser   
+﻿@using MVC5_Seneca.Controllers
+@model MVC5_Seneca.EntityModels.ApplicationUser   
 @{
     Layout = null;
 }
@@ -37,10 +38,11 @@
     {
     <div>
         Administator Menu<br />
+        <a href="@Url.Action("Manual", "Home")">Administrator Manual</a><br />
         <a href="@Url.Action("MaintainUsers", "Home")">Maintain Users</a><br />
         <a href="@Url.Action("MaintainStudents", "Home")">Maintain Students</a><br />
         <a href="@Url.Action("MaintainParents", "Home")">Maintain Parents</a><br />
-        <a href="@Url.Action("MaintainAssociateTutors", "Home")">Maintain Co-Tutors</a><br /> 
+        <a href="@Url.Action("MaintainAssociateTutors", "Home")">Maintain Co-Tutors</a><br />
         <a href="@Url.Action("MaintainDocumentTypes", "Home")">Maintain Document Types</a><br />
         <a href="@Url.Action("MaintainStudentReports", "Home")">Maintain Student Reports</a><br />
         <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Reports</a><br />

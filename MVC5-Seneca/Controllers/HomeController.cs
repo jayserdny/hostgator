@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -135,12 +136,15 @@ namespace MVC5_Seneca.Controllers
             Session.Abandon();
             Session.RemoveAll();    
             return RedirectToAction("Login", "Account");
-        }private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
         }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+
+        public ActionResult Manual()
+        {
+            // Should open in the browser:
+            string filePath = "~/AdministratorManual/Administrator Manual.pdf";
+            return File(filePath, "application/pdf");
+        }
+
     }
 }
