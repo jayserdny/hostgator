@@ -65,44 +65,32 @@
             <br />
             <table>
                 <tr>
-                    <td><strong>Id:</strong></td>
-                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td> 
-                    <td>
-                        <strong id="schoolLabel"></strong>
-                    </td>
-                    <td id="schoolName"></td>
-                    <td>
-                    <td>
-                        <strong id="gradeLevelLabel"></strong>
-                    </td>
+                    @*<td><strong>Id:</strong></td>*@
+                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
+
+                    <td><strong id="gradeLevelLabel"></strong></td>
                     <td id="gradeLevel"></td>
-                    <td>
-                        <strong id="specialClassLabel"></strong>
-                    </td>
-                    <td id="specialClass"></td> 
+                    <td><strong id="specialClassLabel"></strong></td>
+                    <td id="specialClass"></td>
+                    <td><strong id="schoolLabel"></strong></td>
+                    <td id="schoolName"></td>
                 </tr>
-                 <tr>
+                <tr>
                     <td></td>
-                    <td style="text-align:right">
-                        <strong id="motherFather"></strong>
-                    </td>
+                    <td style="text-align:right"><strong id="motherFather"></strong></td>
                     <td id="parentFirstName"></td>
-                    <td>
-                        <strong id="parentPhoneLabel"></strong>
-                    </td>
+                    <td><strong id="parentPhoneLabel"></strong></td>
                     <td id="parentPhone"></td>
-                    <td>
-                        <strong id="parentEmailLabel"></strong>
-                    </td>
-                    <td id="parentEmail"></td>                      
+                    <td><strong id="parentEmailLabel"></strong></td>
+                    <td id="parentEmail"></td>
                 </tr>                
                 <tr id="primaryTutorRow" style="display:none">                    
                     <td></td>
-                    <td style="text-align:right"><strong>Tutor: </strong></td>
+                    <td style="text-align:right"><strong>Tutor:</strong></td>
                     <td id="primaryTutorName"></td>
-                    <td style="text-align:right"><strong>Phone: </strong> </td>
+                    <td><strong>Phone:</strong> </td>
                     <td id="primaryTutorPhone"></td>
-                    <td style="text-align:right"><strong>Email:</strong> </td>
+                    <td><strong>Email:</strong> </td>
                     <td id="primaryTutorEmail"></td>
                 </tr>
                 @* Associtate tutor rows are not created dynamically because then jscript does not respond to the email click*@ 
@@ -119,16 +107,16 @@
                     <td></td>
                     <td style="text-align:right"><strong>Tutor:</strong></td>
                     <td id="associateTutor1Name"></td>
-                    <td><strong>Phone:</strong></td>
+                    <td style="text-align:right"><strong>Phone:</strong></td>
                     <td id="associateTutor1Phone"></td>
-                    <td><strong>Email:</strong></td>
+                    <td style="text-align:right"><strong>Email:</strong></td>
                     <td id="associateTutor1Email"></td>
                 </tr>
                 <tr id="associateTutor2Row" style="display:none">                    
                     <td></td>
-                    <td style="text-align:right"><strong>Tutor:</strong></td>
+                    <td style="text-align:right"><strong>ATutor:</strong></td>
                     <td id="associateTutor2Name"></td>
-                    <td><strong>Phone:</strong></td>
+                    <td style="text-align:right"><strong>Phone:</strong></td>
                     <td id="associateTutor2Phone"></td>
                     <td><strong>Email:</strong></td>
                     <td id="associateTutor2Email"></td>

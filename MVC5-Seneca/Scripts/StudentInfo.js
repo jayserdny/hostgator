@@ -81,15 +81,16 @@ function UpdateStudentDetails()
             var gradeLevelLabel = "";
             var gradeLevel = "";
             if (data.GradeLevel > 0) {
-                gradeLevelLabel = "Grade Level: ";
+                //gradeLevelLabel = "Grade Level: ";
+                gradeLevelLabel = "Grade: ";
                 gradeLevel = data.GradeLevel;
             }
             if (data.GradeLevel === 0) {
-                gradeLevelLabel = "Grade Level: ";
+                gradeLevelLabel = "Grade: ";
                 gradeLevel = "Kindergarten";
             }
             if (data.GradeLevel === -1) {
-                gradeLevelLabel = "Grade Level: ";
+                gradeLevelLabel = "Grade: ";
                 gradeLevel = "Pre-K";
             }
             $("#gradeLevelLabel").text(gradeLevelLabel);
