@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.EntityModels.Teacher
+﻿@model MVC5_Seneca.ViewModels.AddEditTeacherViewModel
 
 @{
     Layout = null;
@@ -12,10 +12,10 @@
     <title>Create</title>
 </head>
 <body>
-    @using (Html.BeginForm()) 
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        
+
         <div class="form-horizontal">
             <h4>Teacher</h4>
             <hr />
@@ -27,7 +27,7 @@
                     @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -35,7 +35,15 @@
                     @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.School, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => x.School.Id, new SelectList(Model.Schools, "Value", "Text"), " Select") (Required)
+                    @Html.ValidationMessageFor(model => model.School.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.WorkPhone, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -43,7 +51,7 @@
                     @Html.ValidationMessageFor(model => model.WorkPhone, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.CellPhone, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -51,7 +59,7 @@
                     @Html.ValidationMessageFor(model => model.CellPhone, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -59,7 +67,7 @@
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
-        <br>
+            <br>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Create" class="btn btn-default" />
@@ -67,7 +75,7 @@
             </div>
         </div>
     }
-        <br/>
+    <br />
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>

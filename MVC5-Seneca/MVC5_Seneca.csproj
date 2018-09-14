@@ -514,6 +514,7 @@
     <Compile Include="ViewModels\AddEditParentViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModels\AddEditTeacherViewModel.cs" />
     <Compile Include="ViewModels\AddEditTipDocumentViewModel.cs" />
     <Compile Include="ViewModels\AddEditTutorNoteViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
