@@ -12,41 +12,52 @@
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Tutor)*@  
-                Co-Tutor
-            </th>
-            <th>
-              @Html.DisplayNameFor(model => model.Student)
-            </th>            
-        </tr>
+     <p>
+            @Html.ActionLink("Create New", "Create")
+    </p> 
+        <table class="table">
+            <tr>
+                <th style ="text-align: left">The first tutor is asigned in the Student record.</th>
+            </tr>
+            <tr>
+                <th>Add additional tutors here to have their data show up on the Student Informations screen.</th>
+            </tr> 
+            <tr><th></th></tr>
+        </table>
+        <table class="table">
+           
+            <tr>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Tutor)*@
+                    Co-Tutor
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student)
+                </th>
+            </tr>
 
-        @foreach (var item in Model) {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tutor.FirstName) @Html.DisplayFor(modelItem => item.Tutor.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.FirstName)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+        <br />
+        <table>
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tutor.FirstName) @Html.DisplayFor(modelItem => item.Tutor.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Student.FirstName)
-                </td>
-                <td>
-                    @Html.ActionLink(" Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
                 </td>
             </tr>
-        } 
-    </table>
-    <br />
-    <table>
-        <tr>
-            <td>
-                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
-            </td>
-        </tr>
-    </table>
+        </table>
 </body>
 </html>

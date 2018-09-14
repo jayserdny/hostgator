@@ -4,9 +4,9 @@ namespace MVC5_Seneca.EntityModels
 {
     public class Teacher
     {
-        public Teacher(string firstName)
-        {
-            FirstName = firstName; }
+        //public Teacher(string firstName)
+        //{
+        //    FirstName = firstName; }
 
         public int Id { get; set; }
 

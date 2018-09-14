@@ -42,6 +42,7 @@
         <a href="@Url.Action("MaintainUsers", "Home")">Maintain Users</a><br />
         <a href="@Url.Action("MaintainStudents", "Home")">Maintain Students</a><br />
         <a href="@Url.Action("MaintainParents", "Home")">Maintain Parents</a><br />
+        <a href="@Url.Action("MaintainTeachers", "Home")">Maintain Teachers</a><br />
         <a href="@Url.Action("MaintainAssociateTutors", "Home")">Maintain Co-Tutors</a><br />
         <a href="@Url.Action("MaintainDocumentTypes", "Home")">Maintain Document Types</a><br />
         <a href="@Url.Action("MaintainStudentReports", "Home")">Maintain Student Reports</a><br />
@@ -62,37 +63,39 @@
     <div>
 
         Tutor Menu<br />
-        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />  
-        <a href="@Url.Action("Index", "TeachingTips")">Teaching Tips</a><br /> 
-        <a href="@Url.Action("Contacts", "Home")">Contacts</a><br /> 
-          
-        @if (User.IsInRole("Tutor" ))
-        {
-            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
-            <br/>
-            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
-            <br/>
-            <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
-            <br/>
-        } 
-        
-        @if (User.IsInRole("Staff" ))
-        {
-            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
-            <br/>
-            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a> 
-            <br/>
-        } 
+        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />
+        <a href="@Url.Action("Index", "TeachingTips")">Teaching Tips</a><br />
+        <a href="@Url.Action("Contacts", "Home")">Contacts</a><br />
 
-       
+        @if (User.IsInRole("Tutor"))
+        {
+            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
+            <br />
+            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
+            <br />
+            <a href="@Url.Action("MaintainTeachers", "Home")">Add/Edit Teacher</a>
+            <br />
+            <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
+            <br />
+        }
+
+        @if (User.IsInRole("Staff"))
+        {
+            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
+            <br />
+            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
+            <br />
+        }
+
+
         <a href="@Url.Action("UpdateMyProfile", "Home")">Update My Profile</a><br />
-        <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />   
+        <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-    {
-        <br/>
-        @Html.AntiForgeryToken()
-        <a href="@Url.Action("Logout", "Home")">LogOut</a>
-}
+        {
+            <br />
+            @Html.AntiForgeryToken()
+            <a href="@Url.Action("Logout", "Home")">LogOut</a>
+        }
     </div>
 
 </body>

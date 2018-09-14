@@ -145,6 +145,9 @@ namespace MVC5_Seneca.Controllers
             string filePath = "~/AdministratorManual/Administrator Manual.pdf";
             return File(filePath, "application/pdf");
         }
-
+        public ActionResult MaintainTeachers()
+        {
+            return RedirectToAction("Index", "Teachers");
+        }
     }
 }
