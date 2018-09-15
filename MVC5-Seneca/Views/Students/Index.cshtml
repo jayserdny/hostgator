@@ -42,6 +42,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PrimaryTutor)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Teacher)
+                </th>
                 <th></th>
             </tr>
 
@@ -82,6 +85,9 @@
                 </td>
                 <td style="text-align: center">
                     @Html.DisplayFor(modelItem => item.PrimaryTutor.FirstName) @Html.DisplayFor(modelItem => item.PrimaryTutor.LastName)
+                </td> 
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Teacher.FirstName) @Html.DisplayFor(modelItem => item.Teacher.LastName)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

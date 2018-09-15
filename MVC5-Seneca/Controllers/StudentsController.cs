@@ -61,6 +61,13 @@ namespace MVC5_Seneca.Controllers
                     userList.Add(new SelectListItem {Text = user.LastName + @", " + user.FirstName, Value = user.Id});
             }
 
+            List<SelectListItem> teacherList = new List<SelectListItem>();
+            var sortedTeachers = _db.Teachers.OrderBy(p => p.LastName).ToList();
+            foreach (Teacher teacher in sortedTeachers)
+            {
+                teacherList.Add(new SelectListItem { Text = teacher.LastName + @", " +teacher.FirstName , Value = teacher.Id.ToString() });
+            }
+
             viewModel.SpecialClass = false;
             viewModel.Parents = parentList;
             viewModel.Schools = schoolList;
@@ -72,7 +79,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel)
+        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor,Teacher")] AddEditStudentViewModel viewModel)
         {
             viewModel.ErrorMessage = null;
             if (viewModel.School.Id == 0)
@@ -97,12 +104,14 @@ namespace MVC5_Seneca.Controllers
                 } 
                 viewModel.Schools = schoolList;   
                 List<SelectListItem> parentList = new List<SelectListItem>();
+
                 var sortedParents = _db.Parents.OrderBy(p => p.FirstName).ToList();
                 foreach (Parent parent in sortedParents)
                 {
                     parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString() });
                 }
                 viewModel.Parents = parentList;
+
                 List<SelectListItem> userList = new List<SelectListItem>();
                 var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
                 foreach (ApplicationUser user in sortedUsers)
@@ -111,6 +120,17 @@ namespace MVC5_Seneca.Controllers
                         userList.Add(new SelectListItem { Text = user.LastName + @", " + user.FirstName, Value = user.Id });
                 }
                 viewModel.Users = userList;
+
+                List<SelectListItem> teacherList = new List<SelectListItem>();
+                var sortedTeachers = _db.Teachers.OrderBy(p => p.LastName).ToList();
+                foreach (Teacher teacher in sortedTeachers)
+                    teacherList.Add(new SelectListItem
+                    {
+                        Text = teacher.LastName + @", " + teacher.FirstName,
+                        Value = teacher.Id.ToString()
+                    });
+                viewModel.Teachers = teacherList;
+
                 return View(viewModel);
             }
 
@@ -124,14 +144,15 @@ namespace MVC5_Seneca.Controllers
                     GradeLevel = viewModel.GradeLevel,
                     SpecialClass = viewModel.SpecialClass,
                     Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
-                    School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()                   
+                    School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single(),
+                    Teacher = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single()
                 };
 
                 if (viewModel.PrimaryTutor.Id != null)
                 {
                     student.PrimaryTutor = (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
-                }
-               
+                }          
+
                 _db.Students.Add(student);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -205,7 +226,34 @@ namespace MVC5_Seneca.Controllers
                             Text = user.LastName + @", " + user.FirstName, Value = user.Id, Selected = false
                         });
                 }
-            
+
+            List<SelectListItem> teacherlList = new List<SelectListItem>();
+            var sortedTeachers = _db.Teachers.OrderBy(p => p.LastName).ToList();
+            foreach (Teacher teacher in sortedTeachers)
+            {
+                if (student.Teacher != null)
+                {
+                    if (teacher.Id == student.Teacher.Id)
+                        teacherlList.Add(new SelectListItem
+                        {
+                            Text = teacher.LastName + @", " + teacher.FirstName,Value = teacher.Id.ToString(),Selected = true
+                        });
+                    else
+                        teacherlList.Add(new SelectListItem
+                        {
+                            Text = teacher.LastName + @", " + teacher.FirstName,Value = teacher.Id.ToString(),Selected = false
+                        });}
+                else
+                teacherlList.Add(new SelectListItem
+                {
+                    Text = teacher.LastName + @", " + teacher.FirstName,
+                    Value = teacher.Id.ToString(),
+                    Selected = false
+                });
+            }
+
+            viewModel.Teachers = teacherlList;
+            viewModel.Schools = schoolList;
             viewModel.Id = student.Id;
             viewModel.Parents = parentList;
             viewModel.Schools = schoolList;
@@ -251,9 +299,13 @@ namespace MVC5_Seneca.Controllers
 
                     if (viewModel.PrimaryTutor.Id != null && viewModel.PrimaryTutor.Id != "0")
                     {
-                        student.PrimaryTutor =
-                            (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
-                    }  
+                        student.PrimaryTutor = (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
+                    }
+
+                    if (viewModel.Teacher != null)
+                    {
+                        student.Teacher = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single();
+                    }
                 }
 
                 _db.SaveChanges();

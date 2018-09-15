@@ -462,6 +462,10 @@
     <Compile Include="Migrations\201806121759192_AddCaseManagerUser.Designer.cs">
       <DependentUpon>201806121759192_AddCaseManagerUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809142113562_AddTeacherToStudent.cs" />
+    <Compile Include="Migrations\201809142113562_AddTeacherToStudent.Designer.cs">
+      <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1154,6 +1158,9 @@
     <EmbeddedResource Include="Migrations\201806121759192_AddCaseManagerUser.resx">
       <DependentUpon>201806121759192_AddCaseManagerUser.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809142113562_AddTeacherToStudent.resx">
+      <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
