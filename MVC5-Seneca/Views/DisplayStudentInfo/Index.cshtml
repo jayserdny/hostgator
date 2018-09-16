@@ -43,6 +43,10 @@
             color: blue;
             text-decoration: underline;
         }
+        #teacherEmail {
+            color: blue;
+            text-decoration: underline;
+        }
         #caseManagerEmail {
             color: blue;
             text-decoration: underline;
@@ -65,7 +69,6 @@
             <br />
             <table>
                 <tr>
-                    @*<td><strong>Id:</strong></td>*@
                     <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
 
                     <td><strong id="gradeLevelLabel"></strong></td>
@@ -83,8 +86,8 @@
                     <td id="parentPhone"></td>
                     <td><strong id="parentEmailLabel"></strong></td>
                     <td id="parentEmail"></td>
-                </tr>                
-                <tr id="primaryTutorRow" style="display:none">                    
+                </tr>
+                <tr id="primaryTutorRow" style="display:none">
                     <td></td>
                     <td style="text-align:right"><strong>Tutor:</strong></td>
                     <td id="primaryTutorName"></td>
@@ -93,8 +96,8 @@
                     <td><strong>Email:</strong> </td>
                     <td id="primaryTutorEmail"></td>
                 </tr>
-                @* Associtate tutor rows are not created dynamically because then jscript does not respond to the email click*@ 
-                <tr id="associateTutor0Row" style="display:none">                    
+                @* Associtate tutor rows are not created dynamically because then jscript does not respond to the email click*@
+                <tr id="associateTutor0Row" style="display:none">
                     <td></td>
                     <td style="text-align:right"><strong>Tutor:</strong></td>
                     <td id="associateTutor0Name"></td>
@@ -103,7 +106,7 @@
                     <td><strong>Email:</strong></td>
                     <td id="associateTutor0Email"></td>
                 </tr>
-                <tr id="associateTutor1Row" style="display:none">                    
+                <tr id="associateTutor1Row" style="display:none">
                     <td></td>
                     <td style="text-align:right"><strong>Tutor:</strong></td>
                     <td id="associateTutor1Name"></td>
@@ -112,20 +115,29 @@
                     <td style="text-align:right"><strong>Email:</strong></td>
                     <td id="associateTutor1Email"></td>
                 </tr>
-                <tr id="associateTutor2Row" style="display:none">                    
+                <tr id="associateTutor2Row" style="display:none">
                     <td></td>
-                    <td style="text-align:right"><strong>ATutor:</strong></td>
+                    <td style="text-align:right"><strong>Tutor:</strong></td>
                     <td id="associateTutor2Name"></td>
                     <td style="text-align:right"><strong>Phone:</strong></td>
                     <td id="associateTutor2Phone"></td>
                     <td><strong>Email:</strong></td>
                     <td id="associateTutor2Email"></td>
                 </tr>
-                <tr id="caseManagerRow" style="display:none">                    
+                <tr id="teacherRow" style="display:none">
                     <td></td>
-                    <td style="text-align: right"><strong>Case Manager: </strong></td>
+                    <td style="text-align:right"><strong>Teacher:</strong></td>
+                    <td id="teacherName"></td>
+                    <td><strong>Phone:</strong> </td>
+                    <td id="teacherPhone"></td>
+                    <td><strong>Email:</strong> </td>
+                    <td id="teacherEmail"></td>
+                </tr>
+                <tr id="caseManagerRow" style="display:none">
+                    <td></td>
+                    <td style="text-align: right"><strong>Case Manager:</strong></td>
                     <td id="caseManagerName"></td>
-                    <td style="text-align: right"><strong>Phone: </strong></td>
+                    <td style="text-align: right"><strong>Phone:</strong></td>
                     <td id="caseManagerPhone"></td>
                     <td style="text-align: right"><strong>Email:</strong> </td>
                     <td id="caseManagerEmail"></td>
@@ -294,6 +306,10 @@
     <script type="text/javascript">
         $("#associateTutor2Email").click(function () { EmailToAssociateTutor(2); });
     </script>   
+     
+    <script type="text/javascript">
+        $("#teacherEmail").click(function () { EmailToTeacher(_latestTeacher_Email); });
+    </script>  
 
     <script type="text/javascript">
         $("#caseManagerEmail").click(function () { EmailToCaseManager(_latestCaseManager_Email); });

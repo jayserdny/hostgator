@@ -13,6 +13,7 @@ var _latestParentEmail;
 var _latestTutorNote_Id;
 var _latestAuthor_Email;
 var _latestPrimaryTutor_Email;
+var _latestTeacher_Email;
 var _latestCaseManager_Email;
 var weekday = new Array(7);
 weekday[0] = "Sun"; weekday[1] = "Mon"; weekday[2] = "Tue"; weekday[3] = "Wed"; weekday[4] = "Thu"; weekday[5] = "Fri"; weekday[6] = "Sat"; 
@@ -33,6 +34,7 @@ function UpdateStudentDetails()
     $("#associateTutor0Row").hide();
     $("#associateTutor1Row").hide();
     $("#associateTutor2Row").hide();
+    $("#teacherRow").hide();
     $("#caseManagerRow").hide();
     $("#Save-Button").hide();
     var studentId = $(this).val();
@@ -146,13 +148,28 @@ function UpdateStudentDetails()
                 $("#primaryTutorRow").hide();
             }
 
+            if (data.Teacher !== null) {
+                $("#teacherName").text(data.Teacher.FirstName + " " + data.Teacher.LastName);
+                $("#teacherPhone").text(data.Teacher.WorkPhone);
+                if (data.Teacher.CellPhone !== null) {
+                    $("#teacherPhone").text(data.Teacher.CellPhone);
+                }
+                if (data.Teacher.Email !== null) {
+                    _latestTeacher_Email = data.Teacher.Email;
+                    $("#teacherEmail").text(data.Teacher.Email);
+                } else {
+                    $("#teacherEmail").text("");
+                }
+                $("#teacherRow").show();
+            }
+
             if (data.Parent !== null) {
                 if (data.Parent.CaseManagerUser !== null) {
                     phone = "";
                     phoneLabel = "";
                     if (data.Parent.CaseManagerUser.PhoneNumber !== null) {
                         phone = data.Parent.CaseManagerUser.PhoneNumber;
-                        phoneLabel = " Phone: ";
+                        phoneLabel = "Phone: ";
                     }
                     else {
                         phone = "";          
@@ -539,6 +556,12 @@ function EmailToPrimaryTutor(latestPrimaryTutorEmail) {
 function EmailToAssociateTutor(index) {
     var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
     var url = "mailto:" + associateTutorEmails[index] + subject;
+    window.open(url, '_blank');
+}
+
+function EmailToTeacher(index) {
+    var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
+    var url = "mailto:" + _latestTeacher_Email + subject;
     window.open(url, '_blank');
 }
 

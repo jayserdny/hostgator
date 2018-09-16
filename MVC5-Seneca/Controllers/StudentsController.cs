@@ -53,7 +53,7 @@ namespace MVC5_Seneca.Controllers
                parentList.Add(new SelectListItem { Text = parent.FirstName, Value = parent.Id.ToString() });
             }
 
-            List<SelectListItem> userList = new List<SelectListItem>();
+            List<SelectListItem> userList = new List<SelectListItem>(); 
             var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             foreach (ApplicationUser user in sortedUsers)
             {
@@ -63,6 +63,7 @@ namespace MVC5_Seneca.Controllers
 
             List<SelectListItem> teacherList = new List<SelectListItem>();
             var sortedTeachers = _db.Teachers.OrderBy(p => p.LastName).ToList();
+            teacherList.Add(new SelectListItem { Text =  @"(none) ", Value = "0", Selected = true });
             foreach (Teacher teacher in sortedTeachers)
             {
                 teacherList.Add(new SelectListItem { Text = teacher.LastName + @", " +teacher.FirstName , Value = teacher.Id.ToString() });
@@ -71,6 +72,7 @@ namespace MVC5_Seneca.Controllers
             viewModel.SpecialClass = false;
             viewModel.Parents = parentList;
             viewModel.Schools = schoolList;
+            viewModel.Teachers = teacherList;
             viewModel.Users = userList;
             //viewModel.BirthDate = DateTime.Now.AddYears(-10);     
             return View(viewModel);
@@ -144,15 +146,17 @@ namespace MVC5_Seneca.Controllers
                     GradeLevel = viewModel.GradeLevel,
                     SpecialClass = viewModel.SpecialClass,
                     Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single(),
-                    School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single(),
-                    Teacher = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single()
+                    School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()
                 };
 
                 if (viewModel.PrimaryTutor.Id != null)
                 {
                     student.PrimaryTutor = (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
-                }          
-
+                }
+                if (viewModel.Teacher .Id != 0)
+                {
+                    student.Teacher  = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single();
+                }
                 _db.Students.Add(student);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -206,7 +210,7 @@ namespace MVC5_Seneca.Controllers
 
             List<SelectListItem> primaryTutorList = new List<SelectListItem>
             {  
-                new SelectListItem { Text = @"- Select ID -", Value = "0", Selected = true }
+                new SelectListItem { Text = @"(none)", Value = "0", Selected = true }
             }; 
             var sortedUsers = _db.Users.OrderBy(u => u.LastName).ThenBy(u => u.FirstName).ToList();
             foreach (ApplicationUser user in sortedUsers)
@@ -227,32 +231,53 @@ namespace MVC5_Seneca.Controllers
                         });
                 }
 
-            List<SelectListItem> teacherlList = new List<SelectListItem>();
+            List<SelectListItem> teacherList = new List<SelectListItem>();
+            bool firstTeacher = true;
+            //teacherList.Add(new SelectListItem { Text = @"(none) ", Value = "0", Selected = false });
             var sortedTeachers = _db.Teachers.OrderBy(p => p.LastName).ToList();
             foreach (Teacher teacher in sortedTeachers)
             {
                 if (student.Teacher != null)
                 {
+                    if (firstTeacher)
+                    {
+                        teacherList.Add(new SelectListItem {Text = @"(none) ", Value = "0", Selected = false});
+                        firstTeacher = false;
+                    }
+
                     if (teacher.Id == student.Teacher.Id)
-                        teacherlList.Add(new SelectListItem
+                        teacherList.Add(new SelectListItem
                         {
-                            Text = teacher.LastName + @", " + teacher.FirstName,Value = teacher.Id.ToString(),Selected = true
+                            Text = teacher.LastName + @", " + teacher.FirstName,
+                            Value = teacher.Id.ToString(),
+                            Selected = true
                         });
                     else
-                        teacherlList.Add(new SelectListItem
+                        teacherList.Add(new SelectListItem
                         {
-                            Text = teacher.LastName + @", " + teacher.FirstName,Value = teacher.Id.ToString(),Selected = false
-                        });}
+                            Text = teacher.LastName + @", " + teacher.FirstName,
+                            Value = teacher.Id.ToString(),
+                            Selected = false
+                        });
+                }
                 else
-                teacherlList.Add(new SelectListItem
                 {
-                    Text = teacher.LastName + @", " + teacher.FirstName,
-                    Value = teacher.Id.ToString(),
-                    Selected = false
-                });
+                    if (firstTeacher)
+                    {
+                        teacherList.Add(new SelectListItem {Text = @"(none) ", Value = "0", Selected = true});
+                        firstTeacher = false;
+                    }
+
+                    teacherList.Add(new SelectListItem
+                    {
+                        Text = teacher.LastName + @", " + teacher.FirstName,
+                        Value = teacher.Id.ToString(),
+                        Selected = false
+                    });
+                }
             }
 
-            viewModel.Teachers = teacherlList;
+            viewModel.Teachers = teacherList;
             viewModel.Schools = schoolList;
             viewModel.Id = student.Id;
             viewModel.Parents = parentList;
@@ -275,7 +300,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor")] AddEditStudentViewModel viewModel) 
+        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor,Teacher")] AddEditStudentViewModel viewModel) 
         {
             if (ModelState.IsValid)
             {
@@ -296,15 +321,32 @@ namespace MVC5_Seneca.Controllers
                     {
                         student.School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single();
                     }
-
-                    if (viewModel.PrimaryTutor.Id != null && viewModel.PrimaryTutor.Id != "0")
+                                                
+                    if (viewModel.PrimaryTutor.Id != "0")
                     {
                         student.PrimaryTutor = (from t in _db.Users where t.Id == viewModel.PrimaryTutor.Id select t).Single();
                     }
-
-                    if (viewModel.Teacher != null)
+                    else
                     {
-                        student.Teacher = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single();
+                        var sqlString = "UPDATE Student Set PrimaryTutor_Id = NULL ";
+                        sqlString += "WHERE Id =" + viewModel.Id;
+                        using (var context = new SenecaContext())
+                        {
+                            context.Database.ExecuteSqlCommand(sqlString);
+                            // student.PrimaryTutor = null;   // this statement is not peformed by Entity Framework
+                        } 
+                    }
+
+                    if (viewModel.Teacher  != null)
+                    {
+                        if (viewModel.Teacher.Id == 0)
+                        {
+                            student.Teacher = null;
+                        }
+                        else
+                        {
+                            student.Teacher = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single();
+                        }
                     }
                 }
 

@@ -11,7 +11,7 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("First Name")]
         public string FirstName { get; set; }  
-        public virtual School School { get; set; }
+        public virtual School School { get; set; }   // School NOT MAINTAINED in this record (assigned in Student Record) 
 
         [DisplayName("Work Phone")]
         public string WorkPhone { get; set; }

@@ -82,7 +82,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PrimaryTutor, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-5">
-                @Html.DropDownListFor(x => x.PrimaryTutor.Id, new SelectList(Model.Users, "Value", "Text"))
+                @Html.DropDownListFor(x => x.PrimaryTutor.Id,Model.Users)
                 @Html.ValidationMessageFor(model => model.PrimaryTutor.Id, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -90,7 +90,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Teacher, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-5">
-                @Html.DropDownListFor(x => x.Teacher.Id, new SelectList(Model.Teachers, "Value", "Text"))
+                @Html.DropDownListFor(x => x.Teacher.Id, Model.Teachers)
                 @Html.ValidationMessageFor(model => model.Teacher.Id, "", new { @class = "text-danger" })
             </div>
         </div>

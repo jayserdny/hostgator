@@ -49,20 +49,24 @@ namespace MVC5_Seneca.Controllers
 
             foreach (var record in _db.AssociateTutors)
             {            
-                var sqlString = "";
+                //var sqlString = "";
                 using (var context = new SenecaContext())
                 {
-                    sqlString = "SELECT Student_Id FROM AssociateTutor WHERE Id = " + record.Id;
-                        var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();     
+                    //sqlString = "SELECT Student_Id FROM AssociateTutor WHERE Id = " + record.Id;
+                    //var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault(); 
+                    var studentId =(from t in _db.AssociateTutors where t.Id == record.Id select t.Id).Single();
                     if (studentId == id)
                     {
-                        sqlString = "SELECT Tutor_Id FROM AssociateTutor WHERE Id = " + record.Id;
-                        var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                        //sqlString = "SELECT Tutor_Id FROM AssociateTutor WHERE Id = " + record.Id;
+                        //var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                        var tutorId = (from t in _db.AssociateTutors where t.Id == record.Id select t.Id).Single();
                         var tutor = _db.Users.Find(tutorId);  
                         student.AssociateTutors.Add(tutor);
                     }
                 }
             }
+
+            student.Teacher = (from t in _db.Teachers where t.Id == student.Teacher.Id select t).Single();
 
             try
             {                                                                                                                   
