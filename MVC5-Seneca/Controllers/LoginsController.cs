@@ -39,9 +39,7 @@ namespace MVC5_Seneca.Controllers
             return View();
         }
 
-        // POST: Logins/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Logins/Create                            
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,UserName,FirstName,LastName,DateTime,Status")] Login login)
@@ -71,9 +69,7 @@ namespace MVC5_Seneca.Controllers
             return View(login);
         }
 
-        // POST: Logins/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Logins/Edit/5                     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,DateTime,Status")] Login login)

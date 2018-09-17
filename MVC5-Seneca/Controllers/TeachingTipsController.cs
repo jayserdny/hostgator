@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types;
@@ -12,7 +8,7 @@ using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
 
 namespace MVC5_Seneca.Controllers
-{  
+{
     public class TeachingTipsController : Controller
     {
         private readonly SenecaContext _db = new SenecaContext();
@@ -27,7 +23,6 @@ namespace MVC5_Seneca.Controllers
             string[] htmlStrings = new string [sortedTips.Count + tipsCategories.Count];
             int iCategory = 0;
             int iDoc = 0;
-            var html = "";
 
             foreach (var cat in tipsCategories)
             { 
@@ -47,12 +42,12 @@ namespace MVC5_Seneca.Controllers
             foreach (var cat in tipsCategories)
             {  
                 bool done = false;
-                while (!done)
+                while (!done)       // TODO
                 {
                     if (cat.Name != oldCategoryName)
                     {
                         iDoc++;                                               
-                        html = "<br/><strong>" + cat.Name + "</strong>"; 
+                        var html = "<br/><strong>" + cat.Name + "</strong>"; 
                         htmlStrings[iDoc] = html;
 
                         oldCategoryName = cat.Name;

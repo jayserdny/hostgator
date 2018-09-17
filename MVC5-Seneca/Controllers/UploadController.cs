@@ -49,14 +49,14 @@ namespace MVC5_Seneca.Controllers
         }
 
         // POST: Upload                                  
-        public ActionResult Upload(HttpPostedFileBase file, int? student_Id, int? documentType_Id)      //*UploadFileViewModel model*/
+        public ActionResult Upload(HttpPostedFileBase file, int? studentId, int? documentTypeId)
         {
-            if (student_Id == null ) 
+            if (studentId == null ) 
             {
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
             }
-            if (documentType_Id == null)
+            if (documentTypeId == null)
             {
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
@@ -105,8 +105,8 @@ namespace MVC5_Seneca.Controllers
                     var studentReport = new StudentReport
                     {
                         DocumentLink = path.Replace(@"\", "/"),
-                        Student = _db.Students.Find(student_Id),
-                        DocumentType = _db.DocumentTypes.Find(documentType_Id),
+                        Student = _db.Students.Find(studentId),
+                        DocumentType = _db.DocumentTypes.Find(documentTypeId),
                         DocumentDate = DateTime.Now
                     };
                     _db.StudentReports.Add(studentReport);

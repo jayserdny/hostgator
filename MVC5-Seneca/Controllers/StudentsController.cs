@@ -163,10 +163,6 @@ namespace MVC5_Seneca.Controllers
             }  
             return RedirectToAction("Create");
         }
-        private string NewMethod()
-        {
-            return TempData["ErrorMessage"] as string;
-        }
 
         // GET: Students/Edit/5
         public ActionResult Edit(int? id)
@@ -232,8 +228,7 @@ namespace MVC5_Seneca.Controllers
                 }
 
             List<SelectListItem> teacherList = new List<SelectListItem>();
-            bool firstTeacher = true;
-            //teacherList.Add(new SelectListItem { Text = @"(none) ", Value = "0", Selected = false });
+            bool firstTeacher = true;                                                                                                       
             var sortedTeachers = _db.Teachers.OrderBy(p => p.LastName).ToList();
             foreach (Teacher teacher in sortedTeachers)
             {
@@ -328,12 +323,12 @@ namespace MVC5_Seneca.Controllers
                     }
                     else
                     {
+                        // student.PrimaryTutor = null;   // this statement is not peformed by Entity Framework
                         var sqlString = "UPDATE Student Set PrimaryTutor_Id = NULL ";
                         sqlString += "WHERE Id =" + viewModel.Id;
                         using (var context = new SenecaContext())
                         {
                             context.Database.ExecuteSqlCommand(sqlString);
-                            // student.PrimaryTutor = null;   // this statement is not peformed by Entity Framework
                         } 
                     }
 

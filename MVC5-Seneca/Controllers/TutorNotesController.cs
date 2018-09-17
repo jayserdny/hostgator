@@ -184,8 +184,7 @@ namespace MVC5_Seneca.Controllers
             var comments = (from t in _db.TutorNotes orderby t.Date descending where t.Student.Id == id select t).ToList();
             try
             {
-                String json = JsonConvert.SerializeObject(comments, Formatting.Indented);
-                //Debug.WriteLine(json);
+                String json = JsonConvert.SerializeObject(comments, Formatting.Indented);   
 
                 return Content(json, "application/json");
             }

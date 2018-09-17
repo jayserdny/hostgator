@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
@@ -37,19 +35,11 @@ namespace MVC5_Seneca.Controllers
         // GET: Teachers/Create
         public ActionResult Create()
         {
-            var viewModel = new AddEditTeacherViewModel();        
-            //List<SelectListItem> schoolList = new List<SelectListItem>();
-            //foreach (School school in _db.Schools)
-            //{
-            //    schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString() });
-            //}
-            //viewModel.Schools = schoolList;
+            AddEditTeacherViewModel viewModel = new AddEditTeacherViewModel();        
             return View(viewModel);
         }
 
-        // POST: Teachers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Teachers/Create                                                      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,LastName,School,FirstName,WorkPhone,CellPhone,Email")] AddEditTeacherViewModel viewModel)
@@ -62,8 +52,7 @@ namespace MVC5_Seneca.Controllers
                     LastName = viewModel.LastName,
                     CellPhone = viewModel.CellPhone,
                     WorkPhone = viewModel.WorkPhone,
-                    Email = viewModel.Email
-                    //School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()
+                    Email = viewModel.Email                                                                                                  
                 };
                 _db.Teachers.Add(teacher);
                 _db.SaveChanges();
@@ -88,18 +77,7 @@ namespace MVC5_Seneca.Controllers
             }
 
             AddEditTeacherViewModel viewModel = new AddEditTeacherViewModel
-            {
-
-                //List<SelectListItem> schoolList = new List<SelectListItem>();
-                //foreach (School school in _db.Schools)
-                //{
-                //    if (school.Id == teacher.School.Id)
-                //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = true });
-                //    else
-                //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = false });
-                //}
-                //viewModel.Schools = schoolList;
-
+            {   
                 Id = teacher.Id,
                 LastName = teacher.LastName,
                 FirstName = teacher.FirstName,

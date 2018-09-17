@@ -38,8 +38,7 @@ namespace MVC5_Seneca.Controllers
         // GET: Parents/Create
         public ActionResult Create()
         {
-            var viewModel = new AddEditParentViewModel {SelectedMotherFather = "M"}; // M is default 
-            //var staffRoleId = (from r in _db.Roles where (r.Name == "Staff") select r.Id).Single();
+            var viewModel = new AddEditParentViewModel {SelectedMotherFather = "M"}; // M is default      
             List<SelectListItem> staffList = new List<SelectListItem>();
             var sortedUsers = _db.Users.OrderBy(u => u.LastName).ToList();     
             foreach (ApplicationUser user in sortedUsers)
@@ -151,12 +150,12 @@ namespace MVC5_Seneca.Controllers
 
                     if (string.IsNullOrEmpty(viewModel.CaseManagerUser.Id))
                     {
+                        //parent.CaseManagerUser = null;   // this statement is not peformed by Entity Framework
                         var sqlString = "UPDATE Parent Set CaseManagerUser_Id = NULL ";
                         sqlString += "WHERE Id =" + viewModel.Id;
                         using (var context = new SenecaContext()) 
                         {
-                            context.Database.ExecuteSqlCommand(sqlString);
-                            //parent.CaseManagerUser = null;   // this statement is not peformed by Entity Framework
+                            context.Database.ExecuteSqlCommand(sqlString); 
                         }
                     }
                     else

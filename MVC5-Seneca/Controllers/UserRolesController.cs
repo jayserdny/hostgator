@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -29,12 +28,12 @@ namespace MVC5_Seneca.Controllers
             {
                 foreach (var role in user.Roles)
                 {
-                    var _role = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
+                    var roleName = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
                     UserNameRole userNameRole = new UserNameRole
                     {
                         Name = user.UserName + ": " + user.FirstName + " "
-                                + user.LastName + " / " + _role.Name,
-                        Id = user.Id + "|" + _role.Id,
+                                + user.LastName + " / " + roleName.Name,
+                        Id = user.Id + "|" + roleName.Id,
                         Email = user.Email
                     };
                     model.UserNameRoles.Add(userNameRole);
@@ -49,21 +48,21 @@ namespace MVC5_Seneca.Controllers
             AddEditUserRolesViewModel viewModel = new AddEditUserRolesViewModel();
 
             var userRoles = (from r in _db.Roles select r).ToList();
-            List<SelectListItem> Roles = new List<SelectListItem>();
+            List<SelectListItem> rolesList = new List<SelectListItem>();
             foreach (var role in userRoles)
             {
-                Roles.Add(new SelectListItem() { Text = role.Name, Value = role.Id });
+                rolesList.Add(new SelectListItem() { Text = role.Name, Value = role.Id });
             }
 
             var users = (from u in _db.Users select u).ToList();
-            List<SelectListItem> Users = new List<SelectListItem>();
+            List<SelectListItem> usersList = new List<SelectListItem>();
             foreach (var user in users)
             {
-                Users.Add(new SelectListItem() { Text = user.UserName + @" " + user.FirstName + @" " + user.LastName, Value = user.Id });
+                usersList.Add(new SelectListItem() { Text = user.UserName + @" " + user.FirstName + @" " + user.LastName, Value = user.Id });
             }
 
-            viewModel.UserRoles = Roles;
-            viewModel.Users = Users;
+            viewModel.UserRoles = rolesList;
+            viewModel.Users = usersList;
 
             return View(viewModel);
         }
@@ -114,63 +113,9 @@ namespace MVC5_Seneca.Controllers
             //var userRoles = (from r in _db.Roles select r).ToList();
             return View(model);
         }
-
-        //    // POST: Roles/Edit/5
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public ActionResult Edit([Bind(Include = "Id,Name,User,Role")] UserRole model)
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var userRole = db.UserRoles.Find(model.Id);
-        //            userRole.Role = model.Role;                                                                                          
-        //            db.SaveChanges();
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(model);
-        //    }
-
-        //    // GET: Roles/Delete/5
-        //    public ActionResult Delete(int? id)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        UserRole role = db.UserRoles.Find(id);
-        //        if (role == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(role);
-        //    }
-
-        //    // POST: Roles/Delete/5
-        //    [HttpPost, ActionName("Delete")]
-        //    [ValidateAntiForgeryToken]
-        //    public ActionResult DeleteConfirmed(int id)
-        //    {
-        //        UserRole role = db.UserRoles.Find(id);
-        //        db.UserRoles.Remove(role);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    public ActionResult ReturnToDashboard()
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    protected override void Dispose(bool disposing)
-        //    {
-        //        if (disposing)
-        //        {
-        //            db.Dispose();
-        //        }
-        //        base.Dispose(disposing);
-        //    }
-
+                
         // GET: Users/Delete/5
-        public ActionResult Delete(String id)   // contains userId | roleId
+        public ActionResult Delete(string id)   // contains userId | roleId
         {
             if (id == null)
             {
@@ -206,8 +151,8 @@ namespace MVC5_Seneca.Controllers
             var role = _db.Roles.Find(roleId);
             roles[0] = role.Name;
                                                                                                                                                                                                  
-            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-            await UserManager.RemoveFromRolesAsync(userId, roles).ConfigureAwait(false);                                                                            
+            UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+            await userManager.RemoveFromRolesAsync(userId, roles).ConfigureAwait(false);                                                                            
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()

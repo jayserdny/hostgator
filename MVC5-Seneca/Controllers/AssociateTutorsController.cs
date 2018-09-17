@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
@@ -180,7 +179,6 @@ namespace MVC5_Seneca
         }
         public ActionResult GetStudents(string id)
         {
-            AssociateTutor existingAssociateTutor = null;
             var allStudents = _db.Students.OrderBy(s => s.FirstName).ToList();
             var students = new List<Student>();  // Don't include student(s) for whom this tutor is already PrimaryTutor
                     // Or for whom this tutor is already Associate Tutor.
@@ -191,6 +189,7 @@ namespace MVC5_Seneca
                 {
                     var sqlString = "SELECT * FROM AssociateTutor WHERE Student_Id = " + student.Id;
                     sqlString += " AND Tutor_Id = '" + id + "'";
+                    AssociateTutor existingAssociateTutor = null;
                     try
                     {
                         existingAssociateTutor = context.Database.SqlQuery<AssociateTutor>(sqlString).Single();

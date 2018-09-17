@@ -9,12 +9,12 @@ namespace MVC5_Seneca.Controllers
 {
     public class UsersController : Controller
     {
-        readonly SenecaContext db = new SenecaContext();
+        readonly SenecaContext _db = new SenecaContext();
 
         // GET: Users
         public ActionResult Index()
         {
-            return View(db.Users.OrderBy(u => u.LastName));
+            return View(_db.Users.OrderBy(u => u.LastName));
         }
 
         //    // GET: Users/Details/5
@@ -39,7 +39,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser user = (from u in db.Users.Where(u => u.UserName == userName) select u).Single();
+            ApplicationUser user = (from u in _db.Users.Where(u => u.UserName == userName) select u).Single();
             if (user == null)
             {
                 return HttpNotFound();
@@ -54,7 +54,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser saveUser = (from u in db.Users.Where(u => u.UserName == user.UserName) select u).Single();
+                ApplicationUser saveUser = (from u in _db.Users.Where(u => u.UserName == user.UserName) select u).Single();
                 saveUser.UserName = user.UserName;   
                 saveUser.FirstName = user.FirstName;
                 saveUser.LastName = user.LastName;
@@ -62,7 +62,7 @@ namespace MVC5_Seneca.Controllers
                 saveUser.PhoneNumber = user.PhoneNumber;
                 saveUser.Email = user.Email;
 
-                db.SaveChanges();
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -75,7 +75,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser user = (from u in db.Users.Where(u => u.UserName == userName) select u).Single();
+            ApplicationUser user = (from u in _db.Users.Where(u => u.UserName == userName) select u).Single();
             if (user == null)
             {
                 return HttpNotFound();
@@ -88,9 +88,9 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(String userName)
         {
-            ApplicationUser user = (from u in db.Users.Where(u => u.UserName == userName) select u).Single();
-            db.Users.Remove(user);
-            db.SaveChanges();
+            ApplicationUser user = (from u in _db.Users.Where(u => u.UserName == userName) select u).Single();
+            _db.Users.Remove(user);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult ReturnToDashboard()
@@ -101,7 +101,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

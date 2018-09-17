@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MVC5_Seneca.EntityModels;
-using Newtonsoft.Json;
 
 namespace MVC5_Seneca.ViewModels
 {

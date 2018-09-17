@@ -131,15 +131,12 @@ namespace MVC5_Seneca.Controllers
                     };
                     _db.TipDocuments.Add(tipDocument);
                     _db.SaveChanges();
-
-                    //var model = new AddEditTipDocumentViewModel();
-                    //return View(model);
+                                                       
                     return RedirectToAction("Index");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var t = ex;
                 return null;
             }
             TempData["ErrorMessage"] = "File not found error.";

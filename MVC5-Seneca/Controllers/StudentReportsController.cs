@@ -220,14 +220,12 @@ namespace MVC5_Seneca.Controllers
         {
             if (!Request.IsAuthenticated)
             {
-                return new HttpUnauthorizedResult();    //("Index", "Account");
+                return new HttpUnauthorizedResult();   
             }
-            else
-            {
-                var report = _db.StudentReports.Find(id);
-                var blobLink = SaSutility(report);
-                return Redirect(blobLink);
-            }
+
+            var report = _db.StudentReports.Find(id);
+            var blobLink = SaSutility(report);
+            return Redirect(blobLink);
         }
         private static string SaSutility(StudentReport report)
         // SAS == Shared Access Signature
