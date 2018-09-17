@@ -38,13 +38,13 @@
                 </div>
             </div>
               
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.School, htmlAttributes: new { @class = "col-md-2" })
                 <div class="col-md-5">
                     @Html.DropDownListFor(x => x.School.Id, new SelectList(Model.Schools, "Value", "Text"), " Select") (Required)
                     @Html.ValidationMessageFor(model => model.School.Id, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.WorkPhone, htmlAttributes: new { @class = "control-label col-md-2" })

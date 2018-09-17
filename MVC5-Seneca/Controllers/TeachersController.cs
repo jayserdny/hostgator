@@ -37,14 +37,13 @@ namespace MVC5_Seneca.Controllers
         // GET: Teachers/Create
         public ActionResult Create()
         {
-            var viewModel = new AddEditTeacherViewModel();
-            //string errMsg = NewMethod();
-            List<SelectListItem> schoolList = new List<SelectListItem>();
-            foreach (School school in _db.Schools)
-            {
-                schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString() });
-            }
-            viewModel.Schools = schoolList;
+            var viewModel = new AddEditTeacherViewModel();        
+            //List<SelectListItem> schoolList = new List<SelectListItem>();
+            //foreach (School school in _db.Schools)
+            //{
+            //    schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString() });
+            //}
+            //viewModel.Schools = schoolList;
             return View(viewModel);
         }
 
@@ -63,8 +62,8 @@ namespace MVC5_Seneca.Controllers
                     LastName = viewModel.LastName,
                     CellPhone = viewModel.CellPhone,
                     WorkPhone = viewModel.WorkPhone,
-                    Email = viewModel.Email,
-                    School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()
+                    Email = viewModel.Email
+                    //School = (from s in _db.Schools where s.Id == viewModel.School.Id select s).Single()
                 };
                 _db.Teachers.Add(teacher);
                 _db.SaveChanges();
@@ -90,20 +89,20 @@ namespace MVC5_Seneca.Controllers
 
             var viewModel = new AddEditTeacherViewModel();
 
-            List<SelectListItem> schoolList = new List<SelectListItem>();
-            foreach (School school in _db.Schools)
-            {
-                if (school.Id == teacher.School.Id)
-                    schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = true });
-                else
-                    schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = false });
-            }
-            viewModel.Schools = schoolList;
+            //List<SelectListItem> schoolList = new List<SelectListItem>();
+            //foreach (School school in _db.Schools)
+            //{
+            //    if (school.Id == teacher.School.Id)
+            //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = true });
+            //    else
+            //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = false });
+            //}
+            //viewModel.Schools = schoolList;
 
             viewModel.Id = teacher .Id;
             viewModel.LastName = teacher.LastName;
             viewModel.FirstName = teacher.FirstName;
-            viewModel.School = teacher.School;
+            //viewModel.School = teacher.School;
             viewModel.WorkPhone =teacher.WorkPhone;
             viewModel.CellPhone = teacher.CellPhone;
             viewModel.Email = teacher.Email;
