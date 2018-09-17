@@ -87,25 +87,27 @@ namespace MVC5_Seneca.Controllers
                 return HttpNotFound();
             }
 
-            var viewModel = new AddEditTeacherViewModel();
+            AddEditTeacherViewModel viewModel = new AddEditTeacherViewModel
+            {
 
-            //List<SelectListItem> schoolList = new List<SelectListItem>();
-            //foreach (School school in _db.Schools)
-            //{
-            //    if (school.Id == teacher.School.Id)
-            //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = true });
-            //    else
-            //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = false });
-            //}
-            //viewModel.Schools = schoolList;
+                //List<SelectListItem> schoolList = new List<SelectListItem>();
+                //foreach (School school in _db.Schools)
+                //{
+                //    if (school.Id == teacher.School.Id)
+                //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = true });
+                //    else
+                //        schoolList.Add(new SelectListItem { Text = school.Name, Value = school.Id.ToString(), Selected = false });
+                //}
+                //viewModel.Schools = schoolList;
 
-            viewModel.Id = teacher .Id;
-            viewModel.LastName = teacher.LastName;
-            viewModel.FirstName = teacher.FirstName;
-            //viewModel.School = teacher.School;
-            viewModel.WorkPhone =teacher.WorkPhone;
-            viewModel.CellPhone = teacher.CellPhone;
-            viewModel.Email = teacher.Email;
+                Id = teacher.Id,
+                LastName = teacher.LastName,
+                FirstName = teacher.FirstName,
+                //viewModel.School = teacher.School;
+                WorkPhone = teacher.WorkPhone,
+                CellPhone = teacher.CellPhone,
+                Email = teacher.Email
+            };
 
             return View(viewModel);
         }
