@@ -570,9 +570,6 @@
     <Compile Include="DataAccessLayer\SenecaContext.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="DataAccessLayer\SenecaInitializer.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
