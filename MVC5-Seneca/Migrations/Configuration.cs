@@ -1,14 +1,13 @@
 ﻿namespace MVC5_Seneca.Migrations
-{
-    using System;
+{  
     using System.Data.Entity.Migrations;
-    using System.Data.Entity.Validation;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Linq;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using EntityModels;
+    //using System;
+    //using System.Data.Entity.Validation;
+    //using System.Diagnostics;
+    //using System.Linq;
+    //using Microsoft.AspNet.Identity;
+    //using Microsoft.AspNet.Identity.EntityFramework;
+    //using EntityModels;
 
     public sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.SenecaContext>
     {
@@ -17,62 +16,62 @@
             AutomaticMigrationsEnabled = false;
         }
 
-        private void WriteExceptionToDebugger(DbEntityValidationException ex)
-        {
-            Debug.WriteLine("DbEntityValidationException");
-            Debug.Indent();
-            foreach (DbEntityValidationResult ve in ex.EntityValidationErrors)
-            {
-                Debug.WriteLine(ve.Entry.Entity, "Entity");
-                Debug.WriteLine(ve.Entry.State, "State");
-                Debug.Indent();
-                foreach (DbValidationError e in ve.ValidationErrors)
-                {
-                    Debug.WriteLine(e.ErrorMessage, "    " + e.PropertyName);
-                }
-                Debug.Unindent();
-            }
-            Debug.Unindent();
-        }
+        //private void WriteExceptionToDebugger(DbEntityValidationException ex)
+        //{
+        //    Debug.WriteLine("DbEntityValidationException");
+        //    Debug.Indent();
+        //    foreach (DbEntityValidationResult ve in ex.EntityValidationErrors)
+        //    {
+        //        Debug.WriteLine(ve.Entry.Entity, "Entity");
+        //        Debug.WriteLine(ve.Entry.State, "State");
+        //        Debug.Indent();
+        //        foreach (DbValidationError e in ve.ValidationErrors)
+        //        {
+        //            Debug.WriteLine(e.ErrorMessage, "    " + e.PropertyName);
+        //        }
+        //        Debug.Unindent();
+        //    }
+        //    Debug.Unindent();
+        //}
 
-        private void AddIdentityRole(DataAccessLayer.SenecaContext context, String name)
-        {
-            if (!context.Roles.Any(r => r.Name == name))
-            {
-                var store = new RoleStore<IdentityRole>(context);
-                var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole(name);
-                manager.Create(role);
-            }
-        }
+        //private void AddIdentityRole(DataAccessLayer.SenecaContext context, String name)
+        //{
+        //    if (!context.Roles.Any(r => r.Name == name))
+        //    {
+        //        var store = new RoleStore<IdentityRole>(context);
+        //        var manager = new RoleManager<IdentityRole>(store);
+        //        var role = new IdentityRole(name);
+        //        manager.Create(role);
+        //    }
+        //}
 
-        private ApplicationUser  AddAdministrator(DataAccessLayer.SenecaContext context,
-            String userName, String passwordHash, String securityStamp, String email = "", string phoneNumber = "", 
-            String firstName = "", String lastName = "")
-        {
-            var appUser = context.Users.FirstOrDefault(u => u.UserName == userName);
-            if (appUser == null)         
-            {
-                var store = new UserStore<ApplicationUser>(context);
-                var manager = new UserManager<ApplicationUser>(store);
-                appUser = new ApplicationUser
-                {
-                    UserName = userName,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Email = email,
-                    EmailConfirmed = (email != ""),
-                    PhoneNumber = phoneNumber,
-                    PhoneNumberConfirmed = (phoneNumber != ""),
-                    PasswordHash = passwordHash,
-                    SecurityStamp = securityStamp
-                };
-                manager.Create(appUser);
-                manager.AddToRole(appUser.Id, "Administrator");
-                manager.AddToRole(appUser.Id, "Active");
-            }
-            return appUser;
-        }   
+        //private ApplicationUser  AddAdministrator(DataAccessLayer.SenecaContext context,
+        //    String userName, String passwordHash, String securityStamp, String email = "", string phoneNumber = "", 
+        //    String firstName = "", String lastName = "")
+        //{
+        //    var appUser = context.Users.FirstOrDefault(u => u.UserName == userName);
+        //    if (appUser == null)         
+        //    {
+        //        var store = new UserStore<ApplicationUser>(context);
+        //        var manager = new UserManager<ApplicationUser>(store);
+        //        appUser = new ApplicationUser
+        //        {
+        //            UserName = userName,
+        //            FirstName = firstName,
+        //            LastName = lastName,
+        //            Email = email,
+        //            EmailConfirmed = (email != ""),
+        //            PhoneNumber = phoneNumber,
+        //            PhoneNumberConfirmed = (phoneNumber != ""),
+        //            PasswordHash = passwordHash,
+        //            SecurityStamp = securityStamp
+        //        };
+        //        manager.Create(appUser);
+        //        manager.AddToRole(appUser.Id, "Administrator");
+        //        manager.AddToRole(appUser.Id, "Active");
+        //    }
+        //    return appUser;
+        //}   
 
         // In writing sample or seed data, try to avoid using Id keys. (Find some other unique field
         // or use Composite Primary Keys.)  
