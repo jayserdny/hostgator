@@ -35,40 +35,30 @@ namespace MVC5_Seneca.Controllers
                 iDoc +=1;
                 documents[iDoc - 1] = doc.Name + " " + doc.DocumentLink;
             }
-                   
-            int iTipsDocument = 0;
+                                                  
             iDoc = -1;
             var oldCategoryName = "x";
             foreach (var cat in tipsCategories)
-            {  
-                bool done = false;
-                while (!done)       // TODO
+            {   
+                if (cat.Name != oldCategoryName)
                 {
-                    if (cat.Name != oldCategoryName)
-                    {
-                        iDoc++;                                               
-                        var html = "<br/><strong>" + cat.Name + "</strong>"; 
-                        htmlStrings[iDoc] = html;
+                    iDoc++;                                               
+                    var html = "<br/><strong>" + cat.Name + "</strong>"; 
+                    htmlStrings[iDoc] = html;
 
-                        oldCategoryName = cat.Name;
-
-                        for (int i = 0; i < sortedTips.Count; i++)
-                        {
-                            if (sortedTips[i].Category.Name == oldCategoryName)
-                            {  
-                                iDoc++;
-                                html = sortedTips[i].Name + " <a href=\"/TeachingTips/ViewDocument/" + sortedTips[i].Id + " \" target=\"_blank\"> <img src=\"/Images/PDF10.png\" style=\"border:none\"> </a>";
-                                htmlStrings[iDoc] = html; 
-                                iTipsDocument++;
-                            }   
-                        }
-                        done = true;
-                        break;
-                    }
-                    htmlStrings[iTipsDocument] = documents[iTipsDocument];
-                    iTipsDocument += 1;
                     oldCategoryName = cat.Name;
+
+                    foreach (TipDocument t in sortedTips)
+                    {
+                        if (t.Category.Name == oldCategoryName)
+                        {  
+                            iDoc++;
+                            html = t.Name + " <a href=\"/TeachingTips/ViewDocument/" + t.Id + " \" target=\"_blank\"> <img src=\"/Images/PDF10.png\" style=\"border:none\"> </a>";
+                            htmlStrings[iDoc] = html;     
+                        }
+                    }    
                 }
+    
             }
 
             model.Documents = htmlStrings;
@@ -93,10 +83,8 @@ namespace MVC5_Seneca.Controllers
         }
 
         private static string SaSutility(TipDocument document)
-            // SAS == Shared Access Signature
-            // return a url to access report for 10 minutes:
-        {
-            //var url = "https://senecablob.blob.core.windows.net/studentreports/" + report.DocumentLink;
+            // SAS == Shared Access Signature ; return a url to access report for 10 minutes:
+        {                                                                                                                                                       
             var sasConstraints = new SharedAccessBlobPolicy
             {
                 SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
