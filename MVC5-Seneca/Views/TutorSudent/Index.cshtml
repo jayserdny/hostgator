@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MVC5_Seneca.ViewModels.TutorStudentViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Tutor-Student Report</title>  
+</head>
+<body>
+    <h3> Tutors and Their Students</h3>
+    <div id="TutorStudentReport">
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td> 
+                <td></td>
+                <td><strong>Session</strong></td>
+                <td><strong>&nbsp;&nbsp;Last Session</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Tutor</strong></td>
+                <td></td>
+                <td><strong>Student(s)</strong></td>
+                <td style="text-align:center"><strong>role</strong></td>
+                <td style="text-align:center"><strong>Notes</strong></td>
+                <td style="text-align:center"><strong>Note Date</strong></td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Tutor.FirstName) @Html.DisplayFor(modelItem => item.Tutor.LastName)</td>
+                </tr>
+                foreach (var student in item.PrimaryStudents)
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>@Html.DisplayFor(modelStudent => student.FirstName)</td>
+                        <td>as Tutor</td>
+                        <td style="text-align: center">@Html.DisplayFor(modelStudent => student.PrimaryNoteCount)</td>
+                        <td>&nbsp;&nbsp;@Html.DisplayFor(modelStudent => student.LastPrimaryNoteDate)</td>
+                    </tr>
+                }
+                foreach (var student in item.AssociateStudents)
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>@Html.DisplayFor(modelStudent => student.FirstName)</td>
+                        <td>as Co-Tutor</td>
+                        <td style="text-align: center">@Html.DisplayFor(modelStudent => student.AssociateNoteCount)</td>
+                        <td>&nbsp;&nbsp;@Html.DisplayFor(modelStudent => student.LastAssociateNoteDate)</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div> 
+    <div id="ReturnToDashboard">
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table> 
+    </div>
+</body>
+</html>
