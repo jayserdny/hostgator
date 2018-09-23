@@ -42,15 +42,13 @@ namespace MVC5_Seneca.Controllers
 
             student.Reports = student.Reports.OrderByDescending(r => r.DocumentDate).ToList();
 
-            foreach (var record in _db.AssociateTutors)
-            {                                                      
-                    if (record.Student.Id == id)
-                    {
-                        var tutorId = (from t in _db.AssociateTutors where t.Id == record.Id select t.Tutor.Id).Single();
-                        var tutor = _db.Users.Find(tutorId);  
-                        student.AssociateTutors.Add(tutor);
-                    }
-            }       
+           var associateTutors =  (from t in _db.AssociateTutors where t.Student.Id == id select t.Tutor.Id).ToList();   
+
+                foreach (var record in associateTutors)
+                {
+                    var tutor = _db.Users.Find(record);
+                    student.AssociateTutors.Add(tutor);
+                } 
 
             try
             {                                                                                                                   

@@ -148,16 +148,20 @@ function UpdateStudentDetails()
                 $("#primaryTutorRow").hide();
             }
 
-            if (data.Teacher !== null) {
+            if (data.Teacher !== null)
+            {
                 $("#teacherName").text(data.Teacher.FirstName + " " + data.Teacher.LastName);
                 $("#teacherPhone").text(data.Teacher.WorkPhone);
-                if (data.Teacher.CellPhone !== null) {
+                if (data.Teacher.CellPhone !== null)
+                {
                     $("#teacherPhone").text(data.Teacher.CellPhone);
                 }
                 if (data.Teacher.Email !== null) {
                     _latestTeacher_Email = data.Teacher.Email;
                     $("#teacherEmail").text(data.Teacher.Email);
-                } else {
+                }
+                else
+                {
                     $("#teacherEmail").text("");
                 }
                 $("#teacherRow").show();
@@ -195,45 +199,46 @@ function UpdateStudentDetails()
             associateTutorEmails = [];       
             if (data.AssociateTutors !== null && data.AssociateTutors.length !== 0)
             { 
-                for (var index in data.AssociateTutors)
+                for (var index in data.AssociateTutors)           
                 {
-                    var tutorName = data.AssociateTutors[index].FirstName + ' ' + data.AssociateTutors[index].LastName;
-                    var tutorPhone = data.AssociateTutors[index].PhoneNumber;
-                    tutorPhone = tutorPhone.replace(/\D/g, "");
-                    if (tutorPhone.length === 10)
-                    {
-                        tutorPhone = '(' +
-                            tutorPhone.substring(0, 3) +
-                            ') ' +
-                            tutorPhone.substring(3, 6) +
-                            '-' +
-                            tutorPhone.substring(6, 10);
-                    }
-                    else
-                    {
-                        tutorPhone = "";
-                    }
+                    if (data.AssociateTutors.hasOwnProperty(index)) {
+                        var tutorName = data.AssociateTutors[index].FirstName +
+                            ' ' +
+                            data.AssociateTutors[index].LastName;
+                        var tutorPhone = data.AssociateTutors[index].PhoneNumber;
+                        tutorPhone = tutorPhone.replace(/\D/g, "");
+                        if (tutorPhone.length === 10) {
+                            tutorPhone = '(' +
+                                tutorPhone.substring(0, 3) +
+                                ') ' +
+                                tutorPhone.substring(3, 6) +
+                                '-' +
+                                tutorPhone.substring(6, 10);
+                        } else {
+                            tutorPhone = "";
+                        }
 
-                    var tutorEmail = data.AssociateTutors[index].Email;
-                    associateTutorEmails.push(tutorEmail);                  
-                                               
-                    if (index === "0") {
-                        $("#associateTutor0Name").text(tutorName);
-                        $("#associateTutor0Phone").text(tutorPhone);
-                        $("#associateTutor0Email").text(tutorEmail);
-                        $("#associateTutor0Row").show();
-                    } else if (index === "1") {
-                        $("#associateTutor1Name").text(tutorName);
-                        $("#associateTutor1Phone").text(tutorPhone);
-                        $("#associateTutor1Email").text(tutorEmail);
-                        $("#associateTutor1Row").show();
-                    } else if (index === "2") {
-                        $("#associateTutor2Name").text(tutorName);
-                        $("#associateTutor2Phone").text(tutorPhone);
-                        $("#associateTutor2Email").text(tutorEmail);
-                        $("#associateTutor2Row").show();
-                    }     
-                }                  
+                        var tutorEmail = data.AssociateTutors[index].Email;
+                        associateTutorEmails.push(tutorEmail);
+
+                        if (index === "0") {
+                            $("#associateTutor0Name").text(tutorName);
+                            $("#associateTutor0Phone").text(tutorPhone);
+                            $("#associateTutor0Email").text(tutorEmail);
+                            $("#associateTutor0Row").show();
+                        } else if (index === "1") {
+                            $("#associateTutor1Name").text(tutorName);
+                            $("#associateTutor1Phone").text(tutorPhone);
+                            $("#associateTutor1Email").text(tutorEmail);
+                            $("#associateTutor1Row").show();
+                        } else if (index === "2") {
+                            $("#associateTutor2Name").text(tutorName);
+                            $("#associateTutor2Phone").text(tutorPhone);
+                            $("#associateTutor2Email").text(tutorEmail);
+                            $("#associateTutor2Row").show();
+                        }
+                    }
+                }
             }
 
             $("#reportsDDL").empty();
@@ -297,7 +302,7 @@ function LoadTutorNoteArrays(waitForMe) {
             waitForMe();
         },
         error: function () {
-          var dummy = "";       
+          //var dummy = "";       
         }
     });
     tutorSessionNotes = []; tutorNoteIds = [];
@@ -398,7 +403,7 @@ function UpdateSessionNote() {
                     }
                 },
                 Error: function() {
-                    var yyy = "dummy";
+                    //var yyy = "dummy";
                 }
             });
         }
@@ -431,22 +436,22 @@ function SaveSessionNote(stuId)
             var noteToSelect = 0;
             noteToSelectText = "";
             $("#SessionNotesDDL").append('<option value = "' + '">' + "--Select Note--" + '</option > ');
-            tutorSessionNotes.forEach(function(_note)
+            tutorSessionNotes.forEach(function(tNote)
             {
-                var x = _note.Date.substring(0, 10);
+                var x = tNote.Date.substring(0, 10);
                 var dt = x.slice(0, 10).split("-");
                 j += 1;                    
-                if (_note.Id === _latestTutorNote_Id) {      
+                if (tNote.Id === _latestTutorNote_Id) {      
                     noteToSelect = j;
-                    noteToSelectText = _note.SessionNote;
+                    noteToSelectText = tNote.SessionNote;
                 }                                           
-                // var xx = new Date(Date.parse(_note.Date));
+                // var xx = new Date(Date.parse(tNote.Date));
                 // var dow = xx.getDay();
                 $("#SessionNotesDDL").append('<option value = "' + '">'
                     //+ weekday[dow] + " "
                     + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
-                    + "Tutor: " + _note.ApplicationUser.FirstName + " "
-                    + _note.ApplicationUser.LastName
+                    + "Tutor: " + tNote.ApplicationUser.FirstName + " "
+                    + tNote.ApplicationUser.LastName
                     + '</option>');      
             });
 
@@ -461,11 +466,11 @@ function SaveSessionNote(stuId)
                 $("#NewSessionNote").val("");
             }
         });
-            var tt = "dummy";
+            //var tt = "dummy";
         },
         Error: function()
         {
-            var dummy = "";
+            //var dummy = "";
         }
     });
 }  
@@ -494,11 +499,11 @@ function SaveEditedSessionNote(text)
             tutorSessionNotes = []; tutorNoteIds = [];
             LoadTutorNoteArrays(function() { 
                 $("#SessionNotesDDL").append('<option value = "' + '">' + "--Select Note--" + '</option > ');   
-                tutorSessionNotes.forEach(function (_note) {   
-                        var x = _note.Date.substring(0, 10);
+                tutorSessionNotes.forEach(function (tNote) {   
+                        var x = tNote.Date.substring(0, 10);
                         var dt = x.slice(0, 10).split('-');
                         j += 1;                      
-                        if (_note.Id === _latestTutorNote_Id) {      
+                        if (tNote.Id === _latestTutorNote_Id) {      
                             noteToSelect = j;
                         }
                         // var xx = new Date(Date.parse(_note.Date));
@@ -506,8 +511,8 @@ function SaveEditedSessionNote(text)
                         $("#SessionNotesDDL").append('<option value = "' + '">'
                             //+ weekday[dow] + " "
                             + dt[1] + "/" + dt[2] + "/" + dt[0] + " "
-                            + "Tutor: " + _note.ApplicationUser.FirstName + " "
-                            + _note.ApplicationUser.LastName + '</option>');
+                            + "Tutor: " + tNote.ApplicationUser.FirstName + " "
+                            + tNote.ApplicationUser.LastName + '</option>');
                 });
 
                 if (noteToSelect === 0) // note was deleted
@@ -524,11 +529,11 @@ function SaveEditedSessionNote(text)
                     $("#NewSessionNote").val("");
                 }
             });
-            var xx = "dummy";
+            //var xx = "dummy";
         },
         Error: function ()
         {
-             var yyy = "dummy";
+             //var yyy = "dummy";
         }
      });
 }
@@ -559,7 +564,7 @@ function EmailToAssociateTutor(index) {
     window.open(url, '_blank');
 }
 
-function EmailToTeacher(index) {
+function EmailToTeacher() {
     var subject = "?subject=Student" + "%20" + _latestStudentFirstName + " - SHEP";
     var url = "mailto:" + _latestTeacher_Email + subject;
     window.open(url, '_blank');
