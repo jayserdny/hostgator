@@ -42,8 +42,8 @@ namespace MVC5_Seneca.Controllers
                     foreach (int associateTuteeId in associateTuteeIds)
                     {
                         Student associateStudent = _db.Students.Find(associateTuteeId);
-                        var count = _db.TutorNotes.OrderByDescending(n => n.Date).Where(n => n.Student.Id == associateStudent.Id && n.ApplicationUser.Id == tutor.Id).ToList();
                         if (associateStudent == null) continue;
+                        var count = _db.TutorNotes.OrderByDescending(n => n.Date).Where(n => n.Student.Id == associateStudent.Id && n.ApplicationUser.Id == tutor.Id).ToList();
                         associateStudent.AssociateNoteCount = count.Count();
                         if (count.Count > 0)
                         {
