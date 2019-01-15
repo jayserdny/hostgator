@@ -193,9 +193,9 @@
                     @Html.TextArea("SessionNoteText", Model.SessionNote, new
                     {
                         id = "SessionNoteText",
-                        style = "width: 400px;",
+                        style = "width: 500px;",
                         cols = 35,
-                        rows = 3,
+                        rows = 8,
                         Title = "Tip: You may delete this note by saving a blank text."
                     })
                 </td>
@@ -237,7 +237,7 @@
                     <strong>Note:</strong>
                 </td>
                 <td>
-                    @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 400px;", cols = 35, rows = 3, autofocus = "true" })        
+                    @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 500px;", cols = 35, rows = 8, autofocus = "true" })        
                 </td>
                 <td id="Save-Button">
                     <a href="#" id="SaveSessionNote"> <img src="~/Images/save-button.png" style="border:none" /> </a>

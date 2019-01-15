@@ -38,9 +38,9 @@ namespace MVC5_Seneca.Controllers
                         tutorStudents.PrimaryStudents.Add(student);
                     }
                     // Is this tutor an Associate Tutor for other students? 
-                    var associateTuteeIds = (from t in _db.AssociateTutors where t.Tutor.Id == tutor.Id select t.Id).ToList();
+                    var associateTuteeIds = (from t in _db.AssociateTutors where t.Tutor.Id == tutor.Id select t.Student.Id).ToList();
                     foreach (int associateTuteeId in associateTuteeIds)
-                    {
+                    {                      
                         Student associateStudent = _db.Students.Find(associateTuteeId);
                         if (associateStudent == null) continue;
                         var count = _db.TutorNotes.OrderByDescending(n => n.Date).Where(n => n.Student.Id == associateStudent.Id && n.ApplicationUser.Id == tutor.Id).ToList();

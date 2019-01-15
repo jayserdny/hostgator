@@ -9,7 +9,7 @@ using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
 
-namespace MVC5_Seneca
+namespace MVC5_Seneca.Controllers
 {
     public class AssociateTutorsController : Controller
     {
