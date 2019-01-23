@@ -12,17 +12,24 @@
     <title>Index</title> 
 </head>
 <body>
-<table class="table">
-    <tr>
-        <td>
-            &nbsp;&nbsp; User Name:&nbsp; @User.Identity.Name
-        </td>
-    </tr>
-</table>
+    <table class="table">
+        <tr>
+            <td>
+                &nbsp;&nbsp; User Name:&nbsp; @User.Identity.Name
+            </td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+            </td>
+        </tr>
+    </table>
         <h4>Maintain User Permissions (&quot;Roles&quot;)</h4>
-        <p>
-            @Html.ActionLink("Create New User Permission", "Create")
-        </p>
+<p>
+    @Html.ActionLink("Create New User Permission", "Create")
+</p>
+
 <table class="table">   
     <tr>
         <td>User Name: Name / Role</td>
