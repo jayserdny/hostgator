@@ -1081,6 +1081,7 @@
     <Content Include="Views\Teachers\Index.cshtml" />
     <Content Include="Views\View.cshtml" />
     <Content Include="Views\TutorSudent\Index.cshtml" />
+    <Content Include="Views\TutorStudent\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
