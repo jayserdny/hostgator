@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace MVC5_Seneca.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(AddEditUserRolesViewModel model)
+        public ActionResult Create(AddEditUserRolesViewModel model, object msgbox)
         {   
             if (ModelState.IsValid)
             {
@@ -81,7 +82,15 @@ namespace MVC5_Seneca.Controllers
                 var userStore = new UserStore<ApplicationUser>(_db);
                 var userManager = new UserManager<ApplicationUser>(userStore);
                 var role = _db.Roles.Find(model.UserRole.Id);
-                userManager.AddToRole(model.User.Id, role.Name);
+
+                try
+                {
+                     userManager.AddToRole(model.User.Id, role.Name);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error assigning role: " + ex.Message);
+                }   
 
                 return RedirectToAction("Index", "UserRoles");
             }
