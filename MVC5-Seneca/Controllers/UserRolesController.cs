@@ -75,10 +75,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Create(AddEditUserRolesViewModel model, object msgbox)
         {   
             if (ModelState.IsValid)
-            {
-                //var roleStore = new RoleStore<IdentityRole>(_db);
-                //var roleManager = new RoleManager<IdentityRole>(roleStore);
-
+            { 
                 var userStore = new UserStore<ApplicationUser>(_db);
                 var userManager = new UserManager<ApplicationUser>(userStore);
                 var role = _db.Roles.Find(model.UserRole.Id);
