@@ -60,14 +60,10 @@
             }
         </table>
     </div> 
+    <br />
     <div id="ReturnToDashboard">
-        <table>
-            <tr>
-                <td>
-                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
-                </td>
-            </tr>
-        </table> 
+        @* ReSharper disable once Mvc.ActionNotResolved *@
+        @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
     </div>
 </body>
 </html>
