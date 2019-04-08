@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace MVC5_Seneca.ViewModels
 {
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class AddEditStudentViewModel
     {
         public int Id { get; set; } 

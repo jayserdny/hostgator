@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVC5_Seneca.ViewModels
 {
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class AddEditParentViewModel
     {
         public int Id { get; set; }

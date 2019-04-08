@@ -75,6 +75,8 @@
             <a href="@Url.Action("MaintainTeachers", "Home")">Add/Edit Teacher</a>
             <br />
             <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
+            <br /> 
+            <a href="@Url.Action("UpdateMySchedule", "Home")">Update My Schedule</a> 
             <br />
         }
 
@@ -85,11 +87,8 @@
             <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
             <br />
         }
-
-
         <a href="@Url.Action("UpdateMyProfile", "Home")">Update My Profile</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
             <br />
             @Html.AntiForgeryToken()

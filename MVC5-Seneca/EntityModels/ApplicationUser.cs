@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 using Newtonsoft.Json;
 
 namespace MVC5_Seneca.EntityModels

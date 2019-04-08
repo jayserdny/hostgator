@@ -71,10 +71,10 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", "TipDocuments");
         }
 
-        //public ActionResult MaintainLocations()
-        //{
-        //    return RedirectToAction("Index", "Locations");
-        //}
+        public ActionResult UpdateMySchedule()
+        {
+            return RedirectToAction("Edit", "UpdateMySchedule");
+        }
         public ActionResult MaintainTutorNotes() 
         {
             return RedirectToAction("Index", "TutorNotes");
