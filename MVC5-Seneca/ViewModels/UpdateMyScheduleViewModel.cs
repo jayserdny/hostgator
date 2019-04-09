@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Mvc;
 using MVC5_Seneca.EntityModels;
@@ -20,5 +19,6 @@ namespace MVC5_Seneca.ViewModels
         public string LastName { get; set; }
 
         public virtual List<SelectListItem> Students { get; set; }
+        public virtual List<Student> MyTutees { get; set; }
     }
 }

@@ -11,18 +11,28 @@
     <meta name="viewport" content="width=device-width" />
     <title>EditMySchedule</title>
 </head>
-<body>
-    <h4>
-        Update My Tutoring Schedule
-    </h4>
+<body>   
+    <div>
+        <table>
+            <tr>
+                <td> Welcome  @User.Identity.Name!</td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="text-decoration:underline" class="indent"><strong>Update My Tutoring Schedule</strong></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.Id)
-
+        @Html.HiddenFor(model => model.Id) 
     }
-    <div id="Main">
-        @Html.LabelFor(model => model.Students, htmlAttributes: new { @class = "col-md-2" })
+
+    <div id="AdministratorDiv">
+        <b>&nbsp; @Html.LabelFor(model => model.Students, htmlAttributes: new { @class = "col-md-2" }) </b>
         <div class="col-md-5">  
             <table>    
                 <tr>
