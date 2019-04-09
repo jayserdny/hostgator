@@ -14,8 +14,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-            var user = (from u in _db.Users where u.Id == userId select u).Single();
-            //var tutorStudents = new UpdateMyScheduleViewModel {MyTutees = new List<Student>()};
+            ApplicationUser user = (from u in _db.Users where u.Id == userId select u).Single();                            
             UpdateMyScheduleViewModel model = new UpdateMyScheduleViewModel {MyTutees = new List<Student>()};
             model.Id = user.Id;
             model.FirstName = user.FirstName;
@@ -35,8 +34,7 @@ namespace MVC5_Seneca.Controllers
                 if (associateStudent == null) continue;
                 model.MyTutees.Add(associateStudent );
             }
-
-            List<SelectListItem> studentList = new List<SelectListItem>();
+                                                                                                            
             var sortedStudents = _db.Students.OrderBy(s => s.FirstName);
             model.Students = sortedStudents.Select(s => new SelectListItem
                 {
@@ -68,6 +66,33 @@ namespace MVC5_Seneca.Controllers
         }
         return View(viewModel);
     }
+
+        public ActionResult Create()
+        {
+            UpdateMyScheduleViewModel viewModel = new UpdateMyScheduleViewModel();
+            return View(viewModel);
+        }
+
+        // POST: Teachers/Create                                                      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,LastName")] UpdateMyScheduleViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Teacher teacher = new Teacher
+                {
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName
+                };
+                _db.Teachers.Add(teacher);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+
+            return View(viewModel);
+        }
 
         public ActionResult ReturnToDashboard()
         {
