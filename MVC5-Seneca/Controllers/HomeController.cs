@@ -73,7 +73,7 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult UpdateMySchedule()
         {
-            return RedirectToAction("Index", "UpdateMySchedule");
+            return RedirectToAction("Index", "TutorSchedules");
         }
         public ActionResult MaintainTutorNotes() 
         {

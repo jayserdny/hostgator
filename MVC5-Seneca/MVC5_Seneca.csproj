@@ -429,6 +429,8 @@
     <Compile Include="EntityModels\Location.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="EntityModels\TutorSchedule.cs" />
+    <Compile Include="EntityModels\TutorSchedulesController.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.designer.cs">
       <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
@@ -496,6 +498,10 @@
     <Compile Include="Migrations\201809142113562_AddTeacherToStudent.cs" />
     <Compile Include="Migrations\201809142113562_AddTeacherToStudent.Designer.cs">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904092157466_AddTutorStudents.cs" />
+    <Compile Include="Migrations\201904092157466_AddTutorStudents.Designer.cs">
+      <DependentUpon>201904092157466_AddTutorStudents.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -567,6 +573,7 @@
     <Compile Include="ViewModels\TeachingTipsViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="ViewModels\TutorScheduleViewModel.cs" />
     <Compile Include="ViewModels\TutorStudentViewModel.cs" />
     <Compile Include="ViewModels\UpdateMyProfileViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1110,6 +1117,11 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\UpdateMySchedule\TempIndex.cshtml" />
+    <Content Include="Views\TutorSchedules\Create.cshtml" />
+    <Content Include="Views\TutorSchedules\Delete.cshtml" />
+    <Content Include="Views\TutorSchedules\Details.cshtml" />
+    <Content Include="Views\TutorSchedules\Edit.cshtml" />
+    <Content Include="Views\TutorSchedules\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1188,6 +1200,9 @@
     <EmbeddedResource Include="Migrations\201809142113562_AddTeacherToStudent.resx">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904092157466_AddTutorStudents.resx">
+      <DependentUpon>201904092157466_AddTutorStudents.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
@@ -1226,6 +1241,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties Content_4bootstrap-reboot_1css_1map__JSONSchema="http://json.schemastore.org/resjson" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
