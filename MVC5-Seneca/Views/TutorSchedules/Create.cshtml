@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.ViewModels.TutorScheduleViewModel
+﻿@model MVC5_Seneca.EntityModels.TutorSchedule
 
 @{
     Layout = null;
@@ -9,65 +9,41 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Create</title> 
-    <style>
-        .field-validation-error {
-            color: red
-        }
-    </style>
+    <title>Create</title>
 </head>
 <body>
     @using (Html.BeginForm()) 
     {
         @Html.AntiForgeryToken()
         
-        <div>
-            <h4>Create New Tutor Schedule</h4>
+        <div class="form-horizontal">
+            <h4>TutorSchedule</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                <b>Tutor</b>
-                <div class="col-md-5">
-                    @Html.DropDownListFor(x => x.Tutor.Id, new SelectList(Model.Tutors, "Id", "FullName"), " Select") (Required)
-                    @Html.ValidationMessageFor(model => model.Tutor.Id, "", new {@class = "text-danger"})
-                </div>
-            </div>
-            <br />
-            <div class="form-group">
-                <b>Student</b>
-                <div class="col-md-5">
-                    @Html.DropDownListFor(x => x.Student.Id, new SelectList(Model.Students, "Id", "FirstName"), " Select") (Required)
-                    @Html.ValidationMessageFor(model => model.Student.Id, "", new {@class = "text-danger"})
-                </div>
-            </div>
-            <br />
-            <div class="form-group">
-                <b>Day Of Week</b>
+                @Html.LabelFor(model => model.DayName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(x => x.DayName,  new SelectList(Model.DaysList, "DayName")) 
+                    @Html.EditorFor(model => model.DayName, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.DayName, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <br />
+    
             <div class="form-group">
-                <b>Time of Day</b>
+                @Html.LabelFor(model => model.TimeOfDay, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(x => x.TimeOfDay, new SelectList(Model.TimesList, "TimeOfDay")) 
-                    @Html.ValidationMessageFor(model => model.TimesList , "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.TimeOfDay, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TimeOfDay, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <br />
-            <div class="form-group">  
-                <div>
-                    <label class="field-validation-error">@Model.ErrorMessage</label>
-                </div> 
-                <div>   
-                    <input type="submit" value="Create" />
+    
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
                 </div>
             </div>
         </div>
     }
-    <br />
+    
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>

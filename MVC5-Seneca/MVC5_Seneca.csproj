@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>default</LangVersion>
@@ -47,7 +47,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TypeScriptTarget>ES5</TypeScriptTarget>
@@ -414,6 +415,7 @@
     <Compile Include="Controllers\TipsCategoriesController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\TutorSchedulesController.cs" />
     <Compile Include="Controllers\TutorStudentController.cs" />
     <Compile Include="Controllers\UpdateMyProfileController.cs" />
     <Compile Include="Controllers\UpdateMyScheduleController.cs" />
@@ -430,7 +432,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TutorSchedule.cs" />
-    <Compile Include="EntityModels\TutorSchedulesController.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.designer.cs">
       <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
@@ -499,9 +500,9 @@
     <Compile Include="Migrations\201809142113562_AddTeacherToStudent.Designer.cs">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904111516017_AddTutorSchedule.cs" />
-    <Compile Include="Migrations\201904111516017_AddTutorSchedule.Designer.cs">
-      <DependentUpon>201904111516017_AddTutorSchedule.cs</DependentUpon>
+    <Compile Include="Migrations\201904121739313_AddTutorSchedule.cs" />
+    <Compile Include="Migrations\201904121739313_AddTutorSchedule.Designer.cs">
+      <DependentUpon>201904121739313_AddTutorSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -526,9 +527,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\AzureBlobsController.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="Controllers\TutorNotesController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\UploadController.cs">
@@ -1105,7 +1103,6 @@
     <Content Include="Views\Teachers\Edit.cshtml" />
     <Content Include="Views\Teachers\Index.cshtml" />
     <Content Include="Views\View.cshtml" />
-    <Content Include="Views\TutorSudent\Index.cshtml" />
     <Content Include="Views\TutorStudent\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -1200,8 +1197,8 @@
     <EmbeddedResource Include="Migrations\201809142113562_AddTeacherToStudent.resx">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904111516017_AddTutorSchedule.resx">
-      <DependentUpon>201904111516017_AddTutorSchedule.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904121739313_AddTutorSchedule.resx">
+      <DependentUpon>201904121739313_AddTutorSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
