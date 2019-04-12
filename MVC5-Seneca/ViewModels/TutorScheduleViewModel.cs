@@ -1,11 +1,6 @@
 ﻿using MVC5_Seneca.EntityModels;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
-using MVC5_Seneca.Controllers;
-using System.Web.Mvc;
 
 namespace MVC5_Seneca.ViewModels
 {
@@ -18,7 +13,7 @@ namespace MVC5_Seneca.ViewModels
 
         [DisplayName("Student")]
         public Student Student { get; set; }
-        public string DayOfWeek { get; set; }
+        public string DayName { get; set; }
         public string TimeOfDay { get; set; }
         public string ErrorMessage { get; set; }
 

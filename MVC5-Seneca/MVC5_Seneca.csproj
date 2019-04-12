@@ -499,9 +499,9 @@
     <Compile Include="Migrations\201809142113562_AddTeacherToStudent.Designer.cs">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904092157466_AddTutorStudents.cs" />
-    <Compile Include="Migrations\201904092157466_AddTutorStudents.Designer.cs">
-      <DependentUpon>201904092157466_AddTutorStudents.cs</DependentUpon>
+    <Compile Include="Migrations\201904111516017_AddTutorSchedule.cs" />
+    <Compile Include="Migrations\201904111516017_AddTutorSchedule.Designer.cs">
+      <DependentUpon>201904111516017_AddTutorSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1200,8 +1200,8 @@
     <EmbeddedResource Include="Migrations\201809142113562_AddTeacherToStudent.resx">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904092157466_AddTutorStudents.resx">
-      <DependentUpon>201904092157466_AddTutorStudents.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904111516017_AddTutorSchedule.resx">
+      <DependentUpon>201904111516017_AddTutorSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

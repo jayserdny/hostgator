@@ -16,6 +16,14 @@ namespace MVC5_Seneca.EntityModels
         // GET: TutorSchedules
         public ActionResult Index()
         {
+            try
+            {
+                return View(db.TutorSchedules.ToList());
+            }
+            catch (Exception ex)
+            {
+                 var x = ex;
+            }
             return View(db.TutorSchedules.ToList());
         }
          
@@ -58,7 +66,7 @@ namespace MVC5_Seneca.EntityModels
         // POST: TutorSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Tutor,Student,DayOfWeek,TimeOfDay")] TutorScheduleViewModel viewModel)
+        public ActionResult Create([Bind(Include = "Tutor,Student,DayName,TimeOfDay")] TutorScheduleViewModel viewModel)
         {
             viewModel.ErrorMessage = null;
             if (viewModel.Tutor.Id == null)
@@ -105,7 +113,7 @@ namespace MVC5_Seneca.EntityModels
                 {   
                     Tutor = viewModel.Tutor,
                     Student = viewModel.Student,
-                    DayOfWeek = viewModel.DayOfWeek,
+                    DayName = viewModel.DayName,
                     TimeOfDay = viewModel.TimeOfDay
                 };   
                 db.TutorSchedules.Add(schedule);
@@ -141,7 +149,7 @@ namespace MVC5_Seneca.EntityModels
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DayOfWeek,TimeOfDay")] TutorSchedule tutorSchedule)
+        public ActionResult Edit([Bind(Include = "Id,DayName,TimeOfDay")] TutorSchedule tutorSchedule)
         {
             if (ModelState.IsValid)
             {
