@@ -49,7 +49,8 @@
         <a href="@Url.Action("MaintainSchools", "Home")">Maintain Schools</a><br />
         <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain User Permissions (&quot;Roles&quot;)</a><br />
         <a href="@Url.Action("MaintainTipsCategories", "Home")">Maintain Tips Categories</a><br />
-        <a href="@Url.Action("UploadTeachingTips", "Home")">Maintain Teaching Tips</a><br />
+        <a href="@Url.Action("UploadTeachingTips", "Home")">Maintain Teaching Tips</a><br /> 
+        <a href="@Url.Action("MaintainTutorSchedules", "Home")">Maintain Tutor Schedules</a><br /> 
         @*<a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />*@
         <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
         <a href="@Url.Action("LoginLog", "Home")">View Logins Log</a><br />
@@ -75,9 +76,7 @@
             <a href="@Url.Action("MaintainTeachers", "Home")">Add/Edit Teacher</a>
             <br />
             <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
-            <br /> 
-            <a href="@Url.Action("UpdateMySchedule", "Home")">Update My Schedule</a> 
-            <br />
+            <br />   
         }
 
         @if (User.IsInRole("Staff"))

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
@@ -37,8 +34,7 @@ namespace MVC5_Seneca.Controllers
                     model.Add(tutorSchedule);                      
                 }                                       
             }
-            return View(model);
-            //return View(_db.TutorSchedules.ToList());
+            return View(model);                                  
         }
 
         // GET: TutorSchedules/Details/5
@@ -67,8 +63,7 @@ namespace MVC5_Seneca.Controllers
                 foreach (var role in user.Roles)
                 {
                     var identityRole = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
-                    if (identityRole.Name != "Tutor") continue;
-                    //viewModel.Tutors.Add(user);
+                    if (identityRole.Name != "Tutor") continue;        
                     validTutorList.Add(user);
                 }
             }
@@ -159,26 +154,68 @@ namespace MVC5_Seneca.Controllers
         // GET: TutorSchedules/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            TutorScheduleViewModel viewModel = new TutorScheduleViewModel();
+            var ts = _db.TutorSchedules.Find(id);
+            var timeOfDay = ts.TimeOfDay;
+            var dayName = ts.DayName;
+
+            using (var context = new SenecaContext())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + id;
+                var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                ApplicationUser tutor = _db.Users.Find(tutorId);
+
+                sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + id;
+                var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
+                Student student = _db.Students.Find(studentId);
+
+                var tutors = _db.Users.OrderBy(u => u.LastName).ToList();
+                var validTutorList = new List<ApplicationUser>();
+                foreach (ApplicationUser user in tutors)
+                {
+                    foreach (var role in user.Roles)
+                    {
+                        var identityRole = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
+                        if (identityRole.Name != "Tutor") continue;
+                        validTutorList.Add(user);
+                    }
+                }
+                                                                                                                                                              
+                var daysList = new List<string>()
+                    {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+                var timesList = new List<string>()
+                {"TBD",
+                    "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
+                    "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
+                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
+                    "5:00","5:15","5:30"
+                };
+
+                TutorScheduleViewModel  newTutorSchedule = new TutorScheduleViewModel()
+                {
+                    Tutor = tutor,
+                    Student = student,
+                    DayName = dayName,
+                    TimeOfDay =timeOfDay,                             
+                    DaysList =daysList, 
+                    TimesList =timesList 
+                };
+                viewModel = newTutorSchedule;
             }
-            TutorSchedule tutorSchedule = _db.TutorSchedules.Find(id);
-            if (tutorSchedule == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tutorSchedule);
+            return View(viewModel);
         }
 
         // POST: TutorSchedules/Edit/5.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DayName,TimeOfDay")] TutorSchedule tutorSchedule)
+        public ActionResult Edit([Bind(Include = "Id,Tutor,Student,DayName,TimeOfDay")] TutorScheduleViewModel  tutorSchedule)
         {
             if (ModelState.IsValid)
             {
-                _db.Entry(tutorSchedule).State = EntityState.Modified;
+                var modifiedSchedule = _db.TutorSchedules.Find(tutorSchedule.Id);
+                modifiedSchedule.DayName = tutorSchedule.DayName;
+                modifiedSchedule.TimeOfDay = tutorSchedule.TimeOfDay;
+                _db.Entry(modifiedSchedule).State = EntityState.Modified;     
                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -192,12 +229,25 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             TutorSchedule tutorSchedule = _db.TutorSchedules.Find(id);
             if (tutorSchedule == null)
             {
                 return HttpNotFound();
             }
-            return View(tutorSchedule);
+
+            using (var context = new SenecaContext())
+            {
+                var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
+                var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                tutorSchedule.Tutor = _db.Users.Find(tutorId);
+
+                sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
+                var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
+                tutorSchedule.Student = _db.Students.Find(studentId);
+            }
+
+            return View(tutorSchedule); 
         }
 
         // POST: TutorSchedules/Delete/5
@@ -209,6 +259,11 @@ namespace MVC5_Seneca.Controllers
             _db.TutorSchedules.Remove(tutorSchedule);
             _db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ReturnToDashboard()
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)
