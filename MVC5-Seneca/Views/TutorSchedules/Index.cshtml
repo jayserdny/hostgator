@@ -13,51 +13,61 @@
         <p>
             @Html.ActionLink("Create New Tutor Schedule", "Create")
         </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Tutor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Student)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DayName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeOfDay)
-            </th>
-            <th></th>
-        </tr>
-        
-        @foreach (var item in Model) {
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tutor.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Student.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DayName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TimeOfDay)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit Day/Time", "Edit", new {id = item.Id}) |
-                    @Html.ActionLink("Delete", "Delete", new {id = item.Id})
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tutor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DayName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TimeOfDay)
+                </th>
+                <th></th>
             </tr>
-        } 
-    </table>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tutor.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeOfDay)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit Day/Time", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+    </table> 
+    <br />
     <table>
         <tr>
             <td>
-                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                @Html.ActionLink("Download Excel File", "DownloadExcelFile", new { })
             </td>
-        </tr>  
+        </tr>
     </table>
+    <br />
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table>
 
     </body>
 </html>

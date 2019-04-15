@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
@@ -259,6 +262,20 @@ namespace MVC5_Seneca.Controllers
             _db.TutorSchedules.Remove(tutorSchedule);
             _db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DownloadExcelFile()
+        {
+            XLWorkbook workbook = new XLWorkbook();
+            IXLWorksheet worksheet = workbook.Worksheets.Add("TutoringSchedule");
+            worksheet.Cell(1, 1).SetValue("Tutoring Schedule");                                                         
+            worksheet.Cell(2, 1).SetValue("(" + DateTime.Now.ToShortDateString() + ")");
+
+            MemoryStream ms = new MemoryStream();
+            workbook.SaveAs(ms);
+            ms.Position = 0;
+            return new FileStreamResult(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                { FileDownloadName = "TutoringSchedule.xlsx"};
         }
 
         public ActionResult ReturnToDashboard()
