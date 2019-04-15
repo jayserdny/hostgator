@@ -79,12 +79,7 @@ namespace MVC5_Seneca.EntityModels
             {
                 base.PhoneNumber = value;
             }
-        }
-
-        public string FullName
-        {
-            get { return string.Format("{0} {1}", FirstName, LastName); }
-        }
-
+        }  
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

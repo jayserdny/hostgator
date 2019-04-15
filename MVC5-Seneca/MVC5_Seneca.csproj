@@ -1116,7 +1116,6 @@
     <Content Include="Views\UpdateMySchedule\TempIndex.cshtml" />
     <Content Include="Views\TutorSchedules\Create.cshtml" />
     <Content Include="Views\TutorSchedules\Delete.cshtml" />
-    <Content Include="Views\TutorSchedules\Details.cshtml" />
     <Content Include="Views\TutorSchedules\Edit.cshtml" />
     <Content Include="Views\TutorSchedules\Index.cshtml" />
   </ItemGroup>
