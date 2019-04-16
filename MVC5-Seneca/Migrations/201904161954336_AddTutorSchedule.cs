@@ -1,5 +1,6 @@
 namespace MVC5_Seneca.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     
     public partial class AddTutorSchedule : DbMigration
@@ -11,8 +12,8 @@ namespace MVC5_Seneca.Migrations
                 c => new
                 {
                     Id = c.Int(nullable: false, identity: true),
-                    DayName = c.String(),
-                    TimeOfDay = c.String(),
+                    DayOfWeekIndex = c.Int(nullable: false),
+                    MinutesPastMidnight = c.Int(nullable: false),
                     Student_Id = c.Int(),
                     Tutor_Id = c.String(maxLength: 128),
                 })
@@ -20,16 +21,16 @@ namespace MVC5_Seneca.Migrations
                 .ForeignKey("dbo.Student", t => t.Student_Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.Tutor_Id)
                 .Index(t => t.Student_Id)
-                .Index(t => t.Tutor_Id); 
+                .Index(t => t.Tutor_Id);  
         }
-
+        
         public override void Down()
         {
-            DropForeignKey("dbo.TutorSchedule", "Tutor_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.TutorSchedule", "Student_Id", "dbo.Student");
-            DropIndex("dbo.TutorSchedule", new[] { "Tutor_Id" });
-            DropIndex("dbo.TutorSchedule", new[] { "Student_Id" });
-            DropTable("dbo.TutorSchedule");
+            //DropForeignKey("dbo.TutorSchedule", "Tutor_Id", "dbo.AspNetUsers");
+            //DropForeignKey("dbo.TutorSchedule", "Student_Id", "dbo.Student");
+            //DropIndex("dbo.TutorSchedule", new[] { "Tutor_Id" });
+            //DropIndex("dbo.TutorSchedule", new[] { "Student_Id" });
+            //DropTable("dbo.TutorSchedule");
         }
     }
 }

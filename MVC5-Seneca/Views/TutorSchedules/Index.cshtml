@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MVC5_Seneca.EntityModels.TutorSchedule>
+﻿@model IEnumerable<MVC5_Seneca.ViewModels.TutorScheduleViewModel>
 @{
     Layout = null;
 }
@@ -22,10 +22,10 @@
                     @Html.DisplayNameFor(model => model.Student)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DayName)
+                    Day
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TimeOfDay)
+                    Time
                 </th>
                 <th></th>
             </tr>

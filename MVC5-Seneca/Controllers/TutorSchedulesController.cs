@@ -19,19 +19,28 @@ namespace MVC5_Seneca.Controllers
         // GET: TutorSchedules
         public ActionResult Index()
         {
-            var model = new List<TutorSchedule >();          
+            var model = new List<TutorScheduleViewModel>();          
             foreach (var tutorSchedule in _db.TutorSchedules.ToList())
             {  
                 using (var context = new SenecaContext())
                 {
                     var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
                     var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
-                    tutorSchedule.Tutor = _db.Users.Find(tutorId);
+                    var tutor = _db.Users.Find(tutorId);
 
                     sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
                     var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
-                    tutorSchedule.Student = _db.Students.Find(studentId);
-                    model.Add(tutorSchedule);                      
+                    var student = _db.Students.Find(studentId);
+
+                    TutorScheduleViewModel tutorScheduleViewModel = new TutorScheduleViewModel()
+                    {
+                        Id = tutorSchedule.Id, 
+                        Tutor = tutor,
+                        Student = student,
+                        DayName = GetDayOfWeekName(tutorSchedule.DayOfWeekIndex),
+                        TimeOfDay = ConvertToHHMM(tutorSchedule.MinutesPastMidnight)
+                    }; 
+                    model.Add(tutorScheduleViewModel);                      
                 }                                       
             }
             return View(model);                                  
@@ -73,11 +82,11 @@ namespace MVC5_Seneca.Controllers
             viewModel.DaysList = new List<string>()
             {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
             viewModel.TimesList = new List<string>()
-            {
+            {"TBD",
                 "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                 "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
                 "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                "5:00","5:15","5:30","TBD"
+                "5:00","5:15","5:30"
             };
             return View(viewModel);
         }
@@ -121,25 +130,27 @@ namespace MVC5_Seneca.Controllers
                     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
                 tutorSchedule.DaysList = daysList;
                 List<string> timesList = new List<string>
-                { 
+                { "TBD",
                     "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                     "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
-                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45","5:00","5:15","5:30","TBD"
+                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45","5:00","5:15","5:30"
                 };
                 tutorSchedule.TimesList = timesList;
                 return View(tutorSchedule);
             }
 
+            // ErrorMessage = null AND ModelState.IsValid 
             ApplicationUser tutor = _db.Users.Find(tutorSchedule.Tutor.Id);
             Student student = _db.Students.Find(tutorSchedule.Student.Id);
             TutorSchedule  newTutorSchedule = new TutorSchedule()
             {
                 Tutor = tutor,
                 Student = student,
-                DayName =tutorSchedule .DayName,
-                TimeOfDay =tutorSchedule.TimeOfDay   
+                DayOfWeekIndex = GetDayOfWeekIndex(tutorSchedule.DayName),
+                MinutesPastMidnight = ConvertToMinutesPastMidnight( tutorSchedule.TimeOfDay)
+                //DayName =tutorSchedule .DayName,
+                //TimeOfDay =tutorSchedule.TimeOfDay   
             };
-            // Int32 xx = ConvertToMinutesPastMidnight(tutorSchedule.TimeOfDay);
             _db.TutorSchedules.Add(newTutorSchedule);
             try
             {
@@ -147,7 +158,7 @@ namespace MVC5_Seneca.Controllers
             }
             catch (Exception ex)
             {
-                var x = ex;
+                var x1 = ex;
             }      
             return RedirectToAction("Index");        
         }
@@ -157,8 +168,8 @@ namespace MVC5_Seneca.Controllers
         {
             TutorScheduleViewModel viewModel = new TutorScheduleViewModel();
             var ts = _db.TutorSchedules.Find(id);
-            var timeOfDay = ts.TimeOfDay;
-            var dayName = ts.DayName;
+            //var timeOfDay = ts.TimeOfDay;
+            //var dayName = ts.DayName;
 
             using (var context = new SenecaContext())
             {
@@ -185,19 +196,19 @@ namespace MVC5_Seneca.Controllers
                 var daysList = new List<string>()
                     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
                 var timesList = new List<string>()
-                {
+                {"TBD",
                     "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                     "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
                     "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                    "5:00","5:15","5:30","TBD"
+                    "5:00","5:15","5:30"
                 };
 
                 TutorScheduleViewModel  newTutorSchedule = new TutorScheduleViewModel()
                 {
                     Tutor = tutor,
                     Student = student,
-                    DayName = dayName,
-                    TimeOfDay =timeOfDay,                             
+                    //DayName = dayName,
+                    //TimeOfDay =timeOfDay,                             
                     DaysList =daysList, 
                     TimesList =timesList 
                 };
@@ -214,8 +225,8 @@ namespace MVC5_Seneca.Controllers
             if (ModelState.IsValid)
             {
                 var modifiedSchedule = _db.TutorSchedules.Find(tutorSchedule.Id);
-                modifiedSchedule.DayName = tutorSchedule.DayName;
-                modifiedSchedule.TimeOfDay = tutorSchedule.TimeOfDay;
+                //modifiedSchedule.DayName = tutorSchedule.DayName;
+                //modifiedSchedule.TimeOfDay = tutorSchedule.TimeOfDay;
                 _db.Entry(modifiedSchedule).State = EntityState.Modified;     
                _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -276,23 +287,18 @@ namespace MVC5_Seneca.Controllers
                 { FileDownloadName = "TutoringSchedule.xlsx"};
         }
 
-        public ActionResult ReturnToDashboard()
-        {
-            return RedirectToAction("Index", "Home");
-        }                                                                
-
         private static Int32 GetDayOfWeekIndex(string DayOfWeek)
         {
             switch (DayOfWeek)
             {
-                case "Monday": return (0); 
+                case "Monday": return (0);
                 case "Tuesday": return (1);
                 case "Wednesday": return (2);
-                case "Thursday": return (3);    
-                case "Friday": return (4);         
-                case "Saturday": return (5);     
-                case "Sunday": return (6);       
-            } 
+                case "Thursday": return (3);
+                case "Friday": return (4);
+                case "Saturday": return (5);
+                case "Sunday": return (6);
+            }
             return 0;
         }
 
@@ -300,37 +306,40 @@ namespace MVC5_Seneca.Controllers
         {
             switch (index)
             {
-                case 0:  return("Monday");
+                case 0: return ("Monday");
                 case 1: return ("Tuesday");
                 case 2: return ("Wednesday");
                 case 3: return ("Thursday");
                 case 4: return ("Friday");
                 case 5: return ("Saturday");
                 case 6: return ("Sunday");
-            }                           
+            }
             return ("Monday");
         }
-            
+
         private static Int32 ConvertToMinutesPastMidnight(string hhmm)
         {
-            if (hhmm == "TBD") {return (0);}
+            if (hhmm == "TBD") { return (0); }
             string[] hm = hhmm.Split(':');
             int h = short.Parse(hm[0]);
-            if (h < 12) {h = h + 12;}
-            int m = short.Parse(hm[1]);    
+            if (h < 10) { h = h + 12; }
+            int m = short.Parse(hm[1]);
             return (h * 60 + m);
         }
 
         private static string ConvertToHHMM(int mpm)
         {
-            if (mpm == 0) {return ("TBD");}
+            if (mpm == 0) { return ("TBD"); }
 
             int h = mpm / 60;
-            if (h > (60 * 12 + 59)) {h = h - (60 * 12);}
+            int m = mpm - (h * 60);
+            if (h > 12) { h = h - 12; }      
+            return (h.ToString() + ":" + m.ToString("d2"));
+        }
 
-            int m = mpm - (h * 60); 
-            string mmx = h.ToString() + ":" + m.ToString();
-            return (h.ToString( ) + ":" + m.ToString( ));
+        public ActionResult ReturnToDashboard()
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

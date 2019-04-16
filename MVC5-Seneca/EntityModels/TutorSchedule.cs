@@ -11,11 +11,7 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("Student")]
         public Student  Student { get; set; }                                                                  
-
-        [DisplayName("Day")]
-        public string DayName { get; set; }
-
-        [DisplayName("Time")]
-        public string TimeOfDay { get; set; }
+        public int DayOfWeekIndex { get; set; } // DayOfWeek needs to be sortable for schedule
+        public int MinutesPastMidnight { get; set; }  // TimeOfDay needs to be sortable for schedule
     }
 }
