@@ -19,8 +19,7 @@ namespace MVC5_Seneca.Controllers
         // GET: TutorSchedules
         public ActionResult Index()
         {
-            var model = new List<TutorSchedule >();
-            var scheduleList = new List <TutorSchedule>();
+            var model = new List<TutorSchedule >();          
             foreach (var tutorSchedule in _db.TutorSchedules.ToList())
             {  
                 using (var context = new SenecaContext())
@@ -280,8 +279,38 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ReturnToDashboard()
         {
             return RedirectToAction("Index", "Home");
+        }                                                                
+
+        private static Int32 GetDayOfWeekIndex(string DayOfWeek)
+        {
+            switch (DayOfWeek)
+            {
+                case "Monday": return (0); 
+                case "Tuesday": return (1);
+                case "Wednesday": return (2);
+                case "Thursday": return (3);    
+                case "Friday": return (4);         
+                case "Saturday": return (5);     
+                case "Sunday": return (6);       
+            } 
+            return 0;
         }
 
+        private string GetDayOfWeekName(int index)
+        {
+            switch (index)
+            {
+                case 0:  return("Monday");
+                case 1: return ("Tuesday");
+                case 2: return ("Wednesday");
+                case 3: return ("Thursday");
+                case 4: return ("Friday");
+                case 5: return ("Saturday");
+                case 6: return ("Sunday");
+            }                           
+            return ("Monday");
+        }
+            
         private static Int32 ConvertToMinutesPastMidnight(string hhmm)
         {
             if (hhmm == "TBD") {return (0);}
