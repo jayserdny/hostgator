@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Wordprocessing;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
@@ -33,7 +32,6 @@ namespace MVC5_Seneca.Controllers
                     sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
                     var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
                     tutorSchedule.Student = _db.Students.Find(studentId);
-
                     model.Add(tutorSchedule);                      
                 }                                       
             }
@@ -76,11 +74,11 @@ namespace MVC5_Seneca.Controllers
             viewModel.DaysList = new List<string>()
             {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
             viewModel.TimesList = new List<string>()
-            {"TBD",
+            {
                 "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                 "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
                 "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                "5:00","5:15","5:30"
+                "5:00","5:15","5:30","TBD"
             };
             return View(viewModel);
         }
@@ -124,10 +122,10 @@ namespace MVC5_Seneca.Controllers
                     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
                 tutorSchedule.DaysList = daysList;
                 List<string> timesList = new List<string>
-                { "TBD",
+                { 
                     "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                     "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
-                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45","5:00","5:15","5:30"
+                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45","5:00","5:15","5:30","TBD"
                 };
                 tutorSchedule.TimesList = timesList;
                 return View(tutorSchedule);
@@ -142,6 +140,7 @@ namespace MVC5_Seneca.Controllers
                 DayName =tutorSchedule .DayName,
                 TimeOfDay =tutorSchedule.TimeOfDay   
             };
+            // Int32 xx = ConvertToMinutesPastMidnight(tutorSchedule.TimeOfDay);
             _db.TutorSchedules.Add(newTutorSchedule);
             try
             {
@@ -187,11 +186,11 @@ namespace MVC5_Seneca.Controllers
                 var daysList = new List<string>()
                     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
                 var timesList = new List<string>()
-                {"TBD",
+                {
                     "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                     "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
                     "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                    "5:00","5:15","5:30"
+                    "5:00","5:15","5:30","TBD"
                 };
 
                 TutorScheduleViewModel  newTutorSchedule = new TutorScheduleViewModel()
@@ -281,6 +280,28 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ReturnToDashboard()
         {
             return RedirectToAction("Index", "Home");
+        }
+
+        private static Int32 ConvertToMinutesPastMidnight(string hhmm)
+        {
+            if (hhmm == "TBD") {return (0);}
+            string[] hm = hhmm.Split(':');
+            int h = short.Parse(hm[0]);
+            if (h < 12) {h = h + 12;}
+            int m = short.Parse(hm[1]);    
+            return (h * 60 + m);
+        }
+
+        private static string ConvertToHHMM(int mpm)
+        {
+            if (mpm == 0) {return ("TBD");}
+
+            int h = mpm / 60;
+            if (h > (60 * 12 + 59)) {h = h - (60 * 12);}
+
+            int m = mpm - (h * 60); 
+            string mmx = h.ToString() + ":" + m.ToString();
+            return (h.ToString( ) + ":" + m.ToString( ));
         }
 
         protected override void Dispose(bool disposing)
