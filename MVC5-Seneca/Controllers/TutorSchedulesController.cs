@@ -19,7 +19,7 @@ namespace MVC5_Seneca.Controllers
         // GET: TutorSchedules
         public ActionResult Index()
         {
-            var model = new List<TutorScheduleViewModel>();          
+            var model = new List<TutorSchedule>();          
             foreach (var tutorSchedule in _db.TutorSchedules.ToList())
             {  
                 using (var context = new SenecaContext())
@@ -32,7 +32,7 @@ namespace MVC5_Seneca.Controllers
                     var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
                     var student = _db.Students.Find(studentId);
 
-                    TutorScheduleViewModel tutorScheduleViewModel = new TutorScheduleViewModel()
+                    TutorSchedule viewModel = new TutorSchedule()
                     {
                         Id = tutorSchedule.Id, 
                         Tutor = tutor,
@@ -40,25 +40,10 @@ namespace MVC5_Seneca.Controllers
                         DayName = GetDayOfWeekName(tutorSchedule.DayOfWeekIndex),
                         TimeOfDay = ConvertToHHMM(tutorSchedule.MinutesPastMidnight)
                     }; 
-                    model.Add(tutorScheduleViewModel);                      
+                    model.Add(viewModel);                      
                 }                                       
             }
             return View(model);                                  
-        }
-
-        // GET: TutorSchedules/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TutorSchedule tutorSchedule = _db.TutorSchedules.Find(id);
-            if (tutorSchedule == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tutorSchedule);
         }
 
         // GET: TutorSchedules/Create
@@ -82,11 +67,11 @@ namespace MVC5_Seneca.Controllers
             viewModel.DaysList = new List<string>()
             {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
             viewModel.TimesList = new List<string>()
-            {"TBD",
+            {
                 "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                 "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
                 "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                "5:00","5:15","5:30"
+                "5:00","5:15","5:30" ,"TBD"
             };
             return View(viewModel);
         }
@@ -168,8 +153,8 @@ namespace MVC5_Seneca.Controllers
         {
             TutorScheduleViewModel viewModel = new TutorScheduleViewModel();
             var ts = _db.TutorSchedules.Find(id);
-            //var timeOfDay = ts.TimeOfDay;
-            //var dayName = ts.DayName;
+            string dayName = GetDayOfWeekName(ts.DayOfWeekIndex);
+            string timeOfDay = ConvertToHHMM(ts.MinutesPastMidnight);      
 
             using (var context = new SenecaContext())
             {
@@ -196,19 +181,19 @@ namespace MVC5_Seneca.Controllers
                 var daysList = new List<string>()
                     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
                 var timesList = new List<string>()
-                {"TBD",
+                {
                     "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                     "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
                     "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                    "5:00","5:15","5:30"
+                    "5:00","5:15","5:30","TBD"
                 };
 
                 TutorScheduleViewModel  newTutorSchedule = new TutorScheduleViewModel()
                 {
                     Tutor = tutor,
                     Student = student,
-                    //DayName = dayName,
-                    //TimeOfDay =timeOfDay,                             
+                    DayName = dayName,
+                    TimeOfDay = timeOfDay,
                     DaysList =daysList, 
                     TimesList =timesList 
                 };
@@ -225,12 +210,28 @@ namespace MVC5_Seneca.Controllers
             if (ModelState.IsValid)
             {
                 var modifiedSchedule = _db.TutorSchedules.Find(tutorSchedule.Id);
-                //modifiedSchedule.DayName = tutorSchedule.DayName;
-                //modifiedSchedule.TimeOfDay = tutorSchedule.TimeOfDay;
-                _db.Entry(modifiedSchedule).State = EntityState.Modified;     
-               _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (modifiedSchedule != null)
+                { 
+                    using (var context = new SenecaContext())
+                    {
+                        var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
+                        var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                        ApplicationUser tutor = _db.Users.Find(tutorId);
+                        modifiedSchedule.Tutor = tutor;
+
+                        sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
+                        var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
+                        Student student = _db.Students.Find(studentId);
+                        modifiedSchedule.Student = student;
+                    }
+
+                    modifiedSchedule.DayOfWeekIndex = GetDayOfWeekIndex(tutorSchedule.DayName);
+                    modifiedSchedule.MinutesPastMidnight = ConvertToMinutesPastMidnight(tutorSchedule.TimeOfDay);
+                    _db.Entry(modifiedSchedule).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            } 
             return View(tutorSchedule);
         }
 
@@ -259,13 +260,15 @@ namespace MVC5_Seneca.Controllers
                 tutorSchedule.Student = _db.Students.Find(studentId);
             }
 
+            tutorSchedule.DayName = GetDayOfWeekName(tutorSchedule.DayOfWeekIndex);
+            tutorSchedule.TimeOfDay = ConvertToHHMM(tutorSchedule.MinutesPastMidnight);
             return View(tutorSchedule); 
         }
 
         // POST: TutorSchedules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)                           
         {
             TutorSchedule tutorSchedule = _db.TutorSchedules.Find(id);
             _db.TutorSchedules.Remove(tutorSchedule);
@@ -277,8 +280,18 @@ namespace MVC5_Seneca.Controllers
         {
             XLWorkbook workbook = new XLWorkbook();
             IXLWorksheet worksheet = workbook.Worksheets.Add("TutoringSchedule");
+            worksheet.Style.Alignment.SetHorizontal((XLAlignmentHorizontalValues) XLDrawingHorizontalAlignment.Center);
             worksheet.Cell(1, 1).SetValue("Tutoring Schedule");                                                         
             worksheet.Cell(2, 1).SetValue("(" + DateTime.Now.ToShortDateString() + ")");
+
+            worksheet.Cell(3, 2).SetValue("Monday");
+            worksheet.Cell(3, 3).SetValue("Tuesday");
+            worksheet.Cell(3, 4).SetValue("Wednesday");
+            worksheet.Cell(3, 5).SetValue("Thursday");
+            worksheet.Cell(3, 6).SetValue("Friday");
+            worksheet.Cell(3, 7).SetValue("Saturday");
+            worksheet.Cell(3, 8).SetValue("Sunday");
+            worksheet.Row(3).Style.Font.Bold=true;
 
             MemoryStream ms = new MemoryStream();
             workbook.SaveAs(ms);

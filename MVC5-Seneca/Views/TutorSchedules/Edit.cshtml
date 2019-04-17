@@ -35,8 +35,8 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.DayName)
                     <div class="col-md-10">
-                        @Html.DropDownListFor(x => x.DayName,  new SelectList(Model.DaysList, "DayName")) 
-                        @Html.ValidationMessageFor(model => model.DayName, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(x => x.DayName,new SelectList(Model.DaysList, "DayName"))
+                            @Html.ValidationMessageFor(model => model.DayName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <br />
