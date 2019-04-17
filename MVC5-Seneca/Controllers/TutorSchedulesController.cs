@@ -38,7 +38,7 @@ namespace MVC5_Seneca.Controllers
                         Tutor = tutor,
                         Student = student,
                         DayName = GetDayOfWeekName(tutorSchedule.DayOfWeekIndex),
-                        TimeOfDay = ConvertToHHMM(tutorSchedule.MinutesPastMidnight)
+                        TimeOfDay = ConvertToHhmm(tutorSchedule.MinutesPastMidnight)
                     }; 
                     model.Add(viewModel);                      
                 }                                       
@@ -61,7 +61,6 @@ namespace MVC5_Seneca.Controllers
                     validTutorList.Add(user);
                 }
             }
-
             viewModel.Tutors = validTutorList;
             viewModel.Students = (_db.Students.OrderBy(u => u.FirstName).ToList());
             viewModel.DaysList = new List<string>()
@@ -115,16 +114,17 @@ namespace MVC5_Seneca.Controllers
                     {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
                 tutorSchedule.DaysList = daysList;
                 List<string> timesList = new List<string>
-                { "TBD",
+                { 
                     "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
                     "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
-                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45","5:00","5:15","5:30"
+                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
+                    "5:00","5:15","5:30","TBD"
                 };
                 tutorSchedule.TimesList = timesList;
                 return View(tutorSchedule);
             }
 
-            // ErrorMessage = null AND ModelState.IsValid 
+            // if ErrorMessage = null AND ModelState.IsValid: 
             ApplicationUser tutor = _db.Users.Find(tutorSchedule.Tutor.Id);
             Student student = _db.Students.Find(tutorSchedule.Student.Id);
             TutorSchedule  newTutorSchedule = new TutorSchedule()
@@ -132,73 +132,70 @@ namespace MVC5_Seneca.Controllers
                 Tutor = tutor,
                 Student = student,
                 DayOfWeekIndex = GetDayOfWeekIndex(tutorSchedule.DayName),
-                MinutesPastMidnight = ConvertToMinutesPastMidnight( tutorSchedule.TimeOfDay)
-                //DayName =tutorSchedule .DayName,
-                //TimeOfDay =tutorSchedule.TimeOfDay   
+                MinutesPastMidnight = ConvertToMinutesPastMidnight( tutorSchedule.TimeOfDay)   
             };
             _db.TutorSchedules.Add(newTutorSchedule);
-            try
-            {
-                _db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                var x1 = ex;
-            }      
+            _db.SaveChanges();
+                  
             return RedirectToAction("Index");        
         }
 
         // GET: TutorSchedules/Edit/5
         public ActionResult Edit(int? id)
         {
-            TutorScheduleViewModel viewModel = new TutorScheduleViewModel();
+            TutorScheduleViewModel viewModel = null;
             var ts = _db.TutorSchedules.Find(id);
-            string dayName = GetDayOfWeekName(ts.DayOfWeekIndex);
-            string timeOfDay = ConvertToHHMM(ts.MinutesPastMidnight);      
-
-            using (var context = new SenecaContext())
+            if (ts != null)
             {
-                var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + id;
-                var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
-                ApplicationUser tutor = _db.Users.Find(tutorId);
+                string dayName = GetDayOfWeekName(ts.DayOfWeekIndex);
+                string timeOfDay = ConvertToHhmm(ts.MinutesPastMidnight);
 
-                sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + id;
-                var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
-                Student student = _db.Students.Find(studentId);
 
-                var tutors = _db.Users.OrderBy(u => u.LastName).ToList();
                 var validTutorList = new List<ApplicationUser>();
-                foreach (ApplicationUser user in tutors)
+                using (var context = new SenecaContext())
                 {
-                    foreach (var role in user.Roles)
-                    {
-                        var identityRole = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
-                        if (identityRole.Name != "Tutor") continue;
-                        validTutorList.Add(user);
-                    }
-                }
-                                                                                                                                                              
-                var daysList = new List<string>()
-                    {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-                var timesList = new List<string>()
-                {
-                    "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
-                    "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
-                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
-                    "5:00","5:15","5:30","TBD"
-                };
+                    var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + id;
+                    var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                    ApplicationUser tutor = _db.Users.Find(tutorId);
 
-                TutorScheduleViewModel  newTutorSchedule = new TutorScheduleViewModel()
-                {
-                    Tutor = tutor,
-                    Student = student,
-                    DayName = dayName,
-                    TimeOfDay = timeOfDay,
-                    DaysList =daysList, 
-                    TimesList =timesList 
-                };
-                viewModel = newTutorSchedule;
-            }
+                    sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + id;
+                    var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
+                    Student student = _db.Students.Find(studentId);
+
+                    var tutors = _db.Users.OrderBy(u => u.LastName).ToList();
+                    foreach (ApplicationUser user in tutors)
+                    {
+                        foreach (var role in user.Roles)
+                        {
+                            var identityRole = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
+                            if (identityRole.Name != "Tutor") continue;
+                            validTutorList.Add(user);
+                        }
+                    }
+                                                                                                                                                              
+                    var daysList = new List<string>()
+                        {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+                    var timesList = new List<string>()
+                    {
+                        "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
+                        "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
+                        "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
+                        "5:00","5:15","5:30","TBD"
+                    };
+
+                    TutorScheduleViewModel  newTutorSchedule = new TutorScheduleViewModel()
+                    {
+                        Tutor = tutor,
+                        Tutors =validTutorList,
+                        Student = student,
+                        DayName = dayName,
+                        TimeOfDay = timeOfDay,
+                        DaysList =daysList, 
+                        TimesList =timesList, 
+                    };
+                    viewModel = newTutorSchedule;
+                }
+            }      
             return View(viewModel);
         }
 
@@ -261,7 +258,7 @@ namespace MVC5_Seneca.Controllers
             }
 
             tutorSchedule.DayName = GetDayOfWeekName(tutorSchedule.DayOfWeekIndex);
-            tutorSchedule.TimeOfDay = ConvertToHHMM(tutorSchedule.MinutesPastMidnight);
+            tutorSchedule.TimeOfDay = ConvertToHhmm(tutorSchedule.MinutesPastMidnight);
             return View(tutorSchedule); 
         }
 
@@ -271,7 +268,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DeleteConfirmed(int id)                           
         {
             TutorSchedule tutorSchedule = _db.TutorSchedules.Find(id);
-            _db.TutorSchedules.Remove(tutorSchedule);
+            _db.TutorSchedules.Remove(tutorSchedule ?? throw new InvalidOperationException());
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -279,19 +276,60 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DownloadExcelFile()
         {
             XLWorkbook workbook = new XLWorkbook();
-            IXLWorksheet worksheet = workbook.Worksheets.Add("TutoringSchedule");
-            worksheet.Style.Alignment.SetHorizontal((XLAlignmentHorizontalValues) XLDrawingHorizontalAlignment.Center);
-            worksheet.Cell(1, 1).SetValue("Tutoring Schedule");                                                         
-            worksheet.Cell(2, 1).SetValue("(" + DateTime.Now.ToShortDateString() + ")");
+            IXLWorksheet ws = workbook.Worksheets.Add("TutoringSchedule");
+            ws.Cell(1, 1).SetValue("Tutoring Schedule");                                                         
+            ws.Cell(2, 1).SetValue("(" + DateTime.Now.ToShortDateString() + ")");
 
-            worksheet.Cell(3, 2).SetValue("Monday");
-            worksheet.Cell(3, 3).SetValue("Tuesday");
-            worksheet.Cell(3, 4).SetValue("Wednesday");
-            worksheet.Cell(3, 5).SetValue("Thursday");
-            worksheet.Cell(3, 6).SetValue("Friday");
-            worksheet.Cell(3, 7).SetValue("Saturday");
-            worksheet.Cell(3, 8).SetValue("Sunday");
-            worksheet.Row(3).Style.Font.Bold=true;
+            ws.Cell(3, 2).SetValue("Monday");
+            ws.Cell(3, 3).SetValue("Tuesday");
+            ws.Cell(3, 4).SetValue("Wednesday");   
+            ws.Cell(3, 5).SetValue("Thursday");
+            ws.Cell(3, 6).SetValue("Friday");
+            ws.Cell(3, 7).SetValue("Saturday");
+            ws.Cell(3, 8).SetValue("Sunday");
+            ws.Row(3).Style.Font.Bold=true;                                                                          
+                                                                       
+            int previousTime = -1;
+            int previousDay = -1;
+            int activeRow = 5;
+            using (var context = new SenecaContext())
+            {
+                var tutorSchedules = _db.TutorSchedules .OrderBy(t => t.MinutesPastMidnight).ThenBy(t=> t.DayOfWeekIndex).ToList();
+                foreach (TutorSchedule tutorSchedule in tutorSchedules)
+                {
+                    var sqlString = "SELECT Tutor_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
+                    var tutorId = context.Database.SqlQuery<string>(sqlString).FirstOrDefault();
+                    ApplicationUser tutor = _db.Users.Find(tutorId);
+
+                    sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
+                    var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
+                    Student student = _db.Students.Find(studentId);
+                    tutorSchedule.TimeOfDay = ConvertToHhmm(tutorSchedule.MinutesPastMidnight);
+
+                    if (previousDay != -1
+                        && previousTime == tutorSchedule.MinutesPastMidnight
+                        && previousDay != tutorSchedule.DayOfWeekIndex)
+                    {
+                        activeRow -= 1;
+                    }
+
+                    ws.Cell(activeRow, 1).SetValue(tutorSchedule.TimeOfDay);
+                    // ReSharper disable once PossibleNullReferenceException
+                    var tutorAndStudent = tutor.LastName + ": " + student .FirstName;
+                    ws.Cell(activeRow, tutorSchedule.DayOfWeekIndex + 2).SetValue(tutorAndStudent);
+
+                    previousDay = tutorSchedule.DayOfWeekIndex;
+                    previousTime = tutorSchedule.MinutesPastMidnight;
+                    activeRow += 1;
+                }
+            }
+
+            for (int i = 1; i < 9; i++) {ws.Column(i).AdjustToContents();}
+            for (int i = 2; i < activeRow ; i++)
+            {
+                ws.Row(i).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            }
+            ws.Row(3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
             MemoryStream ms = new MemoryStream();
             workbook.SaveAs(ms);
@@ -300,9 +338,9 @@ namespace MVC5_Seneca.Controllers
                 { FileDownloadName = "TutoringSchedule.xlsx"};
         }
 
-        private static Int32 GetDayOfWeekIndex(string DayOfWeek)
+        private static Int32 GetDayOfWeekIndex(string dayOfWeek)
         {
-            switch (DayOfWeek)
+            switch (dayOfWeek)
             {
                 case "Monday": return (0);
                 case "Tuesday": return (1);
@@ -332,7 +370,7 @@ namespace MVC5_Seneca.Controllers
 
         private static Int32 ConvertToMinutesPastMidnight(string hhmm)
         {
-            if (hhmm == "TBD") { return (0); }
+            if (hhmm == "TBD") { return (9999); }
             string[] hm = hhmm.Split(':');
             int h = short.Parse(hm[0]);
             if (h < 10) { h = h + 12; }
@@ -340,9 +378,9 @@ namespace MVC5_Seneca.Controllers
             return (h * 60 + m);
         }
 
-        private static string ConvertToHHMM(int mpm)
+        private static string ConvertToHhmm(int mpm)
         {
-            if (mpm == 0) { return ("TBD"); }
+            if (mpm == 9999) { return ("TBD"); }
 
             int h = mpm / 60;
             int m = mpm - (h * 60);
