@@ -16,6 +16,7 @@ namespace MVC5_Seneca
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
+                //defaults: new { controller = "Login", action = "Index", id = UrlParameter.Optional }
                 defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }    // set by PER 01/17/2018
             );
         }

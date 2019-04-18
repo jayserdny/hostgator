@@ -431,6 +431,7 @@
     <Compile Include="Controllers\TipsCategoriesController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\TutorNotesController.cs" />
     <Compile Include="Controllers\TutorSchedulesController.cs" />
     <Compile Include="Controllers\TutorStudentController.cs" />
     <Compile Include="Controllers\UpdateMyProfileController.cs" />
@@ -516,9 +517,9 @@
     <Compile Include="Migrations\201809142113562_AddTeacherToStudent.Designer.cs">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904161954336_AddTutorSchedule.cs" />
-    <Compile Include="Migrations\201904161954336_AddTutorSchedule.Designer.cs">
-      <DependentUpon>201904161954336_AddTutorSchedule.cs</DependentUpon>
+    <Compile Include="Migrations\201904172016327_AddTutorSchedule.cs" />
+    <Compile Include="Migrations\201904172016327_AddTutorSchedule.Designer.cs">
+      <DependentUpon>201904172016327_AddTutorSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -790,25 +791,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
-    <Content Include="Scripts\jquery.validate.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\jquery.validate.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\jquery.validate.unobtrusive.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -1101,7 +1085,7 @@
     <Content Include="Views\TeachingTips\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\UpdateMyProfile\Index.cshtml">
+    <Content Include="Views\UpdateMyProfile\Edit.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Logins\Create.cshtml" />
@@ -1134,12 +1118,15 @@
     <Content Include="Views\TutorSchedules\Delete.cshtml" />
     <Content Include="Views\TutorSchedules\Edit.cshtml" />
     <Content Include="Views\TutorSchedules\Index.cshtml" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="obj\" />
     <Folder Include="Views\AzureBlobs\" />
+    <Folder Include="Views\TutorNote\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -1212,8 +1199,8 @@
     <EmbeddedResource Include="Migrations\201809142113562_AddTeacherToStudent.resx">
       <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904161954336_AddTutorSchedule.resx">
-      <DependentUpon>201904161954336_AddTutorSchedule.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904172016327_AddTutorSchedule.resx">
+      <DependentUpon>201904172016327_AddTutorSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
