@@ -148,8 +148,7 @@ namespace MVC5_Seneca.Controllers
             if (ts != null)
             {
                 string dayName = GetDayOfWeekName(ts.DayOfWeekIndex);
-                string timeOfDay = ConvertToHhmm(ts.MinutesPastMidnight);
-
+                string timeOfDay = ConvertToHhmm(ts.MinutesPastMidnight); 
 
                 var validTutorList = new List<ApplicationUser>();
                 using (var context = new SenecaContext())
@@ -202,7 +201,8 @@ namespace MVC5_Seneca.Controllers
         // POST: TutorSchedules/Edit/5.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Tutor,Student,DayName,TimeOfDay")] TutorScheduleViewModel  tutorSchedule)
+        public ActionResult Edit([Bind(Include = "Id,Tutor,Student,DayName,TimeOfDay")]
+            TutorScheduleViewModel  tutorSchedule)
         {
             if (ModelState.IsValid)
             {
