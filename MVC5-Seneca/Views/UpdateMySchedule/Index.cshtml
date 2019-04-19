@@ -1,5 +1,5 @@
 ﻿@using System.Web.Mvc.Html
-@model MVC5_Seneca.ViewModels.UpdateMyScheduleViewModel
+@model MVC5_Seneca.ViewModels.TutorScheduleViewModel
 @{
     Layout = null;
 }
@@ -15,7 +15,7 @@
     <div>
         <table>
             <tr>
-                @Html.ActionLink("Create New", "Create")
+                @Html.ActionLink("Create New Schedule Item", "Create", new {userId = Model .Tutor .Id })
             </tr>
             <tr>
                 <td>Welcome @Html.DisplayFor(model => Model.Tutor.FullName)!</td>
@@ -27,9 +27,9 @@
             </tr>
              
             <tr>
-                <th><b>Student</b></th>
-                <th><b>Day</b></th>  
-                <th><b>Time</b></th>
+                <td><b>Student</b></td>
+                <td><b>Day</b></td>  
+                <td><b>Time</b></td>
             </tr>
     
            @foreach (var item in Model.Tutor.TutorSchedules)

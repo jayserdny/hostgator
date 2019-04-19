@@ -17,8 +17,8 @@ namespace MVC5_Seneca.Controllers
         {
             var userId = User.Identity.GetUserId();
             ApplicationUser user = (from u in _db.Users where u.Id == userId select u).Single();
-            UpdateMyScheduleViewModel viewModel = new UpdateMyScheduleViewModel
-            {Tutor = user};
+            TutorScheduleViewModel  viewModel = new TutorScheduleViewModel{Tutor = user};
+            viewModel.Tutor.TutorSchedules = new List<TutorSchedule>();
 
             foreach (var tutorSchedule  in _db.TutorSchedules.ToList())
                 using (var context = new SenecaContext())
@@ -31,8 +31,7 @@ namespace MVC5_Seneca.Controllers
                     sqlString = "SELECT Student_Id FROM TutorSchedule WHERE Id = " + tutorSchedule.Id;
                     var studentId = context.Database.SqlQuery<int>(sqlString).FirstOrDefault();
                     var student = _db.Students.Find(studentId);
-                    
-                    tutor.TutorSchedules =new List<TutorSchedule>();
+                   
                     TutorSchedule ts = new TutorSchedule
                     {
                         Id = tutorSchedule.Id,
@@ -69,32 +68,68 @@ namespace MVC5_Seneca.Controllers
         }
         return View(viewModel);
     }
-
+                                                                            
         public ActionResult Create()
-        {
-            UpdateMyScheduleViewModel viewModel = new UpdateMyScheduleViewModel();
+        {   
+            string userId = User.Identity.GetUserId();
+            ApplicationUser user = (from u in _db.Users where u.Id == userId select u).Single();
+            TutorScheduleViewModel viewModel = new TutorScheduleViewModel{Tutor = user};
+            viewModel.Students = (_db.Students.OrderBy(u => u.FirstName).ToList());
+            viewModel.DaysList = new List<string>()
+                {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            viewModel.TimesList = new List<string>()
+            {
+                "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
+                "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
+                "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
+                "5:00","5:15","5:30" ,"TBD"
+            };
             return View(viewModel);
         }
 
         // POST: Teachers/Create                                                      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,LastName")] UpdateMyScheduleViewModel viewModel)
-        {
-            if (ModelState.IsValid)
+        public ActionResult Create([Bind(Include = "Student,DayName,TimeOfDay")]
+            TutorScheduleViewModel tutorSchedule)
+        { 
+            tutorSchedule.ErrorMessage = null;  
+            if (tutorSchedule.Student.Id == 0)
             {
-                Teacher teacher = new Teacher
-                {
-                    //FirstName = viewModel.FirstName,
-                    //LastName = viewModel.LastName
-                };
-                _db.Teachers.Add(teacher);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-
+                tutorSchedule.ErrorMessage = "Student Required!";
             }
 
-            return View(viewModel);
+            if (tutorSchedule.ErrorMessage != null || ModelState.IsValid != true) // build drop-down lists:
+            {  
+                tutorSchedule.Students = _db.Students.OrderBy(s => s.FirstName).ToList();
+                List<string> daysList = new List<string>
+                    {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+                tutorSchedule.DaysList = daysList;
+                List<string> timesList = new List<string>
+                {
+                    "10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45",
+                    "1:00","1:15","1:30","1:45","2:00","2:15","2:30","2:45",
+                    "3:00","3:15","3:30","3:45","4:00","4:15","4:30","4:45",
+                    "5:00","5:15","5:30","TBD"
+                };
+                return View(tutorSchedule);
+            };
+
+            // if ErrorMessage = null AND ModelState.IsValid:
+            string userId = User.Identity.GetUserId();
+            ApplicationUser user = (from u in _db.Users where u.Id == userId select u).Single();     
+            Student student = _db.Students.Find(tutorSchedule.Student.Id);
+            TutorSchedule newTutorSchedule = new TutorSchedule()
+            {
+                Tutor = user,
+                Student = student,
+                DayOfWeekIndex = GetDayOfWeekIndex(tutorSchedule.DayName),
+                MinutesPastMidnight = ConvertToMinutesPastMidnight(tutorSchedule.TimeOfDay)
+            };
+            _db.TutorSchedules.Add(newTutorSchedule);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult ReturnToDashboard()

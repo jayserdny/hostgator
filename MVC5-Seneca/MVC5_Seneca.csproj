@@ -1120,6 +1120,7 @@
     <Content Include="Views\TutorSchedules\Index.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Views\UpdateMySchedule\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
