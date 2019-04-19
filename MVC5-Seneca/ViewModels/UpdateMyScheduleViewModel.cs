@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MVC5_Seneca.EntityModels;
-using Newtonsoft.Json;
+using MVC5_Seneca.ViewModels;
 
 namespace MVC5_Seneca.ViewModels
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class UpdateMyScheduleViewModel
     {  
-        [JsonProperty] public string Id { get; set; }
-
-        [JsonProperty, DisplayName("First Name")]
-        public string FirstName { get; set; }
-
-        [JsonProperty, DisplayName("Last Name")]
-        public string LastName { get; set; }
-
+        public string Id { get; set; }
+        public ApplicationUser Tutor { get; set; }
+        public Student  Student { get; set; }
+        public string DayName { get; set; }
+        public string TimeOfDay { get; set; }
+       
         public virtual List<SelectListItem> Students { get; set; }
-        public virtual List<Student> MyTutees { get; set; }
+        public virtual List<Student> MyTutees { get; set; } 
     }
 }

@@ -51,11 +51,9 @@
         <a href="@Url.Action("MaintainTipsCategories", "Home")">Maintain Tips Categories</a><br />
         <a href="@Url.Action("UploadTeachingTips", "Home")">Maintain Teaching Tips</a><br /> 
         <a href="@Url.Action("MaintainTutorSchedules", "Home")">Maintain Tutor Schedules</a><br /> 
-        @*<a href="@Url.Action("MaintainTutorNotes", "Home")">Maintain TutorNotes</a><br />*@
         <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
         <a href="@Url.Action("LoginLog", "Home")">View Logins Log</a><br />
         <a href="@Url.Action("Index", "TutorStudent")">Who's Tutoring Whom</a><br />
-        @*<a href="@Url.Action("AddIdentityRole", "Home")">Add Identitly Role</a><br />*@
         <br />
     </div>
     }
@@ -76,7 +74,9 @@
             <a href="@Url.Action("MaintainTeachers", "Home")">Add/Edit Teacher</a>
             <br />
             <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
-            <br />   
+            <br />
+            <a href="@Url.Action("UpdateMySchedule", "Home")">Update My Schedule</a>
+            <br />
         }
 
         @if (User.IsInRole("Staff"))
@@ -89,9 +89,9 @@
         <a href="@Url.Action("UpdateMyProfile", "Home")">Update My Profile</a><br />
         <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
         {
-            <br />
-            @Html.AntiForgeryToken()
-            <a href="@Url.Action("Logout", "Home")">LogOut</a>
+        <br />
+        @Html.AntiForgeryToken()
+        <a href="@Url.Action("Logout", "Home")">LogOut</a>
         }
     </div>
 

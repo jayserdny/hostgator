@@ -106,7 +106,12 @@ namespace MVC5_Seneca.Controllers
         public ActionResult LoginLog()
         {
             return RedirectToAction("Index", "Logins");
-        }   
+        }
+        public ActionResult UpdateMySchedule()
+        {
+            return RedirectToAction("Index", "UpdateMySchedule");
+        }
+
         public ActionResult AddIdentityRole()
         {
             AddIdentityRoleViewModel viewModel = new AddIdentityRoleViewModel

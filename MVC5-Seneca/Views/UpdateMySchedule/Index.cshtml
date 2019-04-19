@@ -18,7 +18,7 @@
                 @Html.ActionLink("Create New", "Create")
             </tr>
             <tr>
-                <td> Welcome @User.Identity.Name!</td>
+                <td>Welcome @Html.DisplayFor(model => Model.Tutor.FullName)!</td>
             </tr>
             <tr>
                 <td>
@@ -27,41 +27,39 @@
             </tr>
              
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastName )
-                </th>  
- 
-                <th></th>
+                <th><b>Student</b></th>
+                <th><b>Day</b></th>  
+                <th><b>Time</b></th>
             </tr>
     
-            @*@foreach (var item in Model) {
+           @foreach (var item in Model.Tutor.TutorSchedules)
+           {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
+                        @Html.DisplayFor(modelItem => item.Student.FirstName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
+                        @Html.DisplayFor(modelItem => item.DayName)
                     </td>
-                 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeOfDay)
+                    </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                     </td>
                 </tr>
-            }*@   
+            }
         </table>
     </div>
 
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.Id) 
+        @Html.HiddenFor(model => model.Id ) 
     }
 
-    <div id="AdministratorDiv">
+    @*<div id="AdministratorDiv">
         <b>&nbsp; @Html.LabelFor(model => model.Students, htmlAttributes: new { @class = "col-md-2" }) </b>
         <div class="col-md-5">  
             <table>    
@@ -72,7 +70,7 @@
                 </tr>
             </table>
         </div>
-    </div>
+    </div>*@
     <div>
         <table>
             <tr>

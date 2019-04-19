@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,5 +21,6 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public String DayName { get; set;}
         [DisplayName("Time")]
         [NotMapped] public String TimeOfDay { get; set; }
+        [NotMapped] public List<TutorSchedule> TutorSchedules { get; set; }
     }
 }

@@ -81,5 +81,8 @@ namespace MVC5_Seneca.EntityModels
             }
         }  
         public string FullName => $"{FirstName} {LastName}";
+
+        // For use by TutorSchedule update routines:
+        [NotMapped] public List<TutorSchedule> TutorSchedules { get; set; }
     }
 }
