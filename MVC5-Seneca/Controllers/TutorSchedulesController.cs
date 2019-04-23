@@ -291,7 +291,7 @@ namespace MVC5_Seneca.Controllers
                                                                        
             int previousTime = -1;
             int previousDay = -1;
-            int activeRow = 5;
+            int activeRow = 4;
             using (var context = new SenecaContext())
             {
                 var tutorSchedules = _db.TutorSchedules .OrderBy(t => t.MinutesPastMidnight).ThenBy(t=> t.DayOfWeekIndex).ToList();
@@ -314,9 +314,11 @@ namespace MVC5_Seneca.Controllers
                     }
 
                     ws.Cell(activeRow, 1).SetValue(tutorSchedule.TimeOfDay);
-                    // ReSharper disable once PossibleNullReferenceException
-                    var tutorAndStudent = tutor.LastName + ": " + student .FirstName;
-                    ws.Cell(activeRow, tutorSchedule.DayOfWeekIndex + 2).SetValue(tutorAndStudent);
+                    if (student != null)
+                    {
+                        var tutorAndStudent = tutor.LastName + ": " + student .FirstName;
+                        ws.Cell(activeRow, tutorSchedule.DayOfWeekIndex + 2).SetValue(tutorAndStudent);
+                    }
 
                     previousDay = tutorSchedule.DayOfWeekIndex;
                     previousTime = tutorSchedule.MinutesPastMidnight;
@@ -330,12 +332,33 @@ namespace MVC5_Seneca.Controllers
                 ws.Row(i).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
             }
             ws.Row(3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            activeRow += 1;
+            ws.Cell(activeRow, 1).SetValue("Tutors");
+            ws.Cell(activeRow, 1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Cell(activeRow, 1).Style.Font.Bold=true;
+            var users = _db.Users.OrderBy(u => u.LastName).ToList();
+            var validTutorList = new List<ApplicationUser>();
+            foreach (ApplicationUser user in users)
+            {
+                foreach (var role in user.Roles)
+                {
+                    var identityRole = (from r in _db.Roles where (r.Id == role.RoleId) select r).Single();
+                    if (identityRole.Name != "Tutor") continue;
+                    validTutorList.Add(user);
+                }
+            }
+            foreach (ApplicationUser tutor in validTutorList)
+            {  
+                activeRow += 1;
+                ws.Cell(activeRow, 1).SetValue(tutor.FullName);
+                ws.Cell(activeRow, 2).SetValue(tutor.PhoneNumber);
+            }
 
             MemoryStream ms = new MemoryStream();
             workbook.SaveAs(ms);
             ms.Position = 0;
             return new FileStreamResult(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                { FileDownloadName = "TutoringSchedule.xlsx"};
+                {FileDownloadName = "TutoringSchedule.xlsx"};
         }
 
         private static Int32 GetDayOfWeekIndex(string dayOfWeek)

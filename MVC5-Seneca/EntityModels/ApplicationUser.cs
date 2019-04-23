@@ -84,5 +84,10 @@ namespace MVC5_Seneca.EntityModels
 
         // For use by TutorSchedule update routines:
         [NotMapped] public List<TutorSchedule> TutorSchedules { get; set; }
+
+        internal bool IsInRole(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,13 +1,14 @@
 ﻿namespace MVC5_Seneca.Migrations
 {  
     using System.Data.Entity.Migrations;
-    //using System;
-    //using System.Data.Entity.Validation;
-    //using System.Diagnostics;
-    //using System.Linq;
-    //using Microsoft.AspNet.Identity;
-    //using Microsoft.AspNet.Identity.EntityFramework;
-    //using EntityModels;
+    using System;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
+    using System.Linq;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using EntityModels;
+    using MVC5_Seneca.DataAccessLayer;
 
     public sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.SenecaContext>
     {
@@ -34,16 +35,16 @@
         //    Debug.Unindent();
         //}
 
-        //private void AddIdentityRole(DataAccessLayer.SenecaContext context, String name)
-        //{
-        //    if (!context.Roles.Any(r => r.Name == name))
-        //    {
-        //        var store = new RoleStore<IdentityRole>(context);
-        //        var manager = new RoleManager<IdentityRole>(store);
-        //        var role = new IdentityRole(name);
-        //        manager.Create(role);
-        //    }
-        //}
+        private void AddIdentityRole(DataAccessLayer.SenecaContext context, String name)
+        {
+            if (!context.Roles.Any(r => r.Name == name))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole(name);
+                manager.Create(role);
+            }
+        }
 
         //private ApplicationUser  AddAdministrator(DataAccessLayer.SenecaContext context,
         //    String userName, String passwordHash, String securityStamp, String email = "", string phoneNumber = "", 
@@ -85,10 +86,11 @@
             //    // Launch the debugger when 'Sequence contains no elements' error, to find out where:
             //    // System.Diagnostics.Debugger.Launch();
             //    AddIdentityRole(context, "Active");
-            //    AddIdentityRole(context, "Administrator");
+            //    AddIdentityRole(context, "Administrator");               s
             //    AddIdentityRole(context, "Tutor");                 
             //    AddIdentityRole(context, "ReceiveRegistrationEmail");
             //    AddIdentityRole(context, "Staff");
+            AddIdentityRole(context, "ReceiveScheduleChangeEmail");  
 
             //    AddAdministrator(context,"p", "AMxcdoBNYrk+PEZUwbAK46Uk1ffoFyqKbyQ1Rn+JIKxk0B2ZdBbCNjEx7jFYIns2Ug==", "c6adf2b0-03a5-4c43-bf59-069c8b8b25a2",
             //        "prowny@aol.com","3013655823","Peter", "Rowny");
@@ -271,7 +273,7 @@
             //    });
             //    context.SaveChanges();               
             //}
-            
+
             //catch (DbEntityValidationException ex)
             //{
             //    Debugger.Launch();

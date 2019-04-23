@@ -13,7 +13,6 @@ using MVC5_Seneca.EntityModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System;
-using System.Data.Entity.Core.Common.EntitySql;
 
 namespace MVC5_Seneca.Controllers
 {     
@@ -94,9 +93,9 @@ namespace MVC5_Seneca.Controllers
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl,  model.RememberMe });
-                case SignInStatus.Failure:
+                //case SignInStatus.Failure:
                 default:                                                           
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", @"Invalid login attempt.");
                     return View(model);
             }
         }
@@ -155,9 +154,9 @@ namespace MVC5_Seneca.Controllers
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.Failure:
+                //case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", @"Invalid code.");
                     return View(model);
             }
         }
@@ -192,24 +191,24 @@ namespace MVC5_Seneca.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     var receiverRole ="ReceiveRegistrationEmail";
-                    var _Roles = (from r in db.Roles where r.Name == receiverRole select r).ToList();
-                    var usersInRole = (from u in db.Users join r in db.Roles on receiverRole equals r.Name select u).ToList();
+                    //var _Roles = (from r in db.Roles where r.Name == receiverRole select r).ToList();
+                    //var usersInRole = (from u in db.Users join r in db.Roles on receiverRole equals r.Name select u).ToList();
 
-                    UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                    UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                    
-                    foreach (ApplicationUser _user in db.Users)
+                    foreach (ApplicationUser dbUser in db.Users)
                     {
-                        bool isReceiver = await UserManager.IsInRoleAsync(_user.Id, receiverRole).ConfigureAwait(false);
+                        bool isReceiver = await userManager.IsInRoleAsync(dbUser.Id, receiverRole).ConfigureAwait(false);
                         if (isReceiver)
                         {
                             var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
                             var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Administrator, SHEP");
                             var subject = "SHEP: Seneca Heights Education Project";
-                            var to = new EmailAddress(_user.Email, user.FirstName);
+                            var to = new EmailAddress(dbUser.Email, user.FirstName);
                             var plainTextContent = "New Registration: " + user.FirstName + " " + user.LastName + " " + user.Email;
-                            string htmlContent = null;
-                            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+                            //string htmlContent = null;
+                            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, null);
+                            await client.SendEmailAsync(msg).ConfigureAwait(false);
                         }
                     }
                     return RedirectToAction("Login", "Account");
@@ -369,29 +368,44 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult ResetAnyPasswordConfirmation(ResetAnyPasswordViewModel model)
         {
-            var x = model.UserName;
             return View(model);
         }
-
-        public async Task <ActionResult> EmailPasswordReset(string userName, string newPwd)
-        {            
-            var user = (from u in db.Users where u.UserName == userName select u).Single();          
-
-            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                      
+        public async Task<ActionResult> EmailPasswordReset(string userName, string newPwd)
+        {
+            var user = (from u in db.Users where u.UserName == userName select u).Single(); 
             var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
             var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Administrator, SHEP");
             var subject = "SHEP: Seneca Heights Education Project";
-            var to = new EmailAddress(user.Email, user.FirstName);
+            var to = new EmailAddress(user.Email, user.FullName);
             var plainTextContent = "Temporary New Credential: " + newPwd + " "
                 + Environment.NewLine + "  Use this to log into the website, and immediately change it to your desired value."
                 + Environment.NewLine + "  Please do not reply to this email.";
-            string htmlContent = null;
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
-                
+            //string htmlContent = null;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, null);
+            await client.SendEmailAsync(msg).ConfigureAwait(false);
+
             return RedirectToAction("Index", "Home");
-        }       
+        }
+        public async Task<ActionResult> EmailSheduleChange(ApplicationUser tutor, String msgText)
+        {
+            var receiverRole = "ReceiveScheduleChangeEmail";
+            UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
+            foreach (ApplicationUser user in db.Users)
+            {
+                bool isReceiver = await userManager.IsInRoleAsync(user.Id, receiverRole).ConfigureAwait(false);
+                if (isReceiver)
+                {
+                    var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
+                    var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Administrator, SHEP");
+                    var subject = "SHEP: Seneca Heights Education Project";
+                    var to = new EmailAddress(tutor.Email, tutor.FullName);    
+                    var msg = MailHelper.CreateSingleEmail(from, to, subject, msgText, null);
+                    await client.SendEmailAsync(msg).ConfigureAwait(false);
+                }                                                 
+            }
+            return RedirectToAction("Index");
+        }
 
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
@@ -464,7 +478,7 @@ namespace MVC5_Seneca.Controllers
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
+                //case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
