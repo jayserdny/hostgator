@@ -423,6 +423,7 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\HFEDHomeController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
@@ -1121,6 +1122,8 @@
     <Content Include="Views\UpdateMySchedule\Create.cshtml" />
     <Content Include="Views\UpdateMySchedule\Delete.cshtml" />
     <Content Include="Views\UpdateMySchedule\Edit.cshtml" />
+    <Content Include="Views\HFEDHome.cshtml" />
+    <Content Include="Views\HFEDHome\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

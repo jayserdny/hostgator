@@ -1,0 +1,32 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HFEDHome</title>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <td>&nbsp;&nbsp; Welcome  @User.Identity.Name!</td>
+        </tr>
+        <tr>
+            <td>
+                <p style="text-decoration:underline" class="indent"><strong>Healthy Food Every Day Dashboard</strong></p>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <br />
+    @Html.AntiForgeryToken()
+    <a href="@Url.Action("Logout", "Home")">LogOut</a>
+</div>
+</body>
+</html>

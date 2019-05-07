@@ -90,7 +90,8 @@
             //    AddIdentityRole(context, "Tutor");                 
             //    AddIdentityRole(context, "ReceiveRegistrationEmail");
             //    AddIdentityRole(context, "Staff");
-            AddIdentityRole(context, "ReceiveScheduleChangeEmail");  
+            AddIdentityRole(context, "ReceiveScheduleChangeEmail");
+            AddIdentityRole(context, "HealthyFoodEveryDayUser");
 
             //    AddAdministrator(context,"p", "AMxcdoBNYrk+PEZUwbAK46Uk1ffoFyqKbyQ1Rn+JIKxk0B2ZdBbCNjEx7jFYIns2Ug==", "c6adf2b0-03a5-4c43-bf59-069c8b8b25a2",
             //        "prowny@aol.com","3013655823","Peter", "Rowny");
