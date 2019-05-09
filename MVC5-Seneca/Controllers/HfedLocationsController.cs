@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
@@ -92,7 +88,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             HfedLocation hfedLocation = db.HfedLocations.Find(id);
-            db.HfedLocations.Remove(hfedLocation);
+            if (hfedLocation != null) db.HfedLocations.Remove(hfedLocation);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

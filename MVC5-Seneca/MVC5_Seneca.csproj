@@ -423,6 +423,9 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Controllers\HfedClientsController.cs" />
+    <Compile Include="Controllers\HfedHomeController.cs" />
+    <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
@@ -440,6 +443,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\AssociateTutor.cs" />
+    <Compile Include="EntityModels\HfedClient.cs" />
+    <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -524,6 +529,10 @@
     <Compile Include="Migrations\201905092122425_ReinitializeForHfed.cs" />
     <Compile Include="Migrations\201905092122425_ReinitializeForHfed.Designer.cs">
       <DependentUpon>201905092122425_ReinitializeForHfed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905092200042_AddHfedLocationsClients.cs" />
+    <Compile Include="Migrations\201905092200042_AddHfedLocationsClients.Designer.cs">
+      <DependentUpon>201905092200042_AddHfedLocationsClients.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -832,6 +841,15 @@
     <Content Include="Video\Login.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\HfedClients\Create.cshtml" />
+    <Content Include="Views\HfedClients\Delete.cshtml" />
+    <Content Include="Views\HfedClients\Edit.cshtml" />
+    <Content Include="Views\HfedClients\Index.cshtml" />
+    <Content Include="Views\HfedHome\Index.cshtml" />
+    <Content Include="Views\HfedLocations\Create.cshtml" />
+    <Content Include="Views\HfedLocations\Delete.cshtml" />
+    <Content Include="Views\HfedLocations\Edit.cshtml" />
+    <Content Include="Views\HfedLocations\Index.cshtml" />
     <Content Include="Web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -1209,6 +1227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905092122425_ReinitializeForHfed.resx">
       <DependentUpon>201905092122425_ReinitializeForHfed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905092200042_AddHfedLocationsClients.resx">
+      <DependentUpon>201905092200042_AddHfedLocationsClients.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

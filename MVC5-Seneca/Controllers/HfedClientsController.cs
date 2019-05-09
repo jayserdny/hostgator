@@ -20,22 +20,7 @@ namespace MVC5_Seneca.Controllers
         {
             return View(db.HfedClients.ToList());
         }
-
-        // GET: HfedClients/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HfedClient hfedClient = db.HfedClients.Find(id);
-            if (hfedClient == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hfedClient);
-        }
-
+       
         // GET: HfedClients/Create
         public ActionResult Create()
         {
@@ -45,7 +30,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedClients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth")] HfedClient hfedClient)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Location,ClientNote")] HfedClient hfedClient)
         {
             if (ModelState.IsValid)
             {

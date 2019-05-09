@@ -44,6 +44,8 @@ namespace MVC5_Seneca.DataAccessLayer
         public object AssociateTutor { get; internal set; }
 
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.TutorSchedule> TutorSchedules { get; set; }
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedClient> HfedClients { get; set; }
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedLocation> HfedLocations { get; set; }
 
     }
 }
