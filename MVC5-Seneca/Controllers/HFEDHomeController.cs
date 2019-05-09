@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using MVC5_Seneca.ViewModels;
+﻿using System.Web.Mvc;
 
 namespace MVC5_Seneca.Controllers
 {
-    public class HFEDHomeController : Controller
+    public class HfedHomeController : Controller
     {
-        // GET: HFEDHome
+        // GET: HfedHome
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult MaintainLocations()
+        {
+            return RedirectToAction("Index", "HfedLocations");
+        }
+
+        public ActionResult MaintainClients()
+        {
+            return RedirectToAction("Index", "HfedClients");
         }
     }
 }
