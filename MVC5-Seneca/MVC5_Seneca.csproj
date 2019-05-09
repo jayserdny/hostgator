@@ -423,9 +423,6 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Controllers\HfedClientsController.cs" />
-    <Compile Include="Controllers\HfedHomeController.cs" />
-    <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
@@ -443,7 +440,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\AssociateTutor.cs" />
-    <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -453,7 +449,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TutorSchedule.cs" />
-    <Compile Include="EntityModels\HfedClient.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.designer.cs">
       <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
@@ -526,13 +521,9 @@
     <Compile Include="Migrations\201904172016327_AddTutorSchedule.Designer.cs">
       <DependentUpon>201904172016327_AddTutorSchedule.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905090117164_AddHfedLocationsClients.cs" />
-    <Compile Include="Migrations\201905090117164_AddHfedLocationsClients.Designer.cs">
-      <DependentUpon>201905090117164_AddHfedLocationsClients.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905090145397_AddHfedLocationsClients1.cs" />
-    <Compile Include="Migrations\201905090145397_AddHfedLocationsClients1.Designer.cs">
-      <DependentUpon>201905090145397_AddHfedLocationsClients1.cs</DependentUpon>
+    <Compile Include="Migrations\201905092122425_ReinitializeForHfed.cs" />
+    <Compile Include="Migrations\201905092122425_ReinitializeForHfed.Designer.cs">
+      <DependentUpon>201905092122425_ReinitializeForHfed.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1134,15 +1125,6 @@
     <Content Include="Views\UpdateMySchedule\Create.cshtml" />
     <Content Include="Views\UpdateMySchedule\Delete.cshtml" />
     <Content Include="Views\UpdateMySchedule\Edit.cshtml" />
-    <Content Include="Views\HfedHome\Index.cshtml" />
-    <Content Include="Views\HfedClients\Create.cshtml" />
-    <Content Include="Views\HfedClients\Delete.cshtml" />
-    <Content Include="Views\HfedClients\Edit.cshtml" />
-    <Content Include="Views\HfedClients\Index.cshtml" />
-    <Content Include="Views\HfedLocations\Create.cshtml" />
-    <Content Include="Views\HfedLocations\Delete.cshtml" />
-    <Content Include="Views\HfedLocations\Edit.cshtml" />
-    <Content Include="Views\HfedLocations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1225,11 +1207,8 @@
     <EmbeddedResource Include="Migrations\201904172016327_AddTutorSchedule.resx">
       <DependentUpon>201904172016327_AddTutorSchedule.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905090117164_AddHfedLocationsClients.resx">
-      <DependentUpon>201905090117164_AddHfedLocationsClients.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905090145397_AddHfedLocationsClients1.resx">
-      <DependentUpon>201905090145397_AddHfedLocationsClients1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905092122425_ReinitializeForHfed.resx">
+      <DependentUpon>201905092122425_ReinitializeForHfed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

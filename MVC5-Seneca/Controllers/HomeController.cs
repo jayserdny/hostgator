@@ -154,9 +154,9 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", "Teachers");
         }
                                                                                              
-        public ActionResult Hfed()
-        {
-            return RedirectToAction("Index", "HFEDHome");
-        }
+        //public ActionResult Hfed()
+        //{
+        //    return RedirectToAction("Index", "HFEDHome");
+        //}
     }
 }
