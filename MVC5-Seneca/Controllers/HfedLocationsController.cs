@@ -19,14 +19,14 @@ namespace MVC5_Seneca.Controllers
 
         // GET: HfedLocations/Create
         public ActionResult Create()
-        {
+        { 
             return View();
         }
 
         // POST: HfedLocations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Address,LocationNote")] HfedLocation hfedLocation)
+        public ActionResult Create([Bind(Include = "Id,Name,Address,Location,Note")] HfedLocation hfedLocation)
         {
             if (ModelState.IsValid)
             {

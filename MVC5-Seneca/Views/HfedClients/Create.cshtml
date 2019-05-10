@@ -43,6 +43,16 @@
                 @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
             </div>
         </div>
+        
+        <div>
+            <div>
+                @Html.LabelFor(model => model.Location, htmlAttributes: new {@class = "col-md-2"})
+            </div> 
+            <div>
+                @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)
+                @Html.ValidationMessageFor(model => model.Location.Id, "", new {@class = "text-danger"})
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.ClientNote, htmlAttributes: new { @class = "col-md-2" })

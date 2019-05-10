@@ -44,23 +44,20 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                @Html.Label(item.DateOfBirth.ToShortDateString())
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @Html.DisplayFor(modelItem => item.Location.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ClientNote)
-            </td> 
-        </tr>
-        <tr>
+            </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
     }
-    
     </table>
     <br />
     <table>
