@@ -29,5 +29,9 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", "HfedDrivers");
         }
 
+        public ActionResult MaintainProviders()
+        {
+            return RedirectToAction("Index", "HfedProviders");
+        }
     }
 }

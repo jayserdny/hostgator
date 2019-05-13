@@ -7,91 +7,91 @@ using MVC5_Seneca.EntityModels;
 
 namespace MVC5_Seneca.Controllers
 {
-    public class HfedDriversController : Controller
+    public class HfedProvidersController : Controller
     {
         private SenecaContext db = new SenecaContext();
 
-        // GET: HfedDrivers
+        // GET: HfedProviders
         public ActionResult Index()
         {
-            return View(db.HfedDrivers.ToList());
-        }
+            return View(db.HfedProviders.ToList());
+        }                                                          
 
-        // GET: HfedDrivers/Create
+        // GET: HfedProviders/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: HfedDrivers/Create
+        // POST: HfedProviders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Phone,Fax,Email,DriverNote")] HfedDriver hfedDriver)
+        public ActionResult Create([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,ProviderNote")] HfedProvider hfedProvider)
         {
             if (ModelState.IsValid)
             {
-                db.HfedDrivers.Add(hfedDriver);
+                db.HfedProviders.Add(hfedProvider);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(hfedDriver);
+            return View(hfedProvider);
         }
 
-        // GET: HfedDrivers/Edit/5
+        // GET: HfedProviders/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HfedDriver hfedDriver = db.HfedDrivers.Find(id);
-            if (hfedDriver == null)
+            HfedProvider hfedProvider = db.HfedProviders.Find(id);
+            if (hfedProvider == null)
             {
                 return HttpNotFound();
             }
-            return View(hfedDriver);
+            return View(hfedProvider);
         }
 
-        // POST: HfedDrivers/Edit/5
+        // POST: HfedProviders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Phone,Fax,Email,DriverNote")] HfedDriver hfedDriver)
+        public ActionResult Edit([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,ProviderNote")] HfedProvider hfedProvider)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(hfedDriver).State = EntityState.Modified;
+                db.Entry(hfedProvider).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(hfedDriver);
+            return View(hfedProvider);
         }
 
-        // GET: HfedDrivers/Delete/5
+        // GET: HfedProviders/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HfedDriver hfedDriver = db.HfedDrivers.Find(id);
-            if (hfedDriver == null)
+            HfedProvider hfedProvider = db.HfedProviders.Find(id);
+            if (hfedProvider == null)
             {
                 return HttpNotFound();
             }
-            return View(hfedDriver);
+            return View(hfedProvider);
         }
 
-        // POST: HfedDrivers/Delete/5
+        // POST: HfedProviders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            HfedDriver hfedDriver = db.HfedDrivers.Find(id);
-            db.HfedDrivers.Remove(hfedDriver);
+            HfedProvider hfedProvider = db.HfedProviders.Find(id);
+            db.HfedProviders.Remove(hfedProvider);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
+        }   
 
         public ActionResult ReturnToHfedDashboard()
         {
