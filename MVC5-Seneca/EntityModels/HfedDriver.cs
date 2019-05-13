@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 namespace MVC5_Seneca.EntityModels
 {
-    public class HfedStaff
+    public class HfedDriver
     {
         public int Id { get; set; }
 
@@ -13,21 +12,19 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("Last Name")]
         public string LastName { get; set; }
- 
-        [Required]
-        [DisplayName("Location")]
-        public HfedLocation Location { get; set; }
 
         [DisplayName("Phone")]
         public string Phone { get; set; }
+
+        [DisplayName("Fax")]
+        public string Fax { get; set; }
 
         [DisplayName("Email")]
         public string Email { get; set; }
 
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
-        public string StaffNote { get; set; }
+        public string DriverNote { get; set; }
 
-        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
     }
 }

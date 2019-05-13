@@ -424,6 +424,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\HfedClientsController.cs" />
+    <Compile Include="Controllers\HfedDriversController.cs" />
     <Compile Include="Controllers\HfedHomeController.cs" />
     <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\HfedStaffsController.cs" />
@@ -445,6 +446,7 @@
     </Compile>
     <Compile Include="EntityModels\AssociateTutor.cs" />
     <Compile Include="EntityModels\HfedClient.cs" />
+    <Compile Include="EntityModels\HfedDriver.cs" />
     <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\HfedStaff.cs" />
     <Compile Include="EntityModels\Login.cs">
@@ -543,6 +545,10 @@
     <Compile Include="Migrations\201905130052300_AddHfedStaff.cs" />
     <Compile Include="Migrations\201905130052300_AddHfedStaff.Designer.cs">
       <DependentUpon>201905130052300_AddHfedStaff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905131316053_AddHfedDriver.cs" />
+    <Compile Include="Migrations\201905131316053_AddHfedDriver.Designer.cs">
+      <DependentUpon>201905131316053_AddHfedDriver.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1157,6 +1163,10 @@
     <Content Include="Views\HfedStaffs\Delete.cshtml" />
     <Content Include="Views\HfedStaffs\Edit.cshtml" />
     <Content Include="Views\HfedStaffs\Index.cshtml" />
+    <Content Include="Views\HfedDrivers\Create.cshtml" />
+    <Content Include="Views\HfedDrivers\Delete.cshtml" />
+    <Content Include="Views\HfedDrivers\Edit.cshtml" />
+    <Content Include="Views\HfedDrivers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1250,6 +1260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905130052300_AddHfedStaff.resx">
       <DependentUpon>201905130052300_AddHfedStaff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905131316053_AddHfedDriver.resx">
+      <DependentUpon>201905131316053_AddHfedDriver.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
