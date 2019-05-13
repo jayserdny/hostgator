@@ -16,6 +16,9 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Address")]
         public string Address { get; set; }
 
+        [DisplayName("Main Phone")]
+        public string MainPhone { get; set; }
+
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
         public string LocationNote { get; set; }

@@ -534,6 +534,10 @@
     <Compile Include="Migrations\201905092200042_AddHfedLocationsClients.Designer.cs">
       <DependentUpon>201905092200042_AddHfedLocationsClients.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905130001041_AddMainPhoneToHfedLcation.cs" />
+    <Compile Include="Migrations\201905130001041_AddMainPhoneToHfedLcation.Designer.cs">
+      <DependentUpon>201905130001041_AddMainPhoneToHfedLcation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1230,6 +1234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905092200042_AddHfedLocationsClients.resx">
       <DependentUpon>201905092200042_AddHfedLocationsClients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905130001041_AddMainPhoneToHfedLcation.resx">
+      <DependentUpon>201905130001041_AddMainPhoneToHfedLcation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

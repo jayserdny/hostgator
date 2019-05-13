@@ -37,7 +37,15 @@
                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.MainPhone, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MainPhone, new { htmlAttributes = new { style = "width: 150px" }, })
+                    @Html.ValidationMessageFor(model => model.MainPhone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.LocationNote, htmlAttributes: new { @class = "col-md-2" })
                 <div class="col-md-10">

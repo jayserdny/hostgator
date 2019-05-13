@@ -26,7 +26,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedLocations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Address,Location,Note")] HfedLocation hfedLocation)
+        public ActionResult Create([Bind(Include = "Id,Name,Address,Location,MainPhone,LocationNote")] HfedLocation hfedLocation)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedLocations/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Address,LocationNote")] HfedLocation hfedLocation)
+        public ActionResult Edit([Bind(Include = "Id,Name,Address,MainPhone,LocationNote")] HfedLocation hfedLocation)
         {
             if (ModelState.IsValid)
             {
