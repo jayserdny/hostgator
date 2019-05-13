@@ -426,6 +426,7 @@
     <Compile Include="Controllers\HfedClientsController.cs" />
     <Compile Include="Controllers\HfedHomeController.cs" />
     <Compile Include="Controllers\HfedLocationsController.cs" />
+    <Compile Include="Controllers\HfedStaffsController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
@@ -445,6 +446,7 @@
     <Compile Include="EntityModels\AssociateTutor.cs" />
     <Compile Include="EntityModels\HfedClient.cs" />
     <Compile Include="EntityModels\HfedLocation.cs" />
+    <Compile Include="EntityModels\HfedStaff.cs" />
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -537,6 +539,10 @@
     <Compile Include="Migrations\201905130001041_AddMainPhoneToHfedLcation.cs" />
     <Compile Include="Migrations\201905130001041_AddMainPhoneToHfedLcation.Designer.cs">
       <DependentUpon>201905130001041_AddMainPhoneToHfedLcation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905130052300_AddHfedStaff.cs" />
+    <Compile Include="Migrations\201905130052300_AddHfedStaff.Designer.cs">
+      <DependentUpon>201905130052300_AddHfedStaff.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1147,6 +1153,10 @@
     <Content Include="Views\UpdateMySchedule\Create.cshtml" />
     <Content Include="Views\UpdateMySchedule\Delete.cshtml" />
     <Content Include="Views\UpdateMySchedule\Edit.cshtml" />
+    <Content Include="Views\HfedStaffs\Create.cshtml" />
+    <Content Include="Views\HfedStaffs\Delete.cshtml" />
+    <Content Include="Views\HfedStaffs\Edit.cshtml" />
+    <Content Include="Views\HfedStaffs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1237,6 +1247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905130001041_AddMainPhoneToHfedLcation.resx">
       <DependentUpon>201905130001041_AddMainPhoneToHfedLcation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905130052300_AddHfedStaff.resx">
+      <DependentUpon>201905130052300_AddHfedStaff.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

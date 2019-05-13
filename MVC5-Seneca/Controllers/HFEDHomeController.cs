@@ -18,5 +18,10 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "HfedClients");
         }
+
+        public ActionResult MaintainStaff()
+        {
+            return RedirectToAction("Index", "HfedStaffs");
+        }
     }
 }
