@@ -33,5 +33,10 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "HfedProviders");
         }
+
+        public ActionResult MaintainSchedules()
+        {
+            return RedirectToAction("Index", "HfedSchedules");
+        }
     }
 }

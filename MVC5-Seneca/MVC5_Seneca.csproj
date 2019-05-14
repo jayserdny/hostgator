@@ -428,6 +428,7 @@
     <Compile Include="Controllers\HfedHomeController.cs" />
     <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\HfedProvidersController.cs" />
+    <Compile Include="Controllers\HfedSchedulesController.cs" />
     <Compile Include="Controllers\HfedStaffsController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
@@ -450,6 +451,7 @@
     <Compile Include="EntityModels\HfedDriver.cs" />
     <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\HfedProvider.cs" />
+    <Compile Include="EntityModels\HfedSchedule.cs" />
     <Compile Include="EntityModels\HfedStaff.cs" />
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -555,6 +557,10 @@
     <Compile Include="Migrations\201905131418225_AddHfedProvider.cs" />
     <Compile Include="Migrations\201905131418225_AddHfedProvider.Designer.cs">
       <DependentUpon>201905131418225_AddHfedProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905140104583_AddHfedSchedule.cs" />
+    <Compile Include="Migrations\201905140104583_AddHfedSchedule.Designer.cs">
+      <DependentUpon>201905140104583_AddHfedSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1177,6 +1183,10 @@
     <Content Include="Views\HfedProviders\Delete.cshtml" />
     <Content Include="Views\HfedProviders\Edit.cshtml" />
     <Content Include="Views\HfedProviders\Index.cshtml" />
+    <Content Include="Views\HfedSchedules\Create.cshtml" />
+    <Content Include="Views\HfedSchedules\Delete.cshtml" />
+    <Content Include="Views\HfedSchedules\Edit.cshtml" />
+    <Content Include="Views\HfedSchedules\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1276,6 +1286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905131418225_AddHfedProvider.resx">
       <DependentUpon>201905131418225_AddHfedProvider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905140104583_AddHfedSchedule.resx">
+      <DependentUpon>201905140104583_AddHfedSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

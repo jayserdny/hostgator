@@ -1,95 +1,98 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 
 namespace MVC5_Seneca.Controllers
 {
-    public class HfedDriversController : Controller
+    public class HfedSchedulesController : Controller
     {
         private SenecaContext db = new SenecaContext();
 
-        // GET: HfedDrivers
+        // GET: HfedSchedules
         public ActionResult Index()
         {
-            var view = db.HfedDrivers.ToList();
-            return View(view);
+            return View(db.HfedSchedules.ToList());
         }
-
-        // GET: HfedDrivers/Create
+          
+        // GET: HfedSchedules/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: HfedDrivers/Create
+        // POST: HfedSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Phone,Fax,Email,DriverNote")] HfedDriver hfedDriver)
+        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
         {
             if (ModelState.IsValid)
             {
-                db.HfedDrivers.Add(hfedDriver);
+                db.HfedSchedules.Add(hfedSchedule);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(hfedDriver);
+            return View(hfedSchedule);
         }
 
-        // GET: HfedDrivers/Edit/5
+        // GET: HfedSchedules/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HfedDriver hfedDriver = db.HfedDrivers.Find(id);
-            if (hfedDriver == null)
+            HfedSchedule hfedSchedule = db.HfedSchedules.Find(id);
+            if (hfedSchedule == null)
             {
                 return HttpNotFound();
             }
-            return View(hfedDriver);
+            return View(hfedSchedule);
         }
 
-        // POST: HfedDrivers/Edit/5
+        // POST: HfedSchedules/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Phone,Fax,Email,DriverNote")] HfedDriver hfedDriver)
+        public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(hfedDriver).State = EntityState.Modified;
+                db.Entry(hfedSchedule).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(hfedDriver);
+            return View(hfedSchedule);
         }
 
-        // GET: HfedDrivers/Delete/5
+        // GET: HfedSchedules/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HfedDriver hfedDriver = db.HfedDrivers.Find(id);
-            if (hfedDriver == null)
+            HfedSchedule hfedSchedule = db.HfedSchedules.Find(id);
+            if (hfedSchedule == null)
             {
                 return HttpNotFound();
             }
-            return View(hfedDriver);
+            return View(hfedSchedule);
         }
 
-        // POST: HfedDrivers/Delete/5
+        // POST: HfedSchedules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            HfedDriver hfedDriver = db.HfedDrivers.Find(id);
-            db.HfedDrivers.Remove(hfedDriver);
+            HfedSchedule hfedSchedule = db.HfedSchedules.Find(id);
+            db.HfedSchedules.Remove(hfedSchedule);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

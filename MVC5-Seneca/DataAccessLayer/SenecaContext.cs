@@ -52,5 +52,7 @@ namespace MVC5_Seneca.DataAccessLayer
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedDriver> HfedDrivers { get; set; }
 
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedProvider> HfedProviders { get; set; }
+
+        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedSchedule> HfedSchedules { get; set; }
     }
 }
