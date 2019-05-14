@@ -558,9 +558,9 @@
     <Compile Include="Migrations\201905131418225_AddHfedProvider.Designer.cs">
       <DependentUpon>201905131418225_AddHfedProvider.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905140104583_AddHfedSchedule.cs" />
-    <Compile Include="Migrations\201905140104583_AddHfedSchedule.Designer.cs">
-      <DependentUpon>201905140104583_AddHfedSchedule.cs</DependentUpon>
+    <Compile Include="Migrations\201905141209099_AddHfedSchedule.cs" />
+    <Compile Include="Migrations\201905141209099_AddHfedSchedule.Designer.cs">
+      <DependentUpon>201905141209099_AddHfedSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1287,8 +1287,8 @@
     <EmbeddedResource Include="Migrations\201905131418225_AddHfedProvider.resx">
       <DependentUpon>201905131418225_AddHfedProvider.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905140104583_AddHfedSchedule.resx">
-      <DependentUpon>201905140104583_AddHfedSchedule.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905141209099_AddHfedSchedule.resx">
+      <DependentUpon>201905141209099_AddHfedSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

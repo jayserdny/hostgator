@@ -28,21 +28,18 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("Point Person")]
         public HfedStaff PointPerson { get; set; }
-
-        [DisplayName("Driver(s)")]
-        public List<HfedDriver> DriverList { get; set; }
-
-        [DisplayName("Client(s)")]
-        public List<HfedClient> ClientList { get; set; }
-
+            
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
 
         public string ScheduleNote { get; set; }
          
         public Boolean Request { get; set; }
+
         public Boolean Complete { get; set; }
 
+        [NotMapped] public List<HfedDriver> SelectedDrivers { get; set; }
+        [NotMapped] public List<HfedClient> SelectedClients { get; set; }
         [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
         [NotMapped] public List<HfedProvider> HfedProviders { get; set; }
         [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
