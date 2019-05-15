@@ -626,6 +626,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModels\ContactsDisplayViewModel.cs" />
+    <Compile Include="ViewModels\HfedScheduleViewModel.cs" />
     <Compile Include="ViewModels\TeachingTipsViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>

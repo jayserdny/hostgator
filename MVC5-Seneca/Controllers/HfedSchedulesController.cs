@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
+using System.Collections.Generic;
+using MVC5_Seneca.ViewModels;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -18,29 +15,69 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedSchedules
         public ActionResult Index()
         {
-            return View(db.HfedSchedules.ToList());
+            var schedulesView = new List<HfedSchedule>();
+
+            var hfedSchedules = db.HfedSchedules.ToList();
+            //using (var context = new SenecaContext())
+            //{
+                foreach (HfedSchedule hfedSchedule in hfedSchedules)
+                {
+                    string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
+                    var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                    var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList(); 
+                    hfedSchedule.Location = location[0];
+
+                    sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
+                    var staff = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
+                    hfedSchedule.PointPerson  = staff[0];
+
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                    var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();  
+                    hfedSchedule.Provider = provider[0];
+
+                    schedulesView.Add(hfedSchedule);
+              //  }
+            }                                                               
+            return View(schedulesView);
         }
           
         // GET: HfedSchedules/Create
         public ActionResult Create()
-        {
-            return View();
+        {   
+            HfedSchedule newHfedSchedule = new HfedSchedule()
+            {
+                HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
+                HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
+                HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList()
+            };  
+            return View(newHfedSchedule);
         }
 
         // POST: HfedSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
+        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
         {
-            if (ModelState.IsValid)
+            //EF adding blank Foreign Key records: use raw SQL
+            using (var context = new SenecaContext())
             {
-                db.HfedSchedules.Add(hfedSchedule);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string cmdString = "INSERT INTO HfedSchedule (";
+                cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
+                cmdString += "Location_Id,PointPerson_Id,Provider_Id)";
+                cmdString += " VALUES (";
+                cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
+                cmdString += "'" + hfedSchedule .ScheduleNote + "','" +hfedSchedule .Request + "',";
+                cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
+                cmdString += hfedSchedule.PointPerson.Id + "," + hfedSchedule.Provider.Id + ")";
+                context.Database.ExecuteSqlCommand(cmdString);
             }
+                                                                                     
+            return RedirectToAction("Index");
 
-            return View(hfedSchedule);
-        }
+                //return View(hfedSchedule);
+            }
 
         // GET: HfedSchedules/Edit/5
         public ActionResult Edit(int? id)
@@ -54,21 +91,52 @@ namespace MVC5_Seneca.Controllers
             {
                 return HttpNotFound();
             }
+
+            hfedSchedule.HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
+            hfedSchedule .HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
+            hfedSchedule.HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList();
+
+            string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + id;
+            var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+            sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+            var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+            hfedSchedule.Location = location[0];
+
+            sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
+            var staff = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
+            hfedSchedule.PointPerson = staff[0];
+
+            sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+            var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+            hfedSchedule.Provider = provider[0];
+
             return View(hfedSchedule);
         }
 
         // POST: HfedSchedules/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
+        public ActionResult Edit([Bind(Include = "Id,Date,Provider,Location,PickUpTime,PointPerson,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
         {
-            if (ModelState.IsValid)
+            //EF adding blank Foreign Key records: use raw SQL
+            using (var context = new SenecaContext())
             {
-                db.Entry(hfedSchedule).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(hfedSchedule);
+                string cmdString = "UPDATE HfedSchedule SET ";
+                cmdString += "Date='" + hfedSchedule.Date + "',";
+                cmdString += "PickUpTime='" + hfedSchedule.PickUpTime + "',";
+                cmdString += "ScheduleNote='" + hfedSchedule.ScheduleNote + "',";
+                cmdString += "Request='" + hfedSchedule.Request + "',";
+                cmdString += "Complete='" + hfedSchedule.Complete + "',";
+                cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
+                cmdString += "PointPerson_Id=" + hfedSchedule.PointPerson.Id + ",";
+                cmdString += "Provider_Id=" + hfedSchedule.Provider.Id ;
+                cmdString += " WHERE Id=" + hfedSchedule.Id;
+             context.Database.ExecuteSqlCommand(cmdString);
+            }                                                                                          
+            return RedirectToAction("Index");
+          
+            //return View(hfedSchedule);
         }
 
         // GET: HfedSchedules/Delete/5
@@ -92,7 +160,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             HfedSchedule hfedSchedule = db.HfedSchedules.Find(id);
-            db.HfedSchedules.Remove(hfedSchedule);
+            if (hfedSchedule != null) db.HfedSchedules.Remove(hfedSchedule);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

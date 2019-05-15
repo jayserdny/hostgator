@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;        
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace MVC5_Seneca.EntityModels
 {
@@ -15,7 +16,7 @@ namespace MVC5_Seneca.EntityModels
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Date { get; set; }
 
-        [DisplayName("Time")]
+        [DisplayName("Pick Up Time")]
         public string PickUpTime { get; set; }
 
         [Required]
@@ -41,7 +42,10 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public List<HfedDriver> SelectedDrivers { get; set; }
         [NotMapped] public List<HfedClient> SelectedClients { get; set; }
         [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
+        //[NotMapped] public IEnumerable<SelectListItem> HfedLocations { get; set; }
         [NotMapped] public List<HfedProvider> HfedProviders { get; set; }
+        //[NotMapped] public IEnumerable<SelectListItem> HfedProviders { get; set; } 
+        //[NotMapped] public IEnumerable<SelectListItem> HfedStaffs { get; set; }
         [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
         [NotMapped] public List<HfedDriver> HfedDrivers { get; set; }
         [NotMapped] public List<HfedClient> HfedClients { get; set; }
