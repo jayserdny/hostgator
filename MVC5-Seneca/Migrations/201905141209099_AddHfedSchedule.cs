@@ -10,17 +10,19 @@ namespace MVC5_Seneca.Migrations
             //CreateTable(
             //    "dbo.HfedSchedule",
             //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Date = c.DateTime(nullable: false, storeType: "date"),
-            //            PickUpTime = c.String(),
-            //            ScheduleNote = c.String(),
-            //            Request = c.Boolean(nullable: false),
-            //            Complete = c.Boolean(nullable: false),
-            //            Location_Id = c.Int(nullable: false),
-            //            PointPerson_Id = c.Int(),
-            //            Provider_Id = c.Int(nullable: false),
-            //        })
+            //    {
+            //        Id = c.Int(nullable: false, identity: true),
+            //        Date = c.DateTime(nullable: false, storeType: "date"),
+            //        PickUpTime = c.String(),
+            //        ScheduleNote = c.String(),
+            //        Request = c.Boolean(nullable: false),
+            //        Complete = c.Boolean(nullable: false),
+            //        Location_Id = c.Int(nullable: false),
+            //        PointPerson_Id = c.Int(),
+            //        Provider_Id = c.Int(nullable: false),
+            //        HfedDriverIds = c.String(),
+            //        HfedClientIds = c.String(),
+            //    })
             //    .PrimaryKey(t => t.Id)
             //    .ForeignKey("dbo.HfedLocation", t => t.Location_Id, cascadeDelete: true)
             //    .ForeignKey("dbo.HfedStaff", t => t.PointPerson_Id)
@@ -28,22 +30,6 @@ namespace MVC5_Seneca.Migrations
             //    .Index(t => t.Location_Id)
             //    .Index(t => t.PointPerson_Id)
             //    .Index(t => t.Provider_Id);
-
-            //CreateTable(
-            //    "dbo.HfedScheduleClient",
-            //    c => new
-            //    {
-            //        ScheduleId = c.Int(nullable: false),
-            //        ClientId = c.Int(nullable: false),
-            //    });
-
-            //CreateTable(
-            //    "dbo.HfedScheduleDriver",
-            //    c => new
-            //    {
-            //        ScheduleId = c.Int(nullable: false),
-            //        DriverId = c.Int(nullable: false),
-            //    });
 
         }
 

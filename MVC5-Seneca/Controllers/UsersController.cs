@@ -33,7 +33,7 @@ namespace MVC5_Seneca.Controllers
         //    //}
 
         // GET: Users/Edit/5
-        public ActionResult Edit(String userName)
+        public ActionResult Edit(string userName)
         {
             if (userName == null)
             {
@@ -69,7 +69,7 @@ namespace MVC5_Seneca.Controllers
         }
 
         // GET: Users/Delete/5
-        public ActionResult Delete(String userName)
+        public ActionResult Delete(string userName)
         {
             if (userName == null)
             {
@@ -86,7 +86,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(String userName)
+        public ActionResult DeleteConfirmed(string userName)
         {
             ApplicationUser user = (from u in _db.Users.Where(u => u.UserName == userName) select u).Single();
             _db.Users.Remove(user);

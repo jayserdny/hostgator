@@ -24,12 +24,12 @@ namespace MVC5_Seneca.Controllers
                     var locationId = context.Database.SqlQuery<Int32>(sqlString).FirstOrDefault();
                     var location = db.HfedLocations.Find(locationId);
 
-                    HfedClient viewModel = new HfedClient()
+                    EntityModels.HfedClient viewModel = new HfedClient()
                     {
                         Id = hfedClient.Id,
                         FirstName = hfedClient.FirstName,
                         LastName = hfedClient.LastName,
-                        DateOfBirth =hfedClient .DateOfBirth, 
+                        DateOfBirth = hfedClient.DateOfBirth, 
                         Location = location,
                         ClientNote = hfedClient.ClientNote
                     };
@@ -42,7 +42,7 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedClients/Create
         public ActionResult Create()
         {
-            HfedClient hfedClientView = new HfedClient()
+            EntityModels.HfedClient hfedClientView = new EntityModels.HfedClient() 
             {
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList() 
             };
@@ -53,25 +53,22 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedClients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Location,ClientNote")] HfedClient hfedClient)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,ClientNote,Location")] EntityModels.HfedClient hfedClient)
         {
-            if (ModelState.IsValid)
+            //EF adding blank Foreign Key records: use raw SQL
+            using (var context = new SenecaContext())
             {
-                HfedLocation location = db.HfedLocations.Find(hfedClient.Location.Id);
-                HfedClient  newHfedClient = new HfedClient( )
-                {
-                   FirstName =hfedClient.FirstName,
-                   LastName =hfedClient.LastName,
-                   DateOfBirth =hfedClient.DateOfBirth,
-                   Location = location,
-                   ClientNote =hfedClient .ClientNote 
-                };
-                db.HfedClients.Add(newHfedClient);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                string cmdString = "INSERT INTO HfedClient (";
+                cmdString += "FirstName,LastName,DateOfBirth,ClientNote,Location_Id)"; 
+                cmdString += " VALUES (";
+                cmdString += "'" + hfedClient.FirstName + "','" + hfedClient.LastName + "',";
+                cmdString += "'" + hfedClient.DateOfBirth + "','" + hfedClient.ClientNote + "',";    
+                cmdString += hfedClient.Location.Id + ")";
+                context.Database.ExecuteSqlCommand(cmdString);
             }
+            return RedirectToAction("Index");
 
-            return View(hfedClient);
+           // return View(hfedClient);
         }
 
         // GET: HfedClients/Edit/5
@@ -94,7 +91,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedClients/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Location,ClientNote")] HfedClient hfedClient)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Location,ClientNote")] EntityModels.HfedClient hfedClient)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +121,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HfedClient hfedClient = db.HfedClients.Find(id);
+            EntityModels.HfedClient hfedClient = db.HfedClients.Find(id);
             if (hfedClient == null)
             {
                 return HttpNotFound();
@@ -137,7 +134,7 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            HfedClient hfedClient = db.HfedClients.Find(id);
+            EntityModels.HfedClient hfedClient = db.HfedClients.Find(id);
             db.HfedClients.Remove(hfedClient);
             db.SaveChanges();
             return RedirectToAction("Index");

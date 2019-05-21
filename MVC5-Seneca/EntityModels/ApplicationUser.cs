@@ -21,7 +21,7 @@ namespace MVC5_Seneca.EntityModels
         public string LastName { get; set; }
 
         [DisplayName("Title")]
-        public String Title { get; set; }   
+        public string Title { get; set; }   
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

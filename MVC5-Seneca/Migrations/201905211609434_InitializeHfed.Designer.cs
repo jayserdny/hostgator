@@ -7,13 +7,13 @@ namespace MVC5_Seneca.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddMainPhoneToHfedLcation : IMigrationMetadata
+    public sealed partial class InitializeHfed : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddMainPhoneToHfedLcation));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitializeHfed));
         
         string IMigrationMetadata.Id
         {
-            get { return "201905130001041_AddMainPhoneToHfedLcation"; }
+            get { return "201905211609434_InitializeHfed"; }
         }
         
         string IMigrationMetadata.Source

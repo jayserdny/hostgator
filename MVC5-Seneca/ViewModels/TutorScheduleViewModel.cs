@@ -13,7 +13,7 @@ namespace MVC5_Seneca.ViewModels
 
         [DisplayName("Student")]
         public Student Student { get; set; }
-        public string DayName { get; set; }
+        public string  DayName { get; set; }
         public string TimeOfDay { get; set; }         
         public string ErrorMessage { get; set; }
 

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
-using Newtonsoft.Json;
+using Newtonsoft.Json;     
 
 namespace MVC5_Seneca.Controllers
 {
@@ -100,7 +100,7 @@ namespace MVC5_Seneca.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var x = ex;
+                    Exception x = ex;
                 }
 
                 return RedirectToAction("Index");
@@ -196,7 +196,7 @@ namespace MVC5_Seneca.Controllers
                     }
                     catch (Exception ex)
                     {
-                        var x = ex;
+                        //var x = ex;
                         existingAssociateTutor = null;
                     }
 

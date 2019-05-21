@@ -5,7 +5,7 @@ using Microsoft.AspNet.Identity;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
-using Newtonsoft.Json;
+using Newtonsoft.Json;            
 
 namespace MVC5_Seneca.Controllers
 {

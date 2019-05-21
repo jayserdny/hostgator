@@ -39,15 +39,21 @@ namespace MVC5_Seneca.EntityModels
 
         public Boolean Complete { get; set; }
 
-        [NotMapped] public List<HfedDriver> SelectedDrivers { get; set; }
-        [NotMapped] public List<HfedClient> SelectedClients { get; set; }
-        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
-        //[NotMapped] public IEnumerable<SelectListItem> HfedLocations { get; set; }
-        [NotMapped] public List<HfedProvider> HfedProviders { get; set; }
-        //[NotMapped] public IEnumerable<SelectListItem> HfedProviders { get; set; } 
-        //[NotMapped] public IEnumerable<SelectListItem> HfedStaffs { get; set; }
-        [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
+        [DisplayName("Drivers")]
+        public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 
+
+        [DisplayName("Clients")]
+        public string HfedClientIds { get; set; }  // IDs fFor multi-select Clients & DropDownList 
+
+        [NotMapped] public string[] HfedDriversArray { get; set; }
+        //[NotMapped] public int SelectedHfedDriverId { get; set; }  
+        [NotMapped] public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }
+        [NotMapped] public string[] HfedClientsArray { get; set; }
+        [NotMapped] public IEnumerable<SelectListItem> SelectedHfedClients { get; set; }
+        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }           
+        [NotMapped] public List<HfedProvider> HfedProviders { get; set; }     
         [NotMapped] public List<HfedDriver> HfedDrivers { get; set; }
+        [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
         [NotMapped] public List<HfedClient> HfedClients { get; set; }
     }
 }

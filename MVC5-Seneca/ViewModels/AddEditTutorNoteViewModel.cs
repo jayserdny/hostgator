@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MVC5_Seneca.EntityModels;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using TutorNote  = MVC5_Seneca.EntityModels.TutorNote;
 
 namespace MVC5_Seneca.ViewModels
 {

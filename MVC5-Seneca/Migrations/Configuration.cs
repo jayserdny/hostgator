@@ -35,7 +35,7 @@
         //    Debug.Unindent();
         //}
 
-        private void AddIdentityRole(DataAccessLayer.SenecaContext context, String name)
+        private void AddIdentityRole(DataAccessLayer.SenecaContext context, string name)
         {
             if (!context.Roles.Any(r => r.Name == name))
             {

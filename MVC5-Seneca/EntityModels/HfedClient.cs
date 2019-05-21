@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace MVC5_Seneca.EntityModels
 {
     public class HfedClient
@@ -28,6 +29,6 @@ namespace MVC5_Seneca.EntityModels
         [DataType(DataType.MultilineText)]
         public string ClientNote { get; set; }
 
-        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
-    }
-}
+        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }      
+    }    
+}   

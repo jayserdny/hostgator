@@ -386,7 +386,7 @@ namespace MVC5_Seneca.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        public async Task<ActionResult> EmailSheduleChange(ApplicationUser tutor, String msgText)
+        public async Task<ActionResult> EmailSheduleChange(ApplicationUser tutor, string msgText)
         {
             var receiverRole = "ReceiveScheduleChangeEmail";
             UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));

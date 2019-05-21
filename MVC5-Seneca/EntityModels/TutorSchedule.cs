@@ -18,9 +18,9 @@ namespace MVC5_Seneca.EntityModels
         public int MinutesPastMidnight { get; set; }  // TimeOfDay needs to be sortable for schedule
 
         [DisplayName("Day")]
-        [NotMapped] public String DayName { get; set;}
+        [NotMapped] public string DayName { get; set;}
         [DisplayName("Time")]
-        [NotMapped] public String TimeOfDay { get; set; }
+        [NotMapped] public string TimeOfDay { get; set; }
         [NotMapped] public List<TutorSchedule> TutorSchedules { get; set; }
     }
 }

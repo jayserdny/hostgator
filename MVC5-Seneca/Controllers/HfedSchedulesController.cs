@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
@@ -15,30 +16,54 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedSchedules
         public ActionResult Index()
         {
-            var schedulesView = new List<HfedSchedule>();
-
+            var schedulesView = new List<HfedSchedule>();            
+            
             var hfedSchedules = db.HfedSchedules.ToList();
-            //using (var context = new SenecaContext())
-            //{
-                foreach (HfedSchedule hfedSchedule in hfedSchedules)
+            foreach (HfedSchedule hfedSchedule in hfedSchedules)
+            {
+                string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
+                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList(); 
+                hfedSchedule.Location = location[0];
+
+                sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
+                var staff = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
+                hfedSchedule.PointPerson  = staff[0];
+
+                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();  
+                hfedSchedule.Provider = provider[0];
+                if (hfedSchedule.HfedDriverIds != null)
+                {   
+                    hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
+                    List<SelectListItem> selectedDrivers = new List<SelectListItem>();
+                    foreach (string driverId in hfedSchedule.HfedDriversArray)
+                    {
+                        var x = db.HfedDrivers.Find(Convert.ToInt32( driverId));
+                        SelectListItem selListItem = new SelectListItem() {Value = "null", Text = x.LastName};
+                        selectedDrivers.Add(selListItem); 
+                    }
+
+                    hfedSchedule.SelectedHfedDrivers = selectedDrivers;
+                }
+
+                if (hfedSchedule.HfedClientIds != null)
                 {
-                    string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
-                    var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                    hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();
+                    List<SelectListItem> selectedClients = new List<SelectListItem>();
+                    foreach (string clientId in hfedSchedule.HfedClientsArray)
+                    {
+                        var x = db.HfedDrivers.Find(Convert.ToInt32(clientId));
+                        SelectListItem selListItem = new SelectListItem() { Value = "null", Text = x.LastName };
+                        selectedClients.Add(selListItem);
+                    }
 
-                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-                    var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList(); 
-                    hfedSchedule.Location = location[0];
+                    hfedSchedule.SelectedHfedClients = selectedClients ;
+                }
 
-                    sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
-                    var staff = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
-                    hfedSchedule.PointPerson  = staff[0];
-
-                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
-                    var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();  
-                    hfedSchedule.Provider = provider[0];
-
-                    schedulesView.Add(hfedSchedule);
-              //  }
+                schedulesView.Add(hfedSchedule);
             }                                                               
             return View(schedulesView);
         }
@@ -50,7 +75,9 @@ namespace MVC5_Seneca.Controllers
             {
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
-                HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList()
+                HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList(),
+                HfedDrivers = db.HfedDrivers.OrderBy(d => d.LastName).ToList(),
+                HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList()
             };  
             return View(newHfedSchedule);
         }
@@ -58,19 +85,22 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete")] HfedSchedule hfedSchedule)
+        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray")] HfedSchedule hfedSchedule)
         {
+            hfedSchedule .HfedDriverIds = string.Join(",",hfedSchedule .HfedDriversArray);
+            hfedSchedule.HfedClientIds  = string.Join(",", hfedSchedule.HfedClientsArray);
             //EF adding blank Foreign Key records: use raw SQL
             using (var context = new SenecaContext())
             {
                 string cmdString = "INSERT INTO HfedSchedule (";
                 cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
-                cmdString += "Location_Id,PointPerson_Id,Provider_Id)";
+                cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                 cmdString += " VALUES (";
                 cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
                 cmdString += "'" + hfedSchedule .ScheduleNote + "','" +hfedSchedule .Request + "',";
                 cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
-                cmdString += hfedSchedule.PointPerson.Id + "," + hfedSchedule.Provider.Id + ")";
+                cmdString += hfedSchedule.PointPerson.Id + "," + hfedSchedule.Provider.Id + ",";
+                cmdString += "'" + hfedSchedule.HfedDriverIds + "','" + hfedSchedule.HfedClientIds + "')";
                 context.Database.ExecuteSqlCommand(cmdString);
             }
                                                                                      

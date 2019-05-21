@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MVC5_Seneca.EntityModels.HfedSchedule>
+﻿@using System.Web.Mvc.Html
+@model IEnumerable<MVC5_Seneca.EntityModels.HfedSchedule>
 
 @{
     Layout = null;
@@ -19,7 +20,7 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Date)
-        </th> 
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Provider)
         </th>
@@ -27,10 +28,16 @@
             @Html.DisplayNameFor(model => model.Location)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.HfedDrivers)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.PickUpTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PointPerson)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HfedClients)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ScheduleNote)
@@ -55,11 +62,18 @@
         <td>
             @Html.DisplayFor(modelItem => item.Location.Name)
         </td>
+        @*<td>
+            @Html.DropDownListFor(modelitem => item.SelectedHfedDrivers)
+           
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.PickUpTime)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PointPerson.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HfedClientIds)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ScheduleNote)

@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
-using Newtonsoft.Json;
+using Newtonsoft.Json;            
 
 namespace MVC5_Seneca.Controllers
 {
@@ -120,15 +120,15 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SaveTutorNote(int studentId, DateTime date, string sessionNote)
+        public ActionResult SaveTutorNote(int studentId, DateTime date, TutorNote sessionNote)
         {
-            if (sessionNote.Length != 0)
+            if (sessionNote.SessionNote.Length != 0)
             {
                 var userId = User.Identity.GetUserId();
                 var tutorNote = new TutorNote
                 {
                     Date = date.AddHours(5),
-                    SessionNote = sessionNote,
+                    SessionNote = sessionNote.SessionNote,
                     ApplicationUser = (from u in _db.Users where u.Id == userId select u).Single(),
                     Student = (from s in _db.Students where s.Id == studentId select s).Single()
                 };
@@ -143,7 +143,7 @@ namespace MVC5_Seneca.Controllers
             }
         }
 
-        public ActionResult EditTutorSessionNote(int? id, string sessionNote)
+        public ActionResult EditTutorSessionNote(int? id, TutorNote sessionNote)
         {
             if (id == null)
             {
@@ -158,7 +158,7 @@ namespace MVC5_Seneca.Controllers
 
             //var studentId = tutorNote.Student.Id;   // keep this in case we delete the note
 
-            if (sessionNote.Length == 0)
+            if (sessionNote.SessionNote.Length == 0)
             { // delete this note
                 _db.TutorNotes.Remove(tutorNote);
                 _db.SaveChanges();
@@ -172,7 +172,7 @@ namespace MVC5_Seneca.Controllers
             }
             else
             {
-                tutorNote.SessionNote = sessionNote;
+                tutorNote.SessionNote = sessionNote.SessionNote;
                 _db.SaveChanges();
                 String json = JsonConvert.SerializeObject(tutorNote, Formatting.Indented);
                 return Content(json, "application/json");

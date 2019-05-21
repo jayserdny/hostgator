@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using ClosedXML.Excel;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.ViewModels;
+using MVC5_Seneca.ViewModels;                                      
 
 namespace MVC5_Seneca.Controllers
 {
