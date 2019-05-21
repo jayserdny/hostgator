@@ -44,9 +44,11 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("Clients")]
         public string HfedClientIds { get; set; }  // IDs fFor multi-select Clients & DropDownList 
-
-        [NotMapped] public string[] HfedDriversArray { get; set; }
-        //[NotMapped] public int SelectedHfedDriverId { get; set; }  
+           
+        [NotMapped] public int Location_Id { get; set; }
+        [NotMapped] public int PointPerson_Id { get; set; }
+        [NotMapped] public int Provider_Id { get; set; }
+        [NotMapped] public string[] HfedDriversArray { get; set; }              
         [NotMapped] public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }
         [NotMapped] public string[] HfedClientsArray { get; set; }
         [NotMapped] public IEnumerable<SelectListItem> SelectedHfedClients { get; set; }
@@ -55,5 +57,6 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public List<HfedDriver> HfedDrivers { get; set; }
         [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
         [NotMapped] public List<HfedClient> HfedClients { get; set; }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
+using System.Web.Handlers;
 using MVC5_Seneca.ViewModels;
 
 namespace MVC5_Seneca.Controllers
@@ -21,19 +22,19 @@ namespace MVC5_Seneca.Controllers
             var hfedSchedules = db.HfedSchedules.ToList();
             foreach (HfedSchedule hfedSchedule in hfedSchedules)
             {
-                string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
-                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+               string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
+               var schedule = db.Database.SqlQuery<HfedScheduleViewModel >(sqlString).ToList();
 
                 sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList(); 
+                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
                 hfedSchedule.Location = location[0];
 
                 sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
                 var staff = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
-                hfedSchedule.PointPerson  = staff[0];
+                hfedSchedule.PointPerson = staff[0];
 
                 sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
-                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();  
+                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
                 hfedSchedule.Provider = provider[0];
                 if (hfedSchedule.HfedDriverIds != null)
                 {   
@@ -41,7 +42,7 @@ namespace MVC5_Seneca.Controllers
                     List<SelectListItem> selectedDrivers = new List<SelectListItem>();
                     foreach (string driverId in hfedSchedule.HfedDriversArray)
                     {
-                        var x = db.HfedDrivers.Find(Convert.ToInt32( driverId));
+                        var x = db.HfedDrivers.Find(Convert.ToInt32(driverId));
                         SelectListItem selListItem = new SelectListItem() {Value = "null", Text = x.LastName};
                         selectedDrivers.Add(selListItem); 
                     }
@@ -87,7 +88,7 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray")] HfedSchedule hfedSchedule)
         {
-            hfedSchedule .HfedDriverIds = string.Join(",",hfedSchedule .HfedDriversArray);
+            hfedSchedule .HfedDriverIds = string.Join(",",hfedSchedule.HfedDriversArray);
             hfedSchedule.HfedClientIds  = string.Join(",", hfedSchedule.HfedClientsArray);
             //EF adding blank Foreign Key records: use raw SQL
             using (var context = new SenecaContext())
@@ -116,15 +117,27 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HfedSchedule hfedSchedule = db.HfedSchedules.Find(id);
-            if (hfedSchedule == null)
+            HfedSchedule scheduletoEdit = db.HfedSchedules.Find(id);
+            if (scheduletoEdit == null)
             {
                 return HttpNotFound();
             }
 
-            hfedSchedule.HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
-            hfedSchedule .HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
-            hfedSchedule.HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList();
+            HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel
+            {
+                HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
+                HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
+                HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList(),
+                HfedDrivers = db.HfedDrivers.OrderBy(d => d.FirstName).ToList(),
+                HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList(),  
+                Date = scheduletoEdit.Date,
+                PickUpTime = scheduletoEdit.PickUpTime,
+                ScheduleNote = scheduletoEdit.ScheduleNote,
+                Request = scheduletoEdit.Request,
+                Complete = scheduletoEdit.Complete,
+                HfedDriverIds = scheduletoEdit.HfedDriverIds,
+                HfedClientIds = scheduletoEdit.HfedClientIds
+            };
 
             string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + id;
             var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
@@ -140,6 +153,9 @@ namespace MVC5_Seneca.Controllers
             sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
             var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
             hfedSchedule.Provider = provider[0];
+
+            hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
+            hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();
 
             return View(hfedSchedule);
         }
