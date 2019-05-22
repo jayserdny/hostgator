@@ -11,85 +11,91 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
 </head>
 <body>
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Provider)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HfedDrivers)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PickUpTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PointPerson)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HfedClients)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleNote)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Request)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Complete)
-        </th>
-        <th></th>
-    </tr>
-    
-    @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Provider.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.Name)
-        </td>
-        @*<td>
-            @Html.DropDownListFor(modelitem => item.SelectedHfedDrivers)
-           
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.PickUpTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PointPerson.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HfedClientIds)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ScheduleNote)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Request)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Complete)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
-    } 
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Provider)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HfedDrivers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickUpTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PointPerson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HfedClients)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleNote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Complete)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Provider.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Name)
+                </td>
+                <td>
+                    @*Use ScheduleNote as dummy string for display-only DDL*@
+                    @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickUpTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PointPerson.LastName)
+                </td>
+                <td>
+                    @*Use ScheduleNote as dummy string for display-only DDL*@
+                    @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScheduleNote)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Request)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Complete)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </table>
     <br />
     <table>
