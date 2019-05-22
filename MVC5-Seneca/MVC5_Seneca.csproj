@@ -543,6 +543,10 @@
     <Compile Include="Migrations\201905211609434_InitializeHfed.Designer.cs">
       <DependentUpon>201905211609434_InitializeHfed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905221555383_AddVolunteerHours.cs" />
+    <Compile Include="Migrations\201905221555383_AddVolunteerHours.Designer.cs">
+      <DependentUpon>201905221555383_AddVolunteerHours.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1259,6 +1263,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905211609434_InitializeHfed.resx">
       <DependentUpon>201905211609434_InitializeHfed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905221555383_AddVolunteerHours.resx">
+      <DependentUpon>201905221555383_AddVolunteerHours.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

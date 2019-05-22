@@ -29,5 +29,6 @@ namespace MVC5_Seneca.EntityModels
         public string StaffNote { get; set; }
 
         [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
+        [NotMapped] public string FullName => $"{FirstName} {LastName}";
     }
 }

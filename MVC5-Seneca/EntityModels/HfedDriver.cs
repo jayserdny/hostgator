@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC5_Seneca.EntityModels
 {
@@ -26,5 +27,6 @@ namespace MVC5_Seneca.EntityModels
         [DataType(DataType.MultilineText)]
         public string DriverNote { get; set; }
 
+        [NotMapped] public string FullName => $"{FirstName} {LastName}";
     }
 }

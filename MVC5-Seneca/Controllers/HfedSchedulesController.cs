@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
-using System.Web.Handlers;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
 
@@ -46,7 +45,7 @@ namespace MVC5_Seneca.Controllers
                         if (!driverId.IsNullOrEmpty())
                         {
                             var x = db.HfedDrivers.Find(Convert.ToInt32(driverId));
-                            SelectListItem selListItem = new SelectListItem() {Value = driverId, Text = x.FirstName};
+                            SelectListItem selListItem = new SelectListItem() {Value = driverId, Text = x.FullName};
                             selectedDrivers.Add(selListItem);
                         }
                     }
@@ -63,7 +62,7 @@ namespace MVC5_Seneca.Controllers
                         if (!clientId.IsNullOrEmpty())
                         {
                             var x = db.HfedClients.Find(Convert.ToInt32(clientId));
-                            SelectListItem selListItem = new SelectListItem() {Value = clientId, Text = x.LastName};
+                            SelectListItem selListItem = new SelectListItem() {Value = clientId, Text = x.FullName};
                             selectedClients.Add(selListItem);
                         }
                     }
@@ -71,7 +70,7 @@ namespace MVC5_Seneca.Controllers
                     hfedSchedule.SelectedHfedClients = selectedClients ;
                 }
 
-                var s = hfedSchedule.ScheduleNote;
+                var s = hfedSchedule.ScheduleNote;  // For display, abbreviate to 10 characters:
                 s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
                 hfedSchedule.ScheduleNote = s;
 
@@ -97,10 +96,26 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray")] HfedSchedule hfedSchedule)
+        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray,VolunteerHours")] HfedSchedule hfedSchedule)
         {
-            hfedSchedule .HfedDriverIds = string.Join(",",hfedSchedule.HfedDriversArray);
-            hfedSchedule.HfedClientIds  = string.Join(",", hfedSchedule.HfedClientsArray);
+            if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
+            {
+                hfedSchedule.HfedDriverIds =String.Empty;
+            }
+            else
+            {
+                hfedSchedule.HfedDriverIds = string.Join(",", hfedSchedule.HfedDriversArray);
+            }
+
+            if (hfedSchedule.HfedClientsArray.IsNullOrEmpty())
+            {
+                hfedSchedule.HfedClientIds = String.Empty;
+            }
+             else
+            {
+                hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
+            } 
+            
             //EF adding blank Foreign Key records: use raw SQL
             using (var context = new SenecaContext())
             {
@@ -112,7 +127,16 @@ namespace MVC5_Seneca.Controllers
                 cmdString += "'" + hfedSchedule .ScheduleNote + "','" +hfedSchedule .Request + "',";
                 cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
                 cmdString += hfedSchedule.PointPerson.Id + "," + hfedSchedule.Provider.Id + ",";
-                cmdString += "'" + hfedSchedule.HfedDriverIds + "','" + hfedSchedule.HfedClientIds + "')";
+                cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
+                cmdString += "'" + hfedSchedule.HfedClientIds + "')";
+                //if ((hfedSchedule.VolunteerHours ?? 0) == 0)
+                //{
+                //    cmdString += "0)";
+                //}
+                //else
+                //{
+                //    cmdString += hfedSchedule.VolunteerHours + ")";
+                //}                                                                             
                 context.Database.ExecuteSqlCommand(cmdString);
             }
                                                                                      
@@ -147,7 +171,8 @@ namespace MVC5_Seneca.Controllers
                 Request = scheduletoEdit.Request,
                 Complete = scheduletoEdit.Complete,
                 HfedDriverIds = scheduletoEdit.HfedDriverIds,
-                HfedClientIds = scheduletoEdit.HfedClientIds
+                HfedClientIds = scheduletoEdit.HfedClientIds,
+                VolunteerHours = scheduletoEdit.VolunteerHours 
             };
 
             string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + id;
@@ -174,9 +199,26 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedSchedules/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray")] HfedSchedule hfedSchedule)
+        public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray,VolunteerHours")] HfedSchedule hfedSchedule)
         {
             //EF adding blank Foreign Key records: use raw SQL
+            if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
+            {
+                hfedSchedule.HfedDriverIds = String.Empty;
+            }
+            else
+            {
+                hfedSchedule.HfedDriverIds = string.Join(",", hfedSchedule.HfedDriversArray);
+            }
+
+            if (hfedSchedule.HfedClientsArray.IsNullOrEmpty())
+            {
+                hfedSchedule.HfedClientIds = String.Empty;
+            }
+            else
+            {
+                hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
+            }
             using (var context = new SenecaContext())
             {
                 string cmdString = "UPDATE HfedSchedule SET ";
@@ -187,12 +229,21 @@ namespace MVC5_Seneca.Controllers
                 cmdString += "Complete='" + hfedSchedule.Complete + "',";
                 cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
                 cmdString += "PointPerson_Id=" + hfedSchedule.PointPerson.Id + ",";
-                cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";
-                cmdString += "HfedDriverIds='" + string.Join(",", hfedSchedule.HfedDriversArray) + "',";
-                cmdString += "HfedClientIds='" + string.Join(",", hfedSchedule.HfedClientsArray) + "'";
-                cmdString += " WHERE Id=" + hfedSchedule.Id;  
+                cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";  
+                cmdString += "HfedDriverIds='" + hfedSchedule .HfedDriverIds + "',";
+                cmdString += "HfedClientIds='" + hfedSchedule .HfedClientIds + "',";
+                if ((hfedSchedule.VolunteerHours ?? 0) == 0)
+                {
+                    cmdString += "VolunteerHours=NULL";
+                }
+                else
+                {
+                    cmdString += "VolunteerHours=" + hfedSchedule.VolunteerHours;
+                }                                                                                                         
+                cmdString += " WHERE Id=" + hfedSchedule.Id;
                 context.Database.ExecuteSqlCommand(cmdString);
             }
+
             return RedirectToAction("Index");
           
             //return View(hfedSchedule);

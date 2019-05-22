@@ -29,6 +29,7 @@ namespace MVC5_Seneca.EntityModels
         [DataType(DataType.MultilineText)]
         public string ClientNote { get; set; }
 
-        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }      
+        [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
+        [NotMapped] public string FullName => $"{FirstName} {LastName}";
     }    
 }   

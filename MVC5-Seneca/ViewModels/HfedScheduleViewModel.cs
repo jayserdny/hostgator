@@ -46,6 +46,9 @@ namespace MVC5_Seneca.ViewModels
         [DisplayName("Clients")]
         public string HfedClientIds { get; set; }  // IDs fFor multi-select Clients & DropDownList 
 
+        [DisplayName("Volunteer Hours")]
+        public int? VolunteerHours { get; set; }
+
         public int Location_Id { get; set; }
         public int PointPerson_Id { get; set; }
         public int Provider_Id { get; set; }

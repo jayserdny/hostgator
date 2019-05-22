@@ -23,84 +23,91 @@
         <div>
             <h4>New HFED Schedule</h4>
             <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.PickUpTime, htmlAttributes: new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select") (Required)
-                    @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.Location, new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)
-                    @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div><label>Drivers</label></div>
-                @Html.ListBoxFor(model => model.HfedDriversArray, new MultiSelectList(Model.HfedDrivers, "Id", "FirstName"), new { Id = "driversDDL" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "LastName"), " Select")
-                    @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div><label>Clients</label></div>
-                @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FirstName"), new { Id = "clientsDDL" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ScheduleNote, htmlAttributes: new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Request, htmlAttributes: new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    <div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" }) 
+            
+            <table>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                    </td>
+                    <td style="text-align:right">
+                        Request
+                    </td>
+                    <td>
                         @Html.EditorFor(model => model.Request)
                         @Html.ValidationMessageFor(model => model.Request, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Complete, htmlAttributes: new { @class = "col-md-2" })
-                <div class="col-md-10">
-                    <div>
+                    </td>
+                </tr> 
+                <tr>
+                    <td style="text-align:right">
+                        @Html.LabelFor(model => model.PickUpTime, htmlAttributes: new { @class = "col-md-2" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
+                    </td>
+                    <td style="text-align:right">
+                        Complete
+                    </td>
+                    <td>
                         @Html.EditorFor(model => model.Complete)
                         @Html.ValidationMessageFor(model => model.Complete, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+                <tr><td><br /></td></tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Location, new { @class = "col-md-2" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select") (Required)
+                        @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger"})
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)
+                        @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select")
+                        @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+                <tr><td><br /></td></tr>
+                <tr>
+                    <td>Drivers</td>
+                    <td>Clients</td>
+                    <td>Note</td>
+                    <td>Volunteer Hours</td>
+                </tr>              
+                <tr>
+                    <td>
+                        @Html.ListBoxFor(model => model.HfedDriversArray, new MultiSelectList(Model.HfedDrivers, "Id", "FullName"), new { Id = "driversDDL" })
+                    </td>
+                    <td>
+                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.VolunteerHours)
+                        @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
+                    </td>
+                </tr>  
+            </table>
             <br />
             <div class="form-group">
                 <div class="col-md-10">
@@ -110,21 +117,21 @@
         </div>
     }
     <br />
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div> 
-}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
 </body>
 </html>
 
 <script>
     $(function () {
-        $("#driversDDL").chosen();
+        $("#driversDDL").chosen({ width: "150px" });
     });
 </script>
 <script>
     $(function () {
-        $("#clientsDDL").chosen();
+        $("#clientsDDL").chosen({ width: "150px" });
     });
 </script>
 
