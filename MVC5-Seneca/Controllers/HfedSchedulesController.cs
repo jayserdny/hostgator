@@ -7,6 +7,7 @@ using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
+using System.Web.WebPages;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -15,20 +16,33 @@ namespace MVC5_Seneca.Controllers
         private SenecaContext db = new SenecaContext();
 
         // GET: HfedSchedules
-        public ActionResult Index()
-        {
-            var schedulesView = new List<HfedSchedule>();            
-            
-            var hfedSchedules = db.HfedSchedules.ToList();
+        public ActionResult Index(String startDate)
+        {  
+            var schedulesView = new List<HfedSchedule>();           
+            List<HfedSchedule> hfedSchedules = null;     
+            if (Session["StartDate"].ToString().IsNullOrEmpty())
+            {
+                hfedSchedules = db.HfedSchedules.ToList(); 
+            }
+            else
+            {
+                if (!startDate.IsNullOrEmpty())
+                {
+                    Session["StartDate"] = startDate;
+                }
+                DateTime date = Convert.ToDateTime(Session["StartDate"]);
+                hfedSchedules = db.HfedSchedules.Where(s => s.Date >= date ).ToList();
+            }
+                                                  
             foreach (HfedSchedule hfedSchedule in hfedSchedules)
             {
                string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
-               var schedule = db.Database.SqlQuery<HfedScheduleViewModel >(sqlString).ToList();
+               var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList(); // Gets mapped Foreign Keys
 
                 sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
                 var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
-                hfedSchedule.Location = location[0];
-
+                hfedSchedule.Location = location[0];          
+                
                 sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
                 var staff = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
                 hfedSchedule.PointPerson = staff[0];
@@ -75,7 +89,9 @@ namespace MVC5_Seneca.Controllers
                 hfedSchedule.ScheduleNote = s;
 
                 schedulesView.Add(hfedSchedule);
-            }                                                               
+                                                                     
+            }         
+
             return View(schedulesView);
         }
           
@@ -84,6 +100,7 @@ namespace MVC5_Seneca.Controllers
         {   
             HfedSchedule newHfedSchedule = new HfedSchedule()
             {
+                Date =DateTime.Today,
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
                 HfedStaffs = db.HfedStaffs.OrderBy(s => s.LastName).ToList(),
@@ -142,7 +159,7 @@ namespace MVC5_Seneca.Controllers
                                                                                      
             return RedirectToAction("Index");
 
-                //return View(hfedSchedule);
+                //return View(hfedSchedule);    // (for error functions)
             }
 
         // GET: HfedSchedules/Edit/5

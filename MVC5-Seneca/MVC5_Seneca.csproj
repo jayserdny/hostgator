@@ -467,6 +467,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TutorSchedule.cs" />
+    <Compile Include="HfedGlobals.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.cs" />
     <Compile Include="Migrations\201801191404409_Initialize.designer.cs">
       <DependentUpon>201801191404409_Initialize.cs</DependentUpon>

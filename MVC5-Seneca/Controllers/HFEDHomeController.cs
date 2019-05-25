@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using Castle.Core.Internal;
+using System.Web.Mvc;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -7,6 +9,11 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedHome
         public ActionResult Index()
         {
+            if (Session["StartDate"].ToString().IsNullOrEmpty())
+            {
+                Session["StartDate"] = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).ToString("MM/dd/yyyy");
+            }
+
             return View();
         }
         public ActionResult MaintainLocations()

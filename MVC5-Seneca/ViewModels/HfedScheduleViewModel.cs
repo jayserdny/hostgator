@@ -60,6 +60,6 @@ namespace MVC5_Seneca.ViewModels
         public List<HfedProvider> HfedProviders { get; set; }
         public List<HfedDriver> HfedDrivers { get; set; }
         public List<HfedStaff> HfedStaffs { get; set; }
-        public List<HfedClient> HfedClients { get; set; }
+        public List<HfedClient> HfedClients { get; set; }         
     }
 }
