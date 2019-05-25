@@ -26,7 +26,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedProviders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,ProviderNote")] HfedProvider hfedProvider)
+        public ActionResult Create([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,BoxWeight,ProviderNote")] HfedProvider hfedProvider)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedProviders/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,ProviderNote")] HfedProvider hfedProvider)
+        public ActionResult Edit([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,BoxWeight,ProviderNote")] HfedProvider hfedProvider)
         {
             if (ModelState.IsValid)
             {

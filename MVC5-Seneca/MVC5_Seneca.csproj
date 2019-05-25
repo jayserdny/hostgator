@@ -548,6 +548,10 @@
     <Compile Include="Migrations\201905221555383_AddVolunteerHours.Designer.cs">
       <DependentUpon>201905221555383_AddVolunteerHours.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.cs" />
+    <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.Designer.cs">
+      <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1267,6 +1271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905221555383_AddVolunteerHours.resx">
       <DependentUpon>201905221555383_AddVolunteerHours.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.resx">
+      <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

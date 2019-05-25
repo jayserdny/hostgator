@@ -36,5 +36,7 @@ namespace MVC5_Seneca.EntityModels
         [DataType(DataType.MultilineText)]
         public string ProviderNote { get; set; }
 
+        [DisplayName("Box Weight")]
+        public decimal? BoxWeight { get; set; }  
     }
 }
