@@ -15,6 +15,11 @@
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
+    <style>
+        .field-validation-error {
+            color: red
+        }
+    </style>
 </head>
 <body>
     @using (Html.BeginForm())
@@ -81,7 +86,7 @@
                         @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select")
+                        @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select") (Required)
                         @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
                     </td>
                 </tr>
@@ -111,16 +116,19 @@
             </table>
             <br />
             <div class="form-group">
+                <div>
+                    @*<label class="field-validation-error">@Model.ErrorMessage</label>*@
+                </div> 
                 <div class="col-md-10">
-                    <input type="submit" value="Create" class="btn" />
+                    <input type="submit" value="Create"/>
                 </div>
             </div>
         </div>
     }
     <br />
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 
 </body>
 </html>

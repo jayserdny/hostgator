@@ -56,6 +56,6 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public List<HfedProvider> HfedProviders { get; set; }     
         [NotMapped] public List<HfedDriver> HfedDrivers { get; set; }
         [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
-        [NotMapped] public List<HfedClient> HfedClients { get; set; }     
+        [NotMapped] public List<HfedClient> HfedClients { get; set; } 
     }
 }

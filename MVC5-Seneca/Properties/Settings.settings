@@ -5,6 +5,9 @@
     <Setting Name="SendGridClient" Type="System.String" Scope="Application">
       <Value Profile="(Default)">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</Value>
     </Setting>
+    <Setting Name="HFEDSendGridClient" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">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</Value>
+    </Setting>
     <Setting Name="StorageConnectionString" Type="System.String" Scope="Application">
       <Value Profile="(Default)">DefaultEndpointsProtocol=https;AccountName=senecablob;AccountKey=RehmqcmxzC8y0k6PjgoCIZExUA9WVZ1zcIPZYDawdoBUZygN77OrL0xNNJ3tvqwym+68kMsX0xjTWYvNh73JtA==;EndpointSuffix=core.windows.net</Value>
     </Setting>
