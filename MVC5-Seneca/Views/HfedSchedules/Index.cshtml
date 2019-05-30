@@ -24,12 +24,14 @@
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table class="table">
-        <tr>
-            <td><strong>Starting Date </strong></td>
-            <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new { id = "StartDate", style = "width: 75px;"}) (Click to change)</td>
+<table class="table">
+    <tr>
+        <td><strong>Starting Date </strong></td>
+        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new { id = "StartDate", style = "width: 75px;"}) (Click to change)</td>
 
-        </tr>
+    </tr>
+</table>
+    <table>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Date)
@@ -119,7 +121,15 @@
         <td>
             @Html.ActionLink("Email", "Email")
         </td>
-    </table>
+    </table> 
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("CreateExcel", "CreateExcel")
+        </td>
+    </tr>
+</table>
+
     <br />
     <table>
         <tr>

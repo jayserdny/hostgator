@@ -5,10 +5,12 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
 using System.Web.WebPages;
+using ClosedXML.Excel;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -310,17 +312,103 @@ namespace MVC5_Seneca.Controllers
         {
             var apiKey = Properties.Settings.Default.HFEDSendGridClient ;
             var client = new SendGridClient(apiKey);
+            //var htmlContent = "<table style=" + (char)34 + "border: 1px;" + (char)34 + ">";    // doesn't work
+            var htmlContent = "<table border=" + (char)34 + "1" + (char)34 + ">";
+            DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
+            var endDate = startDate.AddDays(7);
+            using (var context = new SenecaContext())
+            {
+                var deliveryRequests = db.HfedSchedules.Where(s =>
+                    s.Date >= startDate && s.Date <= endDate
+                                        && s.Request == true && s.Complete == false).OrderBy(s => s.Date).ToList();
+                foreach (HfedSchedule request in deliveryRequests)
+                {
+                    htmlContent += "<tr><td>" + request.Date.ToShortDateString() + "</ts>";
+
+                    var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
+                    var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                    var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+                    htmlContent += "<td>" + provider[0].Name + "</td>";
+
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                    var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+                    htmlContent += "<td>" + location[0].Name + "</td>";
+
+                    htmlContent += "<td>" + request.PickUpTime + "</td>";
+
+                    sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
+                    var pointPerson = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
+                    htmlContent += "<td>" + pointPerson[0].FirstName + "</td>";
+
+                    htmlContent += "<td bgcolor=" + (char)34 + "#FFFF00" + (char)34 + ">&nbsp;&nbsp;" +
+                                   "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                   "&nbsp;&nbsp;</td></tr>";
+                }
+            }
+
+            htmlContent += "</table> ";
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("test@example.com", "DX Team"),
-                Subject = "Hello World from the SendGrid CSharp SDK!",
-                PlainTextContent = "Hello, Email!",
-                HtmlContent = "<strong>Hello, Email!</strong>"
+                From = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "HFED Coordinator"),
+                Subject = "Healthy Food Every Day -  Weekly Schedule",
+                PlainTextContent = "Hello, Email!" ,
+                HtmlContent = htmlContent 
             };
-            msg.AddTo(new EmailAddress("prowny@aol.com", "Test User"));
+            msg.AddTo(new EmailAddress("prowny@aol.com", "HFED Volunteer Driver"));
             var response = await client.SendEmailAsync(msg);
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult CreateExcel()
+        {
+            XLWorkbook workbook = new XLWorkbook();
+            IXLWorksheet ws = workbook.Worksheets.Add("Requests");
+            int activeRow = 1;
+            ws.Cell(activeRow, 1).SetValue("Food Delivery Schedule"); 
+            ws.Row(1).Style.Font.Bold = true;
+            DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
+            var endDate = startDate.AddDays(7);
+            using (var context = new SenecaContext())
+            {
+                var deliveryRequests = db.HfedSchedules.Where(s =>
+                    s.Date >= startDate && s.Date <= endDate
+                                        && s.Request == true && s.Complete == false).OrderBy(s => s.Date).ToList();
+                foreach (HfedSchedule request in deliveryRequests)
+                {
+                    activeRow += 1;
+                    ws.Cell(activeRow, 1).SetValue(request.Date.ToShortDateString());
+
+                    var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
+                    var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                    var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+                    ws.Cell(activeRow, 2).SetValue(provider[0].Name);
+
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                    var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+                    ws.Cell(activeRow, 3).SetValue(location[0].Name);
+
+                    ws.Cell(activeRow, 4).SetValue(request.PickUpTime);
+
+                    sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule [0].PointPerson_Id;
+                    var pointPerson = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();  
+                    ws.Cell(activeRow, 5).SetValue(pointPerson[0].FirstName);
+
+                    ws.Cell(activeRow, 6).SetValue("          ");  
+                }
+                ws.Columns().AdjustToContents();
+                //ws.Column( 6).Style.Fill.BackgroundColor = XLColor.Amber;
+                //ws.Column(6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;   
+                MemoryStream ms = new MemoryStream();
+                workbook.SaveAs(ms);
+                ms.Position = 0;
+                return new FileStreamResult(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {FileDownloadName = "DeliverySchedule.xlsx"};
+            }
         }
 
         protected override void Dispose(bool disposing)
