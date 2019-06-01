@@ -1,5 +1,4 @@
 ﻿@using System.Web.Mvc.Html
-@using DocumentFormat.OpenXml.Drawing.Charts
 @model IEnumerable<MVC5_Seneca.EntityModels.HfedSchedule>
 
 @{
@@ -18,126 +17,137 @@
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
     @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
-    <script src="@Url.Content("/Scripts/StudentInfo.js")"></script>
+    <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
     </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
+<h3>
+    HFED Delivery Schedule
+</h3>
+<p>
+    @Html.ActionLink("Create New Delivery Schedule", "Create")
+</p>
 <table class="table">
     <tr>
         <td><strong>Starting Date </strong></td>
-        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new { id = "StartDate", style = "width: 75px;"}) (Click to change)</td>
-
+        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new {id = "StartDate", style = "width: 75px;"}) (Click to change)</td>
+        <td><strong>  Ending Date </strong></td>
+        <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(), new {id = "EndDate", style = "width: 75px;"}) (Click to change)</td>
     </tr>
 </table>
-    <table>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            Provider
+        </th>
+        <th>
+            Drop Off
+        </th>
+        <th>
+            Drivers
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickUpTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PointPerson)
+        </th>
+        <th>
+            Clients
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ScheduleNote)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Complete)
+        </th>
+        <th>
+            Vol Hrs.
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                Provider
-            </th>
-            <th>
-                Drop Off
-            </th>
-            <th>
-                Drivers
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PickUpTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PointPerson)
-            </th>
-            <th>
-                Clients
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.ScheduleNote)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Request)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Complete)
-            </th>
-            <th>
-                Vol Hrs.
-            </th>
-            <th></th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Provider.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.Name)
+            </td>
+            <td>
+                @*Use ScheduleNote as dummy string for display-only DDL*@
+                @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUpTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PointPerson.FullName)
+            </td>
+            <td>
+                @*Use ScheduleNote as dummy string for display-only DDL*@
+                @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ScheduleNote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Request)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Complete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VolunteerHours)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+            </td>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Provider.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location.Name)
-                </td>
-                <td>
-                    @*Use ScheduleNote as dummy string for display-only DDL*@
-                    @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PickUpTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PointPerson.FullName)
-                </td>
-                <td>
-                    @*Use ScheduleNote as dummy string for display-only DDL*@
-                    @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ScheduleNote)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Request)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Complete)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VolunteerHours)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-    </table>
-    <br />
-    <br /> 
-    <table>
-        <td>
-            @Html.ActionLink("Email", "Email")
-        </td>
-    </table> 
+    }
+</table>
+<br/>
+<br/>
 <table>
     <tr>
         <td>
-            @Html.ActionLink("CreateExcel", "CreateExcel")
+            @Html.ActionLink("Create Excel File", "CreateExcel")                                  
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailAsk")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailShow")
         </td>
     </tr>
 </table>
 
-    <br />
-    <table>
-        <tr>
-            <td>
-                @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new {})
-            </td>
-        </tr>
-    </table>
+<br/>
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new {})
+        </td>
+    </tr>
+</table>
 </body>
 </html>
  
@@ -147,10 +157,19 @@
     });
 </script>
 <script type="text/javascript">
-    $("#StartDate").change (function() {
+    $("#StartDate").change(function () {                                           
         UpdateHfedStartDate($('#StartDate').val());
     });
-        //alert("Test1"); 
-    
+    //alert("Test1");
 </script>
-
+<script>
+    $(function () {
+        $("#EndDate").datepicker();
+    });
+</script>
+<script type="text/javascript">
+    $("#EndDate").change(function () {
+        UpdateHfedEndDate($('#EndDate').val());
+    });
+    //alert("Test2");
+</script>

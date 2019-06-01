@@ -576,19 +576,4 @@ function EmailToCaseManager(latestCaseManagerEmail) {
     window.open(url, '_blank');
 }
 
-function UpdateHfedStartDate(startDate) {
-    $.ajax({               
-        url: '/HfedSchedules/Index',
-        data: { startDate: startDate },
-        type: "POST",
-        success: function (data) {
-            $("body").html(data);  // to refresh the page
-            //alert('Ajax hit'); 
-        },
-        error: function(_jqxhr, status, exception) {
-            alert('Exception:', exception);
-        }
-    });
-  
-}
 

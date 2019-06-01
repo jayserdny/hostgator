@@ -20,8 +20,11 @@ namespace MVC5_Seneca
 
         protected void Session_Start(Object sender, EventArgs e)
         {
-            string sd = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).ToString("MM/dd/yyyy");
-            HttpContext.Current.Session.Add("StartDate", sd);
+            DateTime bdt = DateTime.Today.AddDays(-(int) DateTime.Today.DayOfWeek);  // Beginning o Week
+            string sdt = bdt.ToString("MM/dd/yyyy");
+            HttpContext.Current.Session.Add("StartDate", sdt);
+            string edt = bdt.AddDays(7).ToString("MM/dd/yyyy");
+            HttpContext.Current.Session.Add("EndDate", edt);
         }
 
         protected void Application_BeginRequest()
