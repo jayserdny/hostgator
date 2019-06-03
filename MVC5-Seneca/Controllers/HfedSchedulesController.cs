@@ -355,7 +355,7 @@ namespace MVC5_Seneca.Controllers
                                     && s.Request && s.Complete == false).OrderBy(s => s.Date).ToList();
             foreach (HfedSchedule request in deliveryRequests)
             {
-                htmlContent += "<tr><td>" + request.Date.ToShortDateString() + "</ts>";
+                htmlContent += "<tr><td>" + request.Date.ToShortDateString() + "</td>";
 
                 var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
                 var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
@@ -422,17 +422,102 @@ namespace MVC5_Seneca.Controllers
         private async void EmailDriver(string address, string htmlContent)
         {   
             var apiKey = Properties.Settings.Default.HFEDSendGridClient;
-            var client = new SendGridClient(apiKey);  
+            var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "HFED Coordinator"),
                 Subject = "Healthy Food Every Day -  Schedule",
-                PlainTextContent = "Email Ask",
+                PlainTextContent = "HFED Email",
                 HtmlContent = htmlContent
             };
+            msg.SetSubject("Healthy Food Every Day -  Schedule");  
+            msg.AddContent(MimeType.Html, htmlContent);
             msg.AddTo(new EmailAddress(address, "HFED Volunteer Driver"));
             var unused = await client.SendEmailAsync(msg);
-        }   
+        }
+
+        public ActionResult EmailReminders()
+        {   
+            DateTime reminderDate = DateTime.Today.AddDays(2);
+            string reminderEmailList = "";
+            // Add MCCH Community Engagement (Lynn Rose) to Email List 
+            reminderEmailList += "prowny@aol.com";
+           
+            var schedules = db.HfedSchedules.Where(s => s.Date == reminderDate).ToList();  
+            foreach (HfedSchedule reminder in schedules)
+            {
+                string htmlContent = "<p>Reminder:</p>";
+                htmlContent += "<p>You have an upcoming HFED delivery:</p>";
+                htmlContent += "<table border=" + (char)34 + "1" + (char)34 + "><tr>";
+
+                var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
+                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                htmlContent += "<td>" + reminder.Date .ToShortDateString() + "</td>";
+   
+                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+                htmlContent += "<td>" + provider[0].Name + "</td>";
+
+                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+                htmlContent += "<td>" + location[0].Name + "</td>";
+
+                htmlContent += "<td>" + reminder.PickUpTime + "</td>";    
+              
+                sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
+                var pointPerson = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
+                htmlContent += "<td>" + pointPerson[0].FirstName + "</td>";
+                reminderEmailList += "'" + pointPerson[0].Email;
+                string drivers = "";
+                if (!reminder.HfedDriverIds.IsNullOrEmpty())
+                {
+                    string[] driversArray = reminder.HfedDriverIds.Split(',').ToArray();
+                    foreach (string driverId in driversArray)
+                    {
+                        HfedDriver driver = db.HfedDrivers.Find(Convert.ToInt32(driverId));
+                        if (drivers.Length != 0)
+                        {
+                            drivers += ", ";
+                        }
+
+                        if (driver != null)
+                        {
+                            drivers += driver.FirstName;
+                            reminderEmailList += "," + driver.Email;
+                        }                                                                  
+                    }                                                                        
+                }
+                else
+                {
+                    drivers = "&nbsp;&nbsp;" +
+                              "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                              "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                }
+
+                htmlContent += "<td>" + drivers + "</td></tr></table>";
+                htmlContent += "<table><tr><td>Info:</td></tr>";
+
+                htmlContent += "<tr><td>Point Person:</td>";
+                htmlContent += "<td>" + pointPerson[0].FirstName + "&nbsp;" + pointPerson[0].LastName + "</td>";
+                htmlContent += "<td>" + pointPerson[0].Phone + "</td><td>" + pointPerson[0].Email + "</td></tr></table>";
+
+                htmlContent += "<table><tr><td>Note:</td>";
+                htmlContent += "<td>" + reminder .ScheduleNote + "</td></tr></table>";
+        
+                htmlContent += "<br /><br /><p>";
+                string[] emailList = reminderEmailList.Split(',').ToArray();
+                foreach (string emailAddress in emailList)
+                {
+                    if (!emailAddress.IsNullOrEmpty() && !htmlContent.IsNullOrEmpty())
+                    {
+                        EmailDriver(emailAddress, htmlContent);
+                    }
+
+                    htmlContent = "";
+                }
+            }
+            return RedirectToAction("Index");
+        }
 
         public ActionResult CreateExcel()
         {

@@ -130,12 +130,17 @@
 <table>
     <tr>
         <td>
-            @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailAsk")
+            @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailAsk") 
         </td>
     </tr>
     <tr>
         <td>
             @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailShow")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.ActionLink("Email 2-day Reminder to All Scheduled Drivers & Staff for", "EmailReminders") @DateTime.Today.AddDays(2).ToLongDateString()
         </td>
     </tr>
 </table>
