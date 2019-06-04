@@ -126,21 +126,22 @@
             @Html.ActionLink("Create Excel File", "CreateExcel")                                  
         </td>
     </tr>
-</table>
-<table>
+    <td>
+        @Html.ActionLink("Email Staff 2 Weeks Before Month - Request Schedules", "EmailStaffAsk")
+    </td>
     <tr>
         <td>
-            @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailAsk") 
+            @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailDriversAsk")
         </td>
     </tr>
     <tr>
         <td>
-            @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailShow")
+            @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailDriversShow")
         </td>
     </tr>
     <tr>
         <td>
-            @Html.ActionLink("Email 2-day Reminder to All Scheduled Drivers & Staff for", "EmailReminders") @DateTime.Today.AddDays(2).ToLongDateString()
+            @Html.ActionLink("Email 2-day Reminder to All Scheduled Drivers & Staff for", "EmailReminder") @DateTime.Today.AddDays(2).ToLongDateString()
         </td>
     </tr>
 </table>

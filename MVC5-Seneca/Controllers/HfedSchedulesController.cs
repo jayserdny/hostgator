@@ -9,6 +9,7 @@ using System.IO;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -320,18 +321,30 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", "HfedHome");
         }
 
-        public ActionResult EmailAsk()
+        public ActionResult EmailStaffAsk()
         {
-            Email(false);  // No drivers
+            EmailStaff();  
             return RedirectToAction("Index");
         }
 
-        public ActionResult EmailShow()
+        public ActionResult EmailDriversAsk()
         {
-            Email(true);  // Show drivers
+            EmailDrivers(false);  // No drivers
             return RedirectToAction("Index");
         }
-        private void Email(Boolean withDrivers)    // Ask drivers for availability / show with drivers
+
+        public ActionResult EmailDriversShow()
+        {
+            EmailDrivers(true);  // Show drivers
+            return RedirectToAction("Index");
+        }
+        public ActionResult EmailReminder()
+        {
+            EmailReminders() ;  
+            return RedirectToAction("Index");
+        }
+
+        private void EmailDrivers(Boolean withDrivers)    // Ask drivers for availability / show with drivers
         {
             var htmlContent = "<p>Greetings Team!</p>";
             if (withDrivers)
@@ -414,29 +427,36 @@ namespace MVC5_Seneca.Controllers
                 string addr = driver.Email;
                 if (!addr.IsNullOrEmpty())
                 {
-                    EmailDriver(driver.Email, htmlContent);
+                    Email(driver.Email, htmlContent);
                 }
             }
         }
 
-        private async void EmailDriver(string address, string htmlContent)
+        private async void Email(string address, string htmlContent)
         {   
             var apiKey = Properties.Settings.Default.HFEDSendGridClient;
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
-            {
-                From = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "HFED Coordinator"),
-                Subject = "Healthy Food Every Day -  Schedule",
-                PlainTextContent = "HFED Email",
-                HtmlContent = htmlContent
-            };
+            var msg = new SendGridMessage();
+            msg.SetFrom("Admin@SenecaHeightsEducationProgram.org", "HFED Coordinator");
             msg.SetSubject("Healthy Food Every Day -  Schedule");  
             msg.AddContent(MimeType.Html, htmlContent);
             msg.AddTo(new EmailAddress(address, "HFED Volunteer Driver"));
             var unused = await client.SendEmailAsync(msg);
         }
 
-        public ActionResult EmailReminders()
+        public void EmailStaff()    // Email MCCH teams (staff) to populate next month's schedule
+        {
+            var htmlContent = "<p>Greetings MCCH HFED Team!</p><br />";
+            htmlContent += "<p>Please send your food delivery requests to the HFED Coordinator ";
+            htmlContent += "for next month</p> ";
+            List<HfedStaff> staffList = db.HfedStaffs.ToList();
+            foreach (HfedStaff staff in staffList)
+            {
+                Email(staff.Email, htmlContent);
+            }
+        }
+
+        public void EmailReminders()
         {   
             DateTime reminderDate = DateTime.Today.AddDays(2);
             string reminderEmailList = "";
@@ -467,7 +487,7 @@ namespace MVC5_Seneca.Controllers
                 sqlString = "SELECT * FROM HfedStaff WHERE Id = " + schedule[0].PointPerson_Id;
                 var pointPerson = db.Database.SqlQuery<HfedStaff>(sqlString).ToList();
                 htmlContent += "<td>" + pointPerson[0].FirstName + "</td>";
-                reminderEmailList += "'" + pointPerson[0].Email;
+                reminderEmailList += "," + pointPerson[0].Email;
                 string drivers = "";
                 if (!reminder.HfedDriverIds.IsNullOrEmpty())
                 {
@@ -480,7 +500,7 @@ namespace MVC5_Seneca.Controllers
                             drivers += ", ";
                         }
 
-                        if (driver != null)
+                        if (driver?.Email != null)
                         {
                             drivers += driver.FirstName;
                             reminderEmailList += "," + driver.Email;
@@ -509,14 +529,14 @@ namespace MVC5_Seneca.Controllers
                 foreach (string emailAddress in emailList)
                 {
                     if (!emailAddress.IsNullOrEmpty() && !htmlContent.IsNullOrEmpty())
-                    {
-                        EmailDriver(emailAddress, htmlContent);
+                    {                                                
+                        Email(emailAddress, htmlContent);
                     }
 
                     htmlContent = "";
                 }
             }
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index", "HfedSchedules");
         }
 
         public ActionResult CreateExcel()
