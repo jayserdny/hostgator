@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -38,6 +39,7 @@ namespace MVC5_Seneca.Controllers
         }
 
         // GET: AssociateTutors/Details/5
+        [SuppressMessage("ReSharper", "Mvc.ViewNotResolved")]
         public ActionResult Details(int? id)
         {
             if (id == null)

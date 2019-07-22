@@ -404,6 +404,7 @@ namespace MVC5_Seneca.Controllers
                     await client.SendEmailAsync(msg).ConfigureAwait(false);
                 }                                                 
             }
+            // ReSharper disable once Mvc.ActionNotResolved
             return RedirectToAction("Index");
         }
 
@@ -495,6 +496,8 @@ namespace MVC5_Seneca.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                // ReSharper disable once Mvc.ActionNotResolved
+                // ReSharper disable once Mvc.ControllerNotResolved
                 return RedirectToAction("Index", "Manage");
             }
 

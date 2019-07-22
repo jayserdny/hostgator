@@ -13,6 +13,8 @@ namespace MVC5_Seneca.Controllers
             // return to login page after password update:
             Session.Abandon();
             Session.RemoveAll();    
+            // ReSharper disable once Mvc.ControllerNotResolved
+            // ReSharper disable once Mvc.ActionNotResolved
             return RedirectToAction("Index", "Login");
         }
         
@@ -44,6 +46,8 @@ namespace MVC5_Seneca.Controllers
                 }
                 if (Session["userId"] == null)
                 {
+                    // ReSharper disable once Mvc.ActionNotResolved
+                    // ReSharper disable once Mvc.ControllerNotResolved
                     return RedirectToAction("Index", "Login");
                 }                                                               
                  
