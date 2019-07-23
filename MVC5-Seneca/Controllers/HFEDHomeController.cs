@@ -45,5 +45,10 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "HfedSchedules");
         }
+
+        public ActionResult UpdateMyProfile()
+        {
+            return RedirectToAction("Edit", "HfedUpdateMyProfile");
+        }
     }
 }

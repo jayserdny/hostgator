@@ -1,4 +1,5 @@
-﻿@model MVC5_Seneca.Models.LoginViewModel
+﻿@using DocumentFormat.OpenXml.Bibliography
+@model MVC5_Seneca.Models.LoginViewModel
 @{        
     Layout = null;
 }
@@ -24,7 +25,15 @@
         <hr />
         <label class="field-validation-error">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</label>
 
-        <p style="text-decoration:underline"><strong>Seneca Heights Education Program</strong></p>
+        <table>
+            <tr>
+                <td style="text-decoration:underline"><strong>Seneca Heights Education Program /</strong></td>
+            </tr>
+            <tr>
+                <td style="text-decoration:underline"><strong>&nbsp;&nbsp;Healthy Food Every Day Program</strong></td>
+            </tr>
+        </table>
+
         <p>@Html.ActionLink("Register", "Register")</p>
         <div class="form-group">
             @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })

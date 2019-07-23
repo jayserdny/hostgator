@@ -435,6 +435,7 @@
     <Compile Include="Controllers\HfedProvidersController.cs" />
     <Compile Include="Controllers\HfedSchedulesController.cs" />
     <Compile Include="Controllers\HfedStaffsController.cs" />
+    <Compile Include="Controllers\HfedUpdateMyProfileController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
@@ -1186,6 +1187,7 @@
     <Content Include="Views\HfedSchedules\Delete.cshtml" />
     <Content Include="Views\HfedSchedules\Edit.cshtml" />
     <Content Include="Views\HfedSchedules\Index.cshtml" />
+    <Content Include="Views\HfedUpdateMyProfile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

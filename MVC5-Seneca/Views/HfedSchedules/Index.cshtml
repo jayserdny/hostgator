@@ -22,18 +22,18 @@
 <body>
 <h3>
     HFED Delivery Schedule
-</h3>
-<p>
-    @Html.ActionLink("Create New Delivery Schedule", "Create")
-</p>
+</h3> 
 <table class="table">
     <tr>
         <td><strong>Starting Date </strong></td>
-        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new {id = "StartDate", style = "width: 75px;"}) (Click to change)</td>
+        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new { id = "StartDate", style = "width: 75px;" }) (Click to change)</td>
         <td><strong>  Ending Date </strong></td>
-        <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(), new {id = "EndDate", style = "width: 75px;"}) (Click to change)</td>
+        <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(), new { id = "EndDate", style = "width: 75px;" }) (Click to change)</td>
     </tr>
 </table>
+<p>
+    @Html.ActionLink("Create New Delivery Schedule", "Create")
+</p>
 <table>
     <tr>
         <th>

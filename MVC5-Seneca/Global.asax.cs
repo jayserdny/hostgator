@@ -1,6 +1,4 @@
-﻿using MVC5_Seneca.DataAccessLayer;
-using System;
-using System.Configuration;
+﻿using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -20,7 +18,7 @@ namespace MVC5_Seneca
 
         protected void Session_Start(Object sender, EventArgs e)
         {
-            DateTime bdt = DateTime.Today.AddDays(-(int) DateTime.Today.DayOfWeek);  // Beginning o Week
+            DateTime bdt = DateTime.Today.AddDays(-(int) DateTime.Today.DayOfWeek);  // Beginning of Week
             string sdt = bdt.ToString("MM/dd/yyyy");
             HttpContext.Current.Session.Add("StartDate", sdt);
             string edt = bdt.AddDays(7).ToString("MM/dd/yyyy");

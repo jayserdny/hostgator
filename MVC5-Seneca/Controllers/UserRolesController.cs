@@ -48,7 +48,7 @@ namespace MVC5_Seneca.Controllers
         {
             AddEditUserRolesViewModel viewModel = new AddEditUserRolesViewModel();
 
-            var userRoles = (from r in _db.Roles select r).ToList();
+            var userRoles = (from r in _db.Roles.OrderBy(n => n.Name) select r).ToList();
             List<SelectListItem> rolesList = new List<SelectListItem>();
             foreach (var role in userRoles)
             {
