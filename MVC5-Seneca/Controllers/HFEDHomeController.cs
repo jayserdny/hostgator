@@ -50,5 +50,10 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Edit", "HfedUpdateMyProfile");
         }
+
+        public ActionResult DriverSignUp()
+        {
+            return RedirectToAction("DriverSignUp", "HfedSchedules");
+        }
     }
 }

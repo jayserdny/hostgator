@@ -1188,6 +1188,7 @@
     <Content Include="Views\HfedSchedules\Edit.cshtml" />
     <Content Include="Views\HfedSchedules\Index.cshtml" />
     <Content Include="Views\HfedUpdateMyProfile\Edit.cshtml" />
+    <Content Include="Views\HfedSchedules\DriverSignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

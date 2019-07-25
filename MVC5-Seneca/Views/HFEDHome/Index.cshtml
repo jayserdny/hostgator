@@ -40,7 +40,8 @@
 @if (User.IsInRole("Administrator") || User.IsInRole("HfedDriver"))
 {
 <div>
-    <strong>Driver Menu</strong><br />
+    <strong>Driver Menu</strong><br />  
+    <a href="@Url.Action("DriverSignUp", "HfedSchedules")">Sign-Up Schedule</a><br />
     <a href="@Url.Action("UpdateMyProfile", "HfedHome")">Update My Profile</a><br />
 </div>
 }

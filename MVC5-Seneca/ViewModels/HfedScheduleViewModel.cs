@@ -10,6 +10,11 @@ namespace MVC5_Seneca.ViewModels
 {
     public class HfedScheduleViewModel
     {
+        //public HfedScheduleViewModel(int pointPersonId)
+        //{
+        //    PointPerson_Id = pointPersonId;
+        //}
+
         public int Id { get; set; }
 
         [DisplayName("Date")]
@@ -17,7 +22,7 @@ namespace MVC5_Seneca.ViewModels
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Date { get; set; }
 
-        [DisplayName("Pick Up Time")]
+        [DisplayName("Time")]
         public string PickUpTime { get; set; }
 
         [Required]
@@ -61,6 +66,7 @@ namespace MVC5_Seneca.ViewModels
         public List<HfedDriver> HfedDrivers { get; set; }
         public List<HfedStaff> HfedStaffs { get; set; }
         public List<HfedClient> HfedClients { get; set; }
+         public List<HfedSchedule> HfedSchedules { get; set; }
         public string ErrorMessage { get; set; }
     }
 }

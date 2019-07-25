@@ -9,7 +9,6 @@ using System.IO;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -199,7 +198,7 @@ namespace MVC5_Seneca.Controllers
                 return HttpNotFound();
             }
 
-            HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel
+            HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel( )
             {
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
@@ -599,6 +598,52 @@ namespace MVC5_Seneca.Controllers
             ms.Position = 0;
             return new FileStreamResult(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {FileDownloadName = "DeliverySchedule.xlsx"};
+        }
+
+        public ActionResult DriverSignUp()
+        {
+            DateTime start = Convert.ToDateTime(Session["StartDate"]);
+            DateTime end = Convert.ToDateTime(Session["EndDate"]);
+            var scheduleList = db.HfedSchedules.Where
+                (s => s.Date >= start && s.Date <= end).OrderBy(s => s.Date).ToList();
+            HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel();
+            hfedSchedule.HfedSchedules = new List<HfedSchedule>();
+            foreach (HfedSchedule sched in scheduleList)
+            {                                                                                                                          
+                string strSql = "SELECT * FROM HfedSchedule WHERE Id = " + sched.Id;
+                var schedData = db.Database.SqlQuery<HfedScheduleViewModel >(strSql).FirstOrDefault();
+
+                if (schedData != null)
+                {
+                    strSql = "SELECT * FROM HfedLocation WHERE Id = " + schedData.Location_Id;
+                    sched.Location = db.Database.SqlQuery<HfedLocation>(strSql).FirstOrDefault();
+
+                    strSql = "SELECT * FROM HfedStaff WHERE Id = " + schedData.PointPerson_Id;
+                    sched.PointPerson = db.Database.SqlQuery<HfedStaff>(strSql).FirstOrDefault();
+
+                    strSql = "SELECT * FROM HfedProvider WHERE Id = " + schedData.Provider_Id;
+                    sched.Provider = db.Database.SqlQuery<HfedProvider>(strSql).FirstOrDefault();
+
+                    sched.HfedDriversArray = schedData.HfedDriverIds.Split(',').ToArray();
+                    sched.HfedClientsArray = schedData.HfedClientIds.Split(',').ToArray();
+                }
+                sched.HfedDrivers = db.HfedDrivers.OrderBy(d => d.FirstName).ToList();
+
+                     // Convert viewmodel to hfedschedule?
+                     var hfedSched = new HfedSchedule();
+                     hfedSched.Id = sched.Id;
+                     hfedSched.Date = sched.Date;
+                     hfedSched.PickUpTime = sched.PickUpTime;
+                     hfedSched.Location = sched.Location;
+                     hfedSched.PointPerson = sched.PointPerson;
+                     hfedSched.Provider = sched.Provider;
+                     hfedSched.HfedDriversArray = sched.HfedDriversArray;
+                     hfedSched.HfedClientsArray = sched.HfedClientsArray;
+                     hfedSched.SignUp = false;
+                hfedSchedule.HfedSchedules.Add(hfedSched);
+            }  
+
+            return View(hfedSchedule);
         }
 
         protected override void Dispose(bool disposing)

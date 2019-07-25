@@ -198,7 +198,7 @@ namespace MVC5_Seneca.Controllers
                     }
                     catch (Exception ex)
                     {
-                        //var x = ex;
+                        var x = ex;
                         existingAssociateTutor = null;
                     }
 

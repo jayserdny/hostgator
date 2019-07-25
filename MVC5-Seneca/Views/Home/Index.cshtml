@@ -58,9 +58,8 @@
         <br />
     </div>
     }
-
+ 
     <div>
-
         Tutor Menu<br />
         <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />
         <a href="@Url.Action("Index", "TeachingTips")">Teaching Tips</a><br />
@@ -82,6 +81,11 @@
 
         @if (User.IsInRole("Staff"))
         {
+            if (User.IsInRole("HfedStaff"))
+            {
+                <a href="@Url.Action("Hfed", "Home")">Healthy Food Every Day</a><br />
+                <br \>
+            }   
             <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
             <br />
             <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
