@@ -1,5 +1,6 @@
 ﻿using MVC5_Seneca.EntityModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,11 +11,6 @@ namespace MVC5_Seneca.ViewModels
 {
     public class HfedScheduleViewModel
     {
-        //public HfedScheduleViewModel(int pointPersonId)
-        //{
-        //    PointPerson_Id = pointPersonId;
-        //}
-
         public int Id { get; set; }
 
         [DisplayName("Date")]
@@ -68,5 +64,5 @@ namespace MVC5_Seneca.ViewModels
         public List<HfedClient> HfedClients { get; set; }
         public List<HfedSchedule> HfedSchedules { get; set; }
         public string ErrorMessage { get; set; }
-    }
+     }
 }

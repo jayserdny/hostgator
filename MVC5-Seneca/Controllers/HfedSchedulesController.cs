@@ -651,7 +651,14 @@ namespace MVC5_Seneca.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DriverSignUp([Bind(Include = "HfedSchedules")] HfedScheduleViewModel schedules)
-        {                                                
+        {
+            for (int i = 0; i < schedules.HfedSchedules.Count; i++)
+            {
+                if (schedules .HfedSchedules [i].SignUp == true)
+                {
+                    var x = "";
+                }
+            }
             return RedirectToAction("DriverSignUp");
         }
         protected override void Dispose(bool disposing)

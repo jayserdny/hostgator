@@ -44,38 +44,34 @@
                 <th></th>
             </tr>
 
-            @foreach (var item in Model.HfedSchedules)
+            @for (int i = 0; i < Model.HfedSchedules.Count; i++)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Date)
+                        @Html.DisplayFor(m => Model.HfedSchedules[i].Date)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PickUpTime)
+                        @Html.DisplayFor(m => Model.HfedSchedules[i].PickUpTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Provider.Name)
+                        @Html.DisplayFor(m => Model.HfedSchedules[i].Provider.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Location.Name)
+                        @Html.DisplayFor(m => Model.HfedSchedules[i].Location.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PointPerson.FullName)
+                        @Html.DisplayFor(m => Model.HfedSchedules[i].PointPerson.FullName)
                     </td>
                     <td>
-                        @if (item.HfedDriversArray[0] == "")
+                        @if (Model.HfedSchedules[i].HfedDriversArray[0] == "")
                         {
-                            @Html.EditorFor(modelitem => item.SignUp)
+                            @Html.EditorFor(m => Model.HfedSchedules[i].SignUp)
                         }
                     </td>
                 </tr>
             }
         </table>
-        if (Model.HfedSchedules.Count != 0)
-        {
-            @Html.DisplayNameFor(model => model.Date)
-        }
-   
+
         <br />
         <div class="form-group">
             <div class="col-md-10">
