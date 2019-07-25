@@ -11,70 +11,85 @@
     <title>HfedDriverSignUp</title>
 </head>
 <body>
-    <div>
-        <h2>Healthy Food Every Day Driver SignUp</h2>
-    </div>   
-<table class="table">
-    <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>@User.Identity.Name</th>
-    </tr>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PickUpTime)
-        </th>
-        <th>Pickup Location</th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PointPerson)
-        </th>
-        <th>&nbsp;Sign Up</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.HfedSchedules)
+    @using (Html.BeginForm())
     {
+        @Html.AntiForgeryToken()
+        <div>
+            <h2>Healthy Food Every Day Driver SignUp</h2>
+        </div>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>@User.Identity.Name</th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PickUpTime)
+                </th>
+                <th>Pickup Location</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PointPerson)
+                </th>
+                <th>&nbsp;Sign Up</th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.HfedSchedules)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PickUpTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Provider.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PointPerson.FullName)
+                    </td>
+                    <td>
+                        @if (item.HfedDriversArray[0] == "")
+                        {
+                            @Html.EditorFor(modelitem => item.SignUp)
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        if (Model.HfedSchedules.Count != 0)
+        {
+            @Html.DisplayNameFor(model => model.Date)
+        }
+   
+        <br />
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="SUBMIT" class="btn" />
+            </div>
+        </div>
+    }
+    <br />
+    <table>
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PickUpTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provider.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PointPerson.FullName)
-            </td>
-            <td>
-                @if (item.HfedDriversArray[0] == "")
-                {
-                    @Html.EditorFor(modelitem => item.SignUp)
-                }
+                @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new { })
             </td>
         </tr>
-    }
-</table>
-<br />
-<table>
-    <tr>
-        <td>
-            @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new { })
-        </td>
-    </tr>
-</table>
+    </table>
 </body>
 </html>

@@ -600,6 +600,7 @@ namespace MVC5_Seneca.Controllers
                 {FileDownloadName = "DeliverySchedule.xlsx"};
         }
 
+        // GET: DriverSignUp
         public ActionResult DriverSignUp()
         {
             DateTime start = Convert.ToDateTime(Session["StartDate"]);
@@ -646,6 +647,13 @@ namespace MVC5_Seneca.Controllers
             return View(hfedSchedule);
         }
 
+        // POST: HfedSchedules/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DriverSignUp([Bind(Include = "HfedSchedules")] HfedScheduleViewModel schedules)
+        {                                                
+            return RedirectToAction("DriverSignUp");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
