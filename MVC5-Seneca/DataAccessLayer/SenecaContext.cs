@@ -47,9 +47,7 @@ namespace MVC5_Seneca.DataAccessLayer
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedClient> HfedClients { get; set; }
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedLocation> HfedLocations { get; set; }
 
-        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedStaff> HfedStaffs { get; set; }
-
-        public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedDriver> HfedDrivers { get; set; }
+ public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedDriver> HfedDrivers { get; set; }
 
         public System.Data.Entity.DbSet<MVC5_Seneca.EntityModels.HfedProvider> HfedProviders { get; set; }
 

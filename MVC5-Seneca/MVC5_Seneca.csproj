@@ -434,7 +434,6 @@
     <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\HfedProvidersController.cs" />
     <Compile Include="Controllers\HfedSchedulesController.cs" />
-    <Compile Include="Controllers\HfedStaffsController.cs" />
     <Compile Include="Controllers\HfedUpdateMyProfileController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
@@ -458,7 +457,6 @@
     <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\HfedProvider.cs" />
     <Compile Include="EntityModels\HfedSchedule.cs" />
-    <Compile Include="EntityModels\HfedStaff.cs" />
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -551,6 +549,10 @@
     <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.cs" />
     <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.Designer.cs">
       <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907261734025_ChangeHfedStaffAndDriversToUsers.cs" />
+    <Compile Include="Migrations\201907261734025_ChangeHfedStaffAndDriversToUsers.Designer.cs">
+      <DependentUpon>201907261734025_ChangeHfedStaffAndDriversToUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1171,10 +1173,6 @@
     <Content Include="Views\UpdateMySchedule\Create.cshtml" />
     <Content Include="Views\UpdateMySchedule\Delete.cshtml" />
     <Content Include="Views\UpdateMySchedule\Edit.cshtml" />
-    <Content Include="Views\HfedStaffs\Create.cshtml" />
-    <Content Include="Views\HfedStaffs\Delete.cshtml" />
-    <Content Include="Views\HfedStaffs\Edit.cshtml" />
-    <Content Include="Views\HfedStaffs\Index.cshtml" />
     <Content Include="Views\HfedDrivers\Create.cshtml" />
     <Content Include="Views\HfedDrivers\Delete.cshtml" />
     <Content Include="Views\HfedDrivers\Edit.cshtml" />
@@ -1279,6 +1277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.resx">
       <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907261734025_ChangeHfedStaffAndDriversToUsers.resx">
+      <DependentUpon>201907261734025_ChangeHfedStaffAndDriversToUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

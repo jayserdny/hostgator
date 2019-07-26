@@ -30,7 +30,7 @@ namespace MVC5_Seneca.ViewModels
         public HfedLocation Location { get; set; }
 
         [DisplayName("Point Person")]
-        public HfedStaff PointPerson { get; set; }
+        public ApplicationUser PointPerson { get; set; }
 
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
@@ -51,7 +51,7 @@ namespace MVC5_Seneca.ViewModels
         public float? VolunteerHours { get; set; }
 
         public int Location_Id { get; set; }
-        public int PointPerson_Id { get; set; }
+        public Single PointPerson_Id { get; set; }
         public int Provider_Id { get; set; }
         public string[] HfedDriversArray { get; set; }
         public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }
@@ -59,8 +59,8 @@ namespace MVC5_Seneca.ViewModels
         public IEnumerable<SelectListItem> SelectedHfedClients { get; set; }
         public List<HfedLocation> HfedLocations { get; set; }
         public List<HfedProvider> HfedProviders { get; set; }
-        public List<HfedDriver> HfedDrivers { get; set; }
-        public List<HfedStaff> HfedStaffs { get; set; }
+        public List<ApplicationUser> HfedDrivers { get; set; }
+        public List<ApplicationUser> HfedStaffs { get; set; }
         public List<HfedClient> HfedClients { get; set; }
         public List<HfedSchedule> HfedSchedules { get; set; }
         public string ErrorMessage { get; set; }

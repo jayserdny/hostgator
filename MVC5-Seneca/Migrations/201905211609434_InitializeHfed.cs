@@ -35,20 +35,6 @@ namespace MVC5_Seneca.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.HfedDriver",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(),
-                        LastName = c.String(),
-                        Phone = c.String(),
-                        Fax = c.String(),
-                        Email = c.String(),
-                        DriverNote = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.HfedProvider",
                 c => new
                     {
@@ -78,33 +64,15 @@ namespace MVC5_Seneca.Migrations
                         HfedDriverIds = c.String(),
                         HfedClientIds = c.String(),
                         Location_Id = c.Int(nullable: false),
-                        PointPerson_Id = c.Int(),
+                        PointPerson_Id = c.Single( ),
                         Provider_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.HfedLocation", t => t.Location_Id, cascadeDelete: true)
-                .ForeignKey("dbo.HfedStaff", t => t.PointPerson_Id)
                 .ForeignKey("dbo.HfedProvider", t => t.Provider_Id, cascadeDelete: true)
                 .Index(t => t.Location_Id)
                 .Index(t => t.PointPerson_Id)
                 .Index(t => t.Provider_Id);
-            
-            CreateTable(
-                "dbo.HfedStaff",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(),
-                        LastName = c.String(),
-                        Phone = c.String(),
-                        Email = c.String(),
-                        StaffNote = c.String(),
-                        Location_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.HfedLocation", t => t.Location_Id, cascadeDelete: true)
-                .Index(t => t.Location_Id);
-            
         }
         
         public override void Down()
