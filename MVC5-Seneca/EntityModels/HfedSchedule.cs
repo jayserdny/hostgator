@@ -28,7 +28,7 @@ namespace MVC5_Seneca.EntityModels
         public HfedLocation Location { get; set; }
 
         [DisplayName("Point Person")]
-        public HfedStaff PointPerson { get; set; }
+        public ApplicationUser PointPerson { get; set; }
             
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
@@ -46,7 +46,7 @@ namespace MVC5_Seneca.EntityModels
         public string HfedClientIds { get; set; }  // IDs fFor multi-select Clients & DropDownList 
 
         [DisplayName("Volunteer Hours")]
-        public int? VolunteerHours { get; set; }
+        public float? VolunteerHours { get; set; }
               
         [NotMapped] public string[] HfedDriversArray { get; set; }              
         [NotMapped] public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }
@@ -54,8 +54,8 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public IEnumerable<SelectListItem> SelectedHfedClients { get; set; }
         [NotMapped] public List<HfedLocation> HfedLocations { get; set; }           
         [NotMapped] public List<HfedProvider> HfedProviders { get; set; }     
-        [NotMapped] public List<HfedDriver> HfedDrivers { get; set; }
-        [NotMapped] public List<HfedStaff> HfedStaffs { get; set; }
+        [NotMapped] public List<ApplicationUser> HfedDrivers { get; set; }
+        [NotMapped] public List<ApplicationUser> HfedStaffs { get; set; }
         [NotMapped] public List<HfedClient> HfedClients { get; set; }
         [NotMapped] public Boolean SignUp { get; set; } // for signup checkbox
     }

@@ -44,10 +44,11 @@ namespace MVC5_Seneca.Controllers
                     user.Email = viewModel.Email;
 
                     _db.SaveChanges();
+       
                     return RedirectToAction("Index", "Home");
                 }
-            }   
-            return View(viewModel);
+            }
+            return RedirectToAction("Index", "Home");
         }
                                             
         public ActionResult ReturnToDashboard()

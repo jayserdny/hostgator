@@ -47,8 +47,8 @@ namespace MVC5_Seneca.Controllers
         }
 
         public ActionResult UpdateMyProfile()
-        {
-            return RedirectToAction("Edit", "HfedUpdateMyProfile");
+        {                                                    
+            return RedirectToAction("Edit", "UpdateMyProfile");
         }
 
         public ActionResult DriverSignUp()

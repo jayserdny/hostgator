@@ -22,7 +22,7 @@ namespace MVC5_Seneca
             string sdt = bdt.ToString("MM/dd/yyyy");
             HttpContext.Current.Session.Add("StartDate", sdt);
             string edt = bdt.AddDays(7).ToString("MM/dd/yyyy");
-            HttpContext.Current.Session.Add("EndDate", edt);
+            HttpContext.Current.Session.Add("EndDate", edt);                 
         }
 
         protected void Application_BeginRequest()
