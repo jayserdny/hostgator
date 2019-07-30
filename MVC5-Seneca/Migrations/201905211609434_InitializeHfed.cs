@@ -64,7 +64,7 @@ namespace MVC5_Seneca.Migrations
                         HfedDriverIds = c.String(),
                         HfedClientIds = c.String(),
                         Location_Id = c.Int(nullable: false),
-                        PointPerson_Id = c.Single( ),
+                        PointPerson_Id = c.String(),
                         Provider_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)

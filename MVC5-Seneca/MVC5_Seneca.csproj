@@ -550,10 +550,6 @@
     <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.Designer.cs">
       <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907261734025_ChangeHfedStaffAndDriversToUsers.cs" />
-    <Compile Include="Migrations\201907261734025_ChangeHfedStaffAndDriversToUsers.Designer.cs">
-      <DependentUpon>201907261734025_ChangeHfedStaffAndDriversToUsers.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -619,6 +615,7 @@
     </Compile>
     <Compile Include="ViewModels\ContactsDisplayViewModel.cs" />
     <Compile Include="ViewModels\HfedScheduleViewModel.cs" />
+    <Compile Include="ViewModels\HfedUserRoles.cs" />
     <Compile Include="ViewModels\TeachingTipsViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1277,9 +1274,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.resx">
       <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907261734025_ChangeHfedStaffAndDriversToUsers.resx">
-      <DependentUpon>201907261734025_ChangeHfedStaffAndDriversToUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -5,11 +5,14 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.IO;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
 using ClosedXML.Excel;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -119,24 +122,50 @@ namespace MVC5_Seneca.Controllers
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
                 HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList(),
+                HfedDrivers =new List<ApplicationUser>( ),
+                HfedStaffs =new List<ApplicationUser>( ),
                 Request = true 
             };
             var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
             foreach (ApplicationUser user in allUsers)
             {
-                if (user.IsInRole("HfedDriver"))
+                if (UserIsInRole(user,"HfedDriver"))
                 {
                     newHfedSchedule.HfedDrivers.Add(user);
                 }
 
-                if (user.IsInRole("HfedStaff"))
+                if (UserIsInRole(user,"HfedStaff"))
                 {
                     newHfedSchedule.HfedStaffs.Add(user);
                 }
             }
             return View(newHfedSchedule);
         }
+                                                                                             
+        private Boolean UserIsInRole (ApplicationUser user, string roleName)
+        {   
+            var roleStore = new RoleStore<IdentityRole>(db);
+            var roleMngr = new RoleManager<IdentityRole>(roleStore);
+            var roles = roleMngr.Roles.ToList() ;
 
+            foreach (IdentityRole role in roles)
+            {
+                if (role.Name == roleName)
+                {                      
+                    using (var context = new SenecaContext())
+                    {
+                        string strSql = "SELECT RoleId FROM AspNetUserRoles WHERE ";
+                        strSql += "RoleId ='" + role.Id + "' AND UserId ='" + user.Id + "'";
+                        string result = context.Database.SqlQuery<string>(strSql).FirstOrDefault( );
+                        if(result != null )
+                        {
+                            return  true;
+                        }
+                    }                 
+                }  
+            }
+            return false;
+        }
         // POST: HfedSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -183,7 +212,7 @@ namespace MVC5_Seneca.Controllers
                     cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
                     cmdString += "'" + hfedSchedule.ScheduleNote + "','" + hfedSchedule.Request + "',";
                     cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
-                    cmdString += hfedSchedule.PointPerson.Id + "," + hfedSchedule.Provider.Id + ",";
+                    cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
                     cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
                     cmdString += "'" + hfedSchedule.HfedClientIds + "')";
 
@@ -285,7 +314,7 @@ namespace MVC5_Seneca.Controllers
                 cmdString += "Request='" + hfedSchedule.Request + "',";
                 cmdString += "Complete='" + hfedSchedule.Complete + "',";
                 cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
-                cmdString += "PointPerson_Id=" + hfedSchedule.PointPerson.Id + ",";
+                cmdString += "PointPerson_Id='" + hfedSchedule.PointPerson.Id + "',";
                 cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";  
                 cmdString += "HfedDriverIds='" + hfedSchedule .HfedDriverIds + "',";
                 cmdString += "HfedClientIds='" + hfedSchedule .HfedClientIds + "',";

@@ -29,7 +29,7 @@ namespace MVC5_Seneca.EntityModels
 
         [DisplayName("Point Person")]
         public ApplicationUser PointPerson { get; set; }
-            
+
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
 
@@ -58,5 +58,6 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public List<ApplicationUser> HfedStaffs { get; set; }
         [NotMapped] public List<HfedClient> HfedClients { get; set; }
         [NotMapped] public Boolean SignUp { get; set; } // for signup checkbox
+        //public ApplicationUser PointPerson { get; internal set; }
     }
 }

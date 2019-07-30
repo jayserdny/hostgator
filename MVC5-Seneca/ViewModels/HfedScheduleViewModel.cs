@@ -51,7 +51,7 @@ namespace MVC5_Seneca.ViewModels
         public float? VolunteerHours { get; set; }
 
         public int Location_Id { get; set; }
-        public Single PointPerson_Id { get; set; }
+        public string PointPerson_Id { get; set; }
         public int Provider_Id { get; set; }
         public string[] HfedDriversArray { get; set; }
         public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }

@@ -1,6 +1,5 @@
 namespace MVC5_Seneca.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class AddBoxWeightToHfedProvider : DbMigration
