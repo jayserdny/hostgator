@@ -70,7 +70,7 @@ namespace MVC5_Seneca.Controllers
                     {
                         if (!driverId.IsNullOrEmpty())
                         {                                                                                                 
-                            var x = db.HfedDrivers.Find(driverId);
+                            var x = db.Users.Find(driverId);
                             if (x != null)
                             {
                                 SelectListItem selListItem = new SelectListItem() {Value = driverId, Text = x.FullName};

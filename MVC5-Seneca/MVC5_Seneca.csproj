@@ -429,7 +429,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\HfedClientsController.cs" />
-    <Compile Include="Controllers\HfedDriversController.cs" />
     <Compile Include="Controllers\HfedHomeController.cs" />
     <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\HfedProvidersController.cs" />
@@ -453,7 +452,6 @@
     </Compile>
     <Compile Include="EntityModels\AssociateTutor.cs" />
     <Compile Include="EntityModels\HfedClient.cs" />
-    <Compile Include="EntityModels\HfedDriver.cs" />
     <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\HfedProvider.cs" />
     <Compile Include="EntityModels\HfedSchedule.cs" />
@@ -466,90 +464,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TutorSchedule.cs" />
-    <Compile Include="Migrations\201801191404409_Initialize.cs" />
-    <Compile Include="Migrations\201801191404409_Initialize.designer.cs">
-      <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
+    <Compile Include="Migrations\201907301706012_Reset.cs" />
+    <Compile Include="Migrations\201907301706012_Reset.Designer.cs">
+      <DependentUpon>201907301706012_Reset.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801261424525_AddActiveRole.cs" />
-    <Compile Include="Migrations\201801261424525_AddActiveRole.designer.cs">
-      <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802051920202_PrimaryTutor.cs" />
-    <Compile Include="Migrations\201802051920202_PrimaryTutor.designer.cs">
-      <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.cs" />
-    <Compile Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.designer.cs">
-      <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803021643099_AddTeachingTips.cs" />
-    <Compile Include="Migrations\201803021643099_AddTeachingTips.Designer.cs">
-      <DependentUpon>201803021643099_AddTeachingTips.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803021729066_RetryTipDocuments.cs" />
-    <Compile Include="Migrations\201803021729066_RetryTipDocuments.Designer.cs">
-      <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803022053202_RetryTipDocuments1.cs" />
-    <Compile Include="Migrations\201803022053202_RetryTipDocuments1.Designer.cs">
-      <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803041216495_RetryTipsDocuments2.cs" />
-    <Compile Include="Migrations\201803041216495_RetryTipsDocuments2.Designer.cs">
-      <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803080109595_Reinitialize.cs" />
-    <Compile Include="Migrations\201803080109595_Reinitialize.Designer.cs">
-      <DependentUpon>201803080109595_Reinitialize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803092210550_ChangeUserLocationToTitle.cs" />
-    <Compile Include="Migrations\201803092210550_ChangeUserLocationToTitle.Designer.cs">
-      <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803111658255_LoginTable.cs" />
-    <Compile Include="Migrations\201803111658255_LoginTable.Designer.cs">
-      <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803181735297_GradeLevelSpecialClass.cs" />
-    <Compile Include="Migrations\201803181735297_GradeLevelSpecialClass.Designer.cs">
-      <DependentUpon>201803181735297_GradeLevelSpecialClass.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803201857034_AllowNullableGradeLevel.cs" />
-    <Compile Include="Migrations\201803201857034_AllowNullableGradeLevel.Designer.cs">
-      <DependentUpon>201803201857034_AllowNullableGradeLevel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804021304333_AddStaffToParent.cs" />
-    <Compile Include="Migrations\201804021304333_AddStaffToParent.designer.cs">
-      <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804071819252_AddAssociateTutors.cs" />
-    <Compile Include="Migrations\201804071819252_AddAssociateTutors.Designer.cs">
-      <DependentUpon>201804071819252_AddAssociateTutors.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806121759192_AddCaseManagerUser.cs" />
-    <Compile Include="Migrations\201806121759192_AddCaseManagerUser.Designer.cs">
-      <DependentUpon>201806121759192_AddCaseManagerUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809142113562_AddTeacherToStudent.cs" />
-    <Compile Include="Migrations\201809142113562_AddTeacherToStudent.Designer.cs">
-      <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904172016327_AddTutorSchedule.cs" />
-    <Compile Include="Migrations\201904172016327_AddTutorSchedule.Designer.cs">
-      <DependentUpon>201904172016327_AddTutorSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905211609434_InitializeHfed.cs" />
-    <Compile Include="Migrations\201905211609434_InitializeHfed.Designer.cs">
-      <DependentUpon>201905211609434_InitializeHfed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905221555383_AddVolunteerHours.cs" />
-    <Compile Include="Migrations\201905221555383_AddVolunteerHours.Designer.cs">
-      <DependentUpon>201905221555383_AddVolunteerHours.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.cs" />
-    <Compile Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.Designer.cs">
-      <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -576,9 +495,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\UploadController.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\AppRole.cs">
@@ -1206,82 +1122,16 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801191404409_Initialize.resx">
-      <DependentUpon>201801191404409_Initialize.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801261424525_AddActiveRole.resx">
-      <DependentUpon>201801261424525_AddActiveRole.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802051920202_PrimaryTutor.resx">
-      <DependentUpon>201802051920202_PrimaryTutor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802281523339_AddTutorNoteUpdateAllowed.resx">
-      <DependentUpon>201802281523339_AddTutorNoteUpdateAllowed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803021643099_AddTeachingTips.resx">
-      <DependentUpon>201803021643099_AddTeachingTips.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803021729066_RetryTipDocuments.resx">
-      <DependentUpon>201803021729066_RetryTipDocuments.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803022053202_RetryTipDocuments1.resx">
-      <DependentUpon>201803022053202_RetryTipDocuments1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803041216495_RetryTipsDocuments2.resx">
-      <DependentUpon>201803041216495_RetryTipsDocuments2.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803080109595_Reinitialize.resx">
-      <DependentUpon>201803080109595_Reinitialize.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803092210550_ChangeUserLocationToTitle.resx">
-      <DependentUpon>201803092210550_ChangeUserLocationToTitle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803111658255_LoginTable.resx">
-      <DependentUpon>201803111658255_LoginTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803181735297_GradeLevelSpecialClass.resx">
-      <DependentUpon>201803181735297_GradeLevelSpecialClass.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803201857034_AllowNullableGradeLevel.resx">
-      <DependentUpon>201803201857034_AllowNullableGradeLevel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804021304333_AddStaffToParent.resx">
-      <DependentUpon>201804021304333_AddStaffToParent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804071819252_AddAssociateTutors.resx">
-      <DependentUpon>201804071819252_AddAssociateTutors.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806121759192_AddCaseManagerUser.resx">
-      <DependentUpon>201806121759192_AddCaseManagerUser.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809142113562_AddTeacherToStudent.resx">
-      <DependentUpon>201809142113562_AddTeacherToStudent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904172016327_AddTutorSchedule.resx">
-      <DependentUpon>201904172016327_AddTutorSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905211609434_InitializeHfed.resx">
-      <DependentUpon>201905211609434_InitializeHfed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905221555383_AddVolunteerHours.resx">
-      <DependentUpon>201905221555383_AddVolunteerHours.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905251914557_AddBoxWeightToHfedProvider.resx">
-      <DependentUpon>201905251914557_AddBoxWeightToHfedProvider.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.9.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201907301706012_Reset.resx">
+      <DependentUpon>201907301706012_Reset.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
