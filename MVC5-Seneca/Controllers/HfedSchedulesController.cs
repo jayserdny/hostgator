@@ -55,9 +55,9 @@ namespace MVC5_Seneca.Controllers
 
                 sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
                 var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
-                hfedSchedule.Location = location[0];                                        
+                hfedSchedule.Location = location[0];
 
-                hfedSchedule.PointPerson = db.Users.Find(hfedSchedule.PointPerson.Id);
+                hfedSchedule.PointPerson = db.Users.Find(schedule[0].PointPerson_Id);
 
                 sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
                 var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
@@ -247,18 +247,20 @@ namespace MVC5_Seneca.Controllers
                 Complete = scheduletoEdit.Complete,
                 HfedDriverIds = scheduletoEdit.HfedDriverIds,
                 HfedClientIds = scheduletoEdit.HfedClientIds,
-                VolunteerHours = scheduletoEdit.VolunteerHours 
+                VolunteerHours = scheduletoEdit.VolunteerHours,
+                HfedDrivers = new List<ApplicationUser>(),
+                HfedStaffs = new List<ApplicationUser>()
             };
 
             var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
             foreach (ApplicationUser user in allUsers)
             {
-                if (user.IsInRole("HfedStaff"))
+                if (UserIsInRole( user,"HfedStaff"))
                 {
                     hfedSchedule.HfedStaffs.Add(user);
                 }
 
-                if (user.IsInRole("HfedDriver"))
+                if (UserIsInRole(user,"HfedDriver"))
                 {
                     hfedSchedule.HfedDrivers.Add(user);
                 }

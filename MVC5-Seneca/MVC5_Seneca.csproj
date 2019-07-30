@@ -464,9 +464,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TutorSchedule.cs" />
-    <Compile Include="Migrations\201907301706012_Reset.cs" />
-    <Compile Include="Migrations\201907301706012_Reset.Designer.cs">
-      <DependentUpon>201907301706012_Reset.cs</DependentUpon>
+    <Compile Include="Migrations\201907301734584_Reset.cs" />
+    <Compile Include="Migrations\201907301734584_Reset.Designer.cs">
+      <DependentUpon>201907301734584_Reset.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Settings.cs">
@@ -1086,10 +1086,6 @@
     <Content Include="Views\UpdateMySchedule\Create.cshtml" />
     <Content Include="Views\UpdateMySchedule\Delete.cshtml" />
     <Content Include="Views\UpdateMySchedule\Edit.cshtml" />
-    <Content Include="Views\HfedDrivers\Create.cshtml" />
-    <Content Include="Views\HfedDrivers\Delete.cshtml" />
-    <Content Include="Views\HfedDrivers\Edit.cshtml" />
-    <Content Include="Views\HfedDrivers\Index.cshtml" />
     <Content Include="Views\HfedProviders\Create.cshtml" />
     <Content Include="Views\HfedProviders\Delete.cshtml" />
     <Content Include="Views\HfedProviders\Edit.cshtml" />
@@ -1129,8 +1125,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907301706012_Reset.resx">
-      <DependentUpon>201907301706012_Reset.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907301734584_Reset.resx">
+      <DependentUpon>201907301734584_Reset.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
