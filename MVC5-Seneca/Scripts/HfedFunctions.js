@@ -4,7 +4,7 @@
         url: '/HfedSchedules/Index',
         data: { startDate: startDate },
         type: "POST",
-        success: function (data) {
+        success: function (data) { 
             $("body").html(data);  // to refresh the page
             //alert('Ajax hit'); 
         },

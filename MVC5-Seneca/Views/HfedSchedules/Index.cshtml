@@ -165,8 +165,9 @@
     });
 </script>
 <script type="text/javascript">
-    $("#StartDate").change(function () {                                           
+    $("#StartDate").change(function () {
         UpdateHfedStartDate($('#StartDate').val());
+        sessionStorage.setItem("StartDate", $('#StartDate').val());
     });
     //alert("Test1");
 </script>
@@ -178,6 +179,7 @@
 <script type="text/javascript">
     $("#EndDate").change(function () {
         UpdateHfedEndDate($('#EndDate').val());
+        sessionStorage.setItem("StartDate", $('#EndDate').val());
     });
     //alert("Test2");
 </script>

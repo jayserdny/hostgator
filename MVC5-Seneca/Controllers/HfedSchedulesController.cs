@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
@@ -116,7 +117,7 @@ namespace MVC5_Seneca.Controllers
         {   
             HfedSchedule newHfedSchedule = new HfedSchedule() 
             {
-                Date =DateTime.Today,
+                Date =Convert.ToDateTime(Session["StartDate"]),
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
                 HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList(),
@@ -428,7 +429,7 @@ namespace MVC5_Seneca.Controllers
 
                 htmlContent += "<td>" + request.PickUpTime + "</td>";
 
-                ApplicationUser pointPerson = db.Users.Find(request.PointPerson.Id); 
+                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id); 
                 htmlContent += "<td>" + pointPerson.FirstName + "</td>";
                 htmlContent += "<td bgcolor=" + (char) 34 + "#FFFF00" + (char) 34 + ">";
 
@@ -468,7 +469,7 @@ namespace MVC5_Seneca.Controllers
             var allUsers = db.Users.ToList();
             foreach (ApplicationUser user in allUsers)
             {
-                if (user.IsInRole("HfedDriver"))
+                if (UserIsInRole(user,"HfedDriver"))
                 {
                     string addr = user.Email;
                     if (!addr.IsNullOrEmpty())
@@ -499,7 +500,7 @@ namespace MVC5_Seneca.Controllers
             var allUsers = db.Users.ToList();
             foreach (ApplicationUser user in allUsers)
             {
-                if (user.IsInRole("HfedStaff"))
+                if (UserIsInRole(user,"HfedStaff"))
                 {
                     Email(user.Email, htmlContent);
                 }
@@ -651,8 +652,21 @@ namespace MVC5_Seneca.Controllers
         // GET: DriverSignUp
         public ActionResult DriverSignUp()
         {
-            DateTime start = Convert.ToDateTime(Session["StartDate"]);
-            DateTime end = Convert.ToDateTime(Session["EndDate"]);
+            // Find first incomplete schedule and set dates to beginning and end of that month
+            DateTime start = DateTime.Today ;
+            DateTime end = DateTime.Today ;
+            var firstSchedule = db.HfedSchedules.OrderBy
+                (d => d.Date).FirstOrDefault(c => c.Complete == false);
+            if (firstSchedule != null)
+            {
+                String mn = firstSchedule.Date.Month.ToString();
+                string yr = firstSchedule.Date.Year.ToString();
+                Session["StartDate"] = mn + "/01/" + yr; 
+                start = Convert.ToDateTime(Session["StartDate"]);
+                end = new DateTime(start.Year, start.Month, 
+                    DateTime.DaysInMonth(start.Year,start.Month));
+                Session["EndDate"] = Convert.ToString(end, CultureInfo.InvariantCulture);
+            } 
             var scheduleList = db.HfedSchedules.Where
                 (s => s.Date >= start && s.Date <= end).OrderBy(s => s.Date).ToList();
             HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel();

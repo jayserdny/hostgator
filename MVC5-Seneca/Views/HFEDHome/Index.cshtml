@@ -24,7 +24,7 @@
     </table>
 </div>
 
-@if (User.IsInRole("Administrator"))
+@if (User.IsInRole("Administrator") || User.IsInRole("HfedStaff"))
 {
     <div>
         <strong>Administator Menu</strong><br/>
