@@ -16,6 +16,13 @@
         @Html.AntiForgeryToken()
         <div>
             <h2>Healthy Food Every Day Driver SignUp</h2>
+            <table>
+                <tr>
+                    <td>
+                    <strong>For user: @User.Identity.Name</strong> (Click in checkbox to volunteer, then SUBMIT)
+                    </td>
+                </tr>
+            </table>
         </div> 
         <table class="table">
             <tr>
@@ -24,7 +31,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th>@User.Identity.Name</th>
+                <th>&nbsp; Driver /</th>
             </tr>
             <tr>
                 <th>
@@ -65,23 +72,24 @@
                 </td>
                 <td>
                     @if (Model.HfedScheds[i].HfedDriversArray[0] == "")
-                    {  
+                    {                   
                         <span> &nbsp; &nbsp; &nbsp;</span>
-                    @Html.EditorFor(m => Model.HfedScheds[i].SignUp)
-                    @Html.ValidationMessageFor(m => Model.HfedScheds[i].SignUp, "", new { @class = "text-danger" })
-                }
-                else
-                {
-
-                }
-                </tr>
+                        @Html.EditorFor(m => Model.HfedScheds[i].SignUp)
+                        @Html.ValidationMessageFor(m => Model.HfedScheds[i].SignUp, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                      @Html.DisplayFor( m => Model.HfedScheds[i].DriverName )
+                    }   
+                </td>
+            </tr>
             }
         </table>
 
         <br />
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="SUBMIT" class="btn" />
+                <input type="submit" value="SUBMIT" class="btn" style="background-color: aqua; font-weight:bold"   />
             </div>
         </div>
     }

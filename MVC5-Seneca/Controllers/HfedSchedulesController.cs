@@ -675,6 +675,12 @@ namespace MVC5_Seneca.Controllers
                     sched.HfedDriversArray = schedData.HfedDriverIds.Split(',').ToArray();
                     sched.HfedClientsArray = schedData.HfedClientIds.Split(',').ToArray();
                     sched .HfedDrivers = new List<ApplicationUser>();
+                    if (sched.HfedDriversArray[0].Length > 1)
+                    {
+                        ApplicationUser driver = db.Users.Find(sched.HfedDriversArray[0]);
+                        if (driver != null)
+                        { sched.DriverName = driver.FullName;}
+                    }
                 } 
                                                                                                                                             
                 var allUsers = db.Users.OrderBy(n => n.FirstName).ToList();
@@ -698,6 +704,7 @@ namespace MVC5_Seneca.Controllers
                      hfedSched.HfedClientsArray = sched.HfedClientsArray;
                      hfedSched.HfedDrivers = sched.HfedDrivers;
                      hfedSched.SignUp = false;
+                     hfedSched.DriverName = sched.DriverName; 
                 hfedSchedule.HfedScheds.Add(hfedSched);
             }  
 
