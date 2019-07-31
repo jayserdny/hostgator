@@ -11,12 +11,12 @@
     <title>HfedDriverSignUp</title>
 </head>
 <body>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("DriverSignUp","HfedSchedules", FormMethod.Post, new {schedules = Model }))
     {
         @Html.AntiForgeryToken()
         <div>
             <h2>Healthy Food Every Day Driver SignUp</h2>
-        </div>
+        </div> 
         <table class="table">
             <tr>
                 <th></th>
@@ -44,30 +44,36 @@
                 <th></th>
             </tr>
 
-            @for (int i = 0; i < Model.HfedSchedules.Count; i++)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(m => Model.HfedSchedules[i].Date)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.HfedSchedules[i].PickUpTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.HfedSchedules[i].Provider.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.HfedSchedules[i].Location.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(m => Model.HfedSchedules[i].PointPerson.FullName)
-                    </td>
-                    <td>
-                        @if (Model.HfedSchedules[i].HfedDriversArray[0] == "")
-                        {
-                            @Html.EditorFor(m => Model.HfedSchedules[i].SignUp)
-                        }
-                    </td>
+            @for (int i = 0; i < Model.HfedScheds.Count; i++)
+            {   
+                @Html.HiddenFor(m => Model.HfedScheds[i].Id) // Necessary for schedules to bind in POST
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].PickUpTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].Provider.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].Location.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FullName)
+                </td>
+                <td>
+                    @if (Model.HfedScheds[i].HfedDriversArray[0] == "")
+                    {  
+                        <span> &nbsp; &nbsp; &nbsp;</span>
+                    @Html.EditorFor(m => Model.HfedScheds[i].SignUp)
+                    @Html.ValidationMessageFor(m => Model.HfedScheds[i].SignUp, "", new { @class = "text-danger" })
+                }
+                else
+                {
+
+                }
                 </tr>
             }
         </table>

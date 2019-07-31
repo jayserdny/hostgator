@@ -5,8 +5,6 @@ using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.IO;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
@@ -202,7 +200,7 @@ namespace MVC5_Seneca.Controllers
                     hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
                 }
 
-                //EF adding blank Foreign Key records: use raw SQL
+                //EF not adding blank Foreign Key records: use raw SQL
                 using (var context = new SenecaContext())
                 {
                     string cmdString = "INSERT INTO HfedSchedule (";
@@ -289,7 +287,7 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray,VolunteerHours")] HfedSchedule hfedSchedule)
         {
-            //EF adding blank Foreign Key records: use raw SQL
+            //EF not adding blank Foreign Key records: use raw SQL
             if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
             {
                 hfedSchedule.HfedDriverIds = String.Empty;
@@ -658,7 +656,7 @@ namespace MVC5_Seneca.Controllers
             var scheduleList = db.HfedSchedules.Where
                 (s => s.Date >= start && s.Date <= end).OrderBy(s => s.Date).ToList();
             HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel();
-            hfedSchedule.HfedSchedules = new List<HfedSchedule>();
+            hfedSchedule.HfedScheds = new List<HfedSchedule>();
             foreach (HfedSchedule sched in scheduleList)
             {                                                                                                                          
                 string strSql = "SELECT * FROM HfedSchedule WHERE Id = " + sched.Id;
@@ -676,12 +674,13 @@ namespace MVC5_Seneca.Controllers
 
                     sched.HfedDriversArray = schedData.HfedDriverIds.Split(',').ToArray();
                     sched.HfedClientsArray = schedData.HfedClientIds.Split(',').ToArray();
+                    sched .HfedDrivers = new List<ApplicationUser>();
                 } 
                                                                                                                                             
                 var allUsers = db.Users.OrderBy(n => n.FirstName).ToList();
                 foreach (ApplicationUser user in allUsers)
                 {
-                    if (user.IsInRole("HfedDriver"))
+                    if (UserIsInRole(user,"HfedDriver"))
                     {
                         sched.HfedDrivers.Add(user);
                     }
@@ -697,8 +696,9 @@ namespace MVC5_Seneca.Controllers
                      hfedSched.Provider = sched.Provider;
                      hfedSched.HfedDriversArray = sched.HfedDriversArray;
                      hfedSched.HfedClientsArray = sched.HfedClientsArray;
+                     hfedSched.HfedDrivers = sched.HfedDrivers;
                      hfedSched.SignUp = false;
-                hfedSchedule.HfedSchedules.Add(hfedSched);
+                hfedSchedule.HfedScheds.Add(hfedSched);
             }  
 
             return View(hfedSchedule);
@@ -707,17 +707,17 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedSchedules/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DriverSignUp([Bind(Include = "HfedSchedules")] HfedScheduleViewModel schedules)
-        {
-            for (int i = 0; i < schedules.HfedSchedules.Count; i++)
-            {
-                if (schedules.HfedSchedules[i].SignUp)
+        public ActionResult DriverSignUp([Bind(Include = "HfedScheds")] HfedScheduleViewModel schedules)
+        {                 
+            foreach (var sched in schedules.HfedScheds)
+            {  
+                if (sched.SignUp)
                 {
                     using (var context = new SenecaContext())
                     {
                         string cmdString = "UPDATE HfedSchedule SET ";
-                        cmdString += "HfedDriverIds='" + User.Identity.GetUserId() + "',";
-                        cmdString += " WHERE Id=" + schedules.HfedSchedules[i].Id;
+                        cmdString += "HfedDriverIds='" + User.Identity.GetUserId() + "' ";
+                        cmdString += " WHERE Id=" + sched.Id;
                         context.Database.ExecuteSqlCommand(cmdString);
                     }
                 }
