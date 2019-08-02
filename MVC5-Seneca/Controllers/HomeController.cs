@@ -26,10 +26,10 @@ namespace MVC5_Seneca.Controllers
                 return RedirectToAction("Index", "HfedHome");
             }
 
-            if (User.IsInRole("HfedStaff") && Session ["FromSHEP_HFEDMenu"] !="true")  // go to SHEP/HFED choice
-            {      
-                    return RedirectToAction("Index", "SHEP_HFED");     
-            }                                                                           
+            if (User.IsInRole("HfedStaff") && !User.IsInRole("Staff"))  // go directly to HFED
+            {
+                return RedirectToAction("Index", "HfedHome");
+            }
 
             return View();
         }

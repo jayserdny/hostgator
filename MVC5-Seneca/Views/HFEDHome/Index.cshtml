@@ -27,7 +27,7 @@
 @if (User.IsInRole("Administrator") || User.IsInRole("HfedStaff"))
 {
     <div>
-        <strong>Administator Menu</strong><br/>
+        <strong>Staff Menu</strong><br/>
         <a href="@Url.Action("MaintainSchedules", "HfedHome")">Maintain Schedules</a><br/>
         <a href="@Url.Action("MaintainLocations", "HfedHome")">Maintain Delivery Locations</a><br/>
         <a href="@Url.Action("MaintainClients", "HfedHome")">Maintain Clients</a><br/>
@@ -45,7 +45,6 @@
 }
 
 <div>
-    <br />
     @Html.AntiForgeryToken()
     <a href="@Url.Action("Logout", "Home")">LogOut</a>
 </div>
