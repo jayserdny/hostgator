@@ -180,6 +180,21 @@ namespace MVC5_Seneca.Controllers
                 hfedSchedule.HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
                 hfedSchedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();       
                 hfedSchedule.HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList();
+                hfedSchedule.HfedDrivers = new List<ApplicationUser>();
+                hfedSchedule.HfedStaffs = new List<ApplicationUser>();
+                var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
+                foreach (ApplicationUser user in allUsers)
+                {
+                    if (UserIsInRole(user, "HfedDriver"))
+                    {
+                        hfedSchedule.HfedDrivers.Add(user);
+                    }
+
+                    if (UserIsInRole(user, "HfedStaff"))
+                    {
+                        hfedSchedule.HfedStaffs.Add(user);
+                    }
+                }
                 return View(hfedSchedule); // (for error functions)
             } 
 
