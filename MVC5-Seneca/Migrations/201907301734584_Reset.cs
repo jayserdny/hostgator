@@ -7,256 +7,256 @@ namespace MVC5_Seneca.Migrations
     {
         public override void Up()
         {
-            //CreateTable(
-            //    "dbo.AssociateTutor",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Student_Id = c.Int(),
-            //            Tutor_Id = c.String(maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.Student", t => t.Student_Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.Tutor_Id)
-            //    .Index(t => t.Student_Id)
-            //    .Index(t => t.Tutor_Id);
-            
-            //CreateTable(
-            //    "dbo.Student",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            FirstName = c.String(),
-            //            Gender = c.String(),
-            //            BirthDate = c.DateTime(),
-            //            GradeLevel = c.Int(),
-            //            SpecialClass = c.Boolean(nullable: false),
-            //            PrimaryTutor_Id = c.String(maxLength: 128),
-            //            Parent_Id = c.Int(),
-            //            School_Id = c.Int(),
-            //            Teacher_Id = c.Int(),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.PrimaryTutor_Id)
-            //    .ForeignKey("dbo.Parent", t => t.Parent_Id)
-            //    .ForeignKey("dbo.School", t => t.School_Id)
-            //    .ForeignKey("dbo.Teacher", t => t.Teacher_Id)
-            //    .Index(t => t.PrimaryTutor_Id)
-            //    .Index(t => t.Parent_Id)
-            //    .Index(t => t.School_Id)
-            //    .Index(t => t.Teacher_Id);
-            
-            //CreateTable(
-            //    "dbo.AspNetUsers",
-            //    c => new
-            //        {
-            //            Id = c.String(nullable: false, maxLength: 128),
-            //            FirstName = c.String(),
-            //            LastName = c.String(),
-            //            Title = c.String(),
-            //            Email = c.String(maxLength: 256),
-            //            UserName = c.String(nullable: false, maxLength: 256),
-            //            PhoneNumber = c.String(),
-            //            EmailConfirmed = c.Boolean(nullable: false),
-            //            PasswordHash = c.String(),
-            //            SecurityStamp = c.String(),
-            //            PhoneNumberConfirmed = c.Boolean(nullable: false),
-            //            TwoFactorEnabled = c.Boolean(nullable: false),
-            //            LockoutEndDateUtc = c.DateTime(),
-            //            LockoutEnabled = c.Boolean(nullable: false),
-            //            AccessFailedCount = c.Int(nullable: false),
-            //            Student_Id = c.Int(),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.Student", t => t.Student_Id)
-            //    .Index(t => t.UserName, unique: true, name: "UserNameIndex")
-            //    .Index(t => t.Student_Id);
-            
-            //CreateTable(
-            //    "dbo.AspNetUserClaims",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            UserId = c.String(nullable: false, maxLength: 128),
-            //            ClaimType = c.String(),
-            //            ClaimValue = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-            //    .Index(t => t.UserId);
-            
-            //CreateTable(
-            //    "dbo.AspNetUserLogins",
-            //    c => new
-            //        {
-            //            LoginProvider = c.String(nullable: false, maxLength: 128),
-            //            ProviderKey = c.String(nullable: false, maxLength: 128),
-            //            UserId = c.String(nullable: false, maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
-            //    .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-            //    .Index(t => t.UserId);
-            
-            //CreateTable(
-            //    "dbo.AspNetUserRoles",
-            //    c => new
-            //        {
-            //            UserId = c.String(nullable: false, maxLength: 128),
-            //            RoleId = c.String(nullable: false, maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => new { t.UserId, t.RoleId })
-            //    .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
-            //    .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-            //    .Index(t => t.UserId)
-            //    .Index(t => t.RoleId);
-            
-            //CreateTable(
-            //    "dbo.Parent",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            MotherFather = c.String(),
-            //            FirstName = c.String(),
-            //            Address = c.String(),
-            //            HomePhone = c.String(),
-            //            CellPhone = c.String(),
-            //            Email = c.String(),
-            //            CaseManager_Id = c.Int(),
-            //            CaseManagerUser_Id = c.String(maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.Staff", t => t.CaseManager_Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.CaseManagerUser_Id)
-            //    .Index(t => t.CaseManager_Id)
-            //    .Index(t => t.CaseManagerUser_Id);
-            
-            //CreateTable(
-            //    "dbo.Staff",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            FirstName = c.String(),
-            //            LastName = c.String(),
-            //            Title = c.String(),
-            //            WorkPhone = c.String(),
-            //            CellPhone = c.String(),
-            //            Email = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
-            //CreateTable(
-            //    "dbo.StudentReport",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            DocumentDate = c.DateTime(),
-            //            Comments = c.String(),
-            //            DocumentLink = c.String(),
-            //            DocumentType_Id = c.Int(),
-            //            Student_Id = c.Int(),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.DocumentType", t => t.DocumentType_Id)
-            //    .ForeignKey("dbo.Student", t => t.Student_Id)
-            //    .Index(t => t.DocumentType_Id)
-            //    .Index(t => t.Student_Id);
-            
-            //CreateTable(
-            //    "dbo.DocumentType",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Name = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
-            //CreateTable(
-            //    "dbo.School",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Name = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
-            //CreateTable(
-            //    "dbo.Teacher",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            LastName = c.String(),
-            //            FirstName = c.String(),
-            //            WorkPhone = c.String(),
-            //            CellPhone = c.String(),
-            //            Email = c.String(),
-            //            School_Id = c.Int(),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.School", t => t.School_Id)
-            //    .Index(t => t.School_Id);
-            
-            //CreateTable(
-            //    "dbo.TutorNote",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Date = c.DateTime(),
-            //            SessionNote = c.String(),
-            //            UpdateAllowed = c.Boolean(nullable: false),
-            //            ApplicationUser_Id = c.String(maxLength: 128),
-            //            Student_Id = c.Int(),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
-            //    .ForeignKey("dbo.Student", t => t.Student_Id)
-            //    .Index(t => t.ApplicationUser_Id)
-            //    .Index(t => t.Student_Id);
-            
-            //CreateTable(
-            //    "dbo.HfedClient",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            FirstName = c.String(),
-            //            LastName = c.String(),
-            //            DateOfBirth = c.DateTime(nullable: false, storeType: "date"),
-            //            ClientNote = c.String(),
-            //            Location_Id = c.Int(nullable: false),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.HfedLocation", t => t.Location_Id, cascadeDelete: true)
-            //    .Index(t => t.Location_Id);
-            
-            //CreateTable(
-            //    "dbo.HfedLocation",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Name = c.String(),
-            //            Address = c.String(),
-            //            MainPhone = c.String(),
-            //            LocationNote = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
-            //CreateTable(
-            //    "dbo.HfedProvider",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Name = c.String(),
-            //            Address = c.String(),
-            //            MainPhone = c.String(),
-            //            Fax = c.String(),
-            //            Email = c.String(),
-            //            ContactName = c.String(),
-            //            ContactEmail = c.String(),
-            //            ContactPhone = c.String(),
-            //            ProviderNote = c.String(),
-            //            BoxWeight = c.Decimal(precision: 18, scale: 2),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
+            CreateTable(
+                "dbo.AssociateTutor",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Student_Id = c.Int(),
+                    Tutor_Id = c.String(maxLength: 128),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.Tutor_Id)
+                .Index(t => t.Student_Id)
+                .Index(t => t.Tutor_Id);
+
+            CreateTable(
+                "dbo.Student",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    FirstName = c.String(),
+                    Gender = c.String(),
+                    BirthDate = c.DateTime(),
+                    GradeLevel = c.Int(),
+                    SpecialClass = c.Boolean(nullable: false),
+                    PrimaryTutor_Id = c.String(maxLength: 128),
+                    Parent_Id = c.Int(),
+                    School_Id = c.Int(),
+                    Teacher_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.PrimaryTutor_Id)
+                .ForeignKey("dbo.Parent", t => t.Parent_Id)
+                .ForeignKey("dbo.School", t => t.School_Id)
+                .ForeignKey("dbo.Teacher", t => t.Teacher_Id)
+                .Index(t => t.PrimaryTutor_Id)
+                .Index(t => t.Parent_Id)
+                .Index(t => t.School_Id)
+                .Index(t => t.Teacher_Id);
+
+            CreateTable(
+                "dbo.AspNetUsers",
+                c => new
+                {
+                    Id = c.String(nullable: false, maxLength: 128),
+                    FirstName = c.String(),
+                    LastName = c.String(),
+                    Title = c.String(),
+                    Email = c.String(maxLength: 256),
+                    UserName = c.String(nullable: false, maxLength: 256),
+                    PhoneNumber = c.String(),
+                    EmailConfirmed = c.Boolean(nullable: false),
+                    PasswordHash = c.String(),
+                    SecurityStamp = c.String(),
+                    PhoneNumberConfirmed = c.Boolean(nullable: false),
+                    TwoFactorEnabled = c.Boolean(nullable: false),
+                    LockoutEndDateUtc = c.DateTime(),
+                    LockoutEnabled = c.Boolean(nullable: false),
+                    AccessFailedCount = c.Int(nullable: false),
+                    Student_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .Index(t => t.UserName, unique: true, name: "UserNameIndex")
+                .Index(t => t.Student_Id);
+
+            CreateTable(
+                "dbo.AspNetUserClaims",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserId = c.String(nullable: false, maxLength: 128),
+                    ClaimType = c.String(),
+                    ClaimValue = c.String(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+
+            CreateTable(
+                "dbo.AspNetUserLogins",
+                c => new
+                {
+                    LoginProvider = c.String(nullable: false, maxLength: 128),
+                    ProviderKey = c.String(nullable: false, maxLength: 128),
+                    UserId = c.String(nullable: false, maxLength: 128),
+                })
+                .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+
+            CreateTable(
+                "dbo.AspNetUserRoles",
+                c => new
+                {
+                    UserId = c.String(nullable: false, maxLength: 128),
+                    RoleId = c.String(nullable: false, maxLength: 128),
+                })
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
+
+            CreateTable(
+                "dbo.Parent",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    MotherFather = c.String(),
+                    FirstName = c.String(),
+                    Address = c.String(),
+                    HomePhone = c.String(),
+                    CellPhone = c.String(),
+                    Email = c.String(),
+                    CaseManager_Id = c.Int(),
+                    CaseManagerUser_Id = c.String(maxLength: 128),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Staff", t => t.CaseManager_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.CaseManagerUser_Id)
+                .Index(t => t.CaseManager_Id)
+                .Index(t => t.CaseManagerUser_Id);
+
+            CreateTable(
+                "dbo.Staff",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    FirstName = c.String(),
+                    LastName = c.String(),
+                    Title = c.String(),
+                    WorkPhone = c.String(),
+                    CellPhone = c.String(),
+                    Email = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.StudentReport",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    DocumentDate = c.DateTime(),
+                    Comments = c.String(),
+                    DocumentLink = c.String(),
+                    DocumentType_Id = c.Int(),
+                    Student_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.DocumentType", t => t.DocumentType_Id)
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .Index(t => t.DocumentType_Id)
+                .Index(t => t.Student_Id);
+
+            CreateTable(
+                "dbo.DocumentType",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.School",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.Teacher",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    LastName = c.String(),
+                    FirstName = c.String(),
+                    WorkPhone = c.String(),
+                    CellPhone = c.String(),
+                    Email = c.String(),
+                    School_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.School", t => t.School_Id)
+                .Index(t => t.School_Id);
+
+            CreateTable(
+                "dbo.TutorNote",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Date = c.DateTime(),
+                    SessionNote = c.String(),
+                    UpdateAllowed = c.Boolean(nullable: false),
+                    ApplicationUser_Id = c.String(maxLength: 128),
+                    Student_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .Index(t => t.ApplicationUser_Id)
+                .Index(t => t.Student_Id);
+
+            CreateTable(
+                "dbo.HfedClient",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    FirstName = c.String(),
+                    LastName = c.String(),
+                    DateOfBirth = c.DateTime(nullable: false, storeType: "date"),
+                    ClientNote = c.String(),
+                    Location_Id = c.Int(nullable: false),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.HfedLocation", t => t.Location_Id, cascadeDelete: true)
+                .Index(t => t.Location_Id);
+
+            CreateTable(
+                "dbo.HfedLocation",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    Address = c.String(),
+                    MainPhone = c.String(),
+                    LocationNote = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.HfedProvider",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    Address = c.String(),
+                    MainPhone = c.String(),
+                    Fax = c.String(),
+                    Email = c.String(),
+                    ContactName = c.String(),
+                    ContactEmail = c.String(),
+                    ContactPhone = c.String(),
+                    ProviderNote = c.String(),
+                    BoxWeight = c.Decimal(precision: 18, scale: 2),
+                })
+                .PrimaryKey(t => t.Id);
+
             CreateTable(
                 "dbo.HfedSchedule",
                 c => new
@@ -281,72 +281,72 @@ namespace MVC5_Seneca.Migrations
                 .Index(t => t.Location_Id)
                 .Index(t => t.PointPerson_Id)
                 .Index(t => t.Provider_Id);
-            
-            //CreateTable(
-            //    "dbo.Login",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            UserName = c.String(),
-            //            FirstName = c.String(),
-            //            LastName = c.String(),
-            //            DateTime = c.DateTime(nullable: false),
-            //            Status = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
-            //CreateTable(
-            //    "dbo.AspNetRoles",
-            //    c => new
-            //        {
-            //            Id = c.String(nullable: false, maxLength: 128),
-            //            Name = c.String(nullable: false, maxLength: 256),
-            //            Discriminator = c.String(nullable: false, maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
-            //CreateTable(
-            //    "dbo.TipDocument",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Name = c.String(),
-            //            DocumentLink = c.String(),
-            //            Category_Id = c.Int(),
-            //            User_Id = c.String(maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.TipsCategory", t => t.Category_Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
-            //    .Index(t => t.Category_Id)
-            //    .Index(t => t.User_Id);
-            
-            //CreateTable(
-            //    "dbo.TipsCategory",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            Name = c.String(),
-            //        })
-            //    .PrimaryKey(t => t.Id);
-            
-            //CreateTable(
-            //    "dbo.TutorSchedule",
-            //    c => new
-            //        {
-            //            Id = c.Int(nullable: false, identity: true),
-            //            DayOfWeekIndex = c.Int(nullable: false),
-            //            MinutesPastMidnight = c.Int(nullable: false),
-            //            Student_Id = c.Int(),
-            //            Tutor_Id = c.String(maxLength: 128),
-            //        })
-            //    .PrimaryKey(t => t.Id)
-            //    .ForeignKey("dbo.Student", t => t.Student_Id)
-            //    .ForeignKey("dbo.AspNetUsers", t => t.Tutor_Id)
-            //    .Index(t => t.Student_Id)
-            //    .Index(t => t.Tutor_Id);
-            
+
+            CreateTable(
+                "dbo.Login",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserName = c.String(),
+                    FirstName = c.String(),
+                    LastName = c.String(),
+                    DateTime = c.DateTime(nullable: false),
+                    Status = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.AspNetRoles",
+                c => new
+                {
+                    Id = c.String(nullable: false, maxLength: 128),
+                    Name = c.String(nullable: false, maxLength: 256),
+                    Discriminator = c.String(nullable: false, maxLength: 128),
+                })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+
+            CreateTable(
+                "dbo.TipDocument",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    DocumentLink = c.String(),
+                    Category_Id = c.Int(),
+                    User_Id = c.String(maxLength: 128),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TipsCategory", t => t.Category_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
+                .Index(t => t.Category_Id)
+                .Index(t => t.User_Id);
+
+            CreateTable(
+                "dbo.TipsCategory",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.TutorSchedule",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    DayOfWeekIndex = c.Int(nullable: false),
+                    MinutesPastMidnight = c.Int(nullable: false),
+                    Student_Id = c.Int(),
+                    Tutor_Id = c.String(maxLength: 128),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Student", t => t.Student_Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.Tutor_Id)
+                .Index(t => t.Student_Id)
+                .Index(t => t.Tutor_Id);
+
         }
         
         public override void Down()
