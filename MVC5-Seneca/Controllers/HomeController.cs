@@ -21,10 +21,15 @@ namespace MVC5_Seneca.Controllers
                 return RedirectToAction("Login", "Account", new { errorMessage = "This account is awaiting confirmation." });
             }
 
-            if (User.IsInRole("HfedDriver"))
+            if (User.IsInRole("HfedDriver"))  // go direcly to HFED only
             {
                 return RedirectToAction("Index", "HfedHome");
             }
+
+            if (User.IsInRole("HfedStaff") && Session ["FromSHEP_HFEDMenu"] !="true")  // go to SHEP/HFED choice
+            {      
+                    return RedirectToAction("Index", "SHEP_HFED");     
+            }                                                                           
 
             return View();
         }

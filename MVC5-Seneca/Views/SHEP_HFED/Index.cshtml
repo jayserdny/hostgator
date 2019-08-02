@@ -1,0 +1,31 @@
+﻿@*For users with HFEDStaff role - choice between SHEP or HFED menu.*@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>&nbsp;&nbsp; Welcome  @User.Identity.Name!</td>
+    </tr>
+    <tr>
+        <td>
+            <p style="text-decoration:underline" class="indent"><strong>SHEP / HFED</strong></p>
+        </td>
+    </tr>
+</table>
+
+    <div>
+        <a href="@Url.Action("SHEP", "SHEP_HFED")">Seneca Heights Education Project Dashboard</a><br/>
+        <a href="@Url.Action("HFED", "SHEP_HFED")">Healthy Food Every Day Dashboard</a><br/>
+    </div>
+
+</body>
+</html>

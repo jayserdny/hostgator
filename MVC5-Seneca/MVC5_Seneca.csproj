@@ -435,6 +435,7 @@
     <Compile Include="Controllers\HfedSchedulesController.cs" />
     <Compile Include="Controllers\HfedUpdateMyProfileController.cs" />
     <Compile Include="Controllers\LoginsController.cs" />
+    <Compile Include="Controllers\SHEP_HFEDController.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\TeachingTipsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -530,6 +531,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModels\ContactsDisplayViewModel.cs" />
+    <Compile Include="ViewModels\SHEP_HFEDViewModel.cs" />
     <Compile Include="ViewModels\HfedScheduleViewModel.cs" />
     <Compile Include="ViewModels\TeachingTipsViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1095,6 +1097,7 @@
     <Content Include="Views\HfedSchedules\Index.cshtml" />
     <Content Include="Views\HfedUpdateMyProfile\Edit.cshtml" />
     <Content Include="Views\HfedSchedules\DriverSignUp.cshtml" />
+    <Content Include="Views\SHEP_HFED\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
