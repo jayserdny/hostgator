@@ -62,13 +62,12 @@ namespace MVC5_Seneca.Controllers
                 cmdString += "FirstName,LastName,DateOfBirth,ClientNote,Location_Id)"; 
                 cmdString += " VALUES (";
                 cmdString += "'" + hfedClient.FirstName + "','" + hfedClient.LastName + "',";
-                cmdString += "'" + hfedClient.DateOfBirth + "','" + hfedClient.ClientNote + "',";    
+                cmdString += "'" + hfedClient.DateOfBirth + "',";
+                cmdString += "'" + hfedClient.ClientNote.Replace("'", "''") + "',"; 
                 cmdString += hfedClient.Location.Id + ")";
                 context.Database.ExecuteSqlCommand(cmdString);
             }
-            return RedirectToAction("Index");
-
-           // return View(hfedClient);
+            return RedirectToAction("Index");       
         }
 
         // GET: HfedClients/Edit/5
@@ -101,7 +100,7 @@ namespace MVC5_Seneca.Controllers
                     sqlString += "FirstName = '" + hfedClient.FirstName + "',";
                     sqlString += "LastName = '" + hfedClient.LastName + "',";
                     sqlString += "DateOfBirth = '" + hfedClient.DateOfBirth + "',";
-                    sqlString += "ClientNote = '" + hfedClient.ClientNote + "',";
+                    sqlString += "ClientNote = '" + hfedClient.ClientNote.Replace("'", "''") + "',";
                     sqlString += "Location_Id = " + hfedClient.Location.Id;
                     sqlString += " WHERE Id = " + hfedClient.Id;
                     context.Database.ExecuteSqlCommand(sqlString);

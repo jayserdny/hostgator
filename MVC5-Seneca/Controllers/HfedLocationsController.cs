@@ -30,6 +30,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
+                hfedLocation.LocationNote = hfedLocation.LocationNote.Replace("'", "''");
                 db.HfedLocations.Add(hfedLocation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -60,6 +61,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
+                hfedLocation.LocationNote = hfedLocation.LocationNote.Replace("'", "''");
                 db.Entry(hfedLocation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

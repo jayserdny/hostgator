@@ -30,6 +30,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
+                hfedProvider.ProviderNote = hfedProvider.ProviderNote.Replace("'", "''");
                 db.HfedProviders.Add(hfedProvider);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -60,6 +61,7 @@ namespace MVC5_Seneca.Controllers
         {
             if (ModelState.IsValid)
             {
+                hfedProvider.ProviderNote = hfedProvider.ProviderNote.Replace("'", "''");
                 db.Entry(hfedProvider).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
