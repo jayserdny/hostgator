@@ -74,13 +74,14 @@ namespace MVC5_Seneca.Controllers
                             {
                                 SelectListItem selListItem = new SelectListItem() {Value = driverId, Text = x.FullName};
                                 selectedDrivers.Add(selListItem);
+                                // One delivery - one driver rule: put drive name in schedule:
+                                hfedSchedule.DriverName = x.FullName;
                             }
                         }
-                    }
-
+                    }   
                     hfedSchedule.SelectedHfedDrivers = selectedDrivers;
-                }
-
+                }   
+         
                 if (hfedSchedule.HfedClientIds != null)
                 {
                     hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();

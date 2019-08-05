@@ -92,15 +92,14 @@
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
-                    <td>Drivers</td>
+                    <td>Driver</td>
                     <td>Clients</td>
                     <td>Note</td>
                     <td>Volunteer Hours</td>
                 </tr>              
                 <tr>
                     <td>
-                        @Html.ListBoxFor(model => model.HfedDriversArray, new MultiSelectList(Model.HfedDrivers, "Id", "FullName"), new { Id = "driversDDL" })
-                    </td>
+                        @Html.ListBoxFor(model => model.HfedDriversArray, new SelectList(Model.HfedDrivers, "Id", "FullName"), new { Id = "driversDDL" })
                     <td>
                         @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL" })
                     </td>
@@ -143,11 +142,11 @@
         }); 
     });  
 </script> 
-<script>
+@*<script>
     $(function () {
         $("#driversDDL").chosen({ width: "150px" });
     });
-</script>
+</script>*@
 <script>
     $(function () {
         $("#clientsDDL").chosen({ width: "150px" });

@@ -46,7 +46,7 @@
             Drop Off
         </th>
         <th>
-            Drivers
+            Driver
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PickUpTime)
@@ -87,8 +87,10 @@
             </td>
             <td>
                 @*Use ScheduleNote as dummy string for display-only DDL*@
-                @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)
-            </td>
+                @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
+                @Html.DisplayFor(modelitem => item.DriverName)
+
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PickUpTime)
             </td>
