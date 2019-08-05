@@ -123,29 +123,32 @@
 <table>
     <tr>
         <td>
-            @Html.ActionLink("Create Excel File", "CreateExcel")                                  
+            @Html.ActionLink("Create Excel File", "CreateExcel")
         </td>
     </tr>
-    <tr>
-        <td>
-            @Html.ActionLink("Email Staff 2 Weeks Before Month - Request Schedules", "EmailStaffAsk")
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailDriversAsk")
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailDriversShow")
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.ActionLink("Email 2-day Reminder to All Scheduled Drivers & Staff for", "EmailReminder") @DateTime.Today.AddDays(2).ToLongDateString()
-        </td>
-    </tr>
+    @if (User.IsInRole("Administrator"))
+    {      
+        <tr>
+            <td>
+                @Html.ActionLink("Email Staff 2 Weeks Before Month - Request Schedules", "EmailStaffAsk")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailDriversAsk")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailDriversShow")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email 2-day Reminder to All Scheduled Drivers & Staff for", "EmailReminder") @DateTime.Today.AddDays(2).ToLongDateString()
+            </td>
+        </tr>
+    }
 </table>
 
 <br/>
