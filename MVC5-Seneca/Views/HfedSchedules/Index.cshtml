@@ -95,11 +95,12 @@
                 @Html.DisplayFor(modelItem => item.PickUpTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PointPerson.FullName)
+                @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
             </td>
             <td>
                 @*Use ScheduleNote as dummy string for display-only DDL*@
                 @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
+                @Html.DisplayFor(modelitem => item.ClientsTotal )
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ScheduleNote)

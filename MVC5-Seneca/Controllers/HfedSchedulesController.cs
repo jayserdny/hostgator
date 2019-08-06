@@ -106,6 +106,15 @@ namespace MVC5_Seneca.Controllers
                 s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
                 hfedSchedule.ScheduleNote = s;
 
+                if (hfedSchedule.HfedClientsArray[0] == "")
+                {
+                   hfedSchedule.ClientsTotal = 0;
+                }
+                else
+                {
+                    hfedSchedule.ClientsTotal = hfedSchedule.HfedClientsArray.Length;
+                }
+
                 schedulesView.Add(hfedSchedule);
                                                                      
             }         
