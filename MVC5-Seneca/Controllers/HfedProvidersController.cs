@@ -14,7 +14,7 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedProviders
         public ActionResult Index()
         {
-            return View(db.HfedProviders.ToList());
+            return View(db.HfedProviders.OrderBy(n =>n.Name).ToList());
         }                                                          
 
         // GET: HfedProviders/Create

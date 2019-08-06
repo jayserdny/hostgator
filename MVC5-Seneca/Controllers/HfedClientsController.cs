@@ -16,7 +16,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Index()
         {
             var model = new List<HfedClient>();
-            foreach (var hfedClient in db.HfedClients.ToList())
+            foreach (var hfedClient in db.HfedClients.OrderBy( l =>l.LastName).ToList())
             {
                 using (var context = new SenecaContext())
                 {
