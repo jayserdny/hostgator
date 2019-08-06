@@ -63,7 +63,14 @@ namespace MVC5_Seneca.Controllers
                 cmdString += " VALUES (";
                 cmdString += "'" + hfedClient.FirstName + "','" + hfedClient.LastName + "',";
                 cmdString += "'" + hfedClient.DateOfBirth + "',";
-                cmdString += "'" + hfedClient.ClientNote.Replace("'", "''") + "',"; 
+                if (hfedClient.ClientNote != null)
+                {
+                    cmdString += "'" + hfedClient.ClientNote.Replace("'", "''") + "',";
+                }
+                else
+                {
+                    cmdString += "'',";
+                }
                 cmdString += hfedClient.Location.Id + ")";
                 context.Database.ExecuteSqlCommand(cmdString);
             }
@@ -97,10 +104,22 @@ namespace MVC5_Seneca.Controllers
                 using (var context = new SenecaContext())
                 {
                     var sqlString = "UPDATE HfedClient SET ";
-                    sqlString += "FirstName = '" + hfedClient.FirstName + "',";
-                    sqlString += "LastName = '" + hfedClient.LastName + "',";
+                    if (hfedClient.FirstName != null)
+                    {
+                        sqlString += "FirstName = '" + hfedClient.FirstName + "',";
+                    }
+
+                    if (hfedClient.LastName != null)
+                    {
+                        sqlString += "LastName = '" + hfedClient.LastName + "',";
+                    }
+
                     sqlString += "DateOfBirth = '" + hfedClient.DateOfBirth + "',";
-                    sqlString += "ClientNote = '" + hfedClient.ClientNote.Replace("'", "''") + "',";
+                    if (hfedClient.ClientNote != null)
+                    {
+                        sqlString += "ClientNote = '" + hfedClient.ClientNote.Replace("'", "''") + "',";
+                    }
+
                     sqlString += "Location_Id = " + hfedClient.Location.Id;
                     sqlString += " WHERE Id = " + hfedClient.Id;
                     context.Database.ExecuteSqlCommand(sqlString);

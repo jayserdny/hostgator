@@ -29,8 +29,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Create([Bind(Include = "Id,Name,Address,Location,MainPhone,LocationNote")] HfedLocation hfedLocation)
         {
             if (ModelState.IsValid)
-            {
-                hfedLocation.LocationNote = hfedLocation.LocationNote.Replace("'", "''");
+            {    
                 db.HfedLocations.Add(hfedLocation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -60,8 +59,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Address,MainPhone,LocationNote")] HfedLocation hfedLocation)
         {
             if (ModelState.IsValid)
-            {
-                hfedLocation.LocationNote = hfedLocation.LocationNote.Replace("'", "''");
+            {  
                 db.Entry(hfedLocation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

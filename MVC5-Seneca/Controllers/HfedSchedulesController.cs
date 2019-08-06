@@ -225,7 +225,14 @@ namespace MVC5_Seneca.Controllers
                     cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                     cmdString += " VALUES (";
                     cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
-                    cmdString += "'" + hfedSchedule.ScheduleNote.Replace( "'","''") + "',";
+                    if (hfedSchedule.ScheduleNote != null)
+                    {
+                        cmdString += "'" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+                    }
+                    else
+                    {
+                        cmdString += "'',";
+                    } 
                     cmdString += "'" +hfedSchedule.Request + "',";
                     cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
                     cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
@@ -328,7 +335,10 @@ namespace MVC5_Seneca.Controllers
                 string cmdString = "UPDATE HfedSchedule SET ";
                 cmdString += "Date='" + hfedSchedule.Date + "',";
                 cmdString += "PickUpTime='" + hfedSchedule.PickUpTime + "',";
-                cmdString += "ScheduleNote='" + hfedSchedule.ScheduleNote.Replace( "'","''") + "',";
+                if (hfedSchedule.ScheduleNote != null)
+                {
+                    cmdString += "ScheduleNote='" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+                }
                 cmdString += "Request='" + hfedSchedule.Request + "',";
                 cmdString += "Complete='" + hfedSchedule.Complete + "',";
                 cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";

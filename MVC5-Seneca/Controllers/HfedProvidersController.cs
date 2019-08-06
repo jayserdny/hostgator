@@ -29,8 +29,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Create([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,BoxWeight,ProviderNote")] HfedProvider hfedProvider)
         {
             if (ModelState.IsValid)
-            {
-                hfedProvider.ProviderNote = hfedProvider.ProviderNote.Replace("'", "''");
+            {    
                 db.HfedProviders.Add(hfedProvider);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -60,8 +59,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Address,MainPhone,Fax,Email,ContactName,ContactEmail,ContactPhone,BoxWeight,ProviderNote")] HfedProvider hfedProvider)
         {
             if (ModelState.IsValid)
-            {
-                hfedProvider.ProviderNote = hfedProvider.ProviderNote.Replace("'", "''");
+            { 
                 db.Entry(hfedProvider).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
