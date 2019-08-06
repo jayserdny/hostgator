@@ -60,5 +60,6 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public Boolean SignUp { get; set; } // for signup checkbox  
         [NotMapped] public string DriverName { get; set; }
         [NotMapped] public int  ClientsTotal { get; set; }
+        [NotMapped] public string NoteToolTip { get; set; }
     }
 }

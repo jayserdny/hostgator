@@ -63,6 +63,7 @@ namespace MVC5_Seneca.Controllers
                 hfedSchedule.Provider = provider[0];
                 if (hfedSchedule.HfedDriverIds != null)
                 {   
+                    hfedSchedule .HfedDrivers=new List<ApplicationUser>();
                     hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
                     List<SelectListItem> selectedDrivers = new List<SelectListItem>();
                     foreach (string driverId in hfedSchedule.HfedDriversArray)
@@ -76,6 +77,7 @@ namespace MVC5_Seneca.Controllers
                                 selectedDrivers.Add(selListItem);
                                 // One delivery - one driver rule: put drive name in schedule:
                                 hfedSchedule.DriverName = x.FullName;
+                                hfedSchedule.HfedDrivers.Add(x);
                             }
                         }
                     }   
@@ -102,7 +104,8 @@ namespace MVC5_Seneca.Controllers
                     hfedSchedule.SelectedHfedClients = selectedClients ;
                 }
 
-                var s = hfedSchedule.ScheduleNote;  // For display, abbreviate to 10 characters:
+                hfedSchedule.NoteToolTip = hfedSchedule .ScheduleNote.Replace(" ", "\u00a0"); // (full length on mouseover)    \u00a0 is the Unicode character for NO-BREAK-SPACE.
+                var s = hfedSchedule.ScheduleNote;  // For display, abbreviate to 10 characters:            
                 s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
                 hfedSchedule.ScheduleNote = s;
 

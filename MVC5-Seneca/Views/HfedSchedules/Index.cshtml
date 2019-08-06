@@ -49,7 +49,7 @@
             Driver
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PickUpTime)
+            PickUp
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PointPerson)
@@ -87,9 +87,11 @@
             </td>
             <td>
                 @*Use ScheduleNote as dummy string for display-only DDL*@
-                @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
-                @Html.DisplayFor(modelitem => item.DriverName)
-
+                @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@   
+                @if(item.HfedDrivers.Count > 0)  
+                {
+                    @Html.DisplayFor(modelitem => item.HfedDrivers[0].FirstName)
+                 }
                 </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PickUpTime)
@@ -102,7 +104,7 @@
                 @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
                 @Html.DisplayFor(modelitem => item.ClientsTotal )
             </td>
-            <td>
+            <td title=@item.NoteToolTip>
                 @Html.DisplayFor(modelItem => item.ScheduleNote)
             </td>
             <td>
