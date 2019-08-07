@@ -735,7 +735,10 @@ namespace MVC5_Seneca.Controllers
                         if (driver != null)
                         {
                             sched.DriverName = driver.FirstName;
-                            hfedSchedule.UserIsOnSchedule = true;
+                            if(driver.UserName ==User.Identity.Name )
+                            { 
+                                hfedSchedule.UserIsOnSchedule = true;
+                            }
                         }
                     }
                 } 
