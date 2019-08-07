@@ -697,7 +697,7 @@ namespace MVC5_Seneca.Controllers
             var firstSchedule = db.HfedSchedules.OrderBy
                 (d => d.Date).FirstOrDefault(c => c.Complete == false);
             if (firstSchedule != null)
-            {
+            {   // Set dates for one complete month:
                 String mn = firstSchedule.Date.Month.ToString();
                 string yr = firstSchedule.Date.Year.ToString();
                 Session["StartDate"] = mn + "/01/" + yr; 
@@ -709,6 +709,7 @@ namespace MVC5_Seneca.Controllers
             var scheduleList = db.HfedSchedules.Where
                 (s => s.Date >= start && s.Date <= end).OrderBy(s => s.Date).ToList();
             HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel();
+            hfedSchedule.UserIsOnSchedule = false;
             hfedSchedule.HfedScheds = new List<HfedSchedule>();
             foreach (HfedSchedule sched in scheduleList)
             {                                                                                                                          
@@ -732,7 +733,10 @@ namespace MVC5_Seneca.Controllers
                     {
                         ApplicationUser driver = db.Users.Find(sched.HfedDriversArray[0]);
                         if (driver != null)
-                        { sched.DriverName = driver.FullName;}
+                        {
+                            sched.DriverName = driver.FirstName;
+                            hfedSchedule.UserIsOnSchedule = true;
+                        }
                     }
                 } 
                                                                                                                                             
@@ -743,10 +747,9 @@ namespace MVC5_Seneca.Controllers
                     {
                         sched.HfedDrivers.Add(user);
                     }
-                }
-
-                // Convert viewmodel to hfedschedule?
-                     var hfedSched = new HfedSchedule();
+                }  
+                    // Convert viewmodel schedule to hfedschedule to add: 
+                    var hfedSched = new HfedSchedule();
                      hfedSched.Id = sched.Id;
                      hfedSched.Date = sched.Date;
                      hfedSched.PickUpTime = sched.PickUpTime;
@@ -757,8 +760,9 @@ namespace MVC5_Seneca.Controllers
                      hfedSched.HfedClientsArray = sched.HfedClientsArray;
                      hfedSched.HfedDrivers = sched.HfedDrivers;
                      hfedSched.SignUp = false;
+                     hfedSched.Cancel  = false;
                      hfedSched.DriverName = sched.DriverName; 
-                hfedSchedule.HfedScheds.Add(hfedSched);
+                     hfedSchedule.HfedScheds.Add(hfedSched);
             }  
 
             return View(hfedSchedule);
@@ -777,6 +781,17 @@ namespace MVC5_Seneca.Controllers
                     {
                         string cmdString = "UPDATE HfedSchedule SET ";
                         cmdString += "HfedDriverIds='" + User.Identity.GetUserId() + "' ";
+                        cmdString += " WHERE Id=" + sched.Id;
+                        context.Database.ExecuteSqlCommand(cmdString);
+                    }
+                }
+
+                if (sched.Cancel)
+                {
+                    using (var context = new SenecaContext())
+                    {
+                        string cmdString = "UPDATE HfedSchedule SET ";
+                        cmdString += "HfedDriverIds=''";
                         cmdString += " WHERE Id=" + sched.Id;
                         context.Database.ExecuteSqlCommand(cmdString);
                     }

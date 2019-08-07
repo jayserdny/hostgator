@@ -64,5 +64,6 @@ namespace MVC5_Seneca.ViewModels
         public List<HfedClient> HfedClients { get; set; }
         public List<HfedSchedule> HfedScheds { get; set; }
         public string ErrorMessage { get; set; }
-     }
+        public Boolean UserIsOnSchedule { get; set; } // User is the driver on at least one delivery
+    }
 }

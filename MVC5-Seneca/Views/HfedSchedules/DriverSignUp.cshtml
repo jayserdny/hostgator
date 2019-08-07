@@ -1,4 +1,5 @@
-﻿@model MVC5_Seneca.ViewModels.HfedScheduleViewModel
+﻿@using Microsoft.AspNet.Identity
+@model MVC5_Seneca.ViewModels.HfedScheduleViewModel
 @{
     Layout = null;
 }
@@ -19,9 +20,17 @@
             <table>
                 <tr>
                     <td>
-                    <strong>For user: @User.Identity.Name</strong> (Click in checkbox to volunteer, then SUBMIT)
+                        <strong>For user: @User.Identity.Name</strong> (Click Driver SignUp checkbox to volunteer, then SUBMIT)
                     </td>
                 </tr>
+                @if (Model.UserIsOnSchedule)
+                {
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp; (To cancel a signup, click Cancel checkbox, then SUBMIT)
+                        </td>
+                    </tr>
+                }
             </table>
         </div> 
         <table class="table">
@@ -31,7 +40,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th>&nbsp; Driver /</th>
+                <th>&nbsp; Driver</th>
             </tr>
             <tr>
                 <th>
@@ -47,7 +56,16 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PointPerson)
                 </th>
-                <th>&nbsp;Sign Up</th>
+                <th>&nbsp;&nbsp;SignUp</th> 
+                @if (Model.UserIsOnSchedule)
+                    {
+                        <th>&nbsp;Cancel</th>
+                    }
+                else
+                {
+                    <th></th>
+
+                }
                 <th></th>
             </tr>
 
@@ -62,13 +80,13 @@
                     @Html.DisplayFor(m => Model.HfedScheds[i].PickUpTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(m => Model.HfedScheds[i].Provider.Name)
+                    &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].Provider.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(m => Model.HfedScheds[i].Location.Name)
+                    &nbsp; @Html.DisplayFor(m => Model.HfedScheds[i].Location.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FullName)
+                    &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FirstName )
                 </td>
                 <td>
                     @if (Model.HfedScheds[i].HfedDriversArray[0] == "")
@@ -79,8 +97,20 @@
                     }
                     else
                     {
-                      @Html.DisplayFor( m => Model.HfedScheds[i].DriverName )
+                        <span> &nbsp;</span>
+                      @Html.DisplayFor( m => Model.HfedScheds[i].DriverName)
                     }   
+                </td> 
+                <td>
+                    @if (Model.HfedScheds[i].HfedDriversArray[0] != "")
+                    {
+                         if (Model.HfedScheds[i].HfedDriversArray[0] == User.Identity.GetUserId())
+                         { 
+                             <span> &nbsp; &nbsp; &nbsp;</span>
+                             @Html.EditorFor(m => Model.HfedScheds[i].Cancel )
+                             @Html.ValidationMessageFor(m => Model.HfedScheds[i].Cancel, "", new { @class = "text-danger" })
+                         }
+                    }
                 </td>
             </tr>
             }

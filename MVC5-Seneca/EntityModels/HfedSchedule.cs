@@ -58,6 +58,7 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public List<ApplicationUser> HfedStaffs { get; set; }
         [NotMapped] public List<HfedClient> HfedClients { get; set; }
         [NotMapped] public Boolean SignUp { get; set; } // for signup checkbox  
+        [NotMapped] public Boolean Cancel { get; set; } // for Un-signup checkbox
         [NotMapped] public string DriverName { get; set; }
         [NotMapped] public int  ClientsTotal { get; set; }
         [NotMapped] public string NoteToolTip { get; set; }
