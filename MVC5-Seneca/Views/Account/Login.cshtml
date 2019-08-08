@@ -36,9 +36,9 @@
 
         <p>@Html.ActionLink("Register", "Register")</p>
         <div class="form-group">
-            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", htmlattributes = new { autofocus = "autofocus" } })
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2" })
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.UserName, new { autofocus="autofocus"})
                 @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -84,4 +84,5 @@
 @*@Scripts.Render("~/bundles/jqueryval")*@  
 
 </body>
-</html>
+</html>   
+

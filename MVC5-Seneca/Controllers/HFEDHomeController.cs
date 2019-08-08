@@ -40,7 +40,10 @@ namespace MVC5_Seneca.Controllers
         {                                                    
             return RedirectToAction("Edit", "UpdateMyProfile");
         }
-
+        public ActionResult ChangeMyPassword()
+        {
+            return RedirectToAction("Edit", "ChangeMyPassword");
+        }
         public ActionResult DriverSignUp()
         {
             return RedirectToAction("DriverSignUp", "HfedSchedules");

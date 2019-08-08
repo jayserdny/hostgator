@@ -33,6 +33,11 @@
         <a href="@Url.Action("MaintainClients", "HfedHome")">Maintain Clients</a><br/>
         <a href="@Url.Action("MaintainProviders", "HfedHome")">Maintain Food Providers</a><br/>
     </div>
+    if (User.IsInRole("HfedStaff"))
+     {
+         <a href="@Url.Action("UpdateMyProfile", "HfedHome")">Update My Profile</a><br /> 
+         <a href="@Url.Action("ChangeMyPassword", "HfedHome")">Change My Password</a><br />
+     }
 }
 <br/> 
 @if (User.IsInRole("Administrator") || User.IsInRole("HfedDriver"))
@@ -40,7 +45,12 @@
 <div>
     <strong>Driver Menu</strong><br />  
     <a href="@Url.Action("DriverSignUp", "HfedSchedules")">Sign-Up Schedule</a><br />
-    <a href="@Url.Action("UpdateMyProfile", "HfedHome")">Update My Profile</a><br />
+    @if (!User.IsInRole("Administrator"))
+    {
+        <a href="@Url.Action("UpdateMyProfile", "HfedHome")">Update My Profile</a>  
+        <br />
+        <a href="@Url.Action("ChangeMyPassword", "HfedHome")">Change My Password</a> 
+    }
 </div>
 }
 <br />
