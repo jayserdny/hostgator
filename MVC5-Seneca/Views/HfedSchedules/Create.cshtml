@@ -19,6 +19,27 @@
         .field-validation-error {
             color: red
         }
+        .tooltip:hover:after {
+            position: relative;
+            /* we can get the title attribute from the relevant item */
+            content: "" attr(title) "";
+            /* style however you want */
+            /*border: 1px dashed black;*/
+            /*top: -3.5em;*/
+            /*left: 12em;*/
+            /*padding: 0.5em;*/
+        }
+    </style>
+    <script>
+        $( function() {
+            $( document ).tooltip();
+        } );
+    </script>
+    <style>
+        label {
+            display: inline-block;
+            width: 5em;
+        }
     </style>
 </head>
 <body>
@@ -34,14 +55,13 @@
             <table>
                 <tr>
                     <td style="text-align:right">
-                        @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" })
-                    </td>
+                        <strong>Date</strong></td>
                     <td>
                         @Html.EditorFor(model => model.Date, new { id="ScheduleDate", @class = "datepicker" })
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
                     <td style="text-align:right">
-                        Request
+                        <strong>Request</strong>
                     </td>
                     <td>
                         @Html.EditorFor(model => model.Request)
@@ -49,66 +69,68 @@
                     </td>
                 </tr> 
                 <tr>
-                    <td style="text-align:right">
-                        @Html.LabelFor(model => model.PickUpTime, htmlAttributes: new { @class = "col-md-2" })
+                    <td style="text-align: right">
+                        Pick Up Time
                     </td>
                     <td>
-                        @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextBoxFor( model => model.PickUpTime, new { style ="width:75px" })
                         @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
                     </td>
                     <td style="text-align:right">
-                        Complete
+                        <strong>Complete</strong>
                     </td>
                     <td>
                         @Html.EditorFor(model => model.Complete)
                         @Html.ValidationMessageFor(model => model.Complete, "", new { @class = "text-danger" })
                     </td>
                 </tr>
-                <tr><td><br /></td></tr>
+                <tr><td><br /></td></tr> 
+            </table>
+            <table>
                 <tr>
                     <td>
-                        @Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })
+                        <strong>Food Provider</strong> (Required)
                     </td>
                     <td>
-                        @Html.LabelFor(m => m.Location, new { @class = "col-md-2" })
+                        <strong>Drop Off Location</strong> (Required)
                     </td>
                     <td>
-                        @Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })
+                        <strong>Point Person</strong> (Required)
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select") (Required)
+                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select") 
                         @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger"})
                     </td>
                     <td>
-                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)
+                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") 
                         @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select") (Required)
+                        @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select")
                         @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
                     </td>
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
-                    <td>Driver</td>
-                    <td>Clients</td>
-                    <td>Note</td>
-                    <td>Volunteer Hours</td>
+                    <td><strong>Driver</strong></td>
+                    <td><strong>Clients</strong></td>
+                    <td><strong>Note</strong></td>
+                    <td><strong>Volunteer Hours</strong></td>
                 </tr>              
                 <tr>
+                    <td title="Type first letter of First Name to search.">
+                        @Html.DropDownListFor( model => model.HfedDriversArray, new SelectList(Model.HfedDrivers, "Id", "FullName"), " -- Select Driver -- ",new { Id = "driversDDL" })
                     <td>
-                        @Html.ListBoxFor(model => model.HfedDriversArray, new SelectList(Model.HfedDrivers, "Id", "FullName"), new { Id = "driversDDL" })
-                    <td>
-                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL" })
+                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL", title = "Type first letter of First or Last Name to search.", })
                     </td>
                     <td>
                         @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.EditorFor(model => model.VolunteerHours)
+                        @Html.TextBoxFor(model => model.VolunteerHours, new{ style = "width:75px"})
                         @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
                     </td>
                 </tr>  
@@ -119,7 +141,7 @@
                     @*<label class="field-validation-error">@Model.ErrorMessage</label>*@
                 </div> 
                 <div class="col-md-10">
-                    <input type="submit" value="Create"/>
+                    <input type="submit" value="CREATE" class="btn" style="background-color: aqua; font-weight:bold" />
                 </div>
             </div>
         </div>

@@ -203,7 +203,7 @@ namespace MVC5_Seneca.Controllers
                         {
                             var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
                             var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Administrator, SHEP");
-                            var subject = "SHEP: Seneca Heights Education Project";
+                            var subject = "SHEP / HFED Seneca Heights Programs";
                             var to = new EmailAddress(dbUser.Email, user.FirstName);
                             var plainTextContent = "New Registration: " + user.FirstName + " " + user.LastName + " " + user.Email;
                             //string htmlContent = null;
