@@ -57,7 +57,7 @@
                     <td style="text-align:right">
                         <strong>Date</strong></td>
                     <td>
-                        @Html.EditorFor(model => model.Date, new { id="ScheduleDate", @class = "datepicker" })
+                        @Html.EditorFor(model => model.Date, new { id="ScheduleDate", @class = "datepicker" }) (Click to change)
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
                     <td style="text-align:right">
