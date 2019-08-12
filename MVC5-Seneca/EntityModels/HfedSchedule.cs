@@ -63,5 +63,6 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public string DriverName { get; set; }
         [NotMapped] public int  ClientsTotal { get; set; }
         [NotMapped] public string NoteToolTip { get; set; }
+        [NotMapped] public string ErrorMessage { get; set; }
     }
 }

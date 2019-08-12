@@ -208,53 +208,58 @@ namespace MVC5_Seneca.Controllers
                         hfedSchedule.HfedStaffs.Add(user);
                     }
                 }
+
+                if (hfedSchedule.PointPerson.Id == null)
+                {
+                    hfedSchedule.ErrorMessage = "Point Person required";
+                }
                 return View(hfedSchedule); // (for error functions)
             } 
 
-            if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
+            if(hfedSchedule.HfedDriversArray.IsNullOrEmpty())
+            {
+                hfedSchedule.HfedDriverIds = String.Empty;
+            }
+            else
+            {
+                hfedSchedule.HfedDriverIds = string.Join(",", hfedSchedule.HfedDriversArray);
+            }
+
+            if (hfedSchedule.HfedClientsArray.IsNullOrEmpty())
+            {
+                hfedSchedule.HfedClientIds = String.Empty;
+            }
+            else
+            {
+                hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
+            }
+
+            //EF not adding blank Foreign Key records: use raw SQL
+            using (var context = new SenecaContext())
+            {
+                string cmdString = "INSERT INTO HfedSchedule (";
+                cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
+                cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
+                cmdString += " VALUES (";
+                cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
+                if (hfedSchedule.ScheduleNote != null)
                 {
-                    hfedSchedule.HfedDriverIds = String.Empty;
+                    cmdString += "'" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
                 }
                 else
                 {
-                    hfedSchedule.HfedDriverIds = string.Join(",", hfedSchedule.HfedDriversArray);
-                }
+                    cmdString += "'',";
+                } 
+                cmdString += "'" +hfedSchedule.Request + "',";
+                cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
+                cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
+                cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
+                cmdString += "'" + hfedSchedule.HfedClientIds + "')";
 
-                if (hfedSchedule.HfedClientsArray.IsNullOrEmpty())
-                {
-                    hfedSchedule.HfedClientIds = String.Empty;
-                }
-                else
-                {
-                    hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
-                }
+                context.Database.ExecuteSqlCommand(cmdString);
+            }
 
-                //EF not adding blank Foreign Key records: use raw SQL
-                using (var context = new SenecaContext())
-                {
-                    string cmdString = "INSERT INTO HfedSchedule (";
-                    cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
-                    cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
-                    cmdString += " VALUES (";
-                    cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
-                    if (hfedSchedule.ScheduleNote != null)
-                    {
-                        cmdString += "'" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
-                    }
-                    else
-                    {
-                        cmdString += "'',";
-                    } 
-                    cmdString += "'" +hfedSchedule.Request + "',";
-                    cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
-                    cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
-                    cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
-                    cmdString += "'" + hfedSchedule.HfedClientIds + "')";
-
-                    context.Database.ExecuteSqlCommand(cmdString);
-                }
-
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
     }
 
         // GET: HfedSchedules/Edit/5
@@ -288,7 +293,7 @@ namespace MVC5_Seneca.Controllers
             };
 
             var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
-            foreach (ApplicationUser user in allUsers)
+            foreach (var user in allUsers)
             {
                 if (UserIsInRole( user,"HfedStaff"))
                 {

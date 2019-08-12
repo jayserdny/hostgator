@@ -468,6 +468,10 @@
     <Compile Include="Migrations\201907301734584_Reset.Designer.cs">
       <DependentUpon>201907301734584_Reset.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908122034158_DisallowPointPersonNulls.cs" />
+    <Compile Include="Migrations\201908122034158_DisallowPointPersonNulls.Designer.cs">
+      <DependentUpon>201908122034158_DisallowPointPersonNulls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1126,6 +1130,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201907301734584_Reset.resx">
       <DependentUpon>201907301734584_Reset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908122034158_DisallowPointPersonNulls.resx">
+      <DependentUpon>201908122034158_DisallowPointPersonNulls.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

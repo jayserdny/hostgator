@@ -103,7 +103,9 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select")
-                        @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td colspan="2" style="color:red">
+                        @Model.ErrorMessage
                     </td>
                 </tr>
                 <tr><td><br /></td></tr>
@@ -122,13 +124,8 @@
                 </tr>  
             </table>
             <br />
-            <div class="form-group">
-                <div>
-                    @*<label class="field-validation-error">@Model.ErrorMessage</label>*@
-                </div> 
-                <div class="col-md-10">
-                    <input type="submit" value="CREATE" class="btn" style="background-color: aqua; font-weight:bold" />
-                </div>
+           <div class="col-md-10">
+                <input type="submit" value="CREATE" class="btn" style="background-color: aqua; font-weight:bold" />
             </div>
         </div>
     }
