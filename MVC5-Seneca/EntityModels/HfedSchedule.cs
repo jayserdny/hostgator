@@ -27,6 +27,7 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Drop Off Location")]
         public HfedLocation Location { get; set; }
 
+        [Required]
         [DisplayName("Point Person")]
         public ApplicationUser PointPerson { get; set; }
 

@@ -15,12 +15,13 @@
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
+    
     <style>
         .field-validation-error {
             color: red
         }
         .tooltip:hover:after {
-            position: relative;
+            position: absolute;
             /* we can get the title attribute from the relevant item */
             content: "" attr(title) "";
             /* style however you want */
@@ -76,13 +77,6 @@
                         @Html.TextBoxFor( model => model.PickUpTime, new { style ="width:75px" })
                         @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
                     </td>
-                    <td style="text-align:right">
-                        <strong>Complete</strong>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Complete)
-                        @Html.ValidationMessageFor(model => model.Complete, "", new { @class = "text-danger" })
-                    </td>
                 </tr>
                 <tr><td><br /></td></tr> 
             </table>
@@ -114,24 +108,16 @@
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
-                    <td><strong>Driver</strong></td>
                     <td><strong>Clients</strong></td>
                     <td><strong>Note</strong></td>
-                    <td><strong>Volunteer Hours</strong></td>
                 </tr>              
                 <tr>
-                    <td title="Type first letter of First Name to search.">
-                        @Html.DropDownListFor( model => model.HfedDriversArray, new SelectList(Model.HfedDrivers, "Id", "FullName"), " -- Select Driver -- ",new { Id = "driversDDL" })
                     <td>
-                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL", title = "Type first letter of First or Last Name to search.", })
+                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL"})
                     </td>
                     <td>
                         @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(model => model.VolunteerHours, new{ style = "width:75px"})
-                        @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
                     </td>
                 </tr>  
             </table>
@@ -164,11 +150,11 @@
         }); 
     });  
 </script> 
-@*<script>
+<script>
     $(function () {
         $("#driversDDL").chosen({ width: "150px" });
     });
-</script>*@
+</script>
 <script>
     $(function () {
         $("#clientsDDL").chosen({ width: "150px" });
