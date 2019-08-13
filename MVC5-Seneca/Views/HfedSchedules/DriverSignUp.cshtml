@@ -40,9 +40,11 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
                 <th>&nbsp; Driver</th>
             </tr>
             <tr>
+                <th> </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Date)
                 </th>
@@ -56,11 +58,11 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PointPerson)
                 </th>
-                <th>&nbsp;&nbsp;SignUp</th> 
+                <th>&nbsp;&nbsp;SignUp</th>
                 @if (Model.UserIsOnSchedule)
-                    {
-                        <th>&nbsp;Cancel</th>
-                    }
+                {
+                    <th>&nbsp;Cancel</th>
+                }
                 else
                 {
                     <th></th>
@@ -74,7 +76,10 @@
                 @Html.HiddenFor(m => Model.HfedScheds[i].Id) // Necessary for schedules to bind in POST
             <tr>
                 <td>
-                    @Html.DisplayFor(m => Model.HfedScheds[i].Date)
+                    @Html.DisplayFor(m => Model.HfedScheds[i].FormattedDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].FormattedDate)
                 </td>
                 <td>
                     @Html.DisplayFor(m => Model.HfedScheds[i].PickUpTime)
@@ -86,11 +91,11 @@
                     &nbsp; @Html.DisplayFor(m => Model.HfedScheds[i].Location.Name)
                 </td>
                 <td>
-                    &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FirstName )
+                    &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FirstName)
                 </td>
                 <td>
                     @if (Model.HfedScheds[i].HfedDriversArray[0] == "")
-                    {                   
+                    {
                         <span> &nbsp; &nbsp; &nbsp;</span>
                         @Html.EditorFor(m => Model.HfedScheds[i].SignUp)
                         @Html.ValidationMessageFor(m => Model.HfedScheds[i].SignUp, "", new { @class = "text-danger" })
@@ -98,18 +103,18 @@
                     else
                     {
                         <span> &nbsp;</span>
-                      @Html.DisplayFor( m => Model.HfedScheds[i].DriverName)
-                    }   
-                </td> 
+                        @Html.DisplayFor(m => Model.HfedScheds[i].DriverName)
+                    }
+                </td>
                 <td>
                     @if (Model.HfedScheds[i].HfedDriversArray[0] != "")
                     {
-                         if (Model.HfedScheds[i].HfedDriversArray[0] == User.Identity.GetUserId())
-                         { 
-                             <span> &nbsp; &nbsp; &nbsp;</span>
-                             @Html.EditorFor(m => Model.HfedScheds[i].Cancel )
-                             @Html.ValidationMessageFor(m => Model.HfedScheds[i].Cancel, "", new { @class = "text-danger" })
-                         }
+                        if (Model.HfedScheds[i].HfedDriversArray[0] == User.Identity.GetUserId())
+                        {
+                            <span> &nbsp; &nbsp; &nbsp;</span>
+                            @Html.EditorFor(m => Model.HfedScheds[i].Cancel)
+                            @Html.ValidationMessageFor(m => Model.HfedScheds[i].Cancel, "", new { @class = "text-danger" })
+                        }
                     }
                 </td>
             </tr>

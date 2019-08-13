@@ -64,5 +64,7 @@ namespace MVC5_Seneca.ViewModels
         public List<HfedSchedule> HfedScheds { get; set; }      
         public Boolean UserIsOnSchedule { get; set; } // User is the driver on at least one delivery
         public string DriverFullName { get; set; }   // For Driver SignUp screen
+        public string FormattedDay { get; set; }   // For Driver SignUp screen
+        public string FormattedDate { get; set; }   // For Driver SignUp screen
     }
 }                                                       

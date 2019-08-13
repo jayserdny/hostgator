@@ -118,12 +118,16 @@ namespace MVC5_Seneca.Controllers
                     hfedSchedule.ClientsTotal = hfedSchedule.HfedClientsArray.Length;
                 }
 
+                hfedSchedule .FormattedDay = hfedSchedule.Date.ToString("ddd");
+                hfedSchedule.FormattedDate = hfedSchedule.Date.ToString("MM/dd/yy");
+                                          
+
                 schedulesView.Add(hfedSchedule);
                                                                      
             }         
 
             return View(schedulesView);
-        }
+        }   
           
         // GET: HfedSchedules/Create
         public ActionResult Create()
@@ -716,6 +720,8 @@ namespace MVC5_Seneca.Controllers
             HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel();
             hfedSchedule.UserIsOnSchedule = false;
             hfedSchedule.HfedScheds = new List<HfedSchedule>();
+            var usr = db.Users.Find(User.Identity.GetUserId());
+            hfedSchedule.DriverFullName = usr.FullName;
             foreach (HfedSchedule sched in scheduleList)
             {                                                                                                                          
                 string strSql = "SELECT * FROM HfedSchedule WHERE Id = " + sched.Id;
@@ -740,7 +746,7 @@ namespace MVC5_Seneca.Controllers
                         if (driver != null)
                         {
                             sched.DriverName = driver.FirstName;
-                            if(driver.UserName ==User.Identity.Name )
+                            if(driver.UserName ==User.Identity.Name)
                             {
                                 hfedSchedule.DriverFullName = driver.FullName;
                                 hfedSchedule.UserIsOnSchedule = true;
@@ -758,19 +764,23 @@ namespace MVC5_Seneca.Controllers
                     }
                 }  
                     // Convert viewmodel schedule to hfedschedule to add: 
-                    var hfedSched = new HfedSchedule();
-                     hfedSched.Id = sched.Id;
-                     hfedSched.Date = sched.Date;
-                     hfedSched.PickUpTime = sched.PickUpTime;
-                     hfedSched.Location = sched.Location;
-                     hfedSched.PointPerson = sched.PointPerson;
-                     hfedSched.Provider = sched.Provider;
-                     hfedSched.HfedDriversArray = sched.HfedDriversArray;
-                     hfedSched.HfedClientsArray = sched.HfedClientsArray;
-                     hfedSched.HfedDrivers = sched.HfedDrivers;
-                     hfedSched.SignUp = false;
-                     hfedSched.Cancel  = false;
-                     hfedSched.DriverName = sched.DriverName; 
+                    var hfedSched = new HfedSchedule
+                    {
+                        Id = sched.Id,
+                        Date = sched.Date,
+                        PickUpTime = sched.PickUpTime,
+                        Location = sched.Location,
+                        PointPerson = sched.PointPerson,
+                        Provider = sched.Provider,
+                        HfedDriversArray = sched.HfedDriversArray,
+                        HfedClientsArray = sched.HfedClientsArray,
+                        HfedDrivers = sched.HfedDrivers,
+                        SignUp = false,
+                        Cancel = false,
+                        DriverName = sched.DriverName,
+                        FormattedDay = sched.Date.ToString("ddd"),
+                        FormattedDate = sched.Date.ToString("MM/dd/yy")
+                    }; 
                      hfedSchedule.HfedScheds.Add(hfedSched);
             }  
 
