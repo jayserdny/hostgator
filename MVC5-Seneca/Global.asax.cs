@@ -18,14 +18,8 @@ namespace MVC5_Seneca
 
         protected void Session_Start(Object sender, EventArgs e)
         {
-            DateTime bdt = new DateTime(DateTime.Today.Year ,DateTime .Today .Month ,1);  // (initialize variable)
-            if (DateTime.Today.Day > 15) // After mid-month, start with next month: 
-            {
-                var dt = DateTime.Today;
-                bdt =new DateTime( dt.AddMonths(1) .Year, dt.AddMonths(1).Month,1) ;
-            }
-
-            string sdt = bdt.ToString("MM/dd/yyyy");
+            DateTime bdt = new DateTime(DateTime.Today.Year ,DateTime .Today.Month ,1);  // (initialize variable)
+            var sdt = bdt.ToString("MM/dd/yyyy");
             HttpContext.Current.Session.Add("StartDate", sdt);          
             string edt = new DateTime( bdt.Year , bdt.Month , day: DateTime.DaysInMonth(bdt.Year ,bdt.Month)).ToString("MM/dd/yyyy");
             HttpContext.Current.Session.Add("EndDate", edt);                 
