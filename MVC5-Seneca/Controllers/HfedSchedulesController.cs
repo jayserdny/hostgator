@@ -741,7 +741,8 @@ namespace MVC5_Seneca.Controllers
                         {
                             sched.DriverName = driver.FirstName;
                             if(driver.UserName ==User.Identity.Name )
-                            { 
+                            {
+                                hfedSchedule.DriverFullName = driver.FullName;
                                 hfedSchedule.UserIsOnSchedule = true;
                             }
                         }
@@ -806,6 +807,26 @@ namespace MVC5_Seneca.Controllers
                 }
             }     
             return RedirectToAction("DriverSignUp");
+        }
+
+        // GET: Next Month Schedules
+        public ActionResult MonthNext()
+        {
+            var dt1 = Convert.ToDateTime(Session["StartDate"]);
+            dt1 = dt1.AddMonths(1);
+            Session["StartDate"] = dt1.Month + "/01/" + dt1.Year;
+            var eom = DateTime.DaysInMonth(dt1.Year, dt1.Month);
+            Session["EndDate"] = dt1.Month + "/" + eom + "/" + dt1.Year;
+            return RedirectToAction("Index");
+        }  
+        public ActionResult MonthPrevious()
+        {
+            var dt1 = Convert.ToDateTime(Session["StartDate"]);
+            dt1 = dt1.AddMonths(-1);
+            Session["StartDate"] = dt1.Month + "/01/" + dt1.Year;
+            var eom = DateTime.DaysInMonth(dt1.Year, dt1.Month);
+            Session["EndDate"] = dt1.Month + "/" + eom + "/" + dt1.Year;
+            return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
         {

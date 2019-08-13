@@ -9,13 +9,7 @@ using System.Web.Mvc;
 namespace MVC5_Seneca.ViewModels
 {
     public class HfedScheduleViewModel
-    {
-        //public HfedScheduleViewModel(int providerId)
-        //{
-        //    Provider_Id = providerId;
-        //    Provider_Id = providerId;
-        //}
-
+    {   
         public int Id { get; set; }
 
         [DisplayName("Date")]
@@ -69,5 +63,6 @@ namespace MVC5_Seneca.ViewModels
         public List<HfedClient> HfedClients { get; set; }
         public List<HfedSchedule> HfedScheds { get; set; }      
         public Boolean UserIsOnSchedule { get; set; } // User is the driver on at least one delivery
+        public string DriverFullName { get; set; }   // For Driver SignUp screen
     }
 }                                                       
