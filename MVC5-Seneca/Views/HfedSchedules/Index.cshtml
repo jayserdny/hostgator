@@ -30,8 +30,8 @@
         <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new { id = "StartDate", style = "width: 75px;" }) (Click to change)</td>
         <td><strong>  Ending Date </strong></td>
         <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(), new { id = "EndDate", style = "width: 75px;" }) (Click to change)</td>
-        <td>@Html.ActionLink(" Next Month", "MonthNext")</td>
         <td>@Html.ActionLink(" Previous Month", "MonthPrevious")</td>
+        <td>@Html.ActionLink(" Next Month", "MonthNext")</td>              
     </tr>
 </table>
 <p>
@@ -138,7 +138,12 @@
         </td>
     </tr>
     @if (User.IsInRole("Administrator"))
-    {      
+    {
+        <tr>
+            <td>
+                @Html.ActionLink("Duplicate Current Schedule Into Next Month", "DuplicateMonthlySchedule")
+            </td>
+        </tr>
         <tr>
             <td>
                 @Html.ActionLink("Email Staff 2 Weeks Before Month - Request Schedules", "EmailStaffAsk")

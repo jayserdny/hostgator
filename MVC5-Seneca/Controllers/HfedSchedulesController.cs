@@ -75,7 +75,7 @@ namespace MVC5_Seneca.Controllers
                             {
                                 SelectListItem selListItem = new SelectListItem() {Value = driverId, Text = x.FullName};
                                 selectedDrivers.Add(selListItem);
-                                // One delivery - one driver rule: put drive name in schedule:
+                                // One delivery - one driver rule: put driver name in schedule:
                                 hfedSchedule.DriverName = x.FullName;
                                 hfedSchedule.HfedDrivers.Add(x);
                             }
@@ -536,15 +536,17 @@ namespace MVC5_Seneca.Controllers
             msg.SetFrom("Admin@SenecaHeightsEducationProgram.org", "HFED Coordinator");
             msg.SetSubject("Healthy Food Every Day -  Schedule");  
             msg.AddContent(MimeType.Html, htmlContent);
-            msg.AddTo(new EmailAddress(address, "HFED Volunteer Driver"));
+            msg.AddTo(new EmailAddress(address, "HFED Team Member"));
             var unused = await client.SendEmailAsync(msg);
         }
 
-        public void EmailStaff()    // Email MCCH teams (staff) to populate next month's schedule
+        public void EmailStaff()    // Email MCCH staff to populate next month's schedule.
         {
-            var htmlContent = "<p>Greetings MCCH HFED Team!</p><br />";
-            htmlContent += "<p>Please send your food delivery requests to the HFED Coordinator ";
-            htmlContent += "for next month</p> ";
+            var htmlContent = "<p>Greetings MCCH HFED Team!</p>";
+            htmlContent +=  "<p>The HFED coordinator has tentatively copied the food delivery" +
+                            " schedules from the past month into next month. Please sign in to the HFED" +
+                            " website at https://MVC5Seneca.Azurewebsites.net to verify the details including" +
+                            " the list of clients.</p>";     
             var allUsers = db.Users.ToList();
             foreach (ApplicationUser user in allUsers)
             {
@@ -561,7 +563,8 @@ namespace MVC5_Seneca.Controllers
             string reminderEmailList = "";
             // Add MCCH Community Engagement (Lynn Rose) to Email List 
             reminderEmailList += "prowny@aol.com";
-           
+
+            ApplicationUser selectedDriver = new ApplicationUser();
             var schedules = db.HfedSchedules.Where(s => s.Date == reminderDate).ToList();  
             foreach (HfedSchedule reminder in schedules)
             {
@@ -600,6 +603,7 @@ namespace MVC5_Seneca.Controllers
 
                         if (driver?.Email != null)
                         {
+                            selectedDriver = driver;
                             drivers += driver.FirstName;
                             reminderEmailList += "," + driver.Email;
                         }                                                                  
@@ -613,15 +617,44 @@ namespace MVC5_Seneca.Controllers
                 }
 
                 htmlContent += "<td>" + drivers + "</td></tr></table>";
-                htmlContent += "<table><tr><td>Info:</td></tr>";
 
+                htmlContent += "<table><tr><td>Info:</td></tr>";
                 htmlContent += "<tr><td>Point Person:</td>";
                 htmlContent += "<td>" + pointPerson.FirstName + "&nbsp;" + pointPerson.LastName + "</td>";
-                htmlContent += "<td>" + pointPerson.PhoneNumber  + "</td><td>" + pointPerson.Email + "</td></tr></table>";
+                htmlContent += "<td>&nbsp;" + pointPerson.PhoneNumber  + "</td><td>&nbsp;" + pointPerson.Email + "</td></tr></table>";
 
-                htmlContent += "<table><tr><td>Note:</td>";
-                htmlContent += "<td>" + reminder .ScheduleNote + "</td></tr></table>";
-        
+                htmlContent += "<table><tr><td>Pick Up:</td>";
+                htmlContent += "<td>" + provider[0].Name + "&nbsp;" + provider[0].Address + "</td>";
+                htmlContent += "<td>&nbsp;" + provider[0].MainPhone + "</td>"; 
+                if (!provider[0].ProviderNote.IsNullOrEmpty())
+                {
+                    htmlContent += "<td>&nbsp;" + provider[0].ProviderNote + "</td>";
+                }
+
+                htmlContent += "</tr></table>";
+                
+                htmlContent += "<table><tr><td>Drop Off:</td>";
+                htmlContent += "<td>" + location[0].Name + "&nbsp;" + location[0].Address  
+                               + "</td><td>&nbsp;" + location[0].MainPhone + "</td>";
+                if (!location[0].LocationNote.IsNullOrEmpty())
+                {
+                    htmlContent += "<td>&nbsp;" + location[0].LocationNote + "&nbsp;" + "</td>";
+                }
+                htmlContent += "</tr></table>";
+
+                if (!reminder.ScheduleNote.IsNullOrEmpty())
+                {
+                    htmlContent += "<table><tr><td>Schedule Note:</td>";
+                    htmlContent += "<td>" + reminder.ScheduleNote + "</td></tr></table>";
+                }
+
+                if (!drivers.IsNullOrEmpty())
+                {
+                    htmlContent += "<table><tr><td>Driver:</td>";
+                    htmlContent += "<td>" + selectedDriver.FullName + "&nbsp;" 
+                                   + selectedDriver.PhoneNumber +"&nbsp" + selectedDriver.Email + "</td></tr></table>";
+                }
+
                 htmlContent += "<br /><br /><p>";
                 string[] emailList = reminderEmailList.Split(',').ToArray();
                 foreach (string emailAddress in emailList)
@@ -629,10 +662,8 @@ namespace MVC5_Seneca.Controllers
                     if (!emailAddress.IsNullOrEmpty() && !htmlContent.IsNullOrEmpty())
                     {                                                
                         Email(emailAddress, htmlContent);
-                    }
-
-                    htmlContent = "";
-                }
+                    } 
+                }                             
             }                                                                                      
         }
 
@@ -836,6 +867,72 @@ namespace MVC5_Seneca.Controllers
             Session["StartDate"] = dt1.Month + "/01/" + dt1.Year;
             var eom = DateTime.DaysInMonth(dt1.Year, dt1.Month);
             Session["EndDate"] = dt1.Month + "/" + eom + "/" + dt1.Year;
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DuplicateMonthlySchedule()
+        {
+            // Get this month's schedule:
+            var listSchedules = new List<HfedSchedule>();
+            DateTime sDate = Convert.ToDateTime(Session["StartDate"]);
+            DateTime eDate = Convert.ToDateTime(Session["EndDate"]);
+            var hfedSchedules = db.HfedSchedules.Where(s => s.Date >= sDate && s.Date <= eDate).OrderBy(s => s.Date).ToList();
+            
+            foreach (HfedSchedule hfedSchedule in hfedSchedules)
+            {
+                string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
+                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList(); // Gets mapped Foreign Keys
+
+                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+                hfedSchedule.Location = location[0];
+
+                hfedSchedule.PointPerson = db.Users.Find(schedule[0].PointPerson_Id);
+
+                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+                hfedSchedule.Provider = provider[0];
+                hfedSchedule.HfedDriverIds = null;  // no drivers in duplicate
+                // adjust date:
+                var dt = hfedSchedule.Date.AddMonths(1);
+                var monthStart = new DateTime(dt.Year, dt.Month, 1);
+                var dow = hfedSchedule.Date.DayOfWeek;       
+                for (int i =-7; i < 8; i++)  // Find 1st date within month with same dow
+                {
+                    var newDate = dt.AddDays(i);
+                    if (newDate.DayOfWeek == dow && newDate >= monthStart)
+                    {
+                        hfedSchedule.Date = newDate;
+                        using (var context = new SenecaContext())
+                        {
+                            string cmdString = "INSERT INTO HfedSchedule (";
+                            cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
+                            cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
+                            cmdString += " VALUES (";
+                            cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
+                            if (hfedSchedule.ScheduleNote != null)
+                            {
+                                cmdString += "'" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+                            }
+                            else
+                            {
+                                cmdString += "'',";
+                            }
+                            cmdString += "'" + hfedSchedule.Request + "',";
+                            cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
+                            cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
+                            cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
+                            cmdString += "'" + hfedSchedule.HfedClientIds + "')";
+
+                            context.Database.ExecuteSqlCommand(cmdString);
+                        }
+                        break;
+                    }
+                }
+               
+                listSchedules.Add(hfedSchedule);
+            }                                                          
+
             return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
