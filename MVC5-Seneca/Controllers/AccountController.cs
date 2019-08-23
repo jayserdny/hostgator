@@ -75,8 +75,8 @@ namespace MVC5_Seneca.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid)
+        {             
+            if (!ModelState.IsValid )
             {
                 return View(model);
             }
@@ -174,6 +174,12 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            // Add block to Ukranian bots: username ends with 'GP'
+            if (model.UserName.EndsWith ("GP"))
+            {
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, FirstName = model.FirstName, LastName=model.LastName, PhoneNumber=model.PhoneNumber, Email = model.Email };
