@@ -472,6 +472,10 @@
     <Compile Include="Migrations\201908122034158_DisallowPointPersonNulls.Designer.cs">
       <DependentUpon>201908122034158_DisallowPointPersonNulls.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908281307103_AddActiveFlagToHfedClients.cs" />
+    <Compile Include="Migrations\201908281307103_AddActiveFlagToHfedClients.Designer.cs">
+      <DependentUpon>201908281307103_AddActiveFlagToHfedClients.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -742,7 +746,7 @@
     <Content Include="AdministratorManual\Administrator Manual.pdf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\HfedFunctions.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -1133,6 +1137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908122034158_DisallowPointPersonNulls.resx">
       <DependentUpon>201908122034158_DisallowPointPersonNulls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281307103_AddActiveFlagToHfedClients.resx">
+      <DependentUpon>201908281307103_AddActiveFlagToHfedClients.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

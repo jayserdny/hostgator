@@ -31,7 +31,8 @@ namespace MVC5_Seneca.Controllers
                         LastName = hfedClient.LastName,
                         DateOfBirth = hfedClient.DateOfBirth, 
                         Location = location,
-                        ClientNote = hfedClient.ClientNote
+                        ClientNote = hfedClient.ClientNote,
+                        Active = hfedClient.Active  
                     };
                     model.Add(viewModel);
                 }                         
@@ -46,23 +47,32 @@ namespace MVC5_Seneca.Controllers
             {
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList() 
             };
-
+            hfedClientView.Active = true;
             return View(hfedClientView);
         }
 
         // POST: HfedClients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,ClientNote,Location")] EntityModels.HfedClient hfedClient)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Active,ClientNote,Location")] EntityModels.HfedClient hfedClient)
         {
             //EF adding blank Foreign Key records: use raw SQL
             using (var context = new SenecaContext())
             {
                 string cmdString = "INSERT INTO HfedClient (";
-                cmdString += "FirstName,LastName,DateOfBirth,ClientNote,Location_Id)"; 
+                cmdString += "FirstName,LastName,DateOfBirth,Active,ClientNote,Location_Id)"; 
                 cmdString += " VALUES (";
                 cmdString += "'" + hfedClient.FirstName + "','" + hfedClient.LastName + "',";
                 cmdString += "'" + hfedClient.DateOfBirth + "',";
+                if (hfedClient.Active)
+                {
+                    cmdString += "1,";
+                }
+                else
+                {
+                    cmdString += "0,";
+                }
+
                 if (hfedClient.ClientNote != null)
                 {
                     cmdString += "'" + hfedClient.ClientNote.Replace("'", "''") + "',";
@@ -97,7 +107,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedClients/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Location,ClientNote")] EntityModels.HfedClient hfedClient)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Active,Location,ClientNote")] EntityModels.HfedClient hfedClient)
         {
             if (ModelState.IsValid)
             {
@@ -115,6 +125,16 @@ namespace MVC5_Seneca.Controllers
                     }
 
                     sqlString += "DateOfBirth = '" + hfedClient.DateOfBirth + "',";
+
+                    if (hfedClient.Active)
+                    {
+                        sqlString += "Active = 1,";
+                    }
+                    else
+                    {
+                        sqlString += "Active = 0,";
+                    }
+
                     if (hfedClient.ClientNote != null)
                     {
                         sqlString += "ClientNote = '" + hfedClient.ClientNote.Replace("'", "''") + "',";

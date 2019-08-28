@@ -55,7 +55,7 @@ namespace MVC5_Seneca.Controllers
                 rolesList.Add(new SelectListItem() { Text = role.Name, Value = role.Id });
             }
 
-            var users = (from u in _db.Users select u).ToList();
+            var users = (from u in _db.Users.OrderBy(n => n.LastName) select u).ToList();
             List<SelectListItem> usersList = new List<SelectListItem>();
             foreach (var user in users)
             {

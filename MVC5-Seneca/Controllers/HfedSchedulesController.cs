@@ -72,13 +72,16 @@ namespace MVC5_Seneca.Controllers
                         {                                                                                                 
                             var x = db.Users.Find(driverId);
                             if (x != null)
-                            {
-                                SelectListItem selListItem = new SelectListItem() {Value = driverId, Text = x.FullName};
-                                selectedDrivers.Add(selListItem);
-                                // One delivery - one driver rule: put driver name in schedule:
-                                hfedSchedule.DriverName = x.FullName;
-                                hfedSchedule.HfedDrivers.Add(x);
-                            }
+                                if (UserIsInRole(x, "Active"))
+                                {
+                                    {
+                                        SelectListItem selListItem = new SelectListItem() { Value = driverId, Text = x.FullName };
+                                        selectedDrivers.Add(selListItem);
+                                        // One delivery - one driver rule: put driver name in schedule:
+                                        hfedSchedule.DriverName = x.FullName;
+                                        hfedSchedule.HfedDrivers.Add(x);
+                                    }
+                                }
                         }
                     }   
                     hfedSchedule.SelectedHfedDrivers = selectedDrivers;
@@ -94,11 +97,11 @@ namespace MVC5_Seneca.Controllers
                         {
                             var x = db.HfedClients.Find(Convert.ToInt32(clientId));
                             if (x != null)
-                            {
-                                SelectListItem selListItem = new SelectListItem() {Value = clientId, Text = x.FullName};
-                                selectedClients.Add(selListItem);
-                            }
-                        }
+                            {                                                             
+                                SelectListItem selListItem = new SelectListItem() { Value = clientId, Text = x.FullName };
+                                selectedClients.Add(selListItem);                               
+                             }
+                         }
                     }
 
                     hfedSchedule.SelectedHfedClients = selectedClients ;
@@ -137,7 +140,7 @@ namespace MVC5_Seneca.Controllers
                 Date =Convert.ToDateTime(Session["StartDate"]),
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
-                HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList(),
+                HfedClients = db.HfedClients.Where (c => c.Active).OrderBy(c => c.LastName).ToList(),
                 HfedDrivers =new List<ApplicationUser>( ),
                 HfedStaffs =new List<ApplicationUser>( ),
                 Request = true 
@@ -283,7 +286,7 @@ namespace MVC5_Seneca.Controllers
             {
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),        
-                HfedClients = db.HfedClients.OrderBy(c => c.LastName).ToList(),  
+                HfedClients = db.HfedClients.Where(c => c.Active).OrderBy(c => c.LastName).ToList(),  
                 Date = scheduletoEdit.Date,
                 PickUpTime = scheduletoEdit.PickUpTime,
                 ScheduleNote = scheduletoEdit.ScheduleNote,

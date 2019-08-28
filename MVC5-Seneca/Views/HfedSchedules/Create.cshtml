@@ -13,13 +13,16 @@
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/chosen.jquery.min.js"></script>
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
-    
+
     <style>
         .field-validation-error {
             color: red
         }
+
         .tooltip:hover:after {
             position: absolute;
             /* we can get the title attribute from the relevant item */
@@ -32,9 +35,9 @@
         }
     </style>
     <script>
-        $( function() {
-            $( document ).tooltip();
-        } );
+        $(function () {
+            $(document).tooltip();
+        });
     </script>
     <style>
         label {
