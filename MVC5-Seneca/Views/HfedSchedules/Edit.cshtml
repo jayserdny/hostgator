@@ -36,13 +36,6 @@
                         @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
-                    <td style="text-align:right">
-                        Request
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Request)
-                        @Html.ValidationMessageFor(model => model.Request, "", new { @class = "text-danger" })
-                    </td>
                 </tr>
                 <tr>
                     <td style="text-align:right">
@@ -51,13 +44,6 @@
                     <td>
                         @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
-                    </td>
-                    <td style="text-align:right">
-                        Complete
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Complete)
-                        @Html.ValidationMessageFor(model => model.Complete, "", new { @class = "text-danger" })
                     </td>
                 </tr>
                 <tr><td><br /></td></tr>
@@ -91,7 +77,7 @@
                     <td>Drivers</td>
                     <td>Clients</td>
                     <td>Note</td>
-                    <td>Volunteer Hours</td>
+                    @*<td>Volunteer Hours</td>*@
                 </tr>
                 <tr>
                     <td>
@@ -104,10 +90,10 @@
                         @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
                     </td>
-                    <td>
+                    @*<td>
                         @Html.EditorFor(model => model.VolunteerHours)
                         @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
-                    </td>
+                    </td>*@
                 </tr>
             </table>
             

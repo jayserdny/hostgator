@@ -35,9 +35,14 @@
     </tr>
 </table>
 <p>
-    @Html.ActionLink("Create New Delivery Schedule", "Create")
+    @Html.ActionLink("Create New Food Run", "Create")
 </p>
 <table>
+    <tr>
+        <th></th><th></th><th></th><th></th><th></th><th></th>
+        <th>Point</th>
+        <th>Selected</th>
+    </tr>
     <tr>
         <th></th>
         <th>
@@ -56,78 +61,65 @@
             PickUp
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PointPerson)
+            Person
         </th>
         <th>
             Clients
-        </th>
-
+        </th>  
         <th>
             @Html.DisplayNameFor(model => model.ScheduleNote)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Request)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Complete)
-        </th>
-        <th>
+        @*<th>
             Vol Hrs.
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FormattedDay)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FormattedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Provider.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.Name)
-        </td>
-        <td>
-            @*Use ScheduleNote as dummy string for display-only DDL*@
-            @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
-            @if (item.HfedDrivers.Count > 0)
-            {
-                @Html.DisplayFor(modelitem => item.HfedDrivers[0].FirstName)
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PickUpTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
-        </td>
-        <td>
-            @*Use ScheduleNote as dummy string for display-only DDL*@
-            @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
-            @Html.DisplayFor(modelitem => item.ClientsTotal)
-        </td>
-        <td title=@item.NoteToolTip>
-            @Html.DisplayFor(modelItem => item.ScheduleNote)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Request)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Complete)
-        </td>
-        <td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormattedDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormattedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Provider.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.Name)
+            </td>
+            <td>
+                @*Use ScheduleNote as dummy string for display-only DDL*@
+                @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
+                @if (item.HfedDrivers.Count > 0)
+                {
+                    @Html.DisplayFor(modelitem => item.HfedDrivers[0].FirstName)
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUpTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
+            </td>
+            <td>
+                @*Use ScheduleNote as dummy string for display-only DDL*@
+                @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
+                @Html.DisplayFor(modelitem => item.ClientsTotal)
+            </td>
+            <td title=@item.NoteToolTip>
+                @Html.DisplayFor(modelItem => item.ScheduleNote)
+            </td>
+            @*<td>
             @Html.DisplayFor(modelItem => item.VolunteerHours)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
+        </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+            </td>
+        </tr>
     }
 </table>
 <br/>

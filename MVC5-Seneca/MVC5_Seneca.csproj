@@ -476,6 +476,10 @@
     <Compile Include="Migrations\201908281307103_AddActiveFlagToHfedClients.Designer.cs">
       <DependentUpon>201908281307103_AddActiveFlagToHfedClients.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908282158438_AddHouseholdsAndApproved.cs" />
+    <Compile Include="Migrations\201908282158438_AddHouseholdsAndApproved.Designer.cs">
+      <DependentUpon>201908282158438_AddHouseholdsAndApproved.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1140,6 +1144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908281307103_AddActiveFlagToHfedClients.resx">
       <DependentUpon>201908281307103_AddActiveFlagToHfedClients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282158438_AddHouseholdsAndApproved.resx">
+      <DependentUpon>201908282158438_AddHouseholdsAndApproved.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -25,7 +25,7 @@ namespace MVC5_Seneca.EntityModels
 
         [Required]
         [DisplayName("Drop Off Location")]
-        public HfedLocation Location { get; set; }
+        public HfedLocation Location { get; set; }                                                             
 
         [Required]
         [DisplayName("Point Person")]
@@ -39,6 +39,10 @@ namespace MVC5_Seneca.EntityModels
         public Boolean Request { get; set; }
 
         public Boolean Complete { get; set; }
+
+        public Boolean Approved { get; set; }
+
+        public int Households { get; set; }
 
         [DisplayName("Drivers")]
         public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 

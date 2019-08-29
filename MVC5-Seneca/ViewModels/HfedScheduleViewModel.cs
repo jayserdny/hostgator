@@ -40,6 +40,9 @@ namespace MVC5_Seneca.ViewModels
 
         public Boolean Complete { get; set; }
 
+        public Boolean  Approved { get; set; }
+        public int  Households { get; set; }
+
         [DisplayName("Drivers")]
         public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 
 

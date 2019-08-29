@@ -52,7 +52,7 @@
         @Html.AntiForgeryToken()
 
         <div>
-            <h4>New HFED Schedule</h4>
+            <h4>New HFED Food Run</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" }) 
             
@@ -63,13 +63,6 @@
                     <td>
                         @Html.EditorFor(model => model.Date, new { id="ScheduleDate", @class = "datepicker" }) (Click to change)
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-                    </td>
-                    <td style="text-align:right">
-                        <strong>Request</strong>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Request)
-                        @Html.ValidationMessageFor(model => model.Request, "", new { @class = "text-danger" })
                     </td>
                 </tr> 
                 <tr>

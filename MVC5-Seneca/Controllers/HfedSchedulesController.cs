@@ -60,7 +60,7 @@ namespace MVC5_Seneca.Controllers
 
                 sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
                 var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
-                hfedSchedule.Provider = provider[0];
+                hfedSchedule.Provider = provider[0];     
                 if (hfedSchedule.HfedDriverIds != null)
                 {   
                     hfedSchedule .HfedDrivers=new List<ApplicationUser>();
@@ -100,8 +100,8 @@ namespace MVC5_Seneca.Controllers
                             {                                                             
                                 SelectListItem selListItem = new SelectListItem() { Value = clientId, Text = x.FullName };
                                 selectedClients.Add(selListItem);                               
-                             }
-                         }
+                            }
+                        }
                     }
 
                     hfedSchedule.SelectedHfedClients = selectedClients ;
@@ -143,7 +143,9 @@ namespace MVC5_Seneca.Controllers
                 HfedClients = db.HfedClients.Where (c => c.Active).OrderBy(c => c.LastName).ToList(),
                 HfedDrivers =new List<ApplicationUser>( ),
                 HfedStaffs =new List<ApplicationUser>( ),
-                Request = true 
+                Request =false,
+                Complete=false,
+                Households=0, Approved = false 
             };
             var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
             foreach (ApplicationUser user in allUsers)
@@ -189,8 +191,8 @@ namespace MVC5_Seneca.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include ="Id,Date,PickUpTime," +
-                                                  "Provider,Location,PointPerson," +
-                                                  "ScheduleNote,Request,Complete," +                             
+                                                  "Provider,Location,PointPerson,ScheduleNote," +                             
+                                                  "Households,Approved," +
                                                   "HfedDriversArray,HfedClientsArray,VolunteerHours")]
             HfedSchedule hfedSchedule)
         {  
@@ -246,19 +248,30 @@ namespace MVC5_Seneca.Controllers
             {
                 string cmdString = "INSERT INTO HfedSchedule (";
                 cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
+                cmdString += "Households,Approved,";
                 cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                 cmdString += " VALUES (";
                 cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
-                if (hfedSchedule.ScheduleNote != null)
+                if (hfedSchedule.ScheduleNote.IsNullOrEmpty() )
                 {
-                    cmdString += "'" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+                    cmdString += "'',"; 
                 }
                 else
                 {
-                    cmdString += "'',";
-                } 
-                cmdString += "'" +hfedSchedule.Request + "',";
-                cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
+                    cmdString += "'" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+                }
+
+                cmdString += "0,0,"; // insert zeroes into Request & Complete
+                cmdString += hfedSchedule.Households + ",";
+                if (hfedSchedule.Approved)
+                {
+                    cmdString += "1,";
+                }
+                else
+                {
+                    cmdString += "0,";
+                }
+                cmdString += hfedSchedule.Location.Id + ",";
                 cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
                 cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
                 cmdString += "'" + hfedSchedule.HfedClientIds + "')";
@@ -292,6 +305,8 @@ namespace MVC5_Seneca.Controllers
                 ScheduleNote = scheduletoEdit.ScheduleNote,
                 Request = scheduletoEdit.Request,
                 Complete = scheduletoEdit.Complete,
+                Households =scheduletoEdit.Households ,
+                Approved = scheduletoEdit.Approved,
                 HfedDriverIds = scheduletoEdit.HfedDriverIds,
                 HfedClientIds = scheduletoEdit.HfedClientIds,
                 VolunteerHours = scheduletoEdit.VolunteerHours,
@@ -334,7 +349,9 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedSchedules/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote,Request,Complete,HfedDriversArray,HfedClientsArray,VolunteerHours")] HfedSchedule hfedSchedule)
+        public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote," +
+                                                 "Request,Complete,Households,Approved" +
+                                                 "HfedDriversArray,HfedClientsArray,VolunteerHours")] HfedSchedule hfedSchedule)
         {
             //EF not adding blank Foreign Key records: use raw SQL
             if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
@@ -365,6 +382,16 @@ namespace MVC5_Seneca.Controllers
                 }
                 cmdString += "Request='" + hfedSchedule.Request + "',";
                 cmdString += "Complete='" + hfedSchedule.Complete + "',";
+                cmdString += "Households=" + hfedSchedule.Households + ",";
+                if (hfedSchedule.Approved)
+                {
+                    cmdString += "Approved=1,";
+                }
+                else
+                {
+                    cmdString += "Approved=0,";
+                } 
+                
                 cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
                 cmdString += "PointPerson_Id='" + hfedSchedule.PointPerson.Id + "',";
                 cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";  
@@ -909,7 +936,7 @@ namespace MVC5_Seneca.Controllers
                         using (var context = new SenecaContext())
                         {
                             string cmdString = "INSERT INTO HfedSchedule (";
-                            cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
+                            cmdString += "Date,PickUpTime,ScheduleNote,";
                             cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                             cmdString += " VALUES (";
                             cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
@@ -921,8 +948,7 @@ namespace MVC5_Seneca.Controllers
                             {
                                 cmdString += "'',";
                             }
-                            cmdString += "'" + hfedSchedule.Request + "',";
-                            cmdString += "'" + hfedSchedule.Complete + "'," + hfedSchedule.Location.Id + ",";
+                            cmdString += hfedSchedule.Location.Id + ",";
                             cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
                             cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
                             cmdString += "'" + hfedSchedule.HfedClientIds + "')";
