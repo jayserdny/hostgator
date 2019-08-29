@@ -30,6 +30,7 @@ namespace MVC5_Seneca.ViewModels
 
         [DisplayName("Point Person")]
         public ApplicationUser PointPerson { get; set; }
+        public ApplicationUser Driver { get; set; }
 
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
@@ -41,7 +42,7 @@ namespace MVC5_Seneca.ViewModels
         public Boolean Complete { get; set; }
 
         public Boolean  Approved { get; set; }
-        public int  Households { get; set; }
+        public int?  Households { get; set; }
 
         [DisplayName("Drivers")]
         public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 
@@ -54,6 +55,7 @@ namespace MVC5_Seneca.ViewModels
 
         public int Location_Id { get; set; }
         public string PointPerson_Id { get; set; }
+        public string Driver_Id { get; set; }
         public int Provider_Id { get; set; }
         public string[] HfedDriversArray { get; set; }
         public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }

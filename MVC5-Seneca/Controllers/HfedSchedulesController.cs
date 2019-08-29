@@ -57,6 +57,12 @@ namespace MVC5_Seneca.Controllers
                 hfedSchedule.Location = location[0];
 
                 hfedSchedule.PointPerson = db.Users.Find(schedule[0].PointPerson_Id);
+               
+                var did = schedule[0].Driver_Id;
+                if (did  != null)
+                {
+                    hfedSchedule.Driver = db.Users.Find(did);
+                }
 
                 sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
                 var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
@@ -78,6 +84,7 @@ namespace MVC5_Seneca.Controllers
                                         SelectListItem selListItem = new SelectListItem() { Value = driverId, Text = x.FullName };
                                         selectedDrivers.Add(selListItem);
                                         // One delivery - one driver rule: put driver name in schedule:
+                                        hfedSchedule.Driver = x;
                                         hfedSchedule.DriverName = x.FullName;
                                         hfedSchedule.HfedDrivers.Add(x);
                                     }
@@ -105,6 +112,11 @@ namespace MVC5_Seneca.Controllers
                     }
 
                     hfedSchedule.SelectedHfedClients = selectedClients ;
+                }
+
+                if (hfedSchedule.Households == null)
+                {
+                    hfedSchedule.Households = 0;
                 }
 
                 hfedSchedule.NoteToolTip = hfedSchedule .ScheduleNote.Replace(" ", "\u00a0"); // (full length on mouseover)    \u00a0 is the Unicode character for NO-BREAK-SPACE.
@@ -305,7 +317,7 @@ namespace MVC5_Seneca.Controllers
                 ScheduleNote = scheduletoEdit.ScheduleNote,
                 Request = scheduletoEdit.Request,
                 Complete = scheduletoEdit.Complete,
-                Households =scheduletoEdit.Households ,
+                Households =scheduletoEdit.Households,
                 Approved = scheduletoEdit.Approved,
                 HfedDriverIds = scheduletoEdit.HfedDriverIds,
                 HfedClientIds = scheduletoEdit.HfedClientIds,
@@ -313,7 +325,10 @@ namespace MVC5_Seneca.Controllers
                 HfedDrivers = new List<ApplicationUser>(),
                 HfedStaffs = new List<ApplicationUser>()
             };
-
+            if (hfedSchedule.Households == null)
+            {
+                hfedSchedule.Households = 0;
+            }
             var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
             foreach (var user in allUsers)
             {
@@ -335,6 +350,11 @@ namespace MVC5_Seneca.Controllers
             hfedSchedule.Location = location[0];
 
             hfedSchedule.PointPerson = db.Users.Find(scheduletoEdit.PointPerson.Id);
+            var hfedDriverIds = schedule[0].HfedDriverIds;
+            if (scheduletoEdit.Driver != null)  
+            {
+                hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver.Id ); 
+            }
 
             sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
             var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
@@ -350,7 +370,7 @@ namespace MVC5_Seneca.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson,ScheduleNote," +
-                                                 "Request,Complete,Households,Approved" +
+                                                 "Driver,Request,Complete,Households,Approved," +
                                                  "HfedDriversArray,HfedClientsArray,VolunteerHours")] HfedSchedule hfedSchedule)
         {
             //EF not adding blank Foreign Key records: use raw SQL
@@ -389,13 +409,14 @@ namespace MVC5_Seneca.Controllers
                 }
                 else
                 {
-                    cmdString += "Approved=0,";
+                    cmdString += "Approved=0,";                                                   
                 } 
                 
                 cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
                 cmdString += "PointPerson_Id='" + hfedSchedule.PointPerson.Id + "',";
+                cmdString += "Driver_Id='" + hfedSchedule.Driver.Id + "',";
                 cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";  
-                cmdString += "HfedDriverIds='" + hfedSchedule .HfedDriverIds + "',";
+                cmdString += "HfedDriverIds='" + hfedSchedule.HfedDriversArray + "',";   
                 cmdString += "HfedClientIds='" + hfedSchedule .HfedClientIds + "',";
                 if (Math.Abs((hfedSchedule.VolunteerHours ?? 0)) < .01)
                 {
@@ -409,9 +430,7 @@ namespace MVC5_Seneca.Controllers
                 context.Database.ExecuteSqlCommand(cmdString);
             }
 
-            return RedirectToAction("Index");
-          
-            //return View(hfedSchedule);
+            return RedirectToAction("Index");             
         }
 
         // GET: HfedSchedules/Delete/5

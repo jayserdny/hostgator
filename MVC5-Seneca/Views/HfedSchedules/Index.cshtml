@@ -40,6 +40,7 @@
 <table>
     <tr>
         <th></th><th></th><th></th><th></th><th></th><th></th>
+        <th>Number of</th>
         <th>Point</th>
         <th>Selected</th>
     </tr>
@@ -59,6 +60,9 @@
         </th>
         <th>
             PickUp
+        </th> 
+        <th>
+            Households
         </th>
         <th>
             Person
@@ -68,6 +72,9 @@
         </th>  
         <th>
             @Html.DisplayNameFor(model => model.ScheduleNote)
+        </th>
+        <th>
+            <strong>Approved</strong>
         </th>
         @*<th>
             Vol Hrs.
@@ -93,13 +100,16 @@
             <td>
                 @*Use ScheduleNote as dummy string for display-only DDL*@
                 @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
-                @if (item.HfedDrivers.Count > 0)
+                @if (item.Driver != null)
                 {
-                    @Html.DisplayFor(modelitem => item.HfedDrivers[0].FirstName)
+                    @Html.DisplayFor(modelitem => item.Driver.FirstName)
                 }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PickUpTime)
+            </td> 
+            <td style="text-align:center">
+                @Html.DisplayFor( modelItem => item.Households)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
@@ -111,6 +121,9 @@
             </td>
             <td title=@item.NoteToolTip>
                 @Html.DisplayFor(modelItem => item.ScheduleNote)
+            </td>
+            <td style="text-align:center">
+                @Html.DisplayFor(modelItem => item.Approved)
             </td>
             @*<td>
             @Html.DisplayFor(modelItem => item.VolunteerHours)

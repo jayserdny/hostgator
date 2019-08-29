@@ -480,6 +480,10 @@
     <Compile Include="Migrations\201908282158438_AddHouseholdsAndApproved.Designer.cs">
       <DependentUpon>201908282158438_AddHouseholdsAndApproved.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908291831035_AddDriverToSchedule.cs" />
+    <Compile Include="Migrations\201908291831035_AddDriverToSchedule.Designer.cs">
+      <DependentUpon>201908291831035_AddDriverToSchedule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Settings.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1147,6 +1151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908282158438_AddHouseholdsAndApproved.resx">
       <DependentUpon>201908282158438_AddHouseholdsAndApproved.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291831035_AddDriverToSchedule.resx">
+      <DependentUpon>201908291831035_AddDriverToSchedule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

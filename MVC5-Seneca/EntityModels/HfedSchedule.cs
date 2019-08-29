@@ -31,6 +31,8 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Point Person")]
         public ApplicationUser PointPerson { get; set; }
 
+        public ApplicationUser Driver{get; set; }
+
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
 
@@ -42,7 +44,7 @@ namespace MVC5_Seneca.EntityModels
 
         public Boolean Approved { get; set; }
 
-        public int Households { get; set; }
+        public int? Households { get; set; }
 
         [DisplayName("Drivers")]
         public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 

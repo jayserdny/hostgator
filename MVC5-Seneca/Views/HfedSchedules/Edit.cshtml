@@ -22,7 +22,7 @@
         @Html.AntiForgeryToken()
 
         <div>
-            <h4>Edit HFED Schedule</h4>
+            <h4>Edit HFED Food Run</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.Id)
@@ -30,7 +30,7 @@
             <table>
                 <tr>
                     <td style="text-align:right">
-                        @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" })
+                        <strong>@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" }) </strong>
                     </td>
                     <td>
                         @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
@@ -38,8 +38,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align:right">
-                        @Html.LabelFor(model => model.PickUpTime, htmlAttributes: new { @class = "col-md-2" })
+                    <td style="text-align: right">
+                        <strong>PickUp Time</strong>
                     </td>
                     <td>
                         @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control" } })
@@ -49,13 +49,13 @@
                 <tr><td><br /></td></tr>
                 <tr>
                     <td>
-                        @Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })
+                        <strong>@Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })</strong>
                     </td>
                     <td>
-                        @Html.LabelFor(m => m.Location, new { @class = "col-md-2" })
+                        <strong>@Html.LabelFor(m => m.Location, new { @class = "col-md-2" })</strong>
                     </td>
                     <td>
-                        @Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })
+                        <strong>@Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })</strong>
                     </td>
                 </tr>
                 <tr>
@@ -74,18 +74,22 @@
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
-                    <td>Drivers</td>
-                    <td>Clients</td>
-                    <td>Note</td>
+                    <td><strong>Driver</strong></td>
+                    <td><strong>Households</strong></td>
+                    <td><strong>Note</strong></td>
                     @*<td>Volunteer Hours</td>*@
                 </tr>
                 <tr>
                     <td>
-                        @Html.ListBoxFor(model => model.HfedDriversArray, new MultiSelectList(Model.HfedDrivers, "Id", "FullName"), new { Id = "driversDDL" })
+                        @Html.DropDownListFor(x => x.Driver.Id, new SelectList(Model.HfedDrivers, "Id", "FullName", Model.Driver.Id ), " Select")
+                        @Html.ValidationMessageFor(model => model.Driver.Id, "", new {@class = "text-danger"})
                     </td>
                     <td>
-                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL" })
+                        @Html.TextBoxFor(model => model.Households, new {onclick="$(this).select();",  style = "Width:30px" })
+                        @Html.ValidationMessageFor(model => model.Households, "", new { @class = "text-danger" })
+
                     </td>
+                    
                     <td>
                         @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
@@ -94,6 +98,18 @@
                         @Html.EditorFor(model => model.VolunteerHours)
                         @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
                     </td>*@
+                </tr> 
+                <tr>
+                    <td><strong>Clients</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL" })
+                    </td>
+                    <td style="text-align:right"><strong>I Approve This Run</strong></td> 
+                    <td>
+                        @Html.EditorFor( model => model.Approved)                                                                    
+                    </td>
                 </tr>
             </table>
             
