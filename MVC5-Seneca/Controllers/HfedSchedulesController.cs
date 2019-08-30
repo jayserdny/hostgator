@@ -833,19 +833,30 @@ namespace MVC5_Seneca.Controllers
                     sched.HfedDriversArray = schedData.HfedDriverIds.Split(',').ToArray();
                     sched.HfedClientsArray = schedData.HfedClientIds.Split(',').ToArray();
                     sched .HfedDrivers = new List<ApplicationUser>();
-                    if (sched.HfedDriversArray[0].Length > 1)
+                    var did = schedData.Driver_Id;
+                    if (!did.IsNullOrEmpty())
                     {
-                        ApplicationUser driver = db.Users.Find(sched.HfedDriversArray[0]);
-                        if (driver != null)
+                        sched.Driver = db.Users.Find(did);        
+                        if (sched.Driver.UserName == User.Identity.Name)
                         {
-                            sched.DriverName = driver.FirstName;
-                            if(driver.UserName ==User.Identity.Name)
-                            {
-                                hfedSchedule.DriverFullName = driver.FullName;
-                                hfedSchedule.UserIsOnSchedule = true;
-                            }
+                            hfedSchedule.DriverFullName = sched.Driver.FullName;
+                            hfedSchedule.UserIsOnSchedule = true;
                         }
                     }
+
+                    //if (sched.HfedDriversArray[0].Length > 1)
+                    //{
+                    //    ApplicationUser driver = db.Users.Find(sched.HfedDriversArray[0]);
+                    //    if (driver != null)
+                    //    {
+                    //        sched.DriverName = driver.FirstName;
+                    //        if(driver.UserName ==User.Identity.Name)
+                    //        {
+                    //            hfedSchedule.DriverFullName = driver.FullName;
+                    //            hfedSchedule.UserIsOnSchedule = true;
+                    //        }
+                    //    }
+                    //}
                 } 
                                                                                                                                             
                 var allUsers = db.Users.OrderBy(n => n.FirstName).ToList();
@@ -870,6 +881,7 @@ namespace MVC5_Seneca.Controllers
                         HfedDrivers = sched.HfedDrivers,
                         SignUp = false,
                         Cancel = false,
+                        Driver = sched.Driver,
                         DriverName = sched.DriverName,
                         FormattedDay = sched.Date.ToString("ddd"),
                         FormattedDate = sched.Date.ToString("MM/dd/yy")
@@ -892,7 +904,7 @@ namespace MVC5_Seneca.Controllers
                     using (var context = new SenecaContext())
                     {
                         string cmdString = "UPDATE HfedSchedule SET ";
-                        cmdString += "HfedDriverIds='" + User.Identity.GetUserId() + "' ";
+                        cmdString += "Driver_Id='" + User.Identity.GetUserId() + "' ";
                         cmdString += " WHERE Id=" + sched.Id;
                         context.Database.ExecuteSqlCommand(cmdString);
                     }
@@ -903,7 +915,7 @@ namespace MVC5_Seneca.Controllers
                     using (var context = new SenecaContext())
                     {
                         string cmdString = "UPDATE HfedSchedule SET ";
-                        cmdString += "HfedDriverIds=''";
+                        cmdString += "HfedDriverIds='',Driver_Id=null";
                         cmdString += " WHERE Id=" + sched.Id;
                         context.Database.ExecuteSqlCommand(cmdString);
                     }

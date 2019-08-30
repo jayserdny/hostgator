@@ -94,7 +94,7 @@
                     &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FirstName)
                 </td>
                 <td>
-                    @if (Model.HfedScheds[i].HfedDriversArray[0] == "")
+                    @if (Model.HfedScheds[i].Driver == null)
                     {
                         <span> &nbsp; &nbsp; &nbsp;</span>
                         @Html.EditorFor(m => Model.HfedScheds[i].SignUp)
@@ -103,13 +103,13 @@
                     else
                     {
                         <span> &nbsp;</span>
-                        @Html.DisplayFor(m => Model.HfedScheds[i].DriverName)
+                        @Html.DisplayFor(m => Model.HfedScheds[i].Driver.FirstName)
                     }
                 </td>
                 <td>
-                    @if (Model.HfedScheds[i].HfedDriversArray[0] != "")
+                    @if (Model.HfedScheds[i].Driver != null)
                     {
-                        if (Model.HfedScheds[i].HfedDriversArray[0] == User.Identity.GetUserId())
+                        if (Model.HfedScheds[i].Driver.Id == User.Identity.GetUserId())
                         {
                             <span> &nbsp; &nbsp; &nbsp;</span>
                             @Html.EditorFor(m => Model.HfedScheds[i].Cancel)
