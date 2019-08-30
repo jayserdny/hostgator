@@ -40,8 +40,8 @@
 <table>
     <tr>
         <th></th><th></th><th></th><th></th><th></th><th></th>
-        <th>Number of</th>
         <th>Point</th>
+        <th>Number of</th>
         <th>Selected</th>
     </tr>
     <tr>
@@ -60,16 +60,16 @@
         </th>
         <th>
             PickUp
-        </th> 
-        <th>
-            Households
         </th>
         <th>
             Person
         </th>
         <th>
+            Households
+        </th>
+        <th>
             Clients
-        </th>  
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.ScheduleNote)
         </th>
@@ -84,55 +84,55 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FormattedDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FormattedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provider.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.Name)
-            </td>
-            <td>
-                @*Use ScheduleNote as dummy string for display-only DDL*@
-                @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
-                @if (item.Driver != null)
-                {
-                    @Html.DisplayFor(modelitem => item.Driver.FirstName)
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PickUpTime)
-            </td> 
-            <td style="text-align:center">
-                @Html.DisplayFor( modelItem => item.Households)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
-            </td>
-            <td>
-                @*Use ScheduleNote as dummy string for display-only DDL*@
-                @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
-                @Html.DisplayFor(modelitem => item.ClientsTotal)
-            </td>
-            <td title=@item.NoteToolTip>
-                @Html.DisplayFor(modelItem => item.ScheduleNote)
-            </td>
-            <td style="text-align:center">
-                @Html.DisplayFor(modelItem => item.Approved)
-            </td>
-            @*<td>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FormattedDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FormattedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Provider.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location.Name)
+        </td>
+        <td>
+            @*Use ScheduleNote as dummy string for display-only DDL*@
+            @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
+            @if (item.Driver != null)
+            {
+                @Html.DisplayFor(modelitem => item.Driver.FirstName)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PickUpTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Households)
+        </td>  
+        <td>
+            @*Use ScheduleNote as dummy string for display-only DDL*@
+            @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
+            @Html.DisplayFor(modelitem => item.ClientsTotal)
+        </td>
+        <td title=@item.NoteToolTip>
+            @Html.DisplayFor(modelItem => item.ScheduleNote)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Approved)
+        </td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.VolunteerHours)
         </td>*@
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
-                @Html.ActionLink("Delete", "Delete", new {id = item.Id})
-            </td>
-        </tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
     }
 </table>
 <br/>

@@ -10,6 +10,7 @@ using System.IO;
 using Castle.Core.Internal;
 using MVC5_Seneca.ViewModels;
 using ClosedXML.Excel;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SendGrid;
@@ -274,7 +275,15 @@ namespace MVC5_Seneca.Controllers
                 }
 
                 cmdString += "0,0,"; // insert zeroes into Request & Complete
-                cmdString += hfedSchedule.Households + ",";
+                if (hfedSchedule.Households == null)
+                {
+                    cmdString += "0,";
+                }
+                else
+                {
+                    cmdString += hfedSchedule.Households + ",";
+                }
+                
                 if (hfedSchedule.Approved)
                 {
                     cmdString += "1,";
@@ -399,6 +408,10 @@ namespace MVC5_Seneca.Controllers
                 if (hfedSchedule.ScheduleNote != null)
                 {
                     cmdString += "ScheduleNote='" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+                }
+                else
+                {
+                    cmdString += "ScheduleNote='',";
                 }
                 cmdString += "Request='" + hfedSchedule.Request + "',";
                 cmdString += "Complete='" + hfedSchedule.Complete + "',";

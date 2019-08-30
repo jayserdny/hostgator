@@ -454,7 +454,9 @@
     <Compile Include="EntityModels\HfedClient.cs" />
     <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\HfedProvider.cs" />
-    <Compile Include="EntityModels\HfedSchedule.cs" />
+    <Compile Include="EntityModels\HfedSchedule.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="EntityModels\Login.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1105,12 +1107,22 @@
     <Content Include="Views\HfedProviders\Delete.cshtml" />
     <Content Include="Views\HfedProviders\Edit.cshtml" />
     <Content Include="Views\HfedProviders\Index.cshtml" />
-    <Content Include="Views\HfedSchedules\Create.cshtml" />
-    <Content Include="Views\HfedSchedules\Delete.cshtml" />
-    <Content Include="Views\HfedSchedules\Edit.cshtml" />
-    <Content Include="Views\HfedSchedules\Index.cshtml" />
+    <Content Include="Views\HfedSchedules\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedSchedules\Delete.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedSchedules\Edit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedSchedules\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\HfedUpdateMyProfile\Edit.cshtml" />
-    <Content Include="Views\HfedSchedules\DriverSignUp.cshtml" />
+    <Content Include="Views\HfedSchedules\DriverSignUp.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

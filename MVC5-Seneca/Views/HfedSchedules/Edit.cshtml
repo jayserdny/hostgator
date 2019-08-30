@@ -81,7 +81,7 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.DropDownListFor(x => x.Driver.Id, new SelectList(Model.HfedDrivers, "Id", "FullName", Model.Driver.Id ), " Select")
+                        @Html.DropDownListFor(x => x.Driver.Id, new SelectList(Model.HfedDrivers, "Id", "FullName"), " Nobody Yet")
                         @Html.ValidationMessageFor(model => model.Driver.Id, "", new {@class = "text-danger"})
                     </td>
                     <td>
