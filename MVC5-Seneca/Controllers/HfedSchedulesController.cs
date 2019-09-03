@@ -734,17 +734,25 @@ namespace MVC5_Seneca.Controllers
             XLWorkbook workbook = new XLWorkbook();
             IXLWorksheet ws = workbook.Worksheets.Add("Requests");
             int activeRow = 1;
-            ws.Cell(activeRow, 1).SetValue("Food Delivery Schedule"); 
+            ws.Cell(activeRow, 1).SetValue("Food Delivery Schedule");
+            ws.Cell(activeRow, 2).SetValue("Provider");
+            ws.Cell(activeRow, 3).SetValue("Location");
+            ws.Cell(activeRow, 4).SetValue("Households");
+            ws.Cell(activeRow, 5).SetValue("Time");
+            ws.Cell(activeRow, 6).SetValue("Point");
+            ws.Cell(activeRow, 7).SetValue("Driver");
+            ws.Cell(activeRow, 8).SetValue("Note");
+
             ws.Row(1).Style.Font.Bold = true;
             DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
             DateTime endDate = Convert.ToDateTime(Session["EndDate"]);
             var deliveryRequests = db.HfedSchedules.Where(s =>
-                s.Date >= startDate && s.Date <= endDate
-                                    && s.Request && s.Complete == false).OrderBy(s => s.Date).ToList();
+                s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date).ToList();
             foreach (HfedSchedule request in deliveryRequests)
             {
                 activeRow += 1;
-                ws.Cell(activeRow, 1).SetValue(request.Date.ToShortDateString());
+                var dow = request.Date.ToString("ddd") + " ";    
+                ws.Cell(activeRow, 1).SetValue(dow + request.Date.ToString("MM/dd/yy"));
 
                 var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
                 var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
@@ -757,32 +765,23 @@ namespace MVC5_Seneca.Controllers
                 var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
                 ws.Cell(activeRow, 3).SetValue(location[0].Name);
 
-                ws.Cell(activeRow, 4).SetValue(request.PickUpTime);
+                ws.Cell(activeRow, 4).SetValue(request.Households.ToString());
+                ws.Cell(activeRow, 5).SetValue(request.PickUpTime);
 
                 ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);  
-                ws.Cell(activeRow, 5).SetValue(pointPerson.FirstName);
+                ws.Cell(activeRow, 6).SetValue(pointPerson.FirstName);
 
-                string drivers = "";
-                if (!request.HfedDriverIds.IsNullOrEmpty())
+                string driverName = "";
+                if (schedule[0].Driver_Id != null)
                 {
-                    string[] driversArray = request.HfedDriverIds.Split(',').ToArray();
-                    foreach (string driverId in driversArray)
-                    {
-                        ApplicationUser driver = db.Users .Find(driverId);
-                        if (drivers.Length != 0)
-                        {
-                            drivers += ", ";
-                        }
-
-                        if (driver != null) drivers += driver.FirstName;
-                    }
+                    ApplicationUser driver = db.Users.Find(schedule[0].Driver_Id);
+                    if (driver != null) driverName = driver.FirstName;
                 }
-                ws.Cell(activeRow, 6).SetValue(drivers); 
-                ws.Cell(activeRow, 7).SetValue(request.ScheduleNote);
+                  
+                ws.Cell(activeRow, 7).SetValue(driverName); 
+                ws.Cell(activeRow, 8).SetValue(request.ScheduleNote);
             }
-            ws.Columns().AdjustToContents();
-            //ws.Column( 6).Style.Fill.BackgroundColor = XLColor.Amber;
-            //ws.Column(6).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;   
+            ws.Columns().AdjustToContents();  
             MemoryStream ms = new MemoryStream();
             workbook.SaveAs(ms);
             ms.Position = 0;
