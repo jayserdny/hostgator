@@ -107,13 +107,13 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                            "--Select Note--", new { style = "width:275px" })
+                        @*@Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
+                            "--Select Note--", new { style = "width:275px" })*@
                                                   
                         @*@Html.DropDownList( "ClientsDDL", , new SelectList(string.Empty, "Value", 
                            "Text"), "--Select --")*@
                         
-                        @*@Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new {Id = "clientsDDL"})*@
+                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new {Id = "clientsDDL"})
                     </td>
                     <td style="text-align:right"><strong>I Approve This Run</strong></td> 
                     <td>

@@ -841,21 +841,7 @@ namespace MVC5_Seneca.Controllers
                             hfedSchedule.DriverFullName = sched.Driver.FullName;
                             hfedSchedule.UserIsOnSchedule = true;
                         }
-                    }
-
-                    //if (sched.HfedDriversArray[0].Length > 1)
-                    //{
-                    //    ApplicationUser driver = db.Users.Find(sched.HfedDriversArray[0]);
-                    //    if (driver != null)
-                    //    {
-                    //        sched.DriverName = driver.FirstName;
-                    //        if(driver.UserName ==User.Identity.Name)
-                    //        {
-                    //            hfedSchedule.DriverFullName = driver.FullName;
-                    //            hfedSchedule.UserIsOnSchedule = true;
-                    //        }
-                    //    }
-                    //}
+                    }      
                 } 
                                                                                                                                             
                 var allUsers = db.Users.OrderBy(n => n.FirstName).ToList();
@@ -979,7 +965,7 @@ namespace MVC5_Seneca.Controllers
                         using (var context = new SenecaContext())
                         {
                             string cmdString = "INSERT INTO HfedSchedule (";
-                            cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
+                            cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,Households,";
                             cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                             cmdString += " VALUES (";
                             cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
@@ -993,6 +979,7 @@ namespace MVC5_Seneca.Controllers
                             }
 
                             cmdString += "0,0,"; // Request & Complete = false
+                            cmdString += hfedSchedule.Households + ",";
                             cmdString += hfedSchedule.Location.Id + ",";
                             cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
                             cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
@@ -1006,8 +993,9 @@ namespace MVC5_Seneca.Controllers
                
                 listSchedules.Add(hfedSchedule);
             }                                                          
+            // Set Start/End dates to the newly created schedule:
 
-            return RedirectToAction("Index");
+            return RedirectToAction("MonthNext");
         }
         protected override void Dispose(bool disposing)
         {
