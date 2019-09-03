@@ -15,6 +15,8 @@
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
 </head>
 <body>
     @using (Html.BeginForm())
@@ -64,8 +66,9 @@
                         @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
+
                         @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)
-                        @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Location.Id, "", new {@class = "text-danger"})
                     </td>
                     <td>
                         @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select")
@@ -104,7 +107,13 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL" })
+                        @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
+                            "--Select Note--", new { style = "width:275px" })
+                                                  
+                        @*@Html.DropDownList( "ClientsDDL", , new SelectList(string.Empty, "Value", 
+                           "Text"), "--Select --")*@
+                        
+                        @*@Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new {Id = "clientsDDL"})*@
                     </td>
                     <td style="text-align:right"><strong>I Approve This Run</strong></td> 
                     <td>
@@ -124,7 +133,11 @@
     <br />
     <div>
         @Html.ActionLink("Back to List", "Index")
-    </div>
+</div> 
+
+<script type="text/javascript">
+    $("#ClientssDDL").change(LoadClients);
+</script>
 </body>
 </html>
 

@@ -980,7 +980,7 @@ namespace MVC5_Seneca.Controllers
                         using (var context = new SenecaContext())
                         {
                             string cmdString = "INSERT INTO HfedSchedule (";
-                            cmdString += "Date,PickUpTime,ScheduleNote,";
+                            cmdString += "Date,PickUpTime,ScheduleNote,Request,Complete,";
                             cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                             cmdString += " VALUES (";
                             cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
@@ -992,6 +992,8 @@ namespace MVC5_Seneca.Controllers
                             {
                                 cmdString += "'',";
                             }
+
+                            cmdString += "0,0,"; // Request & Complete = false
                             cmdString += hfedSchedule.Location.Id + ",";
                             cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
                             cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
