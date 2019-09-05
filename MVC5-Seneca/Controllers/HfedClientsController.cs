@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
+using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -181,14 +184,19 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult GetClients(int id /* drop down value of Location_Id */)
         { 
+            // called when a Location has changed in Edit or Create schedule
             List<HfedClient> clients = new List<HfedClient>();
             clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
             SelectList clientList = new SelectList(clients,"Id", "FullName", 0);
-            var x = Session["CurrentEditScheduleId"];
-
+            //using (var context = new SenecaContext())
+            //{
+            //    var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + Convert.ToInt32( Session["CurrentEditScheduleId"]);
+            //    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
+            //}
+                                                           
             try
             {
-                String json = JsonConvert.SerializeObject(clients, Formatting.Indented);
+                String json = JsonConvert.SerializeObject(clientList, Formatting.Indented);
                 return Content(json, "application/json");
             }
             catch (Exception)
