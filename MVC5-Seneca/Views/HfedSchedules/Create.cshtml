@@ -111,7 +111,9 @@
                 </tr>              
                 <tr>
                     <td>
-                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new { Id = "clientsDDL"})
+                        @Html.ListBoxFor(model => model.HfedClientsArray, 
+                            new MultiSelectList(Model.HfedClients, "Id", "FullName"),
+                            new { Id = "clientsDDL"})
                     </td>
                     <td>
                         @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })

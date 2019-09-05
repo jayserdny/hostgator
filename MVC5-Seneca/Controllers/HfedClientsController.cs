@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
+using Newtonsoft.Json;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -176,6 +177,24 @@ namespace MVC5_Seneca.Controllers
             db.HfedClients.Remove(hfedClient);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult GetClients(int id /* drop down value of Location_Id */)
+        { 
+            List<HfedClient> clients = new List<HfedClient>();
+            clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
+            SelectList clientList = new SelectList(clients,"Id", "FullName", 0);
+            var x = Session["CurrentEditScheduleId"];
+
+            try
+            {
+                String json = JsonConvert.SerializeObject(clients, Formatting.Indented);
+                return Content(json, "application/json");
+            }
+            catch (Exception)
+            {
+                return null;
+            }             
         }
 
         public ActionResult ReturnToHfedDashboard()

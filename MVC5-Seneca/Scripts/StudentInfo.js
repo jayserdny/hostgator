@@ -1,6 +1,6 @@
 ﻿// #region                                                              
 var noteToSelectText;
-var _loadArraysInProgress = false;  // flag to ignore calls from SessionNotessDDL.change
+var _loadArraysInProgress = false;  // flag to ignore calls from SessionNotesDDL.change
 var reportComments = [];  // empty array
 var reportLinks = []; // empty array 
 var reportIds=[];  // contains Id url of currently selected report
@@ -491,7 +491,7 @@ function SaveEditedSessionNote(text)
         type: "POST",
         dataType: "JSON",
         success: function() {
-            _latestTutorNote_Id = noteToEditId; 
+            _latestTutorNote_Id = noteToEditId;                                                                     
             $("#SessionNotesDDL").empty();
             $("#TutorNotesSelectLabel").text("Previous Tutor Session Notes:");
             $("#SessionNoteLabel").text("  Session Note: ");

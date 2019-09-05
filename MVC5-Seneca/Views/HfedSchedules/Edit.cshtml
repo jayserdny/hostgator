@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
     @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
     <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
 </head>
 <body>
     @using (Html.BeginForm())
@@ -27,8 +28,7 @@
             <h4>Edit HFED Food Run</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.Id)
-
+            @Html.HiddenFor(model => model.Id)  
             <table>
                 <tr>
                     <td style="text-align:right">
@@ -62,13 +62,17 @@
                 </tr>
                 <tr>
                     <td>
+
                         @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select") (Required)
                         @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
-
-                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)
-                        @Html.ValidationMessageFor(model => model.Location.Id, "", new {@class = "text-danger"})
+                        @Html.DropDownList("location_Id", Model.HfedLocations , "-Select Location-")
+                    
+                        @*@Html.DropDownList("locationsDDL", new SelectList(string.Empty,
+                        "Value", "Text"), "--Select --")*@
+                        @*@Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") (Required)*@
+                        @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
                         @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"), " Select")
@@ -101,43 +105,47 @@
                         @Html.EditorFor(model => model.VolunteerHours)
                         @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
                     </td>*@
-                </tr> 
+                </tr>
+            </table> 
+        </div>  
+
+        <div id="ClientsDiv">
+            <table>
                 <tr>
                     <td><strong>Clients</strong></td>
                 </tr>
                 <tr>
+                <td> 
+                    @Html.ListBoxFor(model => model.HfedClientsArray,
+                        new MultiSelectList(Model.HfedClients, "Id", "FullName"),
+                        new {Id = "clientsDDL"})  
+                </td>
+                <tr>
+            </table>   
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <td style="text-align: right"><strong>I Approve This Run</strong></td>
                     <td>
-                        @*@Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
-                            "--Select Note--", new { style = "width:275px" })*@
-                                                  
-                        @*@Html.DropDownList( "ClientsDDL", , new SelectList(string.Empty, "Value", 
-                           "Text"), "--Select --")*@
-                        
-                        @Html.ListBoxFor(model => model.HfedClientsArray, new MultiSelectList(Model.HfedClients, "Id", "FullName"), new {Id = "clientsDDL"})
-                    </td>
-                    <td style="text-align:right"><strong>I Approve This Run</strong></td> 
-                    <td>
-                        @Html.EditorFor( model => model.Approved)                                                                    
+                        @Html.EditorFor(model => model.Approved)
                     </td>
                 </tr>
             </table>
-            
-            <br />
+        </div>
+        <br />
             <div class="form-group">
                 <div class="col-md-10">
-                    <input type="submit" value="Save" class="btn" />
+                    <input type="submit" value="Save Changes" class="btn" style="background-color: aqua; font-weight:bold"/>
                 </div>
             </div>
-        </div>
-    }
+        }
     <br />
     <div>
         @Html.ActionLink("Back to List", "Index")
-</div> 
+    </div> 
 
-<script type="text/javascript">
-    $("#ClientssDDL").change(LoadClients);
-</script>
 </body>
 </html>
 
@@ -151,13 +159,20 @@
         });
     });
 </script>
-<script>
-    $(function () {
-        $("#driversDDL").chosen({ width: "150px" });
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('change', '#location_Id', LoadClients() {
+        });
     });
-</script>
+</script>*@
+
 <script>
     $(function () {
         $("#clientsDDL").chosen({ width: "150px" });
     });
+</script>    
+
+<script type="text/javascript">
+    $("#location_Id").change(LoadClients);
 </script>

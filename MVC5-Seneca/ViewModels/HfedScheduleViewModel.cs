@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace MVC5_Seneca.ViewModels
 {
@@ -61,7 +62,8 @@ namespace MVC5_Seneca.ViewModels
         public IEnumerable<SelectListItem> SelectedHfedDrivers { get; set; }
         public string[] HfedClientsArray { get; set; }
         public IEnumerable<SelectListItem> SelectedHfedClients { get; set; }
-        public List<HfedLocation> HfedLocations { get; set; }
+        //public List<HfedLocation> HfedLocations { get; set; }
+        [JsonProperty] public List<SelectListItem> HfedLocations { get; set; }
         public List<HfedProvider> HfedProviders { get; set; }
         public List<ApplicationUser> HfedDrivers { get; set; }
         public List<ApplicationUser> HfedStaffs { get; set; }
