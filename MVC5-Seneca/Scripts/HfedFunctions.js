@@ -35,8 +35,7 @@ function UpdateHfedEndDate(endDate)
 
 function LoadClients()
 {
-    var each = function() { throw new Error("Not implemented"); };
-    hfedClients = []; hfedClientIds = [];   
+    var each = function() { throw new Error("Not implemented"); };   
     var locationId = $(this).val();                                                   
     $.ajax({
         url: "/HfedClients/GetClients",
@@ -44,23 +43,21 @@ function LoadClients()
         cache: false,
         type: "POST",
         dataType: "JSON",
-        success: function (data) {     
-            $('#ClientsDiv').hide();
+        success: function (data) {      
             $('#clientsDDL').empty();
            
             var items = "<option selected value=\"\"></option>";   
             for (var i = 0; i < data.length; i++)
             {                     
                 items += "<option value=\"" + data[i].Value.toString + "\">" + data[i].Text + "</option>";
+                //items += "<option value=\"" + data[i].Value.toString + "\">" + data[i].Text + "\" selected=1" + "</option>";
             }
             $('#clientsDDL').html(items);
             $("#clientsDDL").trigger("chosen:updated");
-            $("#clientsDDL").change();
-            $('#ClientsDiv').show();   
+            $("#clientsDDL").change();      
         },
         error: function () {
             var dummy = "";       
         }
-    });
-    hfedClients = []; hfedClientIds = [];
+    });                                                    
 }
