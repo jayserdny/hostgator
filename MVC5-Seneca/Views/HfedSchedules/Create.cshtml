@@ -61,7 +61,7 @@
                     <td style="text-align:right">
                         <strong>Date</strong></td>
                     <td>
-                        @Html.EditorFor(model => model.Date, new { id="ScheduleDate", @class = "datepicker" }) (Click to change)
+                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } }) (Click to change)
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
                 </tr> 
@@ -94,7 +94,8 @@
                         @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger"})
                     </td>
                     <td>
-                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select") 
+                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select", new { @id = "location_Id" }) 
+
                         @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
@@ -141,7 +142,7 @@
             dateFormat: "mm/dd/yy",  
             changeMonth: true,  
             changeYear: true,  
-            yearRange: "-5:+1"  
+            yearRange: "-5:+1"
         }); 
     });  
 </script> 
@@ -150,9 +151,14 @@
         $("#driversDDL").chosen({ width: "150px" });
     });
 </script>
+
 <script>
     $(function () {
         $("#clientsDDL").chosen({ width: "150px" });
-    });
+    });       
+</script >
+
+<script type="text/javascript">
+        $("#location_Id").change(LoadClients);
 </script>
 

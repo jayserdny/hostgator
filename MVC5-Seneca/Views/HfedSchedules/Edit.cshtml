@@ -36,7 +36,7 @@
                         <strong>@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" }) </strong>
                     </td>
                     <td>
-                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
                 </tr>
@@ -45,7 +45,7 @@
                         <strong>PickUp Time</strong>
                     </td>
                     <td>
-                        @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
                         @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
                     </td>
                 </tr>
@@ -62,14 +62,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-
-                        @*@Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select")*@
-                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"))
+                    <td> 
+                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), new{ style="width:140px" })
                         @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), new{@id="location_Id"}))
+                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), new{@id="location_Id", style = "width:140px" })
                         @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
@@ -90,13 +88,13 @@
                         @Html.ValidationMessageFor(model => model.Driver.Id, "", new {@class = "text-danger"})
                     </td>
                     <td>
-                        @Html.TextBoxFor(model => model.Households, new {onclick="$(this).select();",  style = "Width:30px" })
+                        @Html.TextBoxFor(model => model.Households, new {onclick="$(this).select();",  style = "width:30px" })
                         @Html.ValidationMessageFor(model => model.Households, "", new { @class = "text-danger" })
 
                     </td>
                     
                     <td>
-                        @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control", style = "width:200px" } })
                         @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
                     </td>
                     @*<td>

@@ -339,26 +339,8 @@ namespace MVC5_Seneca.Controllers
                 HfedDrivers = new List<ApplicationUser>(),
                 HfedStaffs = new List<ApplicationUser>()
             };
-            var sortedLocations = db.HfedLocations.OrderBy(l => l.Name);
-            hfedSchedule.HfedLocations = sortedLocations.Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.Name
-                })
-                .ToList();
-
-            foreach (var loc in hfedSchedule.HfedLocations)
-            {
-                if (loc.Value != null)
-                {
-                    if (Convert.ToUInt32(loc.Value) == hfedSchedule.Location_Id)
-                    {
-                        loc.Selected = true;
-                        break;
-                    }
-                }
-            }
-
+            hfedSchedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
+           
             if (hfedSchedule.Households == null) // should never happen because Create inserts a 0
             {
                 hfedSchedule.Households = 0;
@@ -407,7 +389,7 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson," +
                                                  "ScheduleNote,Driver,Request,Complete,Households,Approved," +
-                                                 "HfedDriversArray, HfedClientsArray,VolunteerHours")] 
+                                                 "HfedDriversArray,HfedClientsArray,VolunteerHours")] 
             HfedSchedule hfedSchedule)
 
         {
