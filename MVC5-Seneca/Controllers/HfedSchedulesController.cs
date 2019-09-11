@@ -490,8 +490,8 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult EmailStaffAsk()
         {
-            EmailStaff();  
-            return RedirectToAction("Index");
+            //EmailStaff();
+            return RedirectToAction("EmailStaffAsk","HfedEmail", null);
         }
 
         public ActionResult EmailDriversAsk()
@@ -601,7 +601,7 @@ namespace MVC5_Seneca.Controllers
             }   
         }
 
-        private async void Email(string address, string htmlContent)
+        private static async void Email(string address, string htmlContent)
         {   
             var apiKey = Properties.Settings.Default.HFEDSendGridClient;
             var client = new SendGridClient(apiKey);

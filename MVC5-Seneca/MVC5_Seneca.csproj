@@ -428,7 +428,12 @@
     <Compile Include="Controllers\ContactsController.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Controllers\HfedClientsController.cs" />
+    <Compile Include="Controllers\HfedClientsController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Controllers\HfedEmailController.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Controllers\HfedHomeController.cs" />
     <Compile Include="Controllers\HfedLocationsController.cs" />
     <Compile Include="Controllers\HfedProvidersController.cs" />
@@ -452,6 +457,9 @@
     </Compile>
     <Compile Include="EntityModels\AssociateTutor.cs" />
     <Compile Include="EntityModels\HfedClient.cs" />
+    <Compile Include="EntityModels\HfedEmail.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="EntityModels\HfedLocation.cs" />
     <Compile Include="EntityModels\HfedProvider.cs" />
     <Compile Include="EntityModels\HfedSchedule.cs">
@@ -548,7 +556,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModels\ContactsDisplayViewModel.cs" />
-    <Compile Include="ViewModels\HfedScheduleViewModel.cs" />
+    <Compile Include="ViewModels\HfedEmailViewModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="ViewModels\HfedEmailRecipient.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="ViewModels\HfedScheduleViewModel.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="ViewModels\TeachingTipsViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
@@ -1123,10 +1139,12 @@
     <Content Include="Views\HfedSchedules\DriverSignUp.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\HfedEmail\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="HfedEmailTexts\" />
     <Folder Include="obj\" />
     <Folder Include="Views\AzureBlobs\" />
     <Folder Include="Views\TutorNote\" />
