@@ -1,18 +1,20 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 using MVC5_Seneca.ViewModels;
 
 namespace MVC5_Seneca.EntityModels
 {
     public class HfedEmail
     {
-        [NotMapped]
-        public string Title { get; set; }
+        [NotMapped] public string Title { get; set; }
+
+        [NotMapped] public string EmailText { get; set; }
 
         [NotMapped]
-        public string EmailText { get; set; }
+        public string[] RecipientIds { get; set; }
 
         [NotMapped]
-        public Collection<HfedEmailRecipient> Recipients { get; set; }
+        public List<HfedEmailRecipient> Recipients { get; set; }     
     }
 }
