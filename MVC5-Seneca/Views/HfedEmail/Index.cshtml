@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.ViewModels.HfedEmailViewModel 
+﻿@model MVC5_Seneca.EntityModels.HfedEmail
 
 @{
     Layout = null;
@@ -12,39 +12,42 @@
     <title>Index</title>
 </head>
 <body>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Index", "HfedEmail", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-
+        @Html.HiddenFor(model => model.Title)
         <div>
             <h4>@Html.DisplayFor(model => model.Title)</h4>
         </div>
         <div>
-            <p>@Html.TextAreaFor(model => model.EmailText, 10, 30, new {style = "width:400px"})</p>
-        </div>
+            <p>@Html.TextAreaFor(model => model.EmailText, 10, 30, new { style = "width:400px" })</p>
+            @if (Model.Title .Contains( "Email Drivers"))                    
+            {
+                <span>Current schedule will be included in email.</span>    
+            }
+        </div> 
+        <br />
         <div>
-            @*@Html.DropDownListFor( model => Model.RecipientIds , (IEnumerable< SelectListItem>)Model.RecipientList )*@
-            @*@Html.ValidationMessageFor(i => i.RecipientList, "", new { @class = "text-warning" })*@
-             
-            @for (var i = 0; i < Model.Recipients.Count(); i++)  
-            {  
-            <table>  
-                <tr>  
-                    <td>  
-                        @Html.HiddenFor(model => model.Recipients[i].Id)  
-                        @Html.DisplayFor(model=> model.Recipients[i].FullName)  
-                    </td>  
-                    <td>  
-                        @Html.CheckBoxFor(model => model.Recipients[i].Checked,new {Style ="vertical-            align:3px}"})  
-                    </td>  
-                </tr>  
-            </table>   
+            Select Recipients
+            @for (var i = 0; i < Model.Recipients.Count(); i++)
+            {
+                <table>
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(model => model.Recipients[i].Checked)
+                            @Model.Recipients[i].FullName
+                            @Html.HiddenFor(model => model.Recipients[i].Id)
+                            @Html.HiddenFor(model => model.Recipients[i].FullName)
+                            @Html.HiddenFor(model => model.Recipients[i].Email)
+                        </td>
+                    </tr>
+                </table>
             }
         </div>
         <div class="col-md-10">
-            <input type="submit" value="SEND" class="btn" style="background-color: aqua; font-weight: bold"/>
+            <input type="submit" value="SEND" class="btn" style="background-color: aqua; font-weight: bold" />
         </div>
-        <br/>
+        <br />
         <div>
             @Html.ActionLink("Return to Schedules", "ReturnToHfedSchedules")
         </div>
