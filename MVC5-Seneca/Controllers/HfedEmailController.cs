@@ -16,6 +16,7 @@ namespace MVC5_Seneca.Controllers
     public class HfedEmailController : Controller
     {
         private SenecaContext db = new SenecaContext();
+
         // GET: HfedEmail/Index
         public ActionResult Index(HfedEmailViewModel email)
         {
@@ -63,6 +64,12 @@ namespace MVC5_Seneca.Controllers
                         HfedEmail sched = GetDriverSchedule(false, startDate, endDate );
                         text += sched.EmailText;
                     }
+                    if (hfedEmail.Title == "Email Reminders")
+                    {
+                        HfedEmail sched = GetReminderSchedule(startDate);
+                        text += sched.EmailText;
+                    }
+
                     SendEmail(recipient.Email, text);
                 }
             }
@@ -177,6 +184,112 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", email);  
         }
 
+        public ActionResult EmailReminder()
+        {
+            var email = new HfedEmailViewModel
+            {
+                Title = "Email Reminders"
+            };
+            var reminderDate = DateTime.Today.AddDays(2);
+            email.Recipients = new List<HfedEmailRecipient>();
+            List<ApplicationUser> recipients = new List<ApplicationUser>();
+
+            // Add MCCH Community Engagement (Lynn Rose) to Email List 
+            
+            var sqlString = "SELECT * FROM HfedSchedule WHERE Date = '" + reminderDate + "'";
+            var schedules = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList(); 
+
+            var text = "Reminder:\n";
+            text += "You have an upcoming HFED delivery:\n ";
+            email.EmailText = text;
+
+            string htmlContent = "";
+            foreach (HfedScheduleViewModel reminder in schedules)
+            {                                                                                                              
+                htmlContent += "<table border=" + (char) 34 + "1" + (char) 34 + "><tr>";
+
+                sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
+                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                htmlContent += "<td>" + reminder.Date.ToShortDateString() + "</td>";
+
+                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+                htmlContent += "<td>" + provider[0].Name + "</td>";
+
+                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+                htmlContent += "<td>" + location[0].Name + "</td>";
+
+                htmlContent += "<td>" + reminder.PickUpTime + "</td>";
+
+                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);
+                htmlContent += "<td>" + pointPerson.FirstName + "</td>";
+                recipients.Add(pointPerson);
+
+                ApplicationUser driver = new ApplicationUser();
+                if (!reminder.Driver_Id.IsNullOrEmpty())
+                {
+                    driver = db.Users.Find(reminder.Driver_Id);
+                    recipients.Add(driver);
+                }
+
+                htmlContent += "<td>" + "Driver" + "</td></tr></table>";
+
+                htmlContent += "<table><tr><td>Info:</td></tr>";
+                htmlContent += "<tr><td>Point Person:</td>";
+                htmlContent += "<td>" + pointPerson.FirstName + "&nbsp;" + pointPerson.LastName + "</td>";
+                htmlContent += "<td>&nbsp;" + pointPerson.PhoneNumber + "</td><td>&nbsp;" + pointPerson.Email +
+                               "</td></tr></table>";
+
+                htmlContent += "<table><tr><td>Pick Up:</td>";
+                htmlContent += "<td>" + provider[0].Name + "&nbsp;" + provider[0].Address + "</td>";
+                htmlContent += "<td>&nbsp;" + provider[0].MainPhone + "</td>";
+                if (!provider[0].ProviderNote.IsNullOrEmpty())
+                {
+                    htmlContent += "<td>&nbsp;" + provider[0].ProviderNote + "</td>";
+                }
+
+                htmlContent += "</tr></table>";
+
+                htmlContent += "<table><tr><td>Drop Off:</td>";
+                htmlContent += "<td>" + location[0].Name + "&nbsp;" + location[0].Address
+                               + "</td><td>&nbsp;" + location[0].MainPhone + "</td>";
+                if (!location[0].LocationNote.IsNullOrEmpty())
+                {
+                    htmlContent += "<td>&nbsp;" + location[0].LocationNote + "&nbsp;" + "</td>";
+                }
+
+                htmlContent += "</tr></table>";
+
+                if (!reminder.ScheduleNote.IsNullOrEmpty())
+                {
+                    htmlContent += "<table><tr><td>Schedule Note:</td>";
+                    htmlContent += "<td>" + reminder.ScheduleNote + "</td></tr></table>";
+                }
+
+                if (!reminder.Driver_Id.IsNullOrEmpty())
+                {
+                    htmlContent += "<table><tr><td>Driver:</td>";
+                    htmlContent += "<td>" + driver.FullName + "&nbsp;"
+                                   + driver.PhoneNumber + "&nbsp" + driver.Email + "</td></tr></table>";
+                }
+            }
+
+            htmlContent += "<br /><br /><p>";
+            email.EmailText = htmlContent;
+            var newList = new List<HfedEmailRecipient>();
+            foreach (ApplicationUser user in recipients)
+            {
+                newList.Add(new HfedEmailRecipient()
+                    { Id = user.Id, FullName = user.FullName, Email = user.Email, Checked = true });
+            } 
+
+            TempData["Recipients"] = newList; // TempData holds complex data not passed in Redirects.                            
+            email.Recipients = newList;
+        
+            return RedirectToAction("Index", email);
+        }
+       
         // Send individual email
         private async void SendEmail(string address, string htmlContent)
         {
@@ -251,6 +364,87 @@ namespace MVC5_Seneca.Controllers
             }
         }
 
+        private static HfedEmail GetReminderSchedule(DateTime reminderDate)
+        {
+            string htmlContent = "";
+            using (var context = new SenecaContext())
+            {   
+                var sqlString = "SELECT * FROM HfedSchedule WHERE Date = '" + reminderDate + "'";
+                var schedules = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                foreach (HfedScheduleViewModel reminder in schedules)
+                {
+                    htmlContent += "<table border=" + (char)34 + "1" + (char)34 + "><tr>";
+
+                    sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
+                    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                    htmlContent += "<td>" + reminder.Date.ToShortDateString() + "</td>";
+
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                    var provider = context.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+                    htmlContent += "<td>" + provider[0].Name + "</td>";
+
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                    var location = context.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+                    htmlContent += "<td>" + location[0].Name + "</td>";
+
+                    htmlContent += "<td>" + reminder.PickUpTime + "</td>";
+
+                    ApplicationUser pointPerson = context.Users.Find(schedule[0].PointPerson_Id);
+                    htmlContent += "<td>" + pointPerson.FirstName + "</td>";     
+
+                    ApplicationUser driver = new ApplicationUser();
+                    if (!reminder.Driver_Id.IsNullOrEmpty())
+                    {
+                        driver = context.Users.Find(reminder.Driver_Id);    
+                    }
+
+                    htmlContent += "<td>" + driver.FirstName + "</td></tr></table>";
+
+                    htmlContent += "<table><tr><td>Info:</td></tr>";
+                    htmlContent += "<tr><td>Point Person:</td>";
+                    htmlContent += "<td>" + pointPerson.FirstName + "&nbsp;" + pointPerson.LastName + "</td>";
+                    htmlContent += "<td>&nbsp;" + pointPerson.PhoneNumber + "</td><td>&nbsp;" + pointPerson.Email +
+                                   "</td></tr></table>";
+
+                    htmlContent += "<table><tr><td>Pick Up:</td>";
+                    htmlContent += "<td>" + provider[0].Name + "&nbsp;" + provider[0].Address + "</td>";
+                    htmlContent += "<td>&nbsp;" + provider[0].MainPhone + "</td>";
+                    if (!provider[0].ProviderNote.IsNullOrEmpty())
+                    {
+                        htmlContent += "<td>&nbsp;" + provider[0].ProviderNote + "</td>";
+                    }
+
+                    htmlContent += "</tr></table>";
+
+                    htmlContent += "<table><tr><td>Drop Off:</td>";
+                    htmlContent += "<td>" + location[0].Name + "&nbsp;" + location[0].Address
+                                   + "</td><td>&nbsp;" + location[0].MainPhone + "</td>";
+                    if (!location[0].LocationNote.IsNullOrEmpty())
+                    {
+                        htmlContent += "<td>&nbsp;" + location[0].LocationNote + "&nbsp;" + "</td>";
+                    }
+
+                    htmlContent += "</tr></table>";
+
+                    if (!reminder.ScheduleNote.IsNullOrEmpty())
+                    {
+                        htmlContent += "<table><tr><td>Schedule Note:</td>";
+                        htmlContent += "<td>" + reminder.ScheduleNote + "</td></tr></table>";
+                    }
+
+                    if (!reminder.Driver_Id.IsNullOrEmpty())
+                    {
+                        htmlContent += "<table><tr><td>Driver:</td>";
+                        htmlContent += "<td>" + driver.FullName + "&nbsp;"
+                                       + driver.PhoneNumber + "&nbsp" + driver.Email + "</td></tr></table>";
+                    }
+                }
+
+            }
+
+            HfedEmail hfedEmail = new HfedEmail() { EmailText = htmlContent };
+            return (hfedEmail);
+        }
 
         private Boolean UserIsInRole(ApplicationUser user, string roleName)
         {

@@ -508,7 +508,7 @@ namespace MVC5_Seneca.Controllers
 
         public void EmailReminders()
         {   
-            DateTime reminderDate = DateTime.Today.AddDays(2);
+            var reminderDate = DateTime.Today.AddDays(2);
             string reminderEmailList = "";
             // Add MCCH Community Engagement (Lynn Rose) to Email List 
             reminderEmailList += "prowny@aol.com";

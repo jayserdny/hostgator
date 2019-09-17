@@ -418,7 +418,8 @@ function SaveSessionNote(stuId)
         data:
         {
             studentId: stuId,
-            date: $("#SessionDate").val(), sessionNote: $("#NewSessionNote").val()
+            date: $("#SessionDate").val(),
+            sessionNote: $("#NewSessionNote").val()
         },
         type: "POST",
         dataType: "JSON",
