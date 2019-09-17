@@ -45,32 +45,38 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index([Bind(Include ="Title,EmailText,Recipients")] HfedEmail hfedEmail )
         {
-            foreach (HfedEmailRecipient recipient in hfedEmail.Recipients)
+            if (hfedEmail != null)
             {
-                if (recipient.Checked)
+                foreach (HfedEmailRecipient recipient in hfedEmail.Recipients)
                 {
-                    var text = "<p>";
-                    text += hfedEmail.EmailText .Replace(Environment.NewLine, "</p><p>");
-                    text += "</p>";
-                    DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
-                    DateTime endDate = Convert.ToDateTime(Session["EndDate"]);
-                    if (hfedEmail.Title == "Email Drivers - Show Schedule with Driver Names")
+                    if (recipient.Checked)
                     {
-                        HfedEmail sched = GetDriverSchedule(true, startDate, endDate );
-                        text += sched.EmailText;
-                    }
-                    if (hfedEmail.Title == "Email Drivers - Show Schedule with No Driver Names")
-                    {
-                        HfedEmail sched = GetDriverSchedule(false, startDate, endDate );
-                        text += sched.EmailText;
-                    }
-                    if (hfedEmail.Title == "Email Reminders")
-                    {
-                        HfedEmail sched = GetReminderSchedule(startDate);
-                        text += sched.EmailText;
-                    }
+                        var text = "<p>";
+                        text += hfedEmail.EmailText.Replace(Environment.NewLine, "</p><p>");
+                        text += "</p>";
+                        DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
+                        DateTime endDate = Convert.ToDateTime(Session["EndDate"]);
+                        if (hfedEmail.Title == "Email Drivers - Show Schedule with Driver Names")
+                        {
+                            HfedEmail sched = GetDriverSchedule(true, startDate, endDate);
+                            text += sched.EmailText;
+                        }
 
-                    SendEmail(recipient.Email, text);
+                        if (hfedEmail.Title == "Email Drivers - Show Schedule with No Driver Names")
+                        {
+                            HfedEmail sched = GetDriverSchedule(false, startDate, endDate);
+                            text += sched.EmailText;
+                        }
+
+                        if (hfedEmail.Title == "Email Reminders")
+                        {
+                            var reminderDate = Convert.ToDateTime(Session["ReminderDate"]);
+                            HfedEmail sched = GetReminderSchedule(reminderDate);
+                            text += sched.EmailText;
+                        }
+
+                        SendEmail(recipient.Email, text);
+                    }
                 }
             }
 
@@ -190,103 +196,20 @@ namespace MVC5_Seneca.Controllers
             {
                 Title = "Email Reminders"
             };
-            var reminderDate = DateTime.Today.AddDays(2);
-            email.Recipients = new List<HfedEmailRecipient>();
-            List<ApplicationUser> recipients = new List<ApplicationUser>();
-
-            // Add MCCH Community Engagement (Lynn Rose) to Email List 
-            
-            var sqlString = "SELECT * FROM HfedSchedule WHERE Date = '" + reminderDate + "'";
-            var schedules = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList(); 
-
             var text = "Reminder:\n";
             text += "You have an upcoming HFED delivery:\n ";
             email.EmailText = text;
 
-            string htmlContent = "";
-            foreach (HfedScheduleViewModel reminder in schedules)
-            {                                                                                                              
-                htmlContent += "<table border=" + (char) 34 + "1" + (char) 34 + "><tr>";
-
-                sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
-                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
-                htmlContent += "<td>" + reminder.Date.ToShortDateString() + "</td>";
-
-                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
-                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
-                htmlContent += "<td>" + provider[0].Name + "</td>";
-
-                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
-                htmlContent += "<td>" + location[0].Name + "</td>";
-
-                htmlContent += "<td>" + reminder.PickUpTime + "</td>";
-
-                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);
-                htmlContent += "<td>" + pointPerson.FirstName + "</td>";
-                recipients.Add(pointPerson);
-
-                ApplicationUser driver = new ApplicationUser();
-                if (!reminder.Driver_Id.IsNullOrEmpty())
-                {
-                    driver = db.Users.Find(reminder.Driver_Id);
-                    recipients.Add(driver);
-                }
-
-                htmlContent += "<td>" + "Driver" + "</td></tr></table>";
-
-                htmlContent += "<table><tr><td>Info:</td></tr>";
-                htmlContent += "<tr><td>Point Person:</td>";
-                htmlContent += "<td>" + pointPerson.FirstName + "&nbsp;" + pointPerson.LastName + "</td>";
-                htmlContent += "<td>&nbsp;" + pointPerson.PhoneNumber + "</td><td>&nbsp;" + pointPerson.Email +
-                               "</td></tr></table>";
-
-                htmlContent += "<table><tr><td>Pick Up:</td>";
-                htmlContent += "<td>" + provider[0].Name + "&nbsp;" + provider[0].Address + "</td>";
-                htmlContent += "<td>&nbsp;" + provider[0].MainPhone + "</td>";
-                if (!provider[0].ProviderNote.IsNullOrEmpty())
-                {
-                    htmlContent += "<td>&nbsp;" + provider[0].ProviderNote + "</td>";
-                }
-
-                htmlContent += "</tr></table>";
-
-                htmlContent += "<table><tr><td>Drop Off:</td>";
-                htmlContent += "<td>" + location[0].Name + "&nbsp;" + location[0].Address
-                               + "</td><td>&nbsp;" + location[0].MainPhone + "</td>";
-                if (!location[0].LocationNote.IsNullOrEmpty())
-                {
-                    htmlContent += "<td>&nbsp;" + location[0].LocationNote + "&nbsp;" + "</td>";
-                }
-
-                htmlContent += "</tr></table>";
-
-                if (!reminder.ScheduleNote.IsNullOrEmpty())
-                {
-                    htmlContent += "<table><tr><td>Schedule Note:</td>";
-                    htmlContent += "<td>" + reminder.ScheduleNote + "</td></tr></table>";
-                }
-
-                if (!reminder.Driver_Id.IsNullOrEmpty())
-                {
-                    htmlContent += "<table><tr><td>Driver:</td>";
-                    htmlContent += "<td>" + driver.FullName + "&nbsp;"
-                                   + driver.PhoneNumber + "&nbsp" + driver.Email + "</td></tr></table>";
-                }
+            if (Session["ReminderDate"] == null)
+            {
+                Session["ReminderDate"] = DateTime.Today.AddDays(2);
             }
 
-            htmlContent += "<br /><br /><p>";
-            email.EmailText = htmlContent;
-            var newList = new List<HfedEmailRecipient>();
-            foreach (ApplicationUser user in recipients)
-            {
-                newList.Add(new HfedEmailRecipient()
-                    { Id = user.Id, FullName = user.FullName, Email = user.Email, Checked = true });
-            } 
+            var reminderDate = Convert.ToDateTime(Session["ReminderDate"]);
+            GetReminderRecipients(reminderDate);
+            TempData.Keep();
+            email.Recipients = TempData["Recipients"] as List<HfedEmailRecipient>; ;
 
-            TempData["Recipients"] = newList; // TempData holds complex data not passed in Redirects.                            
-            email.Recipients = newList;
-        
             return RedirectToAction("Index", email);
         }
        
@@ -444,6 +367,49 @@ namespace MVC5_Seneca.Controllers
 
             HfedEmail hfedEmail = new HfedEmail() { EmailText = htmlContent };
             return (hfedEmail);
+        }
+
+        public HfedEmail GetReminderRecipients(DateTime reminderDate)
+        {
+            var email = new HfedEmailViewModel();
+            email.Recipients = new List<HfedEmailRecipient>();
+
+            List<ApplicationUser> recipients = new List<ApplicationUser>();
+
+            // Add MCCH Community Engagement (Lynn Rose) to Email List 
+
+            var sqlString = "SELECT * FROM HfedSchedule WHERE Date = '" + reminderDate + "'";
+            var schedules = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+            foreach (HfedScheduleViewModel reminder in schedules)
+            {
+                sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
+                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+
+                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
+
+                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
+
+                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);
+                recipients.Add(pointPerson);
+
+                if (!reminder.Driver_Id.IsNullOrEmpty())
+                {
+                    var driver = db.Users.Find(reminder.Driver_Id);
+                    recipients.Add(driver);
+                }
+            }
+
+            var newList = new List<HfedEmailRecipient>();
+            foreach (ApplicationUser user in recipients)
+            {
+                newList.Add(new HfedEmailRecipient()
+                { Id = user.Id, FullName = user.FullName, Email = user.Email, Checked = true });
+            }  
+            TempData["Recipients"] = newList; // TempData holds complex data not passed in Redirects.                            
+            return null;
         }
 
         private Boolean UserIsInRole(ApplicationUser user, string roleName)

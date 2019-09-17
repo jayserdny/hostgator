@@ -61,3 +61,30 @@ function LoadClients()
         }
     });                                                    
 }
+
+function LoadRecipients() {
+    var each = function () { throw new Error("Not implemented"); };
+    var locationId = $(this).val();
+    $.ajax({
+        url: "/HfedClients/GetClients",
+        data: { id: locationId },
+        cache: false,
+        type: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            $('#clientsDDL').empty();
+
+            var items = "<option selected value=\"\"></option>";
+            for (var i = 0; i < data.length; i++) {
+                items += "<option value=\"" + data[i].Value.toString + "\">" + data[i].Text + "</option>";
+                //items += "<option value=\"" + data[i].Value.toString + "\">" + data[i].Text + "\" selected=1" + "</option>";
+            }
+            $('#clientsDDL').html(items);
+            $("#clientsDDL").trigger("chosen:updated");
+            $("#clientsDDL").change();
+        },
+        error: function () {
+            var dummy = "";
+        }
+    });
+}
