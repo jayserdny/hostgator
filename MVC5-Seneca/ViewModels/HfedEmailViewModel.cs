@@ -7,7 +7,10 @@ namespace MVC5_Seneca.ViewModels
     public class HfedEmailViewModel
     {
         public string Title { get; set; }
-        public string EmailText { get; set; }         
+        public string EmailText { get; set; }
+
+        [AllowHtml]
+        public string HtmlContent { get; set; }
         public List<HfedEmailRecipient> Recipients { get; set; }
     }
 }

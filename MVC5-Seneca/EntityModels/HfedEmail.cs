@@ -11,7 +11,10 @@ namespace MVC5_Seneca.EntityModels
     {
         [NotMapped] public string Title { get; set; }
 
-        [NotMapped] public string EmailText { get; set; }    
+        [NotMapped] public string EmailText { get; set; }
+
+        [AllowHtml]
+        [NotMapped] public string HtmlContent { get; set; }
 
         [NotMapped]                  
         public List<HfedEmailRecipient> Recipients { get; set; }     

@@ -30,6 +30,7 @@ namespace MVC5_Seneca.Controllers
                 {
                     Title = email.Title,
                     EmailText = email.EmailText,
+                    HtmlContent =email .HtmlContent, 
                     Recipients = email.Recipients
                 }; 
                 return View(model);
@@ -58,21 +59,21 @@ namespace MVC5_Seneca.Controllers
                         DateTime endDate = Convert.ToDateTime(Session["EndDate"]);
                         if (hfedEmail.Title == "Email Drivers - Show Schedule with Driver Names")
                         {
-                            HfedEmail sched = GetDriverSchedule(true, startDate, endDate);
-                            text += sched.EmailText;
+                            hfedEmail.HtmlContent = GetDriverSchedule(true, startDate, endDate);
+                            text += hfedEmail .HtmlContent;
                         }
 
                         if (hfedEmail.Title == "Email Drivers - Show Schedule with No Driver Names")
                         {
-                            HfedEmail sched = GetDriverSchedule(false, startDate, endDate);
-                            text += sched.EmailText;
+                            hfedEmail.HtmlContent = GetDriverSchedule(true, startDate, endDate);
+                            text += hfedEmail.HtmlContent;
                         }
 
                         if (hfedEmail.Title == "Email Reminders")
                         {
                             var reminderDate = Convert.ToDateTime(Session["ReminderDate"]);
-                            HfedEmail sched = GetReminderSchedule(reminderDate);
-                            text += sched.EmailText;
+                            hfedEmail.HtmlContent = GetReminderSchedule(reminderDate);
+                            text += hfedEmail.HtmlContent;
                         }
 
                         SendEmail(recipient.Email, text);
@@ -167,7 +168,9 @@ namespace MVC5_Seneca.Controllers
             }
 
             email.EmailText = text;
-
+            var startDate = Convert.ToDateTime(Session["StartDate"]);
+            var endDate = Convert.ToDateTime(Session["EndDate"]);
+            email.HtmlContent = GetDriverSchedule(withDrivers,startDate ,endDate );
             var allUsers = db.Users.ToList();
             List<ApplicationUser> recipients = new List<ApplicationUser>();
             foreach (ApplicationUser user in allUsers)
@@ -190,7 +193,7 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index", email);  
         }
 
-        public ActionResult EmailReminder()
+        public ActionResult EmailReminder(string reminderDate)
         {
             var email = new HfedEmailViewModel
             {
@@ -204,11 +207,20 @@ namespace MVC5_Seneca.Controllers
             {
                 Session["ReminderDate"] = DateTime.Today.AddDays(2);
             }
+            else
+            {
+                if (!reminderDate.IsNullOrEmpty())
+                {
+                    Session["ReminderDate"] = reminderDate;
+                }
+            }
+                  
+            DateTime dtReminderDate = Convert.ToDateTime(Session["ReminderDate"]);
+            email.HtmlContent = GetReminderSchedule(dtReminderDate);
 
-            var reminderDate = Convert.ToDateTime(Session["ReminderDate"]);
-            GetReminderRecipients(reminderDate);
+            GetReminderRecipients(Session["ReminderDate"].ToString()); // Puts Rrecipient list in TempData
             TempData.Keep();
-            email.Recipients = TempData["Recipients"] as List<HfedEmailRecipient>; ;
+            email.Recipients = TempData["Recipients"] as List<HfedEmailRecipient>;
 
             return RedirectToAction("Index", email);
         }
@@ -228,7 +240,7 @@ namespace MVC5_Seneca.Controllers
             var response = await client.SendEmailAsync(msg);   
         }
 
-        private static HfedEmail GetDriverSchedule(bool withDrivers, DateTime startDate, DateTime endDate)
+        private static string GetDriverSchedule(bool withDrivers, DateTime startDate, DateTime endDate)
         {
             using (var context = new SenecaContext())
             {
@@ -280,14 +292,12 @@ namespace MVC5_Seneca.Controllers
                         text += "<td>" + request.ScheduleNote + "</td>";
                     }
                 }
-                text += "<tr></table> ";
-                text += "<br /><br /><p>";
-                HfedEmail hfedEmail = new HfedEmail() {EmailText = text};
-                return (hfedEmail);
+                text += "<tr></table><br />";                                               
+                return (text);
             }
         }
 
-        private static HfedEmail GetReminderSchedule(DateTime reminderDate)
+        private static string GetReminderSchedule(DateTime reminderDate)
         {
             string htmlContent = "";
             using (var context = new SenecaContext())
@@ -362,22 +372,19 @@ namespace MVC5_Seneca.Controllers
                                        + driver.PhoneNumber + "&nbsp" + driver.Email + "</td></tr></table>";
                     }
                 }
-
             }
-
-            HfedEmail hfedEmail = new HfedEmail() { EmailText = htmlContent };
-            return (hfedEmail);
+                                                                                                                            
+            return (htmlContent);
         }
 
-        public HfedEmail GetReminderRecipients(DateTime reminderDate)
-        {
+        public HfedEmail GetReminderRecipients(string reminderDate)
+        {                                                                                         
             var email = new HfedEmailViewModel();
             email.Recipients = new List<HfedEmailRecipient>();
 
             List<ApplicationUser> recipients = new List<ApplicationUser>();
             List<ApplicationUser> allUsers = db.Users.ToList();
            
-            // Add HfedVoordinator (Lynn Rose) to Email List 
             foreach (ApplicationUser user in allUsers )
             {
                 if(UserIsInRole(user,"HfedCoordinator"))
@@ -393,12 +400,6 @@ namespace MVC5_Seneca.Controllers
             {
                 sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
                 var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
-
-                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
-                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
-
-                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
 
                 ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);
                 recipients.Add(pointPerson);

@@ -23,7 +23,7 @@ namespace MVC5_Seneca.Controllers
 
         // GET: HfedSchedules
         public ActionResult Index(String startDate, String endDate)
-        {  
+        {                                                                                                                                              
             var schedulesView = new List<HfedSchedule>();           
             List<HfedSchedule> hfedSchedules;     
             if (Session["StartDate"].ToString().IsNullOrEmpty() || Session["EndDate"].ToString().IsNullOrEmpty())
@@ -484,138 +484,8 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ReturnToHfedDashboard()
         {
             return RedirectToAction("Index", "HfedHome");
-        }
-
-        public ActionResult EmailReminder()
-        {
-            EmailReminders() ;  
-            return RedirectToAction("Index");
-        }
-       
-        private static async void Email(string address, string htmlContent)
-        {   
-            var apiKey = Properties.Settings.Default.HFEDSendGridClient;
-            var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage();
-            msg.SetFrom("Admin@SenecaHeightsEducationProgram.org", "HFED Coordinator");
-            msg.SetSubject("Healthy Food Every Day -  Schedule");  
-            msg.AddContent(MimeType.Html, htmlContent);
-            msg.AddTo(new EmailAddress(address, "HFED Team Member"));
-            var unused = await client.SendEmailAsync(msg);
-        }
-
-       
-
-        public void EmailReminders()
-        {   
-            var reminderDate = DateTime.Today.AddDays(2);
-            string reminderEmailList = "";
-            // Add MCCH Community Engagement (Lynn Rose) to Email List 
-            reminderEmailList += "prowny@aol.com";
-
-            ApplicationUser selectedDriver = new ApplicationUser();
-            var schedules = db.HfedSchedules.Where(s => s.Date == reminderDate).ToList();  
-            foreach (HfedSchedule reminder in schedules)
-            {
-                string htmlContent = "<p>Reminder:</p>";
-                htmlContent += "<p>You have an upcoming HFED delivery:</p>";
-                htmlContent += "<table border=" + (char)34 + "1" + (char)34 + "><tr>";
-
-                var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
-                var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
-                htmlContent += "<td>" + reminder.Date .ToShortDateString() + "</td>";
-   
-                sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
-                var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
-                htmlContent += "<td>" + provider[0].Name + "</td>";
-
-                sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-                var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
-                htmlContent += "<td>" + location[0].Name + "</td>";
-
-                htmlContent += "<td>" + reminder.PickUpTime + "</td>";    
-                                                                                                                                                              
-                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);
-                htmlContent += "<td>" + pointPerson.FirstName + "</td>";
-                reminderEmailList += "," + pointPerson.Email;
-                string drivers = "";
-                if (!reminder.HfedDriverIds.IsNullOrEmpty())
-                {
-                    string[] driversArray = reminder.HfedDriverIds.Split(',').ToArray();
-                    foreach (string driverId in driversArray)
-                    {
-                        ApplicationUser driver = db.Users .Find(driverId);
-                        if (drivers.Length != 0)
-                        {
-                            drivers += ", ";
-                        }
-
-                        if (driver?.Email != null)
-                        {
-                            selectedDriver = driver;
-                            drivers += driver.FirstName;
-                            reminderEmailList += "," + driver.Email;
-                        }                                                                  
-                    }                                                                        
-                }
-                else
-                {
-                    drivers = "&nbsp;&nbsp;" +
-                              "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                              "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                }
-
-                htmlContent += "<td>" + drivers + "</td></tr></table>";
-
-                htmlContent += "<table><tr><td>Info:</td></tr>";
-                htmlContent += "<tr><td>Point Person:</td>";
-                htmlContent += "<td>" + pointPerson.FirstName + "&nbsp;" + pointPerson.LastName + "</td>";
-                htmlContent += "<td>&nbsp;" + pointPerson.PhoneNumber  + "</td><td>&nbsp;" + pointPerson.Email + "</td></tr></table>";
-
-                htmlContent += "<table><tr><td>Pick Up:</td>";
-                htmlContent += "<td>" + provider[0].Name + "&nbsp;" + provider[0].Address + "</td>";
-                htmlContent += "<td>&nbsp;" + provider[0].MainPhone + "</td>"; 
-                if (!provider[0].ProviderNote.IsNullOrEmpty())
-                {
-                    htmlContent += "<td>&nbsp;" + provider[0].ProviderNote + "</td>";
-                }
-
-                htmlContent += "</tr></table>";
-                
-                htmlContent += "<table><tr><td>Drop Off:</td>";
-                htmlContent += "<td>" + location[0].Name + "&nbsp;" + location[0].Address  
-                               + "</td><td>&nbsp;" + location[0].MainPhone + "</td>";
-                if (!location[0].LocationNote.IsNullOrEmpty())
-                {
-                    htmlContent += "<td>&nbsp;" + location[0].LocationNote + "&nbsp;" + "</td>";
-                }
-                htmlContent += "</tr></table>";
-
-                if (!reminder.ScheduleNote.IsNullOrEmpty())
-                {
-                    htmlContent += "<table><tr><td>Schedule Note:</td>";
-                    htmlContent += "<td>" + reminder.ScheduleNote + "</td></tr></table>";
-                }
-
-                if (!drivers.IsNullOrEmpty())
-                {
-                    htmlContent += "<table><tr><td>Driver:</td>";
-                    htmlContent += "<td>" + selectedDriver.FullName + "&nbsp;" 
-                                   + selectedDriver.PhoneNumber +"&nbsp" + selectedDriver.Email + "</td></tr></table>";
-                }
-
-                htmlContent += "<br /><br /><p>";
-                string[] emailList = reminderEmailList.Split(',').ToArray();
-                foreach (string emailAddress in emailList)
-                {
-                    if (!emailAddress.IsNullOrEmpty() && !htmlContent.IsNullOrEmpty())
-                    {                                                
-                        Email(emailAddress, htmlContent);
-                    } 
-                }                             
-            }                                                                                      
-        }
-
+        } 
+        
         public ActionResult CreateExcel()
         {
             XLWorkbook workbook = new XLWorkbook();

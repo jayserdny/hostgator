@@ -15,7 +15,8 @@
     <script src="~/Scripts/chosen.jquery.min.js"></script>
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
-</head>
+    <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
+    </head>
 <body>
     @using (Html.BeginForm("Index", "HfedEmail", FormMethod.Post))
     {
@@ -30,28 +31,33 @@
                 <table class="table">
                     <tr>
                         <td><strong>Reminder Date </strong></td>
-                        <td>@Html.TextBox("Reminder Date",
-                                @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"),
-                                new { id = "ReminderDate", style = "width: 75px;" })
-                            (Click to change)</td>
+                        <td>@Html.TextBox("Reminder Date", @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"), new { id = "ReminderDate", style = "width: 75px;" }) (Click to change)</td>
+                        @*<td>
+                            @Html.TextBox("Reminder Date",
+                            @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"),
+                            new { id = "ReminderDate", style = "width: 75px;" })
+                        (Click to change)
+                    </td>*@
                     </tr>
                 </table>
             </div>
         }
-            <div>
-                <p>@Html.TextAreaFor(model => model.EmailText, 10, 30, new { style = "width:400px" })</p>
-                @if (Model.Title.Contains("Email Drivers"))
-                {
-                    <span>Current schedule will be included in email.</span>
-                }
-                @if (Model.Title.Contains("Reminder"))
-                {
-                    <span>Selected Date Schedule(s) will be included in email.</span>
-                }
-            </div> 
-        <br />
         <div>
-            Select Recipients
+            <p>@Html.TextAreaFor(model => model.EmailText, 10, 30, new { style = "width:400px" })</p>
+            @if (Model.Title.Contains("Email Drivers"))
+            {
+                <span>Current schedule will be included in email:</span>
+            }
+            @if (Model.Title.Contains("Reminder"))
+            {
+                <span>Selected Date Schedule(s) will be included in email:</span>
+            }
+        </div>
+        <div>
+            @Html.Raw(Model.HtmlContent)
+        </div>    
+        <div>
+            Select Recipients:
             @for (var i = 0; i < Model.Recipients.Count(); i++)
             {
                 <table>
@@ -83,22 +89,9 @@
         $("#ReminderDate").datepicker();
     });
 </script>
- 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('input[type=datetime]').datepicker({
-            dateFormat: "mm/dd/yyyy", 
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-5:+1"
-        });
-    });
-</script>
 
 <script type="text/javascript">
-    $("#ReminderDate").change(function () {                 
-        sessionStorage.setItem("ReminderDate", $('#ReminderDate').val());  
-        @*$('#ReminderDate').datepicker('setDate', '@Session["ReminderDate"]');*@ 
-        window.location.href = '@Url.Action("EmailReminder", "HfedEmail")';
+    $("#ReminderDate").change(function () {
+        UpdateReminderDate($('#ReminderDate').val()); 
     });
 </script>

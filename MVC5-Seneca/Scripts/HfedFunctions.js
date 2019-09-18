@@ -88,3 +88,18 @@ function LoadRecipients() {
         }
     });
 }
+
+function UpdateReminderDate(reminderDate) {
+    $.ajax({
+        url: '/HfedEmail/EmailReminder',
+        data: { reminderDate: reminderDate },
+        type: "POST", 
+        success: function (data) {
+            $("body").html(data);  // to refresh the page
+            //alert('Ajax hit'); 
+        },
+        error: function (jqxhr, status, exception) {
+            alert('Exception:', exception);
+        }
+    });
+}
