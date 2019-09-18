@@ -142,7 +142,7 @@
             @Html.ActionLink("Create Excel File", "CreateExcel")
         </td>
     </tr>
-    @if (User.IsInRole("Administrator"))
+    @if (User.IsInRole("Administrator") || User.IsInRole("HfedCoordinator"))
     {
         <tr>
             <td>

@@ -100,7 +100,7 @@ namespace MVC5_Seneca.Controllers
             List<ApplicationUser> recipients = new List<ApplicationUser>();
             foreach (ApplicationUser user in allUsers)
             {
-                if (UserIsInRole(user, "HfedStaff"))
+                if (UserIsInRole(user, "HfedStaff") || UserIsInRole(user,"HfedCoordinator"))
                 {
                     recipients.Add(user);                
                 }
@@ -172,7 +172,7 @@ namespace MVC5_Seneca.Controllers
             List<ApplicationUser> recipients = new List<ApplicationUser>();
             foreach (ApplicationUser user in allUsers)
             {
-                if (UserIsInRole(user, "HfedDriver"))
+                if (UserIsInRole(user, "HfedDriver") || UserIsInRole(user, "HfedCoordinator"))
                 {
                     recipients.Add(user);
                 }
@@ -375,8 +375,16 @@ namespace MVC5_Seneca.Controllers
             email.Recipients = new List<HfedEmailRecipient>();
 
             List<ApplicationUser> recipients = new List<ApplicationUser>();
-
-            // Add MCCH Community Engagement (Lynn Rose) to Email List 
+            List<ApplicationUser> allUsers = db.Users.ToList();
+           
+            // Add HfedVoordinator (Lynn Rose) to Email List 
+            foreach (ApplicationUser user in allUsers )
+            {
+                if(UserIsInRole(user,"HfedCoordinator"))
+                {
+                    recipients.Add(user);
+                }
+            }
 
             var sqlString = "SELECT * FROM HfedSchedule WHERE Date = '" + reminderDate + "'";
             var schedules = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
