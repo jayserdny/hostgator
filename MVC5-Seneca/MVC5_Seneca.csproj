@@ -1161,7 +1161,9 @@
     <Content Include="Views\HfedSchedules\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\HfedUpdateMyProfile\Edit.cshtml" />
+    <Content Include="Views\HfedUpdateMyProfile\Edit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\HfedSchedules\DriverSignUp.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

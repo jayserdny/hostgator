@@ -14,11 +14,11 @@
 <body>
     <h3>Are you sure you want to delete this?</h3>
     <div>
-        <h4>HfedClient</h4>
+        <h4>Delete Hfed Client</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.FirstName)
+                <strong>@Html.DisplayNameFor(model => model.FirstName)</strong>
             </dt>
     
             <dd>
@@ -26,27 +26,19 @@
             </dd>
     
             <dt>
-                @Html.DisplayNameFor(model => model.LastName)
+                <strong>@Html.DisplayNameFor(model => model.LastName)</strong>
             </dt>
     
             <dd>
                 @Html.DisplayFor(model => model.LastName)
-            </dd>
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </dt>
-    
-            <dd>
-                @Html.DisplayFor(model => model.DateOfBirth)
-            </dd>
-    
+            </dd> 
+
         </dl>
     
         @using (Html.BeginForm()) {
             @Html.AntiForgeryToken()
             <div>
-                <input type="submit" value="Delete" class="btn" />
+                <input type="submit" value="Delete" class="btn" style="background-color: aqua; font-weight:bold" />
             </div>                                                                         
             <br />
             <div>
