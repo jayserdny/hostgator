@@ -18,27 +18,31 @@
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.Date)
+               @Html.DisplayNameFor(model => model.Date)
             </dt>
-    
             <dd>
-                @Html.DisplayFor(model => model.Date)
+                <strong>@Html.DisplayFor(model => model.Date)</strong>
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.PickUpTime)
+                @Html.DisplayNameFor(model => model.Provider)
             </dt>
-    
             <dd>
-                @Html.DisplayFor(model => model.PickUpTime)
+                <strong>@Html.DisplayFor(model => model.Provider.Name)</strong>
             </dd>
-    
+
             <dt>
-                @Html.DisplayNameFor(model => model.ScheduleNote)
+                @Html.DisplayNameFor(model => model.Location)
             </dt>
-    
             <dd>
-                @Html.DisplayFor(model => model.ScheduleNote)
+                <strong>@Html.DisplayFor(model => model.Location.Name)</strong>
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PointPerson)
+            </dt>
+            <dd>
+                <strong>@Html.DisplayFor(model => model.PointPerson.FullName)</strong>
             </dd>
         </dl>
     
@@ -46,7 +50,7 @@
         {
             @Html.AntiForgeryToken()
             <div>
-                <input type="submit" value="Delete" class="btn" />
+                <input type="submit" value="Delete" class="btn"  style="background-color: aqua; font-weight:bold" />
             </div>
             <br />
             <div>

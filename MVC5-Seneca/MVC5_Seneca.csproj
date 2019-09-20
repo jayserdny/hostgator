@@ -817,15 +817,33 @@
     <Content Include="Video\Login.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\HfedClients\Create.cshtml" />
-    <Content Include="Views\HfedClients\Delete.cshtml" />
-    <Content Include="Views\HfedClients\Edit.cshtml" />
-    <Content Include="Views\HfedClients\Index.cshtml" />
-    <Content Include="Views\HfedHome\Index.cshtml" />
-    <Content Include="Views\HfedLocations\Create.cshtml" />
-    <Content Include="Views\HfedLocations\Delete.cshtml" />
-    <Content Include="Views\HfedLocations\Edit.cshtml" />
-    <Content Include="Views\HfedLocations\Index.cshtml" />
+    <Content Include="Views\HfedClients\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedClients\Delete.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedClients\Edit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedClients\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedHome\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedLocations\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedLocations\Delete.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedLocations\Edit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedLocations\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -1119,10 +1137,18 @@
     <Content Include="Views\UpdateMySchedule\Create.cshtml" />
     <Content Include="Views\UpdateMySchedule\Delete.cshtml" />
     <Content Include="Views\UpdateMySchedule\Edit.cshtml" />
-    <Content Include="Views\HfedProviders\Create.cshtml" />
-    <Content Include="Views\HfedProviders\Delete.cshtml" />
-    <Content Include="Views\HfedProviders\Edit.cshtml" />
-    <Content Include="Views\HfedProviders\Index.cshtml" />
+    <Content Include="Views\HfedProviders\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedProviders\Delete.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedProviders\Edit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\HfedProviders\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\HfedSchedules\Create.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1139,7 +1165,9 @@
     <Content Include="Views\HfedSchedules\DriverSignUp.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\HfedEmail\Index.cshtml" />
+    <Content Include="Views\HfedEmail\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\HfedSchedules\Duplicate.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
