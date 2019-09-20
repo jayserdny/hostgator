@@ -1,5 +1,4 @@
-﻿@using DocumentFormat.OpenXml.Office2010.Excel
-@model MVC5_Seneca.ViewModels.HfedScheduleViewModel
+﻿@model MVC5_Seneca.ViewModels.HfedScheduleViewModel
 
 @{
     Layout = null;
@@ -13,11 +12,10 @@
     <title>Edit</title>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Scripts/chosen.jquery.min.js"></script>
-    <link href="~/Content/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
     @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
     <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
     <link href="~/Content/chosen.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -112,7 +110,7 @@
                 <td> 
                     @Html.ListBoxFor(model => model.HfedClientsArray,
                         new MultiSelectList(Model.HfedClients, "Id", "FullName"),
-                       new {Id = "clientsDDL", })  
+                       new {Id = "clientsDDL" })  
                 </td> 
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td style="text-align: right"><strong>I Approve This Run</strong></td>

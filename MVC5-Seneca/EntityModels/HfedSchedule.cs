@@ -50,7 +50,7 @@ namespace MVC5_Seneca.EntityModels
         public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 
 
         [DisplayName("Clients")]
-        public string HfedClientIds { get; set; }  // IDs fFor multi-select Clients & DropDownList 
+        public string HfedClientIds { get; set; }  // IDs For multi-select Clients & DropDownList 
 
         [DisplayName("Volunteer Hours")]
         public float? VolunteerHours { get; set; }
@@ -68,8 +68,7 @@ namespace MVC5_Seneca.EntityModels
         [NotMapped] public Boolean Cancel { get; set; } // for Un-signup checkbox
         [NotMapped] public string DriverName { get; set; }
         [NotMapped] public int  ClientsTotal { get; set; }
-        [NotMapped] public string NoteToolTip { get; set; }
-        [NotMapped] public string ErrorMessage { get; set; }
+        [NotMapped] public string NoteToolTip { get; set; }    
         [NotMapped] public string FormattedDay { get; set; }
         [NotMapped] public string FormattedDate { get; set; }
     }

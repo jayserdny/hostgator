@@ -187,12 +187,7 @@ namespace MVC5_Seneca.Controllers
             // called when a Location has changed in Edit or Create schedule
             List<HfedClient> clients = new List<HfedClient>();
             clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
-            SelectList clientList = new SelectList(clients,"Id", "FullName", 0);
-            //using (var context = new SenecaContext())
-            //{
-            //    var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + Convert.ToInt32( Session["CurrentEditScheduleId"]);
-            //    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
-            //}
+            SelectList clientList = new SelectList(clients,"Id", "FullName", 0);  
                                                            
             try
             {
@@ -203,8 +198,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return null;
             }             
-        }
-
+        }                                                                                                                                                                     
         public ActionResult ReturnToHfedDashboard()
         {
             return RedirectToAction("Index", "HfedHome");

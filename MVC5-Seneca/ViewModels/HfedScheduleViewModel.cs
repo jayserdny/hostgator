@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 
 namespace MVC5_Seneca.ViewModels
 {
@@ -49,7 +48,7 @@ namespace MVC5_Seneca.ViewModels
         public string HfedDriverIds { get; set; }  // IDs for multi-select Drivers & DropDownList 
 
         [DisplayName("Clients")]
-        public string HfedClientIds { get; set; }  // IDs fFor multi-select Clients & DropDownList 
+        public string HfedClientIds { get; set; }  // IDs For multi-select Clients & DropDownList 
 
         [DisplayName("Volunteer Hours")]
         public float? VolunteerHours { get; set; }
@@ -73,5 +72,6 @@ namespace MVC5_Seneca.ViewModels
         public string DriverFullName { get; set; }   // For Driver SignUp screen
         public string FormattedDay { get; set; }   // For Driver SignUp screen
         public string FormattedDate { get; set; }   // For Driver SignUp screen
+        public string ErrorMessage { get; set; }
     }
 }                                                       

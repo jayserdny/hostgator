@@ -12,8 +12,6 @@ using MVC5_Seneca.ViewModels;
 using ClosedXML.Excel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -23,17 +21,17 @@ namespace MVC5_Seneca.Controllers
 
         // GET: HfedSchedules
         public ActionResult Index(String startDate, String endDate)
-        {                                                                                                                                              
-            var schedulesView = new List<HfedSchedule>();           
-            List<HfedSchedule> hfedSchedules;     
+        {
+            var schedulesView = new List<HfedSchedule>();
+            List<HfedSchedule> hfedSchedules;
             if (Session["StartDate"].ToString().IsNullOrEmpty() || Session["EndDate"].ToString().IsNullOrEmpty())
             {
-                hfedSchedules = db.HfedSchedules.OrderBy( s => s.Date).ToList(); 
+                hfedSchedules = db.HfedSchedules.OrderBy(s => s.Date).ToList();
             }
             else
             {
                 if (!startDate.IsNullOrEmpty())
-                {   
+                {
                     Session["StartDate"] = startDate;
                 }
 
@@ -44,44 +42,47 @@ namespace MVC5_Seneca.Controllers
 
                 DateTime sDate = Convert.ToDateTime(Session["StartDate"]);
                 DateTime eDate = Convert.ToDateTime(Session["EndDate"]);
-                hfedSchedules = db.HfedSchedules.Where(s => s.Date >= sDate && s.Date <= eDate).OrderBy(s => s.Date).ToList();
+                hfedSchedules = db.HfedSchedules.Where(s => s.Date >= sDate && s.Date <= eDate).OrderBy(s => s.Date)
+                    .ToList();
             }
-                                                  
+
             foreach (HfedSchedule hfedSchedule in hfedSchedules)
             {
-               string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
-               var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList(); // Gets mapped Foreign Keys
+                string sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + hfedSchedule.Id;
+                var schedule =
+                    db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList(); // Gets mapped Foreign Keys
 
                 sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
                 var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
                 hfedSchedule.Location = location[0];
 
                 hfedSchedule.PointPerson = db.Users.Find(schedule[0].PointPerson_Id);
-               
+
                 var did = schedule[0].Driver_Id;
-                if (did  != null)
+                if (did != null)
                 {
                     hfedSchedule.Driver = db.Users.Find(did);
                 }
 
                 sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
                 var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
-                hfedSchedule.Provider = provider[0];     
+                hfedSchedule.Provider = provider[0];
                 if (hfedSchedule.HfedDriverIds != null)
-                {   
-                    hfedSchedule.HfedDrivers=new List<ApplicationUser>();
+                {
+                    hfedSchedule.HfedDrivers = new List<ApplicationUser>();
                     hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
                     List<SelectListItem> selectedDrivers = new List<SelectListItem>();
                     foreach (string driverId in hfedSchedule.HfedDriversArray)
                     {
                         if (!driverId.IsNullOrEmpty())
-                        {                                                                                                 
+                        {
                             var x = db.Users.Find(driverId);
                             if (x != null)
                                 if (UserIsInRole(x, "Active"))
                                 {
                                     {
-                                        SelectListItem selListItem = new SelectListItem() { Value = driverId, Text = x.FullName };
+                                        SelectListItem selListItem = new SelectListItem()
+                                            {Value = driverId, Text = x.FullName};
                                         selectedDrivers.Add(selListItem);
                                         // One delivery - one driver rule: put driver name in schedule:
                                         hfedSchedule.Driver = x;
@@ -90,10 +91,11 @@ namespace MVC5_Seneca.Controllers
                                     }
                                 }
                         }
-                    }   
+                    }
+
                     hfedSchedule.SelectedHfedDrivers = selectedDrivers;
-                }   
-         
+                }
+
                 if (hfedSchedule.HfedClientIds != null)
                 {
                     hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();
@@ -104,14 +106,14 @@ namespace MVC5_Seneca.Controllers
                         {
                             var x = db.HfedClients.Find(Convert.ToInt32(clientId));
                             if (x != null)
-                            {                                                             
-                                SelectListItem selListItem = new SelectListItem() { Value = clientId, Text = x.FullName };
-                                selectedClients.Add(selListItem);                               
+                            {
+                                SelectListItem selListItem = new SelectListItem() {Value = clientId, Text = x.FullName};
+                                selectedClients.Add(selListItem);
                             }
                         }
                     }
 
-                    hfedSchedule.SelectedHfedClients = selectedClients ;
+                    hfedSchedule.SelectedHfedClients = selectedClients;
                 }
 
                 if (hfedSchedule.Households == null)
@@ -119,101 +121,108 @@ namespace MVC5_Seneca.Controllers
                     hfedSchedule.Households = 0;
                 }
 
-                hfedSchedule.NoteToolTip = hfedSchedule .ScheduleNote.Replace(" ", "\u00a0"); // (full length on mouseover)    \u00a0 is the Unicode character for NO-BREAK-SPACE.
-                var s = hfedSchedule.ScheduleNote;  // For display, abbreviate to 10 characters:            
+                hfedSchedule.NoteToolTip =
+                    hfedSchedule.ScheduleNote.Replace(" ",
+                        "\u00a0"); // (full length on mouseover)    \u00a0 is the Unicode character for NO-BREAK-SPACE.
+                var s = hfedSchedule.ScheduleNote; // For display, abbreviate to 10 characters:            
                 s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
                 hfedSchedule.ScheduleNote = s;
 
                 if (hfedSchedule.HfedClientsArray[0] == "")
                 {
-                   hfedSchedule.ClientsTotal = 0;
+                    hfedSchedule.ClientsTotal = 0;
                 }
                 else
                 {
                     hfedSchedule.ClientsTotal = hfedSchedule.HfedClientsArray.Length;
                 }
 
-                hfedSchedule .FormattedDay = hfedSchedule.Date.ToString("ddd");
+                hfedSchedule.FormattedDay = hfedSchedule.Date.ToString("ddd");
                 hfedSchedule.FormattedDate = hfedSchedule.Date.ToString("MM/dd/yy");
-                                          
+
 
                 schedulesView.Add(hfedSchedule);
-                                                                     
-            }         
+
+            }
 
             return View(schedulesView);
-        }   
-          
+        }
+
         // GET: HfedSchedules/Create
         public ActionResult Create()
-        {   
-            HfedSchedule newHfedSchedule = new HfedSchedule() 
+        {
+            HfedScheduleViewModel  newHfedSchedule = new HfedScheduleViewModel() 
             {
-                Date =Convert.ToDateTime(Session["StartDate"]),
+                Date = Convert.ToDateTime(Session["StartDate"]),
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
-                HfedClients = db.HfedClients.Where (c => c.Active).OrderBy(c => c.LastName).ToList(),
-                HfedDrivers =new List<ApplicationUser>( ),
-                HfedStaffs =new List<ApplicationUser>( ),
-                Request =false,
-                Complete=false,
-                Households=0, Approved = false 
+                HfedClients = db.HfedClients.Where(c => c.Active).OrderBy(c => c.LastName).ToList(),
+                HfedDrivers = new List<ApplicationUser>(),
+                HfedStaffs = new List<ApplicationUser>(),   
+                HfedClientsArray = new string [1], 
+                Request = false,
+                Complete = false,
+                Households = 0, Approved = false
             };
             var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
             foreach (ApplicationUser user in allUsers)
             {
-                if (UserIsInRole(user,"HfedDriver"))
+                if (UserIsInRole(user, "HfedDriver"))
                 {
                     newHfedSchedule.HfedDrivers.Add(user);
                 }
 
-                if (UserIsInRole(user,"HfedStaff"))
+                if (UserIsInRole(user, "HfedStaff"))
                 {
                     newHfedSchedule.HfedStaffs.Add(user);
                 }
             }
+
             return View(newHfedSchedule);
         }
-                                                                                             
-        private Boolean UserIsInRole (ApplicationUser user, string roleName)
-        {   
+
+        private Boolean UserIsInRole(ApplicationUser user, string roleName)
+        {
             var roleStore = new RoleStore<IdentityRole>(db);
             var roleMngr = new RoleManager<IdentityRole>(roleStore);
-            var roles = roleMngr.Roles.ToList() ;
+            var roles = roleMngr.Roles.ToList();
 
             foreach (IdentityRole role in roles)
             {
                 if (role.Name == roleName)
-                {                      
+                {
                     using (var context = new SenecaContext())
                     {
                         string strSql = "SELECT RoleId FROM AspNetUserRoles WHERE ";
                         strSql += "RoleId ='" + role.Id + "' AND UserId ='" + user.Id + "'";
-                        string result = context.Database.SqlQuery<string>(strSql).FirstOrDefault( );
-                        if(result != null )
+                        string result = context.Database.SqlQuery<string>(strSql).FirstOrDefault();
+                        if (result != null)
                         {
-                            return  true;
+                            return true;
                         }
-                    }                 
-                }  
+                    }
+                }
             }
+
             return false;
         }
+
         // POST: HfedSchedules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include ="Id,Date,PickUpTime," +
-                                                  "Provider,Location,PointPerson,ScheduleNote," +                             
-                                                  "Households,Approved," +
-                                                  "HfedDriversArray,HfedClientsArray,VolunteerHours")]
-            HfedSchedule hfedSchedule)
-        {  
+        public ActionResult Create([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson," +
+                                                   "ScheduleNote,Driver,Request,Complete,Households,Approved," +
+                                                   "HfedDriversArray,HfedClientsArray,VolunteerHours")]
+            HfedScheduleViewModel hfedSchedule)
+        {
             if (hfedSchedule.PointPerson.Id == null || hfedSchedule.Location.Id == 0 || hfedSchedule.Provider.Id == 0)
-    
-            {   // Reload dropdown lists:
+
+            {
+                // Reload dropdown lists:
                 hfedSchedule.HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
-                hfedSchedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();       
-                hfedSchedule.HfedClients = db.HfedClients.Where(c => c.Location.Id == hfedSchedule.Location.Id  ).OrderBy(c => c.LastName).ToList();
+                hfedSchedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
+                hfedSchedule.HfedClients = db.HfedClients.Where(c => c.Location.Id == hfedSchedule.Location.Id)
+                    .OrderBy(c => c.LastName).ToList();
                 hfedSchedule.HfedDrivers = new List<ApplicationUser>();
                 hfedSchedule.HfedStaffs = new List<ApplicationUser>();
                 var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
@@ -234,10 +243,12 @@ namespace MVC5_Seneca.Controllers
                 {
                     hfedSchedule.ErrorMessage = "Point Person required";
                 }
-                return View(hfedSchedule); // (for error functions)
-            } 
 
-            if(hfedSchedule.HfedDriversArray.IsNullOrEmpty())
+                return View(hfedSchedule); // (for error functions)
+            }
+
+
+            if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
             {
                 hfedSchedule.HfedDriverIds = String.Empty;
             }
@@ -264,9 +275,9 @@ namespace MVC5_Seneca.Controllers
                 cmdString += "Location_Id,PointPerson_Id,Provider_Id,HfedDriverIds,HfedClientIds)";
                 cmdString += " VALUES (";
                 cmdString += "'" + hfedSchedule.Date + "','" + hfedSchedule.PickUpTime + "',";
-                if (hfedSchedule.ScheduleNote.IsNullOrEmpty() )
+                if (hfedSchedule.ScheduleNote.IsNullOrEmpty())
                 {
-                    cmdString += "'',"; 
+                    cmdString += "'',";
                 }
                 else
                 {
@@ -282,7 +293,7 @@ namespace MVC5_Seneca.Controllers
                 {
                     cmdString += hfedSchedule.Households + ",";
                 }
-                
+
                 if (hfedSchedule.Approved)
                 {
                     cmdString += "1,";
@@ -291,6 +302,7 @@ namespace MVC5_Seneca.Controllers
                 {
                     cmdString += "0,";
                 }
+
                 cmdString += hfedSchedule.Location.Id + ",";
                 cmdString += "'" + hfedSchedule.PointPerson.Id + "'," + hfedSchedule.Provider.Id + ",";
                 cmdString += "'" + hfedSchedule.HfedDriverIds + "',";
@@ -300,7 +312,7 @@ namespace MVC5_Seneca.Controllers
             }
 
             return RedirectToAction("Index");
-    }
+        }
 
         // GET: HfedSchedules/Edit/5
         public ActionResult Edit(int? id)
@@ -309,9 +321,8 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            Session["CurrentEditScheduleId"] = id.ToString();
-            string sqlString = "SELECT * FROM hfedSchedule WHERE Id =" + id.ToString();
+                                                                                            
+            string sqlString = "SELECT * FROM hfedSchedule WHERE Id =" + id;
             var scheduletoEdit = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
             if (scheduletoEdit == null)
             {
@@ -319,12 +330,13 @@ namespace MVC5_Seneca.Controllers
             }
 
             var Loc = db.HfedLocations.Find(scheduletoEdit.Location_Id);
-            var hfedSchedule = new HfedScheduleViewModel()
+            var hfedSchedule = new HfedScheduleViewModel
             {
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 Location_Id = scheduletoEdit.Location_Id,
-                Location =Loc,
-                HfedClients = db.HfedClients.Where(c => c.Active && c.Location.Id == scheduletoEdit.Location_Id ).OrderBy(c => c.LastName).ToList(),
+                Location = Loc,
+                HfedClients = db.HfedClients.Where(c => c.Active && c.Location.Id == scheduletoEdit.Location_Id)
+                    .OrderBy(c => c.LastName).ToList(),
                 Date = scheduletoEdit.Date,
                 PickUpTime = scheduletoEdit.PickUpTime,
                 ScheduleNote = scheduletoEdit.ScheduleNote,
@@ -336,10 +348,10 @@ namespace MVC5_Seneca.Controllers
                 HfedClientIds = scheduletoEdit.HfedClientIds,
                 VolunteerHours = scheduletoEdit.VolunteerHours,
                 HfedDrivers = new List<ApplicationUser>(),
-                HfedStaffs = new List<ApplicationUser>()
+                HfedStaffs = new List<ApplicationUser>(),
+                HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList()
             };
-            hfedSchedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
-           
+
             if (hfedSchedule.Households == null) // should never happen because Create inserts a 0
             {
                 hfedSchedule.Households = 0;
@@ -366,7 +378,7 @@ namespace MVC5_Seneca.Controllers
             var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
             hfedSchedule.Location = location[0];
 
-            hfedSchedule.PointPerson = db.Users.Find(scheduletoEdit.PointPerson_Id);   
+            hfedSchedule.PointPerson = db.Users.Find(scheduletoEdit.PointPerson_Id);
             if (scheduletoEdit.Driver != null)
             {
                 hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver.Id);
@@ -387,7 +399,7 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson," +
                                                  "ScheduleNote,Driver,Request,Complete,Households,Approved," +
-                                                 "HfedDriversArray,HfedClientsArray,VolunteerHours")] 
+                                                 "HfedDriversArray,HfedClientsArray,VolunteerHours")]
             HfedSchedule hfedSchedule)
 
         {
@@ -409,6 +421,7 @@ namespace MVC5_Seneca.Controllers
             {
                 hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
             }
+
             using (var context = new SenecaContext())
             {
                 string cmdString = "UPDATE HfedSchedule SET ";
@@ -422,6 +435,7 @@ namespace MVC5_Seneca.Controllers
                 {
                     cmdString += "ScheduleNote='',";
                 }
+
                 cmdString += "Request='" + hfedSchedule.Request + "',";
                 cmdString += "Complete='" + hfedSchedule.Complete + "',";
                 cmdString += "Households=" + hfedSchedule.Households + ",";
@@ -448,6 +462,7 @@ namespace MVC5_Seneca.Controllers
                 {
                     cmdString += "VolunteerHours=" + hfedSchedule.VolunteerHours;
                 }
+
                 cmdString += " WHERE Id=" + hfedSchedule.Id;
                 context.Database.ExecuteSqlCommand(cmdString);
             }
@@ -462,11 +477,13 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             HfedSchedule hfedSchedule = db.HfedSchedules.Find(id);
             if (hfedSchedule == null)
             {
                 return HttpNotFound();
             }
+
             return View(hfedSchedule);
         }
 
@@ -484,8 +501,8 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ReturnToHfedDashboard()
         {
             return RedirectToAction("Index", "HfedHome");
-        } 
-        
+        }
+
         public ActionResult CreateExcel()
         {
             XLWorkbook workbook = new XLWorkbook();
@@ -508,7 +525,7 @@ namespace MVC5_Seneca.Controllers
             foreach (HfedSchedule request in deliveryRequests)
             {
                 activeRow += 1;
-                var dow = request.Date.ToString("ddd") + " ";    
+                var dow = request.Date.ToString("ddd") + " ";
                 ws.Cell(activeRow, 1).SetValue(dow + request.Date.ToString("MM/dd/yy"));
 
                 var sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
@@ -525,7 +542,7 @@ namespace MVC5_Seneca.Controllers
                 ws.Cell(activeRow, 4).SetValue(request.Households.ToString());
                 ws.Cell(activeRow, 5).SetValue(request.PickUpTime);
 
-                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);  
+                ApplicationUser pointPerson = db.Users.Find(schedule[0].PointPerson_Id);
                 ws.Cell(activeRow, 6).SetValue(pointPerson.FirstName);
 
                 string driverName = "";
@@ -534,11 +551,12 @@ namespace MVC5_Seneca.Controllers
                     ApplicationUser driver = db.Users.Find(schedule[0].Driver_Id);
                     if (driver != null) driverName = driver.FirstName;
                 }
-                  
-                ws.Cell(activeRow, 7).SetValue(driverName); 
+
+                ws.Cell(activeRow, 7).SetValue(driverName);
                 ws.Cell(activeRow, 8).SetValue(request.ScheduleNote);
             }
-            ws.Columns().AdjustToContents();  
+
+            ws.Columns().AdjustToContents();
             MemoryStream ms = new MemoryStream();
             workbook.SaveAs(ms);
             ms.Position = 0;
@@ -550,86 +568,90 @@ namespace MVC5_Seneca.Controllers
         public ActionResult DriverSignUp()
         {
             // Find first incomplete schedule and set dates to beginning and end of that month
-            DateTime start = DateTime.Today ;
-            DateTime end = DateTime.Today ;
+            DateTime start = DateTime.Today;
+            DateTime end = DateTime.Today;
             var firstSchedule = db.HfedSchedules.OrderBy
                 (d => d.Date).FirstOrDefault(c => c.Complete == false);
             if (firstSchedule != null)
-            {   // Set dates for one complete month:
+            {
+                // Set dates for one complete month:
                 String mn = firstSchedule.Date.Month.ToString();
                 string yr = firstSchedule.Date.Year.ToString();
-                Session["StartDate"] = mn + "/01/" + yr; 
+                Session["StartDate"] = mn + "/01/" + yr;
                 start = Convert.ToDateTime(Session["StartDate"]);
-                end = new DateTime(start.Year, start.Month, 
-                    DateTime.DaysInMonth(start.Year,start.Month));
+                end = new DateTime(start.Year, start.Month,
+                    DateTime.DaysInMonth(start.Year, start.Month));
                 Session["EndDate"] = Convert.ToString(end, CultureInfo.InvariantCulture);
-            } 
+            }
+
             var scheduleList = db.HfedSchedules.Where
                 (s => s.Date >= start && s.Date <= end).OrderBy(s => s.Date).ToList();
-            HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel();
-            hfedSchedule.UserIsOnSchedule = false;
-            hfedSchedule.HfedScheds = new List<HfedSchedule>();
+            HfedScheduleViewModel hfedSchedule = new HfedScheduleViewModel
+            {
+                UserIsOnSchedule = false, HfedScheds = new List<HfedSchedule>()
+            };
             var usr = db.Users.Find(User.Identity.GetUserId());
             hfedSchedule.DriverFullName = usr.FullName;
             foreach (HfedSchedule sched in scheduleList)
-            {                                                                                                                          
+            {
                 string strSql = "SELECT * FROM HfedSchedule WHERE Id = " + sched.Id;
-                var schedData = db.Database.SqlQuery<HfedScheduleViewModel >(strSql).FirstOrDefault();
+                var schedData = db.Database.SqlQuery<HfedScheduleViewModel>(strSql).FirstOrDefault();
 
                 if (schedData != null)
                 {
                     strSql = "SELECT * FROM HfedLocation WHERE Id = " + schedData.Location_Id;
                     sched.Location = db.Database.SqlQuery<HfedLocation>(strSql).FirstOrDefault();
-                                                                                                                                                             
-                    sched.PointPerson = db.Users.Find( schedData.PointPerson_Id);
+
+                    sched.PointPerson = db.Users.Find(schedData.PointPerson_Id);
 
                     strSql = "SELECT * FROM HfedProvider WHERE Id = " + schedData.Provider_Id;
                     sched.Provider = db.Database.SqlQuery<HfedProvider>(strSql).FirstOrDefault();
 
                     sched.HfedDriversArray = schedData.HfedDriverIds.Split(',').ToArray();
                     sched.HfedClientsArray = schedData.HfedClientIds.Split(',').ToArray();
-                    sched .HfedDrivers = new List<ApplicationUser>();
+                    sched.HfedDrivers = new List<ApplicationUser>();
                     var did = schedData.Driver_Id;
                     if (!did.IsNullOrEmpty())
                     {
-                        sched.Driver = db.Users.Find(did);        
+                        sched.Driver = db.Users.Find(did);
                         if (sched.Driver.UserName == User.Identity.Name)
                         {
                             hfedSchedule.DriverFullName = sched.Driver.FullName;
                             hfedSchedule.UserIsOnSchedule = true;
                         }
-                    }      
-                } 
-                                                                                                                                            
+                    }
+                }
+
                 var allUsers = db.Users.OrderBy(n => n.FirstName).ToList();
                 foreach (ApplicationUser user in allUsers)
                 {
-                    if (UserIsInRole(user,"HfedDriver"))
+                    if (UserIsInRole(user, "HfedDriver"))
                     {
                         sched.HfedDrivers.Add(user);
                     }
-                }  
-                    // Convert viewmodel schedule to hfedschedule to add: 
-                    var hfedSched = new HfedSchedule
-                    {
-                        Id = sched.Id,
-                        Date = sched.Date,
-                        PickUpTime = sched.PickUpTime,
-                        Location = sched.Location,
-                        PointPerson = sched.PointPerson,
-                        Provider = sched.Provider,
-                        HfedDriversArray = sched.HfedDriversArray,
-                        HfedClientsArray = sched.HfedClientsArray,
-                        HfedDrivers = sched.HfedDrivers,
-                        SignUp = false,
-                        Cancel = false,
-                        Driver = sched.Driver,
-                        DriverName = sched.DriverName,
-                        FormattedDay = sched.Date.ToString("ddd"),
-                        FormattedDate = sched.Date.ToString("MM/dd/yy")
-                    }; 
-                     hfedSchedule.HfedScheds.Add(hfedSched);
-            }  
+                }
+
+                // Convert viewmodel schedule to hfedschedule to add: 
+                var hfedSched = new HfedSchedule
+                {
+                    Id = sched.Id,
+                    Date = sched.Date,
+                    PickUpTime = sched.PickUpTime,
+                    Location = sched.Location,
+                    PointPerson = sched.PointPerson,
+                    Provider = sched.Provider,
+                    HfedDriversArray = sched.HfedDriversArray,
+                    HfedClientsArray = sched.HfedClientsArray,
+                    HfedDrivers = sched.HfedDrivers,
+                    SignUp = false,
+                    Cancel = false,
+                    Driver = sched.Driver,
+                    DriverName = sched.DriverName,
+                    FormattedDay = sched.Date.ToString("ddd"),
+                    FormattedDate = sched.Date.ToString("MM/dd/yy")
+                };
+                hfedSchedule.HfedScheds.Add(hfedSched);
+            }
 
             return View(hfedSchedule);
         }
@@ -638,9 +660,9 @@ namespace MVC5_Seneca.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DriverSignUp([Bind(Include = "HfedScheds")] HfedScheduleViewModel schedules)
-        {                 
+        {
             foreach (var sched in schedules.HfedScheds)
-            {  
+            {
                 if (sched.SignUp)
                 {
                     using (var context = new SenecaContext())
@@ -662,7 +684,8 @@ namespace MVC5_Seneca.Controllers
                         context.Database.ExecuteSqlCommand(cmdString);
                     }
                 }
-            }     
+            }
+
             return RedirectToAction("DriverSignUp");
         }
 
@@ -675,7 +698,8 @@ namespace MVC5_Seneca.Controllers
             var eom = DateTime.DaysInMonth(dt1.Year, dt1.Month);
             Session["EndDate"] = dt1.Month + "/" + eom + "/" + dt1.Year;
             return RedirectToAction("Index");
-        }  
+        }
+
         public ActionResult MonthPrevious()
         {
             var dt1 = Convert.ToDateTime(Session["StartDate"]);
@@ -686,11 +710,27 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult DuplicateMonthlySchedule()
+        public ActionResult Duplicate(int? id) // check Are You Sure?
         {
-            // Get this month's schedule:                                    
-            DateTime sDate = Convert.ToDateTime(Session["StartDate"]);
-            DateTime eDate = Convert.ToDateTime(Session["EndDate"]);
+            var startDate = Convert.ToDateTime(Session["StartDate"]);
+            startDate = startDate.AddMonths(1);
+            int month = startDate.Month;
+            int year = startDate.Year;
+
+            var hfedSchedules = db.HfedSchedules.Where(s => s.Date.Month == month
+                                                            && s.Date.Year == year).ToList();
+            Session["ExistingSchedules"] = hfedSchedules.Count;  
+            return View();                                  
+        }
+
+        // POST: HfedSchedules/Duplicate
+        [HttpPost, ActionName("Duplicate")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DuplicateConfirmed()
+        {
+            // Get this month's schedules:                                    
+            var sDate = Convert.ToDateTime(Session["StartDate"]);
+            var eDate = Convert.ToDateTime(Session["EndDate"]); 
             var hfedSchedules = db.HfedSchedules.Where(s => s.Date >= sDate && s.Date <= eDate).OrderBy(s => s.Date).ToList();
             
             foreach (HfedSchedule hfedSchedule in hfedSchedules)

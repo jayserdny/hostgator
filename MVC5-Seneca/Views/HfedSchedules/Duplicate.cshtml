@@ -1,0 +1,37 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Duplicate</title>
+</head>
+<body>
+<h3>Are you sure you want to perform this duplication?</h3>
+<div>
+    <h4>Duplicate Current HFED Schedule Into the Next Month</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            There are already @Session["ExistingSchedules"] scheduled runs in the next month.
+        </dt>
+    </dl>
+    
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    <div>
+        <input type="submit" value="Duplicate" class="btn" />
+    </div>
+        <br />
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
+</body>
+</html>
