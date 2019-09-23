@@ -206,42 +206,22 @@ namespace MVC5_Seneca.Controllers
             HfedScheduleViewModel hfedSchedule)
         {
             if (hfedSchedule.PointPerson.Id == null || hfedSchedule.Location.Id == 0 || hfedSchedule.Provider.Id == 0)
-
             {
-                // Reload dropdown lists:
-                hfedSchedule.HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
-                hfedSchedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
-                hfedSchedule.HfedClients = db.HfedClients.Where(c => c.Location.Id == hfedSchedule.Location.Id)
-                    .OrderBy(c => c.LastName).ToList();
-                hfedSchedule.HfedDrivers = new List<ApplicationUser>();
-                hfedSchedule.HfedStaffs = new List<ApplicationUser>();
-                var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
-                foreach (ApplicationUser user in allUsers)
-                {
-                    if (UserIsInRole(user, "HfedDriver"))
-                    {
-                        hfedSchedule.HfedDrivers.Add(user);
-                    }
-
-                    if (UserIsInRole(user, "HfedStaff"))
-                    {
-                        hfedSchedule.HfedStaffs.Add(user);
-                    }
-                }
-
-                if (hfedSchedule.PointPerson.Id == null)
-                {
-                    hfedSchedule.ErrorMessage = "Point Person required";
-                }
-
+                hfedSchedule = GetDropDownData(hfedSchedule); // Reload dropdown lists 
+                if (hfedSchedule.PointPerson.Id == null){hfedSchedule.ErrorMessage = "Point Person required";}
+                if (hfedSchedule.Location.Id == 0) { hfedSchedule.ErrorMessage = "Location required";}
+                if (hfedSchedule.Provider.Id == 0) { hfedSchedule.ErrorMessage = "Provider required";}
+                hfedSchedule = GetDropDownData(hfedSchedule); // Reload dropdown lists 
                 return View(hfedSchedule); // (for error functions)
             }
 
+            hfedSchedule = CheckForDuplicateClient(hfedSchedule);
+            if (!hfedSchedule.ErrorMessage.IsNullOrEmpty() ) {return View(hfedSchedule);}
 
             if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
             {
-                hfedSchedule.HfedDriverIds = String.Empty;
-            }
+                hfedSchedule.HfedDriverIds = string.Empty;
+            }                   
             else
             {
                 hfedSchedule.HfedDriverIds = string.Join(",", hfedSchedule.HfedDriversArray);
@@ -312,21 +292,14 @@ namespace MVC5_Seneca.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
                                                                                             
-            string sqlString = "SELECT * FROM hfedSchedule WHERE Id =" + id;
+            var sqlString = "SELECT * FROM hfedSchedule WHERE Id =" + id;
             var scheduletoEdit = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
-            if (scheduletoEdit == null)
-            {
-                return HttpNotFound();
-            }
-
+            if (scheduletoEdit == null){return HttpNotFound();} 
             var Loc = db.HfedLocations.Find(scheduletoEdit.Location_Id);
             var hfedSchedule = new HfedScheduleViewModel
-            {
-                HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
+            {                                                                                                                     
                 Location_Id = scheduletoEdit.Location_Id,
                 Location = Loc,
-                HfedClients = db.HfedClients.Where(c => c.Active && c.Location.Id == scheduletoEdit.Location_Id)
-                    .OrderBy(c => c.LastName).ToList(),
                 Date = scheduletoEdit.Date,
                 PickUpTime = scheduletoEdit.PickUpTime,
                 ScheduleNote = scheduletoEdit.ScheduleNote,
@@ -336,51 +309,16 @@ namespace MVC5_Seneca.Controllers
                 Approved = scheduletoEdit.Approved,
                 HfedDriverIds = scheduletoEdit.HfedDriverIds,
                 HfedClientIds = scheduletoEdit.HfedClientIds,
-                VolunteerHours = scheduletoEdit.VolunteerHours,
-                HfedDrivers = new List<ApplicationUser>(),
-                HfedStaffs = new List<ApplicationUser>(),
-                HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList()
+                VolunteerHours = scheduletoEdit.VolunteerHours
             };
-
-            if (hfedSchedule.Households == null) // should never happen because Create inserts a 0
-            {
-                hfedSchedule.Households = 0;
-            }
-
-            var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
-            foreach (var user in allUsers)
-            {
-                if (UserIsInRole(user, "HfedStaff"))
-                {
-                    hfedSchedule.HfedStaffs.Add(user);
-                }
-
-                if (UserIsInRole(user, "HfedDriver"))
-                {
-                    hfedSchedule.HfedDrivers.Add(user);
-                }
-            }
-
-            sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + id;
-            var schedule = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
-
-            sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-            var location = db.Database.SqlQuery<HfedLocation>(sqlString).ToList();
-            hfedSchedule.Location = location[0];
-
+              
+            hfedSchedule.Location =db.HfedLocations .Find( scheduletoEdit .Location_Id);
             hfedSchedule.PointPerson = db.Users.Find(scheduletoEdit.PointPerson_Id);
-            if (scheduletoEdit.Driver != null)
-            {
-                hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver.Id);
-            }
-
-            sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
-            var provider = db.Database.SqlQuery<HfedProvider>(sqlString).ToList();
-            hfedSchedule.Provider = provider[0];
-
+            if (scheduletoEdit.Driver != null){hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver.Id);}
+            hfedSchedule.Provider = db.HfedProviders.Find(scheduletoEdit.Provider_Id);
             hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
             hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();
-
+            hfedSchedule = GetDropDownData(hfedSchedule);
             return View(hfedSchedule);
         }
 
@@ -390,74 +328,125 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Edit([Bind(Include = "Id,Date,PickUpTime,Provider,Location,PointPerson," +
                                                  "ScheduleNote,Driver,Request,Complete,Households,Approved," +
                                                  "HfedDriversArray,HfedClientsArray,VolunteerHours")]
-            HfedSchedule hfedSchedule)
-
+            HfedScheduleViewModel  hfedSchedule)
         {
-            //EF not adding blank Foreign Key records: use raw SQL
-            if (hfedSchedule.HfedDriversArray.IsNullOrEmpty())
-            {
-                hfedSchedule.HfedDriverIds = String.Empty;
-            }
-            else
-            {
-                hfedSchedule.HfedDriverIds = string.Join(",", hfedSchedule.HfedDriversArray);
-            }
-
             if (hfedSchedule.HfedClientsArray.IsNullOrEmpty())
             {
-                hfedSchedule.HfedClientIds = String.Empty;
+                hfedSchedule.HfedClientIds = string.Empty;
             }
             else
             {
-                hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray);
+                hfedSchedule.HfedClientIds = string.Join(",", hfedSchedule.HfedClientsArray ?? throw new InvalidOperationException());
             }
-
-            using (var context = new SenecaContext())
+            hfedSchedule = CheckForDuplicateClient(hfedSchedule);
+            if (!hfedSchedule.ErrorMessage.IsNullOrEmpty())
             {
-                string cmdString = "UPDATE HfedSchedule SET ";
-                cmdString += "Date='" + hfedSchedule.Date + "',";
-                cmdString += "PickUpTime='" + hfedSchedule.PickUpTime + "',";
-                if (hfedSchedule.ScheduleNote != null)
-                {
-                    cmdString += "ScheduleNote='" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
-                }
-                else
-                {
-                    cmdString += "ScheduleNote='',";
-                }
-
-                cmdString += "Request='" + hfedSchedule.Request + "',";
-                cmdString += "Complete='" + hfedSchedule.Complete + "',";
-                cmdString += "Households=" + hfedSchedule.Households + ",";
-                if (hfedSchedule.Approved)
-                {
-                    cmdString += "Approved=1,";
-                }
-                else
-                {
-                    cmdString += "Approved=0,";
-                }
-
-                cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
-                cmdString += "PointPerson_Id='" + hfedSchedule.PointPerson.Id + "',";
-                cmdString += "Driver_Id='" + hfedSchedule.Driver.Id + "',";
-                cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";
-                cmdString += "HfedDriverIds='" + hfedSchedule.HfedDriversArray + "',";
-                cmdString += "HfedClientIds='" + hfedSchedule.HfedClientIds + "',";
-                if (Math.Abs((hfedSchedule.VolunteerHours ?? 0)) < .01)
-                {
-                    cmdString += "VolunteerHours=NULL";
-                }
-                else
-                {
-                    cmdString += "VolunteerHours=" + hfedSchedule.VolunteerHours;
-                }
-
-                cmdString += " WHERE Id=" + hfedSchedule.Id;
-                context.Database.ExecuteSqlCommand(cmdString);
+                hfedSchedule = GetDropDownData(hfedSchedule);
+                return View(hfedSchedule); // (for error functions)
             }
+            //EF not adding blank Foreign Key records: use raw SQL 
+            string cmdString = "UPDATE HfedSchedule SET ";
+            cmdString += "Date='" + hfedSchedule.Date + "',";
+            cmdString += "PickUpTime='" + hfedSchedule.PickUpTime + "',";
+            if (hfedSchedule.ScheduleNote != null)
+            {
+                cmdString += "ScheduleNote='" + hfedSchedule.ScheduleNote.Replace("'", "''") + "',";
+            }
+            else
+            {
+                cmdString += "ScheduleNote='',";
+            }
+
+            cmdString += "Request='" + hfedSchedule.Request + "',";
+            cmdString += "Complete='" + hfedSchedule.Complete + "',";
+            cmdString += "Households=" + hfedSchedule.Households + ",";
+            if (hfedSchedule.Approved)
+            {
+                cmdString += "Approved=1,";
+            }
+            else
+            {
+                cmdString += "Approved=0,";
+            }
+
+            cmdString += "Location_Id=" + hfedSchedule.Location.Id + ",";
+            cmdString += "PointPerson_Id='" + hfedSchedule.PointPerson.Id + "',";
+            cmdString += "Driver_Id='" + hfedSchedule.Driver.Id + "',";
+            cmdString += "Provider_Id=" + hfedSchedule.Provider.Id + ",";
+            cmdString += "HfedDriverIds='" + hfedSchedule.HfedDriversArray + "',";
+            cmdString += "HfedClientIds='" + hfedSchedule.HfedClientIds + "',";
+            if (Math.Abs((hfedSchedule.VolunteerHours ?? 0)) < .01)
+            {
+                cmdString += "VolunteerHours=NULL";
+            }
+            else
+            {
+                cmdString += "VolunteerHours=" + hfedSchedule.VolunteerHours;
+            }
+            cmdString += " WHERE Id=" + hfedSchedule.Id;
+            db.Database.ExecuteSqlCommand(cmdString); 
 
             return RedirectToAction("Index");
+        }
+
+        private HfedScheduleViewModel GetDropDownData(HfedScheduleViewModel schedule)
+        {
+            schedule .HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
+            schedule.HfedClients = db.HfedClients.Where(c => c.Active 
+                        && c.Location.Id == schedule.Location.Id) .OrderBy(c => c.LastName).ToList();
+            schedule.HfedDrivers = new List<ApplicationUser>();
+            schedule.HfedStaffs = new List<ApplicationUser>();
+            schedule.HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList();
+           
+            var allUsers = db.Users.OrderBy(n => n.LastName).ToList();
+            foreach (var user in allUsers)
+            {
+                if (UserIsInRole(user, "HfedStaff"))
+                {
+                    schedule.HfedStaffs.Add(user);
+                }
+
+                if (UserIsInRole(user, "HfedDriver"))
+                {
+                    schedule.HfedDrivers.Add(user);
+                }
+            }
+            return schedule;
+        }
+
+        private HfedScheduleViewModel CheckForDuplicateClient(HfedScheduleViewModel schedule)
+        {
+            // Check for duplicate clients on same day    
+            var otherSchedules = db.HfedSchedules.Where(s => s.Date == schedule.Date
+                                                             && s.Id != schedule.Id).ToList();
+            if (otherSchedules.Count > 0 && schedule.HfedClientsArray != null)
+            {
+                foreach (HfedSchedule otherSched in otherSchedules)
+                {
+                    otherSched.HfedClientsArray = otherSched.HfedClientIds.Split(',').ToArray();
+                    foreach (var c in otherSched.HfedClientsArray)
+                    {
+                        foreach (var c1 in schedule.HfedClientsArray)
+                        {   
+                            if (c == c1 && !c1.IsNullOrEmpty())
+                            {
+                                HfedClient dupClient = db.HfedClients.Find(Convert.ToInt32(c));
+                                if (dupClient != null)
+                                {
+                                   schedule.ErrorMessage = dupClient.FullName
+                                                                + " is already selected in another run on "
+                                                                + otherSched.Date.ToShortDateString();
+
+                                    schedule = GetDropDownData(schedule);
+                                    return schedule; // (for error functions) 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return schedule;
         }
 
         // GET: HfedSchedules/Delete/5

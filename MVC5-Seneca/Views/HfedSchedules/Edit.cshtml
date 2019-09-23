@@ -117,7 +117,12 @@
                 <td>
                     @Html.EditorFor(model => model.Approved)
                 </td>
+                <tr> 
                 <tr>
+                    <td colspan="2" style="color:red">
+                        @Model.ErrorMessage
+                    </td>
+                </tr>
             </table>   
         </div>  
 
