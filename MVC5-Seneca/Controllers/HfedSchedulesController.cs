@@ -468,20 +468,17 @@ namespace MVC5_Seneca.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            using (var context = new SenecaContext())
-            {
-                var scheduleToDelete = new HfedSchedule {Id = (int) id};
+            var scheduleToDelete = new HfedSchedule {Id = (int) id};
                 
-                string strSql = "SELECT * FROM HfedSchedule WHERE Id = " + id;
-                var schedule = db.Database.SqlQuery<HfedScheduleViewModel >(strSql).ToList();
+            string strSql = "SELECT * FROM HfedSchedule WHERE Id = " + id;
+            var schedule = db.Database.SqlQuery<HfedScheduleViewModel >(strSql).ToList();
 
-                scheduleToDelete.Location =db.HfedLocations.Find(schedule[0].Location_Id);
-                scheduleToDelete.PointPerson = db.Users.Find(schedule[0].PointPerson_Id);
-                scheduleToDelete.Provider = db.HfedProviders .Find( schedule[0].Provider_Id);
-                scheduleToDelete.Date = schedule[0].Date;
+            scheduleToDelete.Location =db.HfedLocations.Find(schedule[0].Location_Id);
+            scheduleToDelete.PointPerson = db.Users.Find(schedule[0].PointPerson_Id);
+            scheduleToDelete.Provider = db.HfedProviders .Find( schedule[0].Provider_Id);
+            scheduleToDelete.Date = schedule[0].Date;
                 
-                return View(scheduleToDelete );
-            }
+            return View(scheduleToDelete );      
         }
 
         // POST: HfedSchedules/Delete/5

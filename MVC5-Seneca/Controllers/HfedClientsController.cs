@@ -45,18 +45,17 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedClients/Create
         public ActionResult Create()
         {
-            EntityModels.HfedClient hfedClientView = new EntityModels.HfedClient() 
+            var hfedClientView = new HfedClient
             {
-                HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList() 
+                HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(), Active = true
             };
-            hfedClientView.Active = true;
             return View(hfedClientView);
         }
 
         // POST: HfedClients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Active,ClientNote,Location")] EntityModels.HfedClient hfedClient)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Active,ClientNote,Location")] HfedClient hfedClient)
         {
             //EF adding blank Foreign Key records: use raw SQL
             using (var context = new SenecaContext())
@@ -109,7 +108,7 @@ namespace MVC5_Seneca.Controllers
         // POST: HfedClients/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Active,Location,ClientNote")] EntityModels.HfedClient hfedClient)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth,Active,Location,ClientNote")] HfedClient hfedClient)
         {
             if (ModelState.IsValid)
             {
@@ -161,7 +160,7 @@ namespace MVC5_Seneca.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EntityModels.HfedClient hfedClient = db.HfedClients.Find(id);
+            var hfedClient = db.HfedClients.Find(id);
             if (hfedClient == null)
             {
                 return HttpNotFound();
@@ -174,8 +173,8 @@ namespace MVC5_Seneca.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            EntityModels.HfedClient hfedClient = db.HfedClients.Find(id);
-            db.HfedClients.Remove(hfedClient);
+            var hfedClient = db.HfedClients.Find(id);
+            if (hfedClient != null) db.HfedClients.Remove(hfedClient);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -183,13 +182,7 @@ namespace MVC5_Seneca.Controllers
         public ActionResult GetClients(int id /* drop down value of Location_Id */)
         { 
             // called when a Location has changed lientin Edit or Create schedule
-            List<HfedClient> clients = new List<HfedClient>();
-            clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
-            //List<HfedClient> clientList = new List<HfedClient>();
-            //foreach (HfedClient client in clients)
-            //{
-            //    clientList.Add(client);
-            //}
+            var clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
             SelectList clientList = new SelectList(clients,"Id", "FullName", 0);  
                                                            
             try
