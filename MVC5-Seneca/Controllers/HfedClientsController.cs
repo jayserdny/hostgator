@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -28,7 +26,7 @@ namespace MVC5_Seneca.Controllers
                     var locationId = context.Database.SqlQuery<Int32>(sqlString).FirstOrDefault();
                     var location = db.HfedLocations.Find(locationId);
 
-                    EntityModels.HfedClient viewModel = new HfedClient()
+                    var viewModel = new HfedClient()
                     {
                         Id = hfedClient.Id,
                         FirstName = hfedClient.FirstName,
@@ -184,9 +182,14 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult GetClients(int id /* drop down value of Location_Id */)
         { 
-            // called when a Location has changed in Edit or Create schedule
+            // called when a Location has changed lientin Edit or Create schedule
             List<HfedClient> clients = new List<HfedClient>();
             clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
+            //List<HfedClient> clientList = new List<HfedClient>();
+            //foreach (HfedClient client in clients)
+            //{
+            //    clientList.Add(client);
+            //}
             SelectList clientList = new SelectList(clients,"Id", "FullName", 0);  
                                                            
             try

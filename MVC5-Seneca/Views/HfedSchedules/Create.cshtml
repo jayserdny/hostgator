@@ -1,4 +1,4 @@
-﻿@model MVC5_Seneca.ViewModels.HfedScheduleViewModel 
+﻿@model MVC5_Seneca.ViewModels.HfedScheduleViewModel
 
 @{
     Layout = null;
@@ -54,27 +54,28 @@
         <div>
             <h4>New HFED Food Run</h4>
             <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" }) 
-            
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
             <table>
                 <tr>
                     <td style="text-align:right">
-                        <strong>Date</strong></td>
+                        <strong>Date</strong>
+                    </td>
                     <td>
                         @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } }) (Click to change)
                         @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
-                </tr> 
+                </tr>
                 <tr>
                     <td style="text-align: right">
                         <strong>Pick Up Time</strong>
                     </td>
                     <td>
-                        @Html.TextBoxFor( model => model.PickUpTime, new { style ="width:75px" })
+                        @Html.TextBoxFor(model => model.PickUpTime, new { style = "width:75px" })
                         @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
                     </td>
                 </tr>
-                <tr><td><br /></td></tr> 
+                <tr><td><br /></td></tr>
             </table>
             <table>
                 <tr>
@@ -90,11 +91,11 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select") 
-                        @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger"})
+                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), " Select")
+                        @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select", new { @id = "location_Id" }) 
+                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), " Select", new { @id = "location_Id" })
 
                         @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
                     </td>
@@ -107,23 +108,23 @@
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
-                    @*<td><strong>Clients</strong></td>*@
+                    <td><strong>Clients</strong></td>
                     <td><strong>Note</strong></td>
-                </tr>              
+                </tr>
                 <tr>
-                    @*<td>
-                        @Html.ListBoxFor(model => model.HfedClientsArray, 
+                    <td>
+                        @Html.ListBoxFor(model => model.HfedClientsArray,
                             new MultiSelectList(Model.HfedClients, "Id", "FullName"),
-                            new {Id = "clientsDDL"}) 
-                    </td>*@
+                            new {Id = "clientsDDL"})
+                    </td>
                     <td>
                         @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
                     </td>
-                </tr>  
+                </tr>
             </table>
             <br />
-           <div class="col-md-10">
+            <div class="col-md-10">
                 <input type="submit" value="CREATE" class="btn" style="background-color: aqua; font-weight:bold" />
             </div>
         </div>
@@ -136,29 +137,24 @@
 </body>
 </html>
 
-<script type="text/javascript">  
-    $(document).ready(function () {  
-        $('input[type=datetime]').datepicker({  
-            dateFormat: "mm/dd/yy",  
-            changeMonth: true,  
-            changeYear: true,  
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type=datetime]').datepicker({
+            dateFormat: "mm/dd/yy",
+            changeMonth: true,
+            changeYear: true,
             yearRange: "-5:+1"
-        }); 
-    });  
-</script> 
-<script>
-    $(function () {
-        $("#driversDDL").chosen({ width: "150px" });
+        });
     });
 </script>
 
 <script>
     $(function () {
         $("#clientsDDL").chosen({ width: "150px" });
-    });       
-</script >
+    });
+</script>
 
 <script type="text/javascript">
-        $("#location_Id").change(LoadClients);
+    $("#location_Id").change(LoadClients);
 </script>
 

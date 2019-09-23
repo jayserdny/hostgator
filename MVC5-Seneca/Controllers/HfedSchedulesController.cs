@@ -128,21 +128,11 @@ namespace MVC5_Seneca.Controllers
                 s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
                 hfedSchedule.ScheduleNote = s;
 
-                if (hfedSchedule.HfedClientsArray[0] == "")
-                {
-                    hfedSchedule.ClientsTotal = 0;
-                }
-                else
-                {
-                    hfedSchedule.ClientsTotal = hfedSchedule.HfedClientsArray.Length;
-                }
-
+                hfedSchedule.ClientsTotal = hfedSchedule.SelectedHfedClients.Count( );
                 hfedSchedule.FormattedDay = hfedSchedule.Date.ToString("ddd");
                 hfedSchedule.FormattedDate = hfedSchedule.Date.ToString("MM/dd/yy");
-
-
+                
                 schedulesView.Add(hfedSchedule);
-
             }
 
             return View(schedulesView);
@@ -156,7 +146,7 @@ namespace MVC5_Seneca.Controllers
                 Date = Convert.ToDateTime(Session["StartDate"]),
                 HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList(),
                 HfedLocations = db.HfedLocations.OrderBy(l => l.Name).ToList(),
-                HfedClients = db.HfedClients.Where(c => c.Active).OrderBy(c => c.LastName).ToList(),
+                HfedClients = new List<HfedClient>(),                                                                 
                 HfedDrivers = new List<ApplicationUser>(),
                 HfedStaffs = new List<ApplicationUser>(),   
                 HfedClientsArray = new string [1], 

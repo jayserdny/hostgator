@@ -49,8 +49,8 @@ function LoadClients()
             var items = "<option selected value=\"\"></option>";   
             for (var i = 0; i < data.length; i++)
             {                     
-                items += "<option value=\"" + data[i].Value.toString + "\">" + data[i].Text + "</option>";
-                //items += "<option value=\"" + data[i].Value.toString + "\">" + data[i].Text + "\" selected=1" + "</option>";
+                items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "</option>";
+                //items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "\" selected=1" + "</option>";
             }
             $('#clientsDDL').html(items);
             $("#clientsDDL").trigger("chosen:updated");
