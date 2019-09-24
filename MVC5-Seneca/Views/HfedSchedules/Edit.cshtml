@@ -67,6 +67,7 @@
                     <td>
                         @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), new{@id="location_Id", style = "width:140px" })
                         @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
+                        @if (Model.HfedClientIds.Length > 0) {<span id="Asterisk" style="color: red; font-weight:bold">*</span>}
                     </td>
                     <td>
                         @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"))
@@ -137,7 +138,14 @@
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div> 
-
+    @if (Model.HfedClientIds.Length > 0)
+    {
+        <br />
+        <div id="Footnote">
+            <span style="color: red; font-weight:bold">*</span>
+            <span>This location has selected clients; changing it will remove any selected clients.</span>
+        </div>
+    }
 </body>
 </html>
 

@@ -52,6 +52,8 @@ function LoadClients()
                 items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "</option>";
                 //items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "\" selected=1" + "</option>";
             }
+            $('#Asterisk').hide(); // Hide red asterisk and footnote when Location changes
+            $('#Footnote').hide();
             $('#clientsDDL').html(items);
             $("#clientsDDL").trigger("chosen:updated");
             $("#clientsDDL").change();      
