@@ -141,6 +141,7 @@ namespace MVC5_Seneca.Controllers
         // GET: HfedSchedules/Create
         public ActionResult Create()
         {
+            Session["OriginalClientIds"] ="";
             HfedScheduleViewModel  newHfedSchedule = new HfedScheduleViewModel() 
             {
                 Date = Convert.ToDateTime(Session["StartDate"]),
@@ -294,8 +295,11 @@ namespace MVC5_Seneca.Controllers
                                                                                             
             var sqlString = "SELECT * FROM hfedSchedule WHERE Id =" + id;
             var scheduletoEdit = db.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
-            if (scheduletoEdit == null){return HttpNotFound();} 
-            var Loc = db.HfedLocations.Find(scheduletoEdit.Location_Id);
+            if (scheduletoEdit == null){return HttpNotFound();}
+            // OriginalClientIds are kept for use by HfedClients/GetClients; if the user inadverently changes Location,
+            // the original selections (if any) will be reinstated when returning to the original Location.
+            Session["OriginalClientIds"] = scheduletoEdit.HfedClientIds;
+            var Loc = db.HfedLocations.Find(scheduletoEdit.Location_Id);    
             var hfedSchedule = new HfedScheduleViewModel
             {                                                                                                                     
                 Location_Id = scheduletoEdit.Location_Id,
@@ -310,8 +314,7 @@ namespace MVC5_Seneca.Controllers
                 HfedDriverIds = scheduletoEdit.HfedDriverIds,
                 HfedClientIds = scheduletoEdit.HfedClientIds,
                 VolunteerHours = scheduletoEdit.VolunteerHours
-            };
-              
+            };  
             hfedSchedule.Location =db.HfedLocations .Find( scheduletoEdit .Location_Id);
             hfedSchedule.PointPerson = db.Users.Find(scheduletoEdit.PointPerson_Id);
             if (scheduletoEdit.Driver != null){hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver.Id);}

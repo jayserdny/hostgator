@@ -181,10 +181,14 @@ namespace MVC5_Seneca.Controllers
 
         public ActionResult GetClients(int id /* drop down value of Location_Id */)
         { 
-            // called when a Location has changed lientin Edit or Create schedule
-            var clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();
-            SelectList clientList = new SelectList(clients,"Id", "FullName", 0);  
-                                                           
+            // called when a Location has changed in Edit or Create schedule
+            var clients = db.HfedClients.Where(c => c.Location.Id == id).OrderBy(c => c.LastName).ToList();   
+            List<SelectListItem> clientList = new SelectList(clients, "Id", "FullName").ToList();
+            // Insert the original ClientListIds into the first select list item:                         
+            clientList .Insert(0, (new SelectListItem { Text = @"OriginalClientIds",
+                Value = Session["OriginalClientIds"].ToString() }));  // Session value declared in HfedSchedules/Edit
+            // OriginalClientIds are inserted for use by the Edit view; if the user inadverently changes Location,
+            // the original selections (if any) will be reinstated when returning to the original Location.
             try
             {
                 String json = JsonConvert.SerializeObject(clientList, Formatting.Indented);

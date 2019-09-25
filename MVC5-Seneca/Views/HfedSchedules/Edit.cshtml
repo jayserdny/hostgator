@@ -23,109 +23,108 @@
     {
         @Html.AntiForgeryToken()
 
-        <div>
-            <h4>Edit HFED Food Run</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.Id)  
-            <table>
-                <tr>
-                    <td style="text-align:right">
-                        <strong>@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" }) </strong>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
-                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: right">
-                        <strong>PickUp Time</strong>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
-                        @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
-                    </td>
-                </tr>
-                <tr><td><br /></td></tr>
-                <tr>
-                    <td>
-                        <strong>@Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })</strong>
-                    </td>
-                    <td>
-                        <strong>@Html.LabelFor(m => m.Location, new { @class = "col-md-2" })</strong>
-                    </td>
-                    <td>
-                        <strong>@Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })</strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td> 
-                        @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), new{ style="width:140px" })
-                        @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), new{@id="location_Id", style = "width:140px" })
-                        @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
-                        @if (Model.HfedClientIds.Length > 0) {<span id="Asterisk" style="color: red; font-weight:bold">*</span>}
-                    </td>
-                    <td>
-                        @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"))
-                        @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
-                    </td>
-                </tr>
-                <tr><td><br /></td></tr>
-                <tr>
-                    <td><strong>Driver</strong></td>
-                    <td><strong>Households</strong></td>
-                    <td><strong>Note</strong></td>
-                    @*<td>Volunteer Hours</td>*@
-                </tr>
-                <tr>
-                    <td>
-                        @Html.DropDownListFor(x => x.Driver.Id, new SelectList(Model.HfedDrivers, "Id", "FullName"), " Nobody Yet")
-                        @Html.ValidationMessageFor(model => model.Driver.Id, "", new {@class = "text-danger"})
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(model => model.Households, new {onclick="$(this).select();",  style = "width:30px" })
-                        @Html.ValidationMessageFor(model => model.Households, "", new { @class = "text-danger" })
+    <div>
+        <h4>Edit HFED Food Run</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id) 
+        <table>
+            <tr>
+                <td style="text-align:right">
+                    <strong>@Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "col-md-2" }) </strong>
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right">
+                    <strong>PickUp Time</strong>
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.PickUpTime, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
+                    @Html.ValidationMessageFor(model => model.PickUpTime, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td>
+                    <strong>@Html.LabelFor(m => m.Provider, new { @class = "col-md-2" })</strong>
+                </td>
+                <td>
+                    <strong>@Html.LabelFor(m => m.Location, new { @class = "col-md-2" })</strong>
+                </td>
+                <td>
+                    <strong>@Html.LabelFor(m => m.PointPerson, new { @class = "col-md-2" })</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DropDownListFor(x => x.Provider.Id, new SelectList(Model.HfedProviders, "Id", "Name"), new { style = "width:140px" })
+                    @Html.ValidationMessageFor(model => model.Provider.Id, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.Location.Id, new SelectList(Model.HfedLocations, "Id", "Name"), new { @id = "location_Id", style = "width:140px" })
+                    @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.DropDownListFor(x => x.PointPerson.Id, new SelectList(Model.HfedStaffs, "Id", "FullName"))
+                    @Html.ValidationMessageFor(model => model.PointPerson.Id, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td><strong>Driver</strong></td>
+                <td><strong>Households</strong></td>
+                <td><strong>Note</strong></td>
+                @*<td>Volunteer Hours</td>*@
+            </tr>
+            <tr>
+                <td>
+                    @Html.DropDownListFor(x => x.Driver.Id, new SelectList(Model.HfedDrivers, "Id", "FullName"), " Nobody Yet")
+                    @Html.ValidationMessageFor(model => model.Driver.Id, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Households, new { onclick = "$(this).select();", style = "width:30px" })
+                    @Html.ValidationMessageFor(model => model.Households, "", new { @class = "text-danger" })
 
-                    </td>
-                    
-                    <td>
-                        @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control", style = "width:200px" } })
-                        @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
-                    </td>
-                    @*<td>
-                        @Html.EditorFor(model => model.VolunteerHours)
-                        @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
-                    </td>*@
-                </tr>
-            </table> 
-        
-            <table>
-                <tr>
-                    <td><strong>Clients</strong></td>
-                </tr>
-                <tr>
-                <td> 
+                </td>
+
+                <td>
+                    @Html.EditorFor(model => model.ScheduleNote, new { htmlAttributes = new { @class = "form-control", style = "width:200px" } })
+                    @Html.ValidationMessageFor(model => model.ScheduleNote, "", new { @class = "text-danger" })
+                </td>
+                @*<td>
+                    @Html.EditorFor(model => model.VolunteerHours)
+                    @Html.ValidationMessageFor(model => model.VolunteerHours, "", new { @class = "text-danger" })
+                </td>*@
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td><strong>Clients</strong></td>
+            </tr>
+            <tr>
+                <td>
                     @Html.ListBoxFor(model => model.HfedClientsArray,
                         new MultiSelectList(Model.HfedClients, "Id", "FullName"),
-                       new {Id = "clientsDDL" })  
-                </td> 
+                       new {Id = "clientsDDL" })
+                </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td style="text-align: right"><strong>I Approve This Run</strong></td>
                 <td>
                     @Html.EditorFor(model => model.Approved)
                 </td>
-                <tr> 
-                <tr>
-                    <td colspan="2" style="color:red">
-                        @Model.ErrorMessage
-                    </td>
-                </tr>
-            </table>   
-        </div>  
+            <tr>
+            <tr>
+                <td colspan="2" style="color:red">
+                    @Model.ErrorMessage
+                </td>
+            </tr>
+        </table>
+    </div>  
 
         <br />
             <div class="form-group">
@@ -137,15 +136,7 @@
     <br />
     <div>
         @Html.ActionLink("Back to List", "Index")
-    </div> 
-    @if (Model.HfedClientIds.Length > 0)
-    {
-        <br />
-        <div id="Footnote">
-            <span style="color: red; font-weight:bold">*</span>
-            <span>This location has selected clients; changing it will remove any selected clients.</span>
-        </div>
-    }
+    </div>
 </body>
 </html>
 

@@ -47,14 +47,16 @@ function LoadClients()
             $('#clientsDDL').empty();
            
             var items = "<option selected value=\"\"></option>";   
-            for (var i = 0; i < data.length; i++)
+            for (var i = 1; i < data.length; i++) // Skip data[0] (contains LocationId)
             {                     
-                items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "</option>";
-                //items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "\" selected=1" + "</option>";
-            }
-            $('#Asterisk').hide(); // Hide red asterisk and footnote when Location changes
-            $('#Footnote').hide();
+               items += "<option value=\"" + data[i].Value + "\">" + data[i].Text + "</option>";                                 
+            } 
             $('#clientsDDL').html(items);
+            //var originalClientIds = data[0].Value; 
+            var strIds = data[0].Value.split(","); // turns Ids into an array
+            // mark clients from the original location as selected: 
+            $("#clientsDDL").val(strIds).trigger("chosen:updated"); 
+            // selections will be ignored if the values have no match (as in a different Location client list.)     
             $("#clientsDDL").trigger("chosen:updated");
             $("#clientsDDL").change();      
         },
