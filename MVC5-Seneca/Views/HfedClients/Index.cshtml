@@ -55,7 +55,7 @@
         <td style="text-align:center">
             @Html.DisplayFor(modelItem => item.Active)
         </td>
-        <td>
+        <td title=@item.NoteToolTip>  @*The length of the tool tip message depends on the browser.*@
             @Html.DisplayFor(modelItem => item.ClientNote)
         </td>
         <td>

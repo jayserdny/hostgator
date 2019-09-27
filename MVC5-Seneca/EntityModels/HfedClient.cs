@@ -31,5 +31,7 @@ namespace MVC5_Seneca.EntityModels
         public Boolean Active { get; set; }
         [NotMapped] public List<HfedLocation> HfedLocations { get; set; }
         [NotMapped] public string FullName => $"{FirstName} {LastName}";
+        [NotMapped] public string FormattedBirthDate { get; set; }
+        [NotMapped] public string NoteToolTip { get; set; }
     }    
 }   

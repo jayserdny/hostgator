@@ -118,7 +118,7 @@
             @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
             @Html.DisplayFor(modelitem => item.ClientsTotal)
         </td>
-        <td title=@item.NoteToolTip>
+        <td title=@item.NoteToolTip> @*The length of the tool tip message depends on the browser.*@
             @Html.DisplayFor(modelItem => item.ScheduleNote)
         </td>
         <td style="text-align:center">

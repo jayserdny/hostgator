@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Castle.Core.Internal;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
 using Newtonsoft.Json;
@@ -33,9 +34,16 @@ namespace MVC5_Seneca.Controllers
                         LastName = hfedClient.LastName,
                         DateOfBirth = hfedClient.DateOfBirth, 
                         Location = location,
-                        ClientNote = hfedClient.ClientNote,
+                        ClientNote =hfedClient.ClientNote ,
                         Active = hfedClient.Active  
                     };
+                    viewModel .FormattedBirthDate = viewModel.DateOfBirth.ToString("MM/dd/yyyy");
+                    viewModel.NoteToolTip =
+                        viewModel.ClientNote.Replace(" ",
+                            "\u00a0"); // (full length on mouseover)    \u00a0 is the Unicode character for NO-BREAK-SPACE.
+                    var s = viewModel.ClientNote ; // For display, abbreviate to 10 characters:            
+                    s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
+                    viewModel.ClientNote = s;
                     model.Add(viewModel);
                 }                         
             }
@@ -74,7 +82,7 @@ namespace MVC5_Seneca.Controllers
                     cmdString += "0,";
                 }
 
-                if (hfedClient.ClientNote != null)
+                if (!hfedClient.ClientNote.IsNullOrEmpty())
                 {
                     cmdString += "'" + hfedClient.ClientNote.Replace("'", "''") + "',";
                 }
@@ -139,6 +147,10 @@ namespace MVC5_Seneca.Controllers
                     if (hfedClient.ClientNote != null)
                     {
                         sqlString += "ClientNote = '" + hfedClient.ClientNote.Replace("'", "''") + "',";
+                    }
+                    else
+                    {
+                        sqlString += "ClientNote='',";
                     }
 
                     sqlString += "Location_Id = " + hfedClient.Location.Id;
