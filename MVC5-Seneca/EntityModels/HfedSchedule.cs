@@ -31,7 +31,7 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Point Person")]
         public ApplicationUser PointPerson { get; set; }
 
-        public ApplicationUser Driver{get; set; }
+        public ApplicationUser Driver { get; set; }
 
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]

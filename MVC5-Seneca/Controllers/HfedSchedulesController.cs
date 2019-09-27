@@ -317,7 +317,7 @@ namespace MVC5_Seneca.Controllers
             };  
             hfedSchedule.Location =db.HfedLocations .Find( scheduletoEdit .Location_Id);
             hfedSchedule.PointPerson = db.Users.Find(scheduletoEdit.PointPerson_Id);
-            if (scheduletoEdit.Driver != null){hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver.Id);}
+            if (scheduletoEdit.Driver_Id != null){hfedSchedule.Driver = db.Users.Find(scheduletoEdit.Driver_Id);}
             hfedSchedule.Provider = db.HfedProviders.Find(scheduletoEdit.Provider_Id);
             hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
             hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();
