@@ -31,31 +31,32 @@
                 <table class="table">
                     <tr>
                         <td><strong>Reminder Date </strong></td>
-                        <td>@Html.TextBox("Reminder Date", @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"), new { id = "ReminderDate", style = "width: 75px;" }) (Click to change)</td>
-                        @*<td>
-                            @Html.TextBox("Reminder Date",
-                            @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"),
-                            new { id = "ReminderDate", style = "width: 75px;" })
-                        (Click to change)
-                    </td>*@
+                        <td>@Html.TextBox("Reminder Date",
+                                @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"),
+                                new { id = "ReminderDate", style = "width: 75px;" }) (Click to change)</td>
                     </tr>
                 </table>
             </div>
         }
         <div>
-            <p>@Html.TextAreaFor(model => model.EmailText, 10, 30, new { style = "width:400px" })</p>
+            <span style="color:darkmagenta"><i>Editable text:</i></span>
+            <div>
+                @Html.TextAreaFor(model => model.EmailText, 10, 30,
+                       new {style = "width:400px"})
+            </div>
             @if (Model.Title.Contains("Email Drivers"))
             {
-                <span>Current schedule will be included in email:</span>
+                <span style="color: darkmagenta"><i>Current schedule will be included in email:</i></span>
             }
             @if (Model.Title.Contains("Reminder"))
             {
-                <span>Selected Date Schedule(s) will be included in email:</span>
+                <span style="color: darkmagenta"><i>Selected Date Schedule(s) and Info will be included in email:</i></span>
             }
         </div>
         <div>
             @Html.Raw(Model.HtmlContent)
-        </div>    
+        </div> 
+        <br />
         <div>
             Select Recipients:
             @for (var i = 0; i < Model.Recipients.Count(); i++)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Castle.Core.Internal;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.DataAccessLayer;
@@ -218,7 +219,7 @@ namespace MVC5_Seneca.Controllers
             DateTime dtReminderDate = Convert.ToDateTime(Session["ReminderDate"]);
             email.HtmlContent = GetReminderSchedule(dtReminderDate);
 
-            GetReminderRecipients(Session["ReminderDate"].ToString()); // Puts Rrecipient list in TempData
+            GetReminderRecipients(Session["ReminderDate"].ToString()); // Puts Email Rrecipient list in TempData
             TempData.Keep();
             email.Recipients = TempData["Recipients"] as List<HfedEmailRecipient>;
 
@@ -284,14 +285,22 @@ namespace MVC5_Seneca.Controllers
                             driverName = driver.FirstName;
                         } 
                         text += driverName + "</td>";
-                        text += "<td>" + request.ScheduleNote + "</td>";
+                        var s = request.ScheduleNote; // For display, abbreviate to 64 characters:            
+                        s = s.Length <= 64 ? s : s.Substring(0, 64) + "...";
+                        text += "<td>" + s + "</td>";
                     }
                     else
                     {
-                        text += "&nbsp;</td>";
-                        text += "<td>" + request.ScheduleNote + "</td>";
+                        text += "&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                        if (withDrivers)
+                        {
+                            var s = request.ScheduleNote; // For display, abbreviate to 64 characters:            
+                            s = s.Length <= 64 ? s : s.Substring(0, 64) + "...";
+                            text += "<td>" + s + "</td>";
+                        }  
                     }
                 }
+                
                 text += "<tr></table><br />";                                               
                 return (text);
             }
@@ -333,8 +342,7 @@ namespace MVC5_Seneca.Controllers
 
                     htmlContent += "<td>" + driver.FirstName + "</td></tr></table>";
 
-                    htmlContent += "<table><tr><td>Info:</td></tr>";
-                    htmlContent += "<tr><td>Point Person:</td>";
+                    htmlContent += "<table><tr><td>Point Person:</td>";
                     htmlContent += "<td>" + pointPerson.FirstName + "&nbsp;" + pointPerson.LastName + "</td>";
                     htmlContent += "<td>&nbsp;" + pointPerson.PhoneNumber + "</td><td>&nbsp;" + pointPerson.Email +
                                    "</td></tr></table>";
@@ -371,9 +379,26 @@ namespace MVC5_Seneca.Controllers
                         htmlContent += "<td>" + driver.FullName + "&nbsp;"
                                        + driver.PhoneNumber + "&nbsp" + driver.Email + "</td></tr></table>";
                     }
+
+                    if (!reminder.HfedClientIds.IsNullOrEmpty())
+                    {
+                        htmlContent += "<table><tr><td>Clients:</td>";
+                        var clientIdArray = reminder.HfedClientIds.Split(',').ToArray();
+                        for (int i = 0; i < clientIdArray.Length; i++)
+                        {
+                            htmlContent += "<td>";
+                            var client = context.HfedClients.Find(Convert.ToInt32(clientIdArray[i]));
+                            if (client != null)
+                            {
+                                htmlContent += client.FullName;
+                                if (i < clientIdArray.Length -1){ htmlContent += ", "; }
+                            }
+                        }
+
+                       htmlContent += "</td></tr></table>";
+                    }
                 }
-            }
-                                                                                                                            
+            }   
             return (htmlContent);
         }
 
@@ -385,7 +410,7 @@ namespace MVC5_Seneca.Controllers
             List<ApplicationUser> recipients = new List<ApplicationUser>();
             List<ApplicationUser> allUsers = db.Users.ToList();
            
-            foreach (ApplicationUser user in allUsers )
+            foreach (var user in allUsers )
             {
                 if(UserIsInRole(user,"HfedCoordinator"))
                 {
