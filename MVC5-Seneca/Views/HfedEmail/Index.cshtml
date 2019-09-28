@@ -33,7 +33,8 @@
                         <td><strong>Reminder Date </strong></td>
                         <td>@Html.TextBox("Reminder Date",
                                 @Convert.ToDateTime(Session["ReminderDate"]).ToString("MM/dd/yyyy"),
-                                new { id = "ReminderDate", style = "width: 75px;" }) (Click to change)</td>
+                                new { id = "ReminderDate", style = "width: 75px;" })
+                            <span style="color:darkmagenta">&#8592;Click to change</span></td> @*Html left-arrow*@
                     </tr>
                 </table>
             </div>

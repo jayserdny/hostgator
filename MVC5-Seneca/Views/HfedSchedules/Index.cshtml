@@ -26,9 +26,13 @@
 <table class="table">
     <tr>
         <td><strong>Starting Date </strong></td>
-        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(), new { id = "StartDate", style = "width: 75px;" }) (Click to change)</td>
+        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(),
+                new { id = "StartDate", style = "width: 75px;" })
+            <span style="color:darkmagenta">&#8592;Click to change</span></td> @*Html left-arrow*@
         <td><strong>  Ending Date </strong></td>
-        <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(), new { id = "EndDate", style = "width: 75px;" }) (Click to change)</td>
+        <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(),
+                new { id = "EndDate", style = "width: 75px;" })
+            <span style="color:darkmagenta">&#8592;Click to change</span></td> @*Html left-arrow*@
         <td>@Html.ActionLink(" Previous Month", "MonthPrevious")</td>
         <td>@Html.ActionLink(" Next Month", "MonthNext")</td>              
     </tr>

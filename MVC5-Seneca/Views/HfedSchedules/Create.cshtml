@@ -62,8 +62,10 @@
                         <strong>Date</strong>
                     </td>
                     <td>
-                        @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", style = "width:75px" } }) (Click to change)
-                        @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Date,
+                            new { htmlAttributes = new { @class = "form-control", style = "width:75px" } })
+                        <span style="color:darkmagenta">&#8592;Click to change</span> @*Html left-arrow*@
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                     </td>
                 </tr>
                 <tr>
@@ -80,13 +82,13 @@
             <table>
                 <tr>
                     <td>
-                        <strong>Food Provider</strong> (Required)
+                        <strong>Food Provider</strong><span style="color:darkmagenta">(Required)</span> 
                     </td>
                     <td>
-                        <strong>Drop Off Location</strong> (Required)
+                        <strong>Drop Off Location</strong><span style="color:darkmagenta">(Required)</span>
                     </td>
                     <td>
-                        <strong>Point Person</strong> (Required)
+                        <strong>Point Person</strong><span style="color:darkmagenta">(Required)</span>
                     </td>
                 </tr>
                 <tr>
