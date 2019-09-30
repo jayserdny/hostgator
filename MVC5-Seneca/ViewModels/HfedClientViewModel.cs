@@ -6,9 +6,7 @@ using MVC5_Seneca.EntityModels;
 namespace MVC5_Seneca.ViewModels
 {
     public class HfedClientViewModel
-    {
-        //public HfedLocation Location { get; set; }
-        //public List <HfedLocation> Locations { get; set; }
+    {         
         public int SelectedId { get; set; }
         public List<HfedClient> HfedClients { get; set; }
         public IEnumerable <HfedLocation> HfedLocations { get; set; }

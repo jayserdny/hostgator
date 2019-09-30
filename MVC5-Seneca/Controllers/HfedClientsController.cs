@@ -20,6 +20,8 @@ namespace MVC5_Seneca.Controllers
         public ActionResult Index(int? locId)
         {
             var model = new HfedClientViewModel();
+            if (TempData["ClientLocationId"] != null)
+            { locId = Convert.ToInt32(TempData["ClientLocationId"]); }  // Returning from Create / Edit
             if (locId == 0 || locId == null)
             {
                 model.HfedClients = db.HfedClients.OrderBy(l => l.LastName).ToList(); // select all Locations (default)
@@ -39,27 +41,16 @@ namespace MVC5_Seneca.Controllers
                 using (var context = new SenecaContext())
                 {
                     var sqlString = "SELECT Location_Id FROM HfedClient WHERE Id = " + hfedClient.Id;
-                    var locationId = context.Database.SqlQuery<Int32>(sqlString).FirstOrDefault();
+                    var locationId = context.Database.SqlQuery<Int32>(sqlString).FirstOrDefault();      
                     var location = db.HfedLocations.Find(locationId);
-
-                    var viewModel = new HfedClient()
-                    { 
-                        Id = hfedClient.Id,
-                        FirstName = hfedClient.FirstName,
-                        LastName = hfedClient.LastName,
-                        DateOfBirth = hfedClient.DateOfBirth, 
-                        Location = location,
-                        ClientNote =hfedClient.ClientNote ,
-                        Active = hfedClient.Active  
-                    };
-                    viewModel .FormattedBirthDate = viewModel.DateOfBirth.ToString("MM/dd/yyyy");
-                    viewModel.NoteToolTip =
-                        viewModel.ClientNote.Replace(" ",
+                    hfedClient.Location = location;
+                    hfedClient.FormattedBirthDate = hfedClient.DateOfBirth.ToString("MM/dd/yyyy");
+                    hfedClient.NoteToolTip =
+                        hfedClient.ClientNote.Replace(" ",
                             "\u00a0"); // (full length on mouseover)    \u00a0 is the Unicode character for NO-BREAK-SPACE.
-                    var s = viewModel.ClientNote ; // For display, abbreviate to 10 characters:            
+                    var s = hfedClient.ClientNote ; // For display, abbreviate to 10 characters:            
                     s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
-                    viewModel.ClientNote = s;
-                    model.HfedClients.Add(viewModel);
+                    hfedClient.ClientNote = s;                
                 }                         
             }
             return View(model);
@@ -108,6 +99,7 @@ namespace MVC5_Seneca.Controllers
                 cmdString += hfedClient.Location.Id + ")";
                 context.Database.ExecuteSqlCommand(cmdString);
             }
+            TempData["ClientLocationId"] = hfedClient.Location.Id;
             return RedirectToAction("Index");       
         }
 
@@ -175,6 +167,8 @@ namespace MVC5_Seneca.Controllers
                 // This version not updating location change: 
                 //db.Entry(hfedClient).State = EntityState.Modified;
                 //db.SaveChanges();
+
+                TempData ["ClientLocationId"] = hfedClient.Location.Id;
                 return RedirectToAction("Index");
             }
             return View(hfedClient);
@@ -202,7 +196,7 @@ namespace MVC5_Seneca.Controllers
         {
             var hfedClient = db.HfedClients.Find(id);
             if (hfedClient != null) db.HfedClients.Remove(hfedClient);
-            db.SaveChanges();
+            db.SaveChanges();                                                          
             return RedirectToAction("Index");
         }
 
@@ -218,7 +212,7 @@ namespace MVC5_Seneca.Controllers
             // the original selections (if any) will be reinstated when returning to the original Location.
             try
             {
-                String json = JsonConvert.SerializeObject(clientList, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(clientList, Formatting.Indented);
                 return Content(json, "application/json");
             }
             catch (Exception)
