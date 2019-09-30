@@ -556,7 +556,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ViewModels\ContactsDisplayViewModel.cs" />
-    <Compile Include="ViewModels\HfedClientViewModel.cs" />
+    <Compile Include="ViewModels\HfedClientViewModel.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="ViewModels\HfedEmailViewModel.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
