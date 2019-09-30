@@ -20,12 +20,7 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "HfedLocations");
         }
-
-        public ActionResult MaintainClients()
-        {
-            return RedirectToAction("Index", "HfedClients");
-        }
-
+     
         public ActionResult MaintainProviders()
         {
             return RedirectToAction("Index", "HfedProviders");

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Castle.Core.Internal;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
+using MVC5_Seneca.ViewModels;
 using Newtonsoft.Json;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -16,10 +17,24 @@ namespace MVC5_Seneca.Controllers
         private SenecaContext db = new SenecaContext();
 
         // GET: HfedClients
-        public ActionResult Index()
+        public ActionResult Index(int? locId)
         {
-            var model = new List<HfedClient>();
-            foreach (var hfedClient in db.HfedClients.OrderBy( l =>l.LastName).ToList())
+            var model = new HfedClientViewModel();
+            if (locId == 0 || locId == null)
+            {
+                model.HfedClients = db.HfedClients.OrderBy(l => l.LastName).ToList(); // select all Locations (default)
+            }
+            else
+            {
+                model.HfedClients = db.HfedClients.Where( l => l.Location .Id == locId).OrderBy(l => l.LastName).ToList();
+            }
+
+            model.HfedLocations  = db.HfedLocations.OrderBy(l => l.Name).ToList();        
+            foreach (var loc in model .HfedLocations )
+            {
+               if(loc.Id == locId ) { model.SelectedId = loc.Id; }
+            }
+            foreach (var hfedClient in model.HfedClients.ToList())
             {
                 using (var context = new SenecaContext())
                 {
@@ -28,7 +43,7 @@ namespace MVC5_Seneca.Controllers
                     var location = db.HfedLocations.Find(locationId);
 
                     var viewModel = new HfedClient()
-                    {
+                    { 
                         Id = hfedClient.Id,
                         FirstName = hfedClient.FirstName,
                         LastName = hfedClient.LastName,
@@ -44,7 +59,7 @@ namespace MVC5_Seneca.Controllers
                     var s = viewModel.ClientNote ; // For display, abbreviate to 10 characters:            
                     s = s.Length <= 10 ? s : s.Substring(0, 10) + "...";
                     viewModel.ClientNote = s;
-                    model.Add(viewModel);
+                    model.HfedClients.Add(viewModel);
                 }                         
             }
             return View(model);

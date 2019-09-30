@@ -66,6 +66,7 @@
             @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "col-md-2" })  
             <div>
                 @Html.EditorFor(model => model.Active)
+                <span style="color:darkmagenta"><i>Client must be Active to appear in selection lists.</i></span>
                 @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
             </div>
         </div>

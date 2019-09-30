@@ -107,3 +107,18 @@ function UpdateReminderDate(reminderDate) {
         }
     });
 }
+
+function ChangeLocationForClients(locId) {
+    $.ajax({
+        url : '/HfedClients/Index',
+        data: { locId: locId },
+        type: "POST",
+        success: function (data) {
+            $("body").html(data);  // to refresh the page
+            //alert('Ajax hit'); 
+        },
+        error: function (jqxhr, status, exception) {
+            alert('Exception:', exception);
+        }
+    });
+}

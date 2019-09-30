@@ -26,11 +26,11 @@
 
 @if (User.IsInRole("Administrator") || User.IsInRole("HfedStaff"))
 {
-    <div>
+    <div>                                                                                                                         
         <strong>Staff Menu</strong><br/>
         <a href="@Url.Action("MaintainSchedules", "HfedHome")">Maintain Schedules</a><br/>
         <a href="@Url.Action("MaintainLocations", "HfedHome")">Maintain Delivery Locations</a><br/>
-        <a href="@Url.Action("MaintainClients", "HfedHome")">Maintain Clients</a><br/>
+        <a href="@Url.Action("Index", "HfedClients", new{ locId = 0 })">Maintain Clients</a><br/>
         <a href="@Url.Action("MaintainProviders", "HfedHome")">Maintain Food Providers</a><br/>
     </div>
     if (User.IsInRole("HfedStaff"))
