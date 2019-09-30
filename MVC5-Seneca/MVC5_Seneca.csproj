@@ -429,7 +429,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\HfedClientsController.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\HfedEmailController.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -456,11 +456,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\AssociateTutor.cs" />
-    <Compile Include="EntityModels\HfedClient.cs" />
+    <Compile Include="EntityModels\HfedClient.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="EntityModels\HfedEmail.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="EntityModels\HfedLocation.cs" />
+    <Compile Include="EntityModels\HfedLocation.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="EntityModels\HfedProvider.cs" />
     <Compile Include="EntityModels\HfedSchedule.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -471,7 +475,7 @@
     <Compile Include="EntityModels\TipDocument.cs" />
     <Compile Include="EntityModels\TipsCategory.cs" />
     <Compile Include="EntityModels\Location.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="EntityModels\TutorSchedule.cs" />
     <Compile Include="Migrations\201907301734584_Reset.cs" />
