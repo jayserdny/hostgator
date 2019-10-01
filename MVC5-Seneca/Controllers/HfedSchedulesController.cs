@@ -786,6 +786,12 @@ namespace MVC5_Seneca.Controllers
             // Set Start/End dates to view the newly created schedule:
             return RedirectToAction("MonthNext");
         }
+
+        public ActionResult HfedContacts()
+        {
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -1,0 +1,43 @@
+﻿@model MVC5_Seneca.ViewModels.ContactsDisplayViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HFED Contact List</title>
+</head>
+<body>
+<div>
+    <h4>Healthy Food Every Day Contact List</h4>
+</div>
+<div id="StaffDiv">
+    <table>
+        <tr>
+            <td><b>Staff Members&nbsp;&nbsp;&nbsp;</b></td><td><b>Title</b></td>
+        </tr>
+        @foreach (var staff in Model.Staff)
+        {
+            <tr>
+                <td>@Html.DisplayFor(s => staff.FirstName) @Html.DisplayFor(s => staff.LastName) &nbsp; &nbsp;&nbsp;</td>
+                <td>@Html.DisplayFor(s => staff.Title) &nbsp; &nbsp;&nbsp;</td>
+                <td>@Html.DisplayFor(s => staff.PhoneNumber) &nbsp; &nbsp; &nbsp;</td>
+                <td><a href="mailto:@(staff.Email)?Subject=Healthy%20Food%20Every%20Day%20Program">@staff.Email</a></td>
+            </tr>
+        }       
+    </table>
+</div> 
+<br/>
+<div>
+    <table>
+        <tr>
+            <td>
+                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

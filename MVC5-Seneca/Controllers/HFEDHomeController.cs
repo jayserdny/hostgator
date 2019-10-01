@@ -13,24 +13,20 @@ namespace MVC5_Seneca.Controllers
             {
                 Session["StartDate"] = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).ToString("MM/dd/yyyy");
             }
-
             return View();
         }
         public ActionResult MaintainLocations()
         {
             return RedirectToAction("Index", "HfedLocations");
-        }
-     
+        } 
         public ActionResult MaintainProviders()
         {
             return RedirectToAction("Index", "HfedProviders");
         }
-
-        public ActionResult MaintainSchedules()
+          public ActionResult MaintainSchedules()
         {
             return RedirectToAction("Index", "HfedSchedules");
-        }
-
+        }  
         public ActionResult UpdateMyProfile()
         {                                                    
             return RedirectToAction("Edit", "UpdateMyProfile");
@@ -38,10 +34,15 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ChangeMyPassword()
         {
             return RedirectToAction("Edit", "ChangeMyPassword");
-        }
+        }                                                                                                              
         public ActionResult DriverSignUp()
         {
             return RedirectToAction("DriverSignUp", "HfedSchedules");
+        }
+
+        public ActionResult HfedContacts()
+        {
+            return RedirectToAction("HfedContacts", "HfedSchedules");
         }
     }
 }

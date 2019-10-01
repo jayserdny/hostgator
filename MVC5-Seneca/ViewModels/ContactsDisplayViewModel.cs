@@ -3,10 +3,10 @@ using MVC5_Seneca.EntityModels;
 
 namespace MVC5_Seneca.ViewModels
 {
-    public class ContactsDisplayViewModel
+    public sealed class ContactsDisplayViewModel
     {
-        public virtual ICollection<ApplicationUser> Administrators { get; set; }
+        public ICollection<ApplicationUser> Administrators { get; set; }
 
-        public virtual ICollection <ApplicationUser> Staff { get; set; }
+        public ICollection <ApplicationUser> Staff { get; set; }
     }
 }
