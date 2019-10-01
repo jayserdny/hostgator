@@ -553,22 +553,32 @@ namespace MVC5_Seneca.Controllers
         // GET: DriverSignUp
         public ActionResult DriverSignUp()
         {
-            // Find first incomplete schedule and set dates to beginning and end of that month
-            DateTime start = DateTime.Today;
-            DateTime end = DateTime.Today;
-            var firstSchedule = db.HfedSchedules.OrderBy
-                (d => d.Date).FirstOrDefault(c => c.Complete == false);
-            if (firstSchedule != null)
+            // DEPRECATED -> Find first incomplete schedule and set dates to beginning and end of that month
+            //var start = DateTime.Today;
+            //var end = DateTime.Today;
+            //var firstSchedule = db.HfedSchedules.OrderBy
+            //    (d => d.Date).FirstOrDefault(c => c.Complete == false);
+            //if (firstSchedule != null)
+            //{
+            //    // Set dates for one whole month:
+            //    String mn = firstSchedule.Date.Month.ToString();
+            //    string yr = firstSchedule.Date.Year.ToString();
+            //    Session["StartDate"] = mn + "/01/" + yr;
+            //    start = Convert.ToDateTime(Session["StartDate"]);
+            //    end = new DateTime(start.Year, start.Month,
+            //        DateTime.DaysInMonth(start.Year, start.Month));
+            //    Session["EndDate"] = Convert.ToString(end, CultureInfo.InvariantCulture);
+            //}
+
+            // Set Sign-Up month: if inside the last week of a month, then next month.
+            var start = DateTime.Today; 
+            int days = DateTime.DaysInMonth(start.Year, start.Month);
+            if (start.Day > days - 7)  // In the last 6 days
             {
-                // Set dates for one complete month:
-                String mn = firstSchedule.Date.Month.ToString();
-                string yr = firstSchedule.Date.Year.ToString();
-                Session["StartDate"] = mn + "/01/" + yr;
-                start = Convert.ToDateTime(Session["StartDate"]);
-                end = new DateTime(start.Year, start.Month,
-                    DateTime.DaysInMonth(start.Year, start.Month));
-                Session["EndDate"] = Convert.ToString(end, CultureInfo.InvariantCulture);
+                start = start.AddMonths(1);
             }
+            start = new DateTime(start.Year, start.Month, 1);
+            var end = new DateTime(start.Year, start.Month, days);
 
             var scheduleList = db.HfedSchedules.Where
                 (s => s.Date >= start && s.Date <= end).OrderBy(s => s.Date).ToList();
