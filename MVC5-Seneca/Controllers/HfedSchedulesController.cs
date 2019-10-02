@@ -362,6 +362,7 @@ namespace MVC5_Seneca.Controllers
 
             cmdString += "Request='" + hfedSchedule.Request + "',";
             cmdString += "Complete='" + hfedSchedule.Complete + "',";
+            if (hfedSchedule.Households == null){hfedSchedule.Households = 0;}
             cmdString += "Households=" + hfedSchedule.Households + ",";
             if (hfedSchedule.Approved)
             {
