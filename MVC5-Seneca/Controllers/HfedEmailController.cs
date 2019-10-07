@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Castle.Core.Internal;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.DataAccessLayer;
@@ -15,7 +17,7 @@ namespace MVC5_Seneca.Controllers
 {
     public class HfedEmailController : Controller
     {
-        private SenecaContext db = new SenecaContext();
+        private readonly SenecaContext db = new SenecaContext();
 
         // GET: HfedEmail/Index
         public ActionResult Index(HfedEmailViewModel email)
@@ -57,25 +59,23 @@ namespace MVC5_Seneca.Controllers
                         text += "</p>";
                         DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
                         DateTime endDate = Convert.ToDateTime(Session["EndDate"]);
-                        if (hfedEmail.Title == "Email Drivers - Show Schedule with Driver Names")
+                        switch (hfedEmail.Title)
                         {
-                            hfedEmail.HtmlContent = GetDriverSchedule(true, startDate, endDate);
-                            text += hfedEmail .HtmlContent;
+                            case "Email Drivers - Show Schedule with Driver Names":
+                                 hfedEmail.HtmlContent = GetDriverSchedule(true, startDate, endDate);
+                                break;
+                            case "Email Drivers - Show Schedule with No Driver Names":
+                                hfedEmail.HtmlContent = GetDriverSchedule(false, startDate, endDate);
+                                break;
+                            case "Email Reminders":
+                                var reminderDate = Convert.ToDateTime(Session["ReminderDate"]);
+                                hfedEmail.HtmlContent = GetReminderSchedule(reminderDate);
+                                break;
+                            case "Email Staff - Request Schedules":
+                                hfedEmail.HtmlContent = GetTentativeSchedule();
+                                break;
                         }
-
-                        if (hfedEmail.Title == "Email Drivers - Show Schedule with No Driver Names")
-                        {
-                            hfedEmail.HtmlContent = GetDriverSchedule(true, startDate, endDate);
-                            text += hfedEmail.HtmlContent;
-                        }
-
-                        if (hfedEmail.Title == "Email Reminders")
-                        {
-                            var reminderDate = Convert.ToDateTime(Session["ReminderDate"]);
-                            hfedEmail.HtmlContent = GetReminderSchedule(reminderDate);
-                            text += hfedEmail.HtmlContent;
-                        }
-
+                        text += hfedEmail.HtmlContent;
                         SendEmail(recipient.Email, text);
                     }
                 }
@@ -237,7 +237,7 @@ namespace MVC5_Seneca.Controllers
                 HtmlContent = htmlContent,                          
             };
             msg.AddTo(new EmailAddress(address, "HFED Team Member"));
-            var response = await client.SendEmailAsync(msg);   
+            var unused = await client.SendEmailAsync(msg);    
         }
 
         private static string GetDriverSchedule(bool withDrivers, DateTime startDate, DateTime endDate)
@@ -253,19 +253,19 @@ namespace MVC5_Seneca.Controllers
                     text += "<tr><td>" + request.Date.ToShortDateString() + "</td>";
 
                     sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
-                    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
 
-                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule.Provider_Id;
                     var provider = context.Database.SqlQuery<HfedProvider>(sqlString).ToList();
                     text += "<td>" + provider[0].Name + "</td>";
 
-                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule.Location_Id;
                     var location = context.Database.SqlQuery<HfedLocation>(sqlString).ToList();
                     text += "<td>" + location[0].Name + "</td>";
 
                     text += "<td>" + request.PickUpTime + "</td>";
 
-                    ApplicationUser pointPerson = context.Users.Find(schedule[0].PointPerson_Id);
+                    ApplicationUser pointPerson = context.Users.Find(schedule.PointPerson_Id);
                     text += "<td>" + pointPerson.FirstName + "</td>";
 
                     text += "<td bgcolor=" + (char) 34 + "#FFFF00" + (char) 34 + ">";
@@ -317,20 +317,20 @@ namespace MVC5_Seneca.Controllers
                     htmlContent += "<table border=" + (char)34 + "1" + (char)34 + "><tr>";
 
                     sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + reminder.Id;
-                    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).ToList();
+                    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
                     htmlContent += "<td>" + reminder.Date.ToShortDateString() + "</td>";
 
-                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule[0].Provider_Id;
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule.Provider_Id;
                     var provider = context.Database.SqlQuery<HfedProvider>(sqlString).ToList();
                     htmlContent += "<td>" + provider[0].Name + "</td>";
 
-                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule[0].Location_Id;
-                    var location = context.Database.SqlQuery<HfedLocation>(sqlString).ToList();
-                    htmlContent += "<td>" + location[0].Name + "</td>";
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule.Location_Id;
+                    var location = context.Database.SqlQuery<HfedLocation>(sqlString).FirstOrDefault();
+                    htmlContent += "<td>" + location.Name + "</td>";
 
                     htmlContent += "<td>" + reminder.PickUpTime + "</td>";
 
-                    ApplicationUser pointPerson = context.Users.Find(schedule[0].PointPerson_Id);
+                    ApplicationUser pointPerson = context.Users.Find(schedule.PointPerson_Id);
                     htmlContent += "<td>" + pointPerson.FirstName + "</td>";     
 
                     ApplicationUser driver = new ApplicationUser();
@@ -356,12 +356,12 @@ namespace MVC5_Seneca.Controllers
 
                     htmlContent += "</tr></table>";
 
-                    htmlContent += "<table><tr><td>Drop Off:</td>";
-                    htmlContent += "<td>" + location[0].Name + "&nbsp;" + location[0].Address
-                                   + "</td><td>&nbsp;" + location[0].MainPhone + "</td>";
-                    if (!location[0].LocationNote.IsNullOrEmpty())
+                    htmlContent += "<table><tr><td>Drop Off</td>";
+                    htmlContent += "<td>" + location.Name + "&nbsp;" + location.Address
+                                   + "</td><td>&nbsp;" + location.MainPhone + "</td>";
+                    if (!location.LocationNote.IsNullOrEmpty())
                     {
-                        htmlContent += "<td>&nbsp;" + location[0].LocationNote + "&nbsp;" + "</td>";
+                        htmlContent += "<td>&nbsp;" + location.LocationNote + "&nbsp;" + "</td>";
                     }
 
                     htmlContent += "</tr></table>";
@@ -398,6 +398,71 @@ namespace MVC5_Seneca.Controllers
                     }
                 }
             }   
+            return (htmlContent);
+        }
+
+        private static string GetTentativeSchedule()  // Get the recently copied Next Month schedule
+        {
+            string htmlContent = "";
+            using (var context = new SenecaContext())
+            {
+                // Use month of latest schedule on file:
+                var sqlString = "SELECT TOP 1 Date FROM HfedSchedule ORDER BY Date DESC" ;
+                var latestScheduleDate = context.Database.SqlQuery<DateTime>(sqlString).FirstOrDefault();
+                var month = latestScheduleDate.Month;
+                var year = latestScheduleDate.Year;
+                var start = new DateTime(year, month, 1);
+                var end = new DateTime(start.Year, start.Month, DateTime.DaysInMonth(start.Year, start.Month));
+                var strEend = end.ToString("M/dd/yy");
+                htmlContent += "<table><tr style=\"font-weight:bold\">";
+                htmlContent += "<td>Date</td>";           
+                htmlContent += "<td>Provider</td>";
+                htmlContent += "<td>Pick Up</td>";
+                htmlContent += "<td>Location</td>";
+                htmlContent += "<td>Households</td>";
+                htmlContent += "<td>Point</td>";
+                htmlContent += "<td>Driver</td>";
+                htmlContent += "</tr>";
+
+                sqlString = "SELECT * FROM HfedSchedule WHERE Date >= '" + start.ToString("MM/dd/yyyy") + "'";
+                sqlString += " AND Date <= '" + strEend + "' ORDER BY Date";
+                var deliveryRequests = context.Database.SqlQuery<HfedSchedule>(sqlString).ToList(); 
+                foreach (HfedSchedule request in deliveryRequests)
+                {
+                    var dow = request.Date.ToString("ddd") + " ";
+                    htmlContent +="<tr><td>" + (dow + request.Date.ToString("MM/dd/yy")) + "</td>";
+
+                     sqlString = "SELECT * FROM HfedSchedule WHERE Id = " + request.Id;
+                    var schedule = context.Database.SqlQuery<HfedScheduleViewModel>(sqlString).FirstOrDefault();
+
+                    sqlString = "SELECT * FROM HfedProvider WHERE Id = " + schedule.Provider_Id;
+                    var provider = context.Database.SqlQuery<HfedProvider>(sqlString).FirstOrDefault();
+                    htmlContent +="<td>" + provider.Name +"</td>";
+
+                    htmlContent += "<td style=\"text-align:center\">" + request.PickUpTime + "</td>";
+
+                    sqlString = "SELECT * FROM HfedLocation WHERE Id = " + schedule.Location_Id;
+                    var location = context.Database.SqlQuery<HfedLocation>(sqlString).FirstOrDefault();
+                    htmlContent +="<td>" + location.Name + "</td>";
+
+                    htmlContent += "<td style=\"text-align:center\">" + request.Households + "</td>";
+
+                    sqlString = "SELECT * FROM AspNetUsers WHERE Id = '" + schedule.PointPerson_Id + "'";
+                    var pointPerson = context.Database.SqlQuery<ApplicationUser> (sqlString).FirstOrDefault();      
+                    htmlContent += "<td>" + pointPerson.FirstName + "</td>";
+
+                    string driverName = "";
+                    if (schedule.Driver_Id != null)
+                    {
+                        sqlString = "SELECT * FROM AspNetUsers WHERE Id = '" + schedule.Driver_Id + "'";   
+                        var driver = context.Database .SqlQuery<ApplicationUser> (sqlString).FirstOrDefault();
+                          if (driver != null) driverName = driver.FirstName;
+                    }                                                                                            
+                    htmlContent += "<td>" + driverName + "</td></tr>";  
+                }
+
+                htmlContent += "</table>";
+            }
             return (htmlContent);
         }
 
