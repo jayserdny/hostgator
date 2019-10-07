@@ -39,21 +39,25 @@
                 </table>
             </div>
         }
-        <div>
-            <span style="color:darkmagenta"><i>Editable text:</i></span>
             <div>
-                @Html.TextAreaFor(model => model.EmailText, 10, 30,
-                       new {style = "width:400px"})
+                <span style="color:darkmagenta"><i>Editable text:</i></span>
+                <div>
+                    @Html.TextAreaFor(model => model.EmailText, 10, 30,
+                           new {style = "width:400px"})
+                </div>
+                @if (Model.Title.Contains("Email Drivers"))
+                {
+                    <span style="color: darkmagenta"><i>Current schedule will be included in email:</i></span>
+                }
+                @if (Model.Title.Contains("Reminder"))
+                {
+                    <span style="color: darkmagenta"><i>Selected Date Schedule(s) and Info will be included in email:</i></span>
+                }
+                @if (Model.Title.Contains("Request Schedules"))
+                {
+                    <span style="color: darkmagenta"><i>Next month's schedule will be included in email:</i></span>
+                }
             </div>
-            @if (Model.Title.Contains("Email Drivers"))
-            {
-                <span style="color: darkmagenta"><i>Current schedule will be included in email:</i></span>
-            }
-            @if (Model.Title.Contains("Reminder"))
-            {
-                <span style="color: darkmagenta"><i>Selected Date Schedule(s) and Info will be included in email:</i></span>
-            }
-        </div>
         <div>
             @Html.Raw(Model.HtmlContent)
         </div> 

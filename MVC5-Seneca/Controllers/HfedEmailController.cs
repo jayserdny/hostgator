@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Castle.Core.Internal;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MVC5_Seneca.DataAccessLayer;
@@ -114,6 +112,7 @@ namespace MVC5_Seneca.Controllers
                     { Id = user.Id, FullName = user.FullName, Email = user.Email, Checked =true});
             }
 
+            email.HtmlContent = GetTentativeSchedule();
             TempData["Recipients"] = newList; // TempData holds complex data not passed in Redirects.                            
             email.Recipients = newList;                          
 
