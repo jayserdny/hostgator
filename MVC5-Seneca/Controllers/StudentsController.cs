@@ -335,8 +335,14 @@ namespace MVC5_Seneca.Controllers
                     if (viewModel.Teacher  != null)
                     {
                         if (viewModel.Teacher.Id == 0)
-                        {
-                            student.Teacher = null;
+                        {                                     
+                            // student.Teacher = null;   // this statement is not peformed by Entity Framework
+                            var sqlString = "UPDATE Student Set Teacher_Id = NULL ";
+                            sqlString += "WHERE Id =" + viewModel.Id;
+                            using (var context = new SenecaContext())
+                            {
+                                context.Database.ExecuteSqlCommand(sqlString);
+                            }
                         }
                         else
                         {

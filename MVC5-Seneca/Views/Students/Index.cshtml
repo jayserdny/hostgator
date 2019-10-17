@@ -67,14 +67,14 @@
                     @switch (item.GradeLevel)
                 {
                     case -1:
-                        @Html.Raw("Pre-K");
-                    break;
+                        @Html.Raw("Pre-K")
+                        break;
                     case 0:
-                    @Html.Raw("Kindergarten");
-                    break;
+                        @Html.Raw("Kindergarten");
+                        break;
                     default:
-                    @Html.DisplayFor(modelItem => item.GradeLevel);
-                    break;
+                        @Html.DisplayFor(modelItem => item.GradeLevel);
+                        break;
                 }
                 </td>
                 <td style="text-align: center">
