@@ -103,7 +103,7 @@ namespace MVC5_Seneca.Controllers
             return RedirectToAction("Edit", "UpdateMyProfile");
         } 
         public ActionResult ChangeMyPassword()
-        {
+        { 
             return RedirectToAction("ResetPassword", "Account");
         }     
         public ActionResult DisplayStudentInfo()
