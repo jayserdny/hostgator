@@ -490,10 +490,15 @@ namespace MVC5_Seneca.Controllers
         }
 
         public ActionResult CreateExcel()
-        {
+        {                                                                                          
             XLWorkbook workbook = new XLWorkbook();
-            IXLWorksheet ws = workbook.Worksheets.Add("Requests");
+            IXLWorksheet ws = workbook.Worksheets.Add("Schedule");
             int activeRow = 1;
+            ws.Cell(activeRow ,1).SetValue("Updated:");
+            ws.Cell(activeRow,1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right; 
+            ws.Cell(activeRow, 2).SetValue(DateTime.Today.ToString( "MM/dd/yyyy" ));
+
+            activeRow += 1;
             ws.Cell(activeRow, 1).SetValue("Food Run");
             ws.Cell(activeRow, 2).SetValue("Provider");
             ws.Cell(activeRow, 3).SetValue("Location");
@@ -503,7 +508,7 @@ namespace MVC5_Seneca.Controllers
             ws.Cell(activeRow, 7).SetValue("Driver");
             ws.Cell(activeRow, 8).SetValue("Note");
 
-            ws.Row(1).Style.Font.Bold = true;
+            ws.Row(activeRow).Style.Font.Bold = true;
             DateTime startDate = Convert.ToDateTime(Session["StartDate"]);
             DateTime endDate = Convert.ToDateTime(Session["EndDate"]);
             var deliveryRequests = db.HfedSchedules.Where(s =>
@@ -552,25 +557,7 @@ namespace MVC5_Seneca.Controllers
 
         // GET: DriverSignUp
         public ActionResult DriverSignUp()
-        {
-            // DEPRECATED -> Find first incomplete schedule and set dates to beginning and end of that month
-            //var start = DateTime.Today;
-            //var end = DateTime.Today;
-            //var firstSchedule = db.HfedSchedules.OrderBy
-            //    (d => d.Date).FirstOrDefault(c => c.Complete == false);
-            //if (firstSchedule != null)
-            //{
-            //    // Set dates for one whole month:
-            //    String mn = firstSchedule.Date.Month.ToString();
-            //    string yr = firstSchedule.Date.Year.ToString();
-            //    Session["StartDate"] = mn + "/01/" + yr;
-            //    start = Convert.ToDateTime(Session["StartDate"]);
-            //    end = new DateTime(start.Year, start.Month,
-            //        DateTime.DaysInMonth(start.Year, start.Month));
-            //    Session["EndDate"] = Convert.ToString(end, CultureInfo.InvariantCulture);
-            //}
-
-            // Set Sign-Up month: if inside the last week of a month, then next month.
+        {   // Set Sign-Up month: if inside the last week of a month, then next month.
             var start = DateTime.Today; 
             int days = DateTime.DaysInMonth(start.Year, start.Month);
             if (start.Day > days - 7)  // In the last 6 days
