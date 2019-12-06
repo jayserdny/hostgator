@@ -74,6 +74,7 @@ namespace MVC5_Seneca.Controllers
             viewModel.Schools = schoolList;
             viewModel.Teachers = teacherList;
             viewModel.Users = userList;
+            viewModel.Active = true;
             //viewModel.BirthDate = DateTime.Now.AddYears(-10);     
             return View(viewModel);
         }
@@ -81,7 +82,7 @@ namespace MVC5_Seneca.Controllers
         // POST: Students/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor,Teacher")] AddEditStudentViewModel viewModel)
+        public ActionResult Create([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor,Teacher,Active")] AddEditStudentViewModel viewModel)
         {
             viewModel.ErrorMessage = null;
             if (viewModel.School.Id == 0)
@@ -157,6 +158,8 @@ namespace MVC5_Seneca.Controllers
                 {
                     student.Teacher  = (from t in _db.Teachers where t.Id == viewModel.Teacher.Id select t).Single();
                 }
+
+                student.Active = viewModel.Active;
                 _db.Students.Add(student);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -289,13 +292,14 @@ namespace MVC5_Seneca.Controllers
             viewModel.Parent = student.Parent;
             viewModel.School = student.School;
             viewModel.PrimaryTutor = student.PrimaryTutor;
+            viewModel.Active = student.Active;
             return View(viewModel);
         }
 
         // POST: Students/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor,Teacher")] AddEditStudentViewModel viewModel) 
+        public ActionResult Edit([Bind(Include = "Id,FirstName,Gender,BirthDate,GradeLevel,SpecialClass,School,Parent,PrimaryTutor,Teacher,Active")] AddEditStudentViewModel viewModel) 
         {
             if (ModelState.IsValid)
             {
@@ -307,6 +311,7 @@ namespace MVC5_Seneca.Controllers
                     student.BirthDate = viewModel.BirthDate;
                     student.GradeLevel = viewModel.GradeLevel;
                     student.SpecialClass = viewModel.SpecialClass;
+                    student.Active = viewModel.Active; 
                     if (viewModel.Parent != null)
                     {
                         student.Parent = (from p in _db.Parents where p.Id == viewModel.Parent.Id select p).Single();

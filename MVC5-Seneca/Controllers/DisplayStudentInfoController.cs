@@ -18,7 +18,7 @@ namespace MVC5_Seneca.Controllers
             {
                 User_Id = User.Identity.GetUserId()
             };
-            var sortedStudents = _db.Students.OrderBy(s => s.FirstName);       
+            var sortedStudents = _db.Students.Where(s => s.Active).OrderBy(s => s.FirstName);       
             model.Students = sortedStudents.Select(s => new SelectListItem      
             {
                 Value = s.Id.ToString(),

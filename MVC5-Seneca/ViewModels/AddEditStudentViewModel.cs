@@ -46,6 +46,9 @@ namespace MVC5_Seneca.ViewModels
         [DisplayName("Teacher")]
         public virtual Teacher Teacher { get; set; }
 
+        [DisplayName("Active")]
+        public Boolean Active { get; set; }
+
         public string ErrorMessage { get; set; }
     }
 }

@@ -44,6 +44,8 @@ namespace MVC5_Seneca.EntityModels
         [DisplayName("Teacher")]
         [JsonProperty] public virtual Teacher Teacher { get; set; }
 
+        [DisplayName("Active")]
+        [JsonProperty] public bool Active { get; set; }
         [JsonProperty] public virtual ICollection<ApplicationUser> AssociateTutors { get; set; }
         
         // Fields for Who's Tutoring Whom cshtml report: 

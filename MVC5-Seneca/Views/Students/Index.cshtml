@@ -26,16 +26,16 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.BirthDate)
-                </th> 
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.School)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.GradeLevel)
-                </th>                                                                                  
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.SpecialClass)
-                </th>   
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Parent)
                 </th>
@@ -44,6 +44,9 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Teacher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
                 </th>
                 <th></th>
             </tr>
@@ -65,17 +68,17 @@
                 </td>
                 <td style="text-align: center">
                     @switch (item.GradeLevel)
-                {
-                    case -1:
-                        @Html.Raw("Pre-K")
-                        break;
-                    case 0:
-                        @Html.Raw("Kindergarten");
-                        break;
-                    default:
-                        @Html.DisplayFor(modelItem => item.GradeLevel);
-                        break;
-                }
+                    {
+                        case -1:
+                            @Html.Raw("Pre-K")
+                            break;
+                        case 0:
+                            @Html.Raw("Kindergarten");
+                            break;
+                        default:
+                            @Html.DisplayFor(modelItem => item.GradeLevel);
+                            break;
+                    }
                 </td>
                 <td style="text-align: center">
                     @Html.DisplayFor(modelItem => item.SpecialClass)
@@ -85,9 +88,12 @@
                 </td>
                 <td style="text-align: center">
                     @Html.DisplayFor(modelItem => item.PrimaryTutor.FirstName) @Html.DisplayFor(modelItem => item.PrimaryTutor.LastName)
-                </td> 
+                </td>
                 <td style="text-align: center">
                     @Html.DisplayFor(modelItem => item.Teacher.FirstName) @Html.DisplayFor(modelItem => item.Teacher.LastName)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Active)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
