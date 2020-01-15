@@ -391,9 +391,18 @@ namespace MVC5_Seneca.Controllers
             db.Database.ExecuteSqlCommand(cmdString); 
              
             var usrId = User.Identity.GetUserId();
+            //var recipientId = User.Identity.GetUserId();
 
-            // Email Lynn Rose that an update has occurred (01/14/2020) *** 
-            var unused = EmailHFEDScheduleChange(usrId, hfedSchedule.Id, hfedSchedule.Provider.Id);
+            var allUsers = db.Users.ToList();                                                     
+            foreach (ApplicationUser user in allUsers)
+            {
+                if (UserIsInRole(user, "ReceiveHfedScheduleChangeEmail"))
+                {
+                    var recipientId = user.Id;  // Email Lynn Rose that an update has occurred (01/15/2020)
+                    var unused = EmailHFEDScheduleChange(usrId, hfedSchedule.Id,
+                                           hfedSchedule.Provider.Id, recipientId);
+                }
+            }   
 
             return RedirectToAction("Index");
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Config.Net;
 using DocumentFormat.OpenXml.Wordprocessing;
 using MVC5_Seneca.DataAccessLayer;
 using MVC5_Seneca.EntityModels;
@@ -37,13 +38,14 @@ namespace MVC5_Seneca
             }
         }
 
-        public static async Task EmailHFEDScheduleChange(string userId, int scheduleId, int providerId)
+        public static async Task EmailHFEDScheduleChange(string userId, int scheduleId, int providerId, string recipientId)
         {
             var context = new SenecaContext();
             var usr = context.Users.Find(userId );
-            string usrName = usr.FullName;
+            string usrName = usr.FullName;       
+            var recipient = context.Users.Find(recipientId);       
             var schedDate = context.HfedSchedules.Where(i => i.Id == scheduleId).Select(i => i.Date).FirstOrDefault();
-            // returns provider = null   HfedSchedule sched = context.HfedSchedules.SingleOrDefault(i => i.Id == scheduleId);
+            // returns provider = null:   HfedSchedule sched = context.HfedSchedules.SingleOrDefault(i => i.Id == scheduleId);
             string providerName;
             using (context)
             {
@@ -54,8 +56,8 @@ namespace MVC5_Seneca
             var client = new SendGridClient(Properties.Settings.Default.SendGridClient);
             var from = new EmailAddress("Admin@SenecaHeightsEducationProgram.org", "Coordinator, HFED");
             var subject = "HFED: Healthy Food Every Day";
-            var to = new EmailAddress("prowny@aol.com", "Lynn Rose");  //***       
-            var plainTextContent = "User " + usrName + " has updated a " 
+            var to = new EmailAddress( recipient.Email, recipient .FullName );       
+            var plainTextContent = "User " + usr.FullName + " has updated a " 
                     + schedDate.ToString( "MM/dd/yyyy") 
                     + " food run from " + providerName + "." 
                     + Environment.NewLine + " Please do not reply to this email.";       
