@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Config.Net;
-using DocumentFormat.OpenXml.Wordprocessing;
 using MVC5_Seneca.DataAccessLayer;
-using MVC5_Seneca.EntityModels;
 using SendGrid;
 using SendGrid.Helpers.Mail;              
 namespace MVC5_Seneca
@@ -41,8 +38,7 @@ namespace MVC5_Seneca
         public static async Task EmailHFEDScheduleChange(string userId, int scheduleId, int providerId, string recipientId)
         {
             var context = new SenecaContext();
-            var usr = context.Users.Find(userId );
-            string usrName = usr.FullName;       
+            var usr = context.Users.Find(userId );        
             var recipient = context.Users.Find(recipientId);       
             var schedDate = context.HfedSchedules.Where(i => i.Id == scheduleId).Select(i => i.Date).FirstOrDefault();
             // returns provider = null:   HfedSchedule sched = context.HfedSchedules.SingleOrDefault(i => i.Id == scheduleId);

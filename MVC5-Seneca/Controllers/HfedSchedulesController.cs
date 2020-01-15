@@ -390,9 +390,7 @@ namespace MVC5_Seneca.Controllers
             cmdString += " WHERE Id=" + hfedSchedule.Id;
             db.Database.ExecuteSqlCommand(cmdString); 
              
-            var usrId = User.Identity.GetUserId();
-            //var recipientId = User.Identity.GetUserId();
-
+            var usrId = User.Identity.GetUserId();   
             var allUsers = db.Users.ToList();                                                     
             foreach (ApplicationUser user in allUsers)
             {
