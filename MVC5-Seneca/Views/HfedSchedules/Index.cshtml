@@ -76,9 +76,9 @@
         <th>
             @Html.DisplayNameFor(model => model.ScheduleNote)
         </th>
-        <th>
+        @*<th>
             <strong>Approved</strong>
-        </th>
+        </th>*@
         @*<th>
             Vol Hrs.
         </th>*@
@@ -125,9 +125,9 @@
         <td title=@item.NoteToolTip> @*The length of the tool tip message depends on the browser.*@
             @Html.DisplayFor(modelItem => item.ScheduleNote)
         </td>
-        <td style="text-align:center">
+        @*<td style="text-align:center">
             @Html.DisplayFor(modelItem => item.Approved)
-        </td>
+        </td>*@
         @*<td>
             @Html.DisplayFor(modelItem => item.VolunteerHours)
         </td>*@
