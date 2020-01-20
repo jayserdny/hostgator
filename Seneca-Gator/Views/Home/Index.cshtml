@@ -1,0 +1,107 @@
+﻿@model MVC5_Seneca.EntityModels.ApplicationUser   
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <style>
+        p.indent {
+            padding-left: 1em
+        }
+        div {
+            padding-left: 10px
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <table>
+            <tr>
+                <td>&nbsp;&nbsp; Welcome  @User.Identity.Name!</td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="text-decoration:underline" class="indent"><strong>Seneca Heights Education Program Dashboard</strong></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    @if (User.IsInRole("Administrator"))
+    {
+    <div>
+        Administator Menu<br />
+        <a href="@Url.Action("Manual", "Home")">Administrator Manual</a><br />
+        <a href="@Url.Action("Hfed", "Home")">Healthy Food Every Day</a><br />
+        <a href="@Url.Action("MaintainUsers", "Home")">Maintain Users</a><br />
+        <a href="@Url.Action("MaintainStudents", "Home")">Maintain Students</a><br />
+        <a href="@Url.Action("MaintainParents", "Home")">Maintain Parents</a><br />
+        <a href="@Url.Action("MaintainTeachers", "Home")">Maintain Teachers</a><br />
+        <a href="@Url.Action("MaintainAssociateTutors", "Home")">Maintain Co-Tutors</a><br />
+        <a href="@Url.Action("MaintainDocumentTypes", "Home")">Maintain Document Types</a><br />
+        <a href="@Url.Action("MaintainStudentReports", "Home")">Maintain Student Reports</a><br />
+        <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Reports</a><br />
+        <a href="@Url.Action("MaintainSchools", "Home")">Maintain Schools</a><br />
+        <a href="@Url.Action("MaintainUserRoles", "Home")">Maintain User Permissions (&quot;Roles&quot;)</a><br />
+        <a href="@Url.Action("MaintainTipsCategories", "Home")">Maintain Tips Categories</a><br />
+        <a href="@Url.Action("UploadTeachingTips", "Home")">Maintain Teaching Tips</a><br /> 
+        <a href="@Url.Action("MaintainTutorSchedules", "Home")">Maintain Tutor Schedules</a><br /> 
+        <a href="@Url.Action("ResetAnyPassword", "Account")">Reset Any Password</a><br />
+        <a href="@Url.Action("LoginLog", "Home")">View Logins Log</a><br />
+        <a href="@Url.Action("Index", "TutorStudent")">Who's Tutoring Whom</a><br />
+        @*<a href="@Url.Action("Index", "GoogleDrive")">Google Drive API Program</a><br />*@
+        <br />
+    </div>
+    }
+ 
+    <div>
+        Tutor Menu<br />
+        @if (User.IsInRole("HfedStaff"))
+        {
+        <a href="@Url.Action("Hfed", "Home")">HFED Program (Healthy Food Every Day Dashboard)</a>
+        <br />  
+        }
+        <a href="@Url.Action("DisplayStudentInfo", "Home")">Display Student Information</a><br />
+        <a href="@Url.Action("Index", "TeachingTips")">Teaching Tips</a><br />
+        <a href="@Url.Action("Contacts", "Home")">Contacts</a><br />
+
+        @if (User.IsInRole("Tutor"))
+        {
+            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
+            <br />
+            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
+            <br />
+            <a href="@Url.Action("MaintainTeachers", "Home")">Add/Edit Teacher</a>
+            <br />
+            <a href="@Url.Action("UploadStudentReports", "Home")">Upload Student Report</a>
+            <br />
+            <a href="@Url.Action("UpdateMySchedule", "Home")">Update My Schedule</a>
+            <br />
+        }
+
+        @if (User.IsInRole("Staff"))
+        {  
+            <a href="@Url.Action("MaintainStudents", "Home")">Add/Edit Student</a>
+            <br />
+            <a href="@Url.Action("MaintainParents", "Home")">Add/Edit Parent</a>
+            <br />  
+        }
+        <a href="@Url.Action("UpdateMyProfile", "Home")">Update My Profile</a><br />
+        <a href="@Url.Action("ChangeMyPassword", "Home")">Change My Password</a><br />
+        
+        
+        <br />  
+
+        @Html.AntiForgeryToken()
+        <a href="@Url.Action("Logout", "Home")">LogOut</a>
+
+    </div>
+
+</body>
+</html>

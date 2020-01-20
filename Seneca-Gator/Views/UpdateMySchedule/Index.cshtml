@@ -1,0 +1,84 @@
+﻿@using System.Web.Mvc.Html
+@model MVC5_Seneca.ViewModels.TutorScheduleViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditMySchedule</title>
+</head>
+<body> 
+    <div>
+        <table>
+            <tr>
+                @Html.ActionLink("Create New Schedule Item", "Create", new {userId = Model .Tutor .Id })
+            </tr>
+            <tr>
+                <td>Welcome @Html.DisplayFor(model => Model.Tutor.FullName)!</td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="text-decoration: underline" class="indent"><strong>Update My Tutoring Schedule</strong></p>
+                </td>
+            </tr>
+             
+            <tr>
+                <td><b>Student</b></td>
+                <td><b>Day</b></td>  
+                <td><b>Time</b></td>
+            </tr>
+    
+           @foreach (var item in Model.Tutor.TutorSchedules)
+           {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeOfDay)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit Day/Time", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id ) 
+    }
+
+    @*<div id="AdministratorDiv">
+        <b>&nbsp; @Html.LabelFor(model => model.Students, htmlAttributes: new { @class = "col-md-2" }) </b>
+        <div class="col-md-5">  
+            <table>    
+                <tr>
+                    <td>
+                        @Html.DropDownList("Id", Model.Students, "-Select Student-")
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>*@
+    <div>
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

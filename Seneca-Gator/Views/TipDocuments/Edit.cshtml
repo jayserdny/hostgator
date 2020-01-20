@@ -1,0 +1,61 @@
+﻿@model MVC5_Seneca.EntityModels.TipDocument
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            <h4>Tip Document</h4>
+            <hr/>
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.User.Id)  
+            <div>Category</div>
+            <div>
+                @Html.DropDownListFor(x => x.Category.Id, new SelectList(Model.Categories, "Value", "Text"))
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name)
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Name, new { style = "width:500px; height:15px" })                         
+                    @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                Document Name (not updateable)
+                @*@Html.LabelFor(model => model.DocumentLink)*@
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.DocumentLink, new {@readonly = true, style = "width:300px"})
+                    @Html.ValidationMessageFor(model => model.DocumentLink, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <br/>
+            <div class="form-group">
+                <div>
+                    <input type="submit" value="Save"/>
+                </div>
+            </div>
+        </div>
+    }
+        <br/>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    
+</body>
+</html>

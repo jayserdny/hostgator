@@ -1,0 +1,104 @@
+﻿@using System.Web.Mvc.Html
+@model MVC5_Seneca.ViewModels.HfedClientViewModel
+
+@{Layout = null;}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
+</head>
+<body>
+<p>
+    @Html.ActionLink("Create New HFED Client", "Create")
+</p>
+<p>
+    <span><b>Select Location: </b></span> @Html.DropDownListFor(x => x.SelectedId,
+        new SelectList(Model.HfedLocations, "Id", "Name"),
+        " All Locations", new{Id = "location_Id" }) 
+</p>
+<table class="table">
+    <tr>
+        <th></th> <th></th> <th></th> <th>Number in</th>
+    </tr>
+    <tr>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Birth Date
+        </th>
+        <th>
+            Household
+        </th> 
+        <th>
+            Location
+        </th>
+        <th>
+            Active
+        </th>
+        <th>
+            Note
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.HfedClients)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.Label(item.DateOfBirth.ToShortDateString())
+            </td>
+            <td style="text-align: center">
+                @Html.Label(item.NumberInHousehold.ToString( ))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.Name)
+            </td>
+            <td style="text-align: center">
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td title=@item.NoteToolTip>
+                @*The length of the tool tip message depends on the browser.*@
+                @Html.DisplayFor(modelItem => item.ClientNote)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+<br />
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new { })
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+
+<script type="text/javascript">                                               
+    $(document).ready(function() {
+        $('#location_Id').change(function() {
+            var locId = $(this).val();
+            ChangeLocationForClients(locId);                                                                                 
+        });
+    });
+</script>

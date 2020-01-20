@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNet.Identity
+@model MVC5_Seneca.ViewModels.HfedScheduleViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HfedDriverSignUp</title>
+</head>
+<body>
+    @using (Html.BeginForm("DriverSignUp","HfedSchedules", FormMethod.Post, new {schedules = Model }))
+    {
+        @Html.AntiForgeryToken()
+        <div>
+            <h2>Healthy Food Every Day Driver SignUp</h2>
+            <table>
+                <tr>
+                    <td>
+                        <strong>For user: @Model.DriverFullName</strong> (Click Driver SignUp checkbox to volunteer, then SUBMIT)
+                    </td>
+                </tr>
+                @if (Model.UserIsOnSchedule)
+                {
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp; (To cancel a signup, click Cancel checkbox, then SUBMIT)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div> 
+        <table class="table">
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>&nbsp; Driver</th>
+            </tr>
+            <tr>
+                <th> </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PickUpTime)
+                </th>
+                <th>Pickup Location</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PointPerson)
+                </th>
+                <th>&nbsp;&nbsp;SignUp</th>
+                @if (Model.UserIsOnSchedule)
+                {
+                    <th>&nbsp;Cancel</th>
+                }
+                else
+                {
+                    <th></th>
+
+                }
+                <th></th>
+            </tr>
+
+            @for (int i = 0; i < Model.HfedScheds.Count; i++)
+            {   
+                @Html.HiddenFor(m => Model.HfedScheds[i].Id) // Necessary for schedules to bind in POST
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].FormattedDay)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].FormattedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.HfedScheds[i].PickUpTime)
+                </td>
+                <td>
+                    &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].Provider.Name)
+                </td>
+                <td>
+                    &nbsp; @Html.DisplayFor(m => Model.HfedScheds[i].Location.Name)
+                </td>
+                <td>
+                    &nbsp;@Html.DisplayFor(m => Model.HfedScheds[i].PointPerson.FirstName)
+                </td>
+                <td>
+                    @if (Model.HfedScheds[i].Driver == null)
+                    {
+                        <span> &nbsp; &nbsp; &nbsp;</span>
+                        @Html.EditorFor(m => Model.HfedScheds[i].SignUp)
+                        @Html.ValidationMessageFor(m => Model.HfedScheds[i].SignUp, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        <span> &nbsp;</span>
+                        @Html.DisplayFor(m => Model.HfedScheds[i].Driver.FirstName)
+                    }
+                </td>
+                <td>
+                    @if (Model.HfedScheds[i].Driver != null)
+                    {
+                        if (Model.HfedScheds[i].Driver.Id == User.Identity.GetUserId())
+                        {
+                            <span> &nbsp; &nbsp; &nbsp;</span>
+                            @Html.EditorFor(m => Model.HfedScheds[i].Cancel)
+                            @Html.ValidationMessageFor(m => Model.HfedScheds[i].Cancel, "", new { @class = "text-danger" })
+                        }
+                    }
+                </td>
+            </tr>
+            }
+        </table>
+
+        <br />
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="SUBMIT" class="btn" style="background-color: aqua; font-weight:bold"   />
+            </div>
+        </div>
+    }
+    <br />
+    <table>
+        <tr>
+            <td>
+                @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new { })
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

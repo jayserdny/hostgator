@@ -1,0 +1,101 @@
+﻿@model MVC5_Seneca.ViewModels.AddEditStudentReportViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditStudentReport</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    @*<script src="@Url.Content("/Scripts/EditStudentReports.js")"></script>*@
+
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <script type="text/JavaScript">
+            $(Document).ready(function () {
+                $("#GetDocumentPDF").attr("href", "/StudentReports/ViewReport/" + @Model.Id);
+            })
+        </script>
+        <div>
+            <h4>Edit Student Report</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Student, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.Student.Id, Model.Students, "-Select ID-")
+                    @Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DocumentDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.DocumentDate, DateTime.Now.ToString("MM/dd/yyyy"), new { id = "DocumentDate", style = "width: 75px;", @class = "date-picker" })
+                    @Html.ValidationMessageFor(model => model.DocumentDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.DocumentType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.DocumentType.Id, Model.DocumentTypes)
+                    @Html.ValidationMessageFor(model => model.DocumentType.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+       
+            <div>                 
+                <div class="col-md-10">
+                    @Html.LabelFor(model => model.DocumentLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.TextBoxFor(model => model.DocumentLink, new {@readonly = true, style = "width:300px" })                                     
+                    <a href="#" id="GetDocumentPDF" target="_blank"> <img src="~/Images/PDF10.png" style="border:none" /> </a>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.TextAreaFor(model => model.Comments, new { style = "width:750px" })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+    <br/>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    <br/>
+    <div>
+        @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })        
+    </div>
+
+    <script type='text/javascript'>
+        $(function () {
+            $('.date-picker').datepicker();
+        })
+    </script>
+
+</body>
+</html>

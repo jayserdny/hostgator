@@ -1,0 +1,69 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HFEDHome</title>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <td>&nbsp;&nbsp; Welcome  @User.Identity.Name!</td>
+        </tr>
+        <tr>
+            <td>
+                <p style="text-decoration:underline" class="indent"><strong>Healthy Food Every Day Dashboard</strong></p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+@if (User.IsInRole("Administrator") || User.IsInRole("HfedStaff"))
+{
+<div>
+    <strong>Staff Menu</strong><br />
+    <a href="@Url.Action("MaintainSchedules", "HfedHome")">Maintain Schedules</a><br />
+    <a href="@Url.Action("MaintainLocations", "HfedHome")">Maintain Delivery Locations</a><br />
+    <a href="@Url.Action("Index", "HfedClients", new{ locId = 0 })">Maintain Clients</a><br />
+    <a href="@Url.Action("MaintainProviders", "HfedHome")">Maintain Food Providers</a><br />
+    @if (User.IsInRole("Administrator"))
+    {
+        <a href="@Url.Action("Index", "Home")">Return to SHEP Menu</a><br />
+    }
+</div>
+    if (User.IsInRole("HfedStaff"))
+     {
+         <a href="@Url.Action("UpdateMyProfile", "HfedHome")">Update My Profile</a><br /> 
+         <a href="@Url.Action("ChangeMyPassword", "HfedHome")">Change My Password</a><br />
+         <a href="@Url.Action("Index", "HfedContacts")">Contacts</a><br />
+     }
+}    
+@if (User.IsInRole("Administrator") || User.IsInRole("HfedDriver"))
+{
+    <div>       
+        <br />
+        <strong>Driver Menu</strong><br />
+    <a href="@Url.Action("DriverSignUp", "HfedSchedules")">Sign-Up Schedule</a><br />
+    <a href="@Url.Action("Index", "HfedContacts")">Contacts</a><br />
+    @if (!User.IsInRole("Administrator"))
+    {
+        <a href="@Url.Action("UpdateMyProfile", "HfedHome")">Update My Profile</a>
+        <br />
+        <a href="@Url.Action("ChangeMyPassword", "HfedHome")">Change My Password</a>
+        
+    }
+</div>
+}
+<br />
+<div>
+    @Html.AntiForgeryToken()
+    <a href="@Url.Action("Logout", "Home")">LogOut</a>
+</div>
+</body>
+</html>

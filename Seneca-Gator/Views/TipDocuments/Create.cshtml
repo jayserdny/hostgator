@@ -1,0 +1,60 @@
+﻿@model MVC5_Seneca.ViewModels.AddEditTipDocumentViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+    @*@using (Html.BeginForm())*@
+    @using (Html.BeginForm("Create", "TipDocuments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            <h4>New Teaching Tip Document</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.Category)
+                <div class="col-md-5">
+                    @Html.DropDownList("categoryId", Model.Categories, "Select")   (Required)
+                    @Html.ValidationMessageFor(model => model.Category.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br/>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name)
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Name, new { style = "width:500px; height:15px" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div> 
+            <br/>
+            <div style="color: red">
+                @Model.ErrorMessage
+            </div>
+            <div>
+                @Html.TextBox("file", "", new { type = "file", style = "width: 250", accept = "application/pdf" }) (.PDF Files Only!)
+            </div>
+            <br/>
+            <div>
+                <div>
+                    <input type="submit" value="Create" />
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }  
+</body>
+</html>

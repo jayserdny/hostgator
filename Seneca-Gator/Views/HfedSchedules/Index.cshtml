@@ -1,0 +1,209 @@
+﻿@using System.Web.Mvc.Html
+@model IEnumerable<MVC5_Seneca.EntityModels.HfedSchedule>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    <script src="@Url.Content("/Scripts/HfedFunctions.js")"></script>
+    </head>
+<body>
+<h3>
+    HFED Delivery Schedule
+</h3> 
+<table class="table">
+    <tr>
+        <td><strong>Starting Date </strong></td>
+        <td>@Html.TextBox("Starting Date", @Session["StartDate"].ToString(),
+                new { id = "StartDate", style = "width: 75px;" })
+            <span style="color:darkmagenta">&#8592;Click to change</span></td> @*Html left-arrow*@
+        <td><strong>  Ending Date </strong></td>
+        <td>@Html.TextBox("Ending Date", @Session["EndDate"].ToString(),
+                new { id = "EndDate", style = "width: 75px;" })
+            <span style="color:darkmagenta">&#8592;Click to change</span></td> @*Html left-arrow*@
+        <td>@Html.ActionLink(" Previous Month", "MonthPrevious")</td>
+        <td>@Html.ActionLink(" Next Month", "MonthNext")</td>              
+    </tr>
+</table>
+<p>
+    @Html.ActionLink("Create New Food Run", "Create")
+</p>
+<table>
+    <tr>
+        <th></th><th></th><th></th><th></th><th></th><th></th>
+        <th>Point</th>
+        <th>Number of</th>
+        <th>Selected</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            Provider
+        </th>
+        <th>
+            Drop Off
+        </th>
+        <th>
+            Driver
+        </th>
+        <th>
+            PickUp
+        </th>
+        <th>
+            Person
+        </th>
+        <th>
+            Households
+        </th>
+        <th>
+            Clients
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ScheduleNote)
+        </th>
+        <th>
+            Approved
+        </th>
+        @*<th>
+            Vol Hrs.
+        </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FormattedDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FormattedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Provider.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location.Name)
+        </td>
+        <td>
+            @*Use ScheduleNote as dummy string for display-only DDL*@
+            @*@Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedDrivers)*@
+            @if (item.Driver != null)
+            {
+                @Html.DisplayFor(modelitem => item.Driver.FirstName)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PickUpTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PointPerson.FirstName)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Households)
+        </td>  
+        <td>
+            @*Use ScheduleNote as dummy string for display-only DDL*@
+            @Html.DropDownListFor(modelitem => item.ScheduleNote, item.SelectedHfedClients)
+            @Html.DisplayFor(modelitem => item.ClientsTotal)
+        </td>
+        <td title=@item.NoteToolTip> @*The length of the tool tip message depends on the browser.*@
+            @Html.DisplayFor(modelItem => item.ScheduleNote)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Approved)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.VolunteerHours)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+    }
+</table>
+<br/>
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("Create Excel File", "CreateExcel")
+        </td>
+    </tr>
+    @if (User.IsInRole("Administrator") || User.IsInRole("HfedCoordinator"))
+    {
+        <tr>
+            <td>
+                @Html.ActionLink("Duplicate Current Schedule Into Next Month", "Duplicate")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email Staff 2 Weeks Before Month - Request Schedules", "EmailStaffAsk", "HfedEmail")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email Schedule to All Drivers - Ask for Availability", "EmailDriversAsk","HfedEmail")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email Schedule to All Drivers - Show Drivers", "EmailDriversShow","HfedEmail")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Email 2-day Reminder to All Scheduled Drivers & Staff", "EmailReminder", "HfedEmail")
+            </td>
+        </tr>
+    }
+</table>
+
+<br/>
+<table>
+    <tr>
+        <td>
+            @Html.ActionLink("Return to Dashboard", "ReturnToHfedDashboard", new {})
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+ 
+<script>
+    $(function () {
+        $("#StartDate").datepicker(); 
+    });
+</script>
+<script type="text/javascript">
+    $("#StartDate").change(function () {
+        UpdateHfedStartDate($('#StartDate').val());          
+    });                      
+</script>
+<script>
+    $(function () {
+        $("#EndDate").datepicker();
+    });
+</script>
+<script type="text/javascript">
+    $("#EndDate").change(function () {
+        UpdateHfedEndDate($('#EndDate').val());
+        //sessionStorage.setItem("StartDate", $('#EndDate').val());
+    });                      
+</script>

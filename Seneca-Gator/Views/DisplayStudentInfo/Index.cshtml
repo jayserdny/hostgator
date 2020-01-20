@@ -1,0 +1,320 @@
+﻿@using FormMethod = System.Web.Mvc.FormMethod
+@model MVC5_Seneca.ViewModels.DisplayStudentInfoViewModel  
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DisplayStudentInfoViewModel</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @*Put page javascript in a separate .js file where breaks can be set during debugging:*@
+    <script src="@Url.Content("/Scripts/StudentInfo.js")"></script>
+
+    <link rel="stylesheet" href="~/Content/themes/base/jquery-ui.min.css" /> @*// for date-picker*@
+
+    <style>
+        #parentEmail {
+            color: blue;
+            text-decoration: underline;
+        }  
+        #authorEmail {
+            color: blue;
+            text-decoration: underline;
+        }
+        #primaryTutorEmail {
+            color: blue;
+            text-decoration: underline;
+        }                
+        #associateTutor0Email {
+            color: blue;
+            text-decoration: underline;
+        }
+        #associateTutor1Email {
+            color: blue;
+            text-decoration: underline;
+        }
+        #associateTutor2Email {
+            color: blue;
+            text-decoration: underline;
+        }
+        #teacherEmail {
+            color: blue;
+            text-decoration: underline;
+        }
+        #caseManagerEmail {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="Main">
+        @using (Html.BeginForm("Index", "DisplayStudentInfo", FormMethod.Post))
+        {
+            <table>
+                <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td style="text-decoration:underline">
+                        <strong>Seneca Heights Education Program Student Information</strong>
+                    </td>
+                    <td id="UpdateAllowed" style="display: none">@Model.UpdateAllowed</td> @*To hide Save-Button*@
+                </tr>
+            </table>
+            <br />
+            <table>
+                <tr>
+                    <td>@Html.DropDownList("student_Id", Model.Students, "-Select Student-")</td>
+
+                    <td><strong id="gradeLevelLabel"></strong></td>
+                    <td id="gradeLevel"></td>  
+                    <td><strong id="schoolLabel"></strong></td>
+                    <td id="schoolName"></td> 
+                    <td></td>
+                    <td><strong id="specialClassLabel"></strong></td>
+                    <td id="specialClass"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:right"><strong id="motherFather"></strong></td>
+                    <td id="parentFirstName"></td>
+                    <td><strong id="parentPhoneLabel"></strong></td>
+                    <td id="parentPhone"></td>
+                    <td><strong id="parentEmailLabel"></strong></td>
+                    <td id="parentEmail"></td>
+                </tr>
+                <tr id="primaryTutorRow" style="display:none">
+                    <td></td>
+                    <td style="text-align:right"><strong>Tutor:</strong></td>
+                    <td id="primaryTutorName"></td>
+                    <td><strong>Phone:</strong> </td>
+                    <td id="primaryTutorPhone"></td>
+                    <td><strong>Email:</strong> </td>
+                    <td id="primaryTutorEmail"></td>
+                </tr>
+                @* Associtate tutor rows are not created dynamically because then jscript does not respond to the email click*@
+                <tr id="associateTutor0Row" style="display:none">
+                    <td></td>
+                    <td style="text-align:right"><strong>Tutor:</strong></td>
+                    <td id="associateTutor0Name"></td>
+                    <td><strong>Phone:</strong></td>
+                    <td id="associateTutor0Phone"></td>
+                    <td><strong>Email:</strong></td>
+                    <td id="associateTutor0Email"></td>
+                </tr>
+                <tr id="associateTutor1Row" style="display:none">
+                    <td></td>
+                    <td style="text-align:right"><strong>Tutor:</strong></td>
+                    <td id="associateTutor1Name"></td>
+                    <td style="text-align:right"><strong>Phone:</strong></td>
+                    <td id="associateTutor1Phone"></td>
+                    <td style="text-align:right"><strong>Email:</strong></td>
+                    <td id="associateTutor1Email"></td>
+                </tr>
+                <tr id="associateTutor2Row" style="display:none">
+                    <td></td>
+                    <td style="text-align:right"><strong>Tutor:</strong></td>
+                    <td id="associateTutor2Name"></td>
+                    <td style="text-align:right"><strong>Phone:</strong></td>
+                    <td id="associateTutor2Phone"></td>
+                    <td><strong>Email:</strong></td>
+                    <td id="associateTutor2Email"></td>
+                </tr>
+                <tr id="teacherRow" style="display:none">
+                    <td></td>
+                    <td style="text-align:right"><strong>Teacher:</strong></td>
+                    <td id="teacherName"></td>
+                    <td><strong>Phone:</strong> </td>
+                    <td id="teacherPhone"></td>
+                    <td><strong>Email:</strong> </td>
+                    <td id="teacherEmail"></td>
+                </tr>
+                <tr id="caseManagerRow" style="display:none">
+                    <td></td>
+                    <td style="text-align: right"><strong>Case Manager:</strong></td>
+                    <td id="caseManagerName"></td>
+                    <td><strong>Phone:</strong></td>
+                    <td id="caseManagerPhone"></td>
+                    <td><strong>Email:</strong> </td>
+                    <td id="caseManagerEmail"></td>
+                </tr>
+            </table>
+        }
+    </div>
+
+    <div id="DocumentsDiv" style="display:none">
+        <table>
+            <tr>
+                <td>
+                    <strong id="DocumentSelectLabel"></strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DropDownList("reportsDDL", new SelectList(string.Empty, "Value", "Text"),
+                                                                                          "--Select Report--", new { style = "width:275px" })
+                </td>
+                <td>
+                    <strong id="DocumentLinkLabel"></strong>
+                </td>
+                <td>
+                    <a href="#" id="GetDocumentPDF" target="_blank"> <img src="~/Images/PDF10.png" style="border:none" /> </a>
+                </td>
+                <td>
+                    <strong id="DocumentCommentLabel"></strong>
+                </td>
+                <td id="DocumentComment"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="DisplayTutorNotesDiv" style="display: none">
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <strong id="TutorNotesSelectLabel"></strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DropDownList("SessionNotesDDL", new SelectList(string.Empty, "Value", "Text"),
+                                            "--Select Note--", new { style = "width:275px" })
+                </td>
+                <td>
+                    <strong id="SessionNoteLabel"></strong>
+                </td>
+                <td>
+                    @Html.TextArea("SessionNoteText", Model.SessionNote, new
+                    {
+                        id = "SessionNoteText",
+                        style = "width: 500px;",
+                        cols = 35,
+                        rows = 8,
+                        Title = "Tip: You may delete this note by saving a blank text."
+                    })
+                </td>
+                <td>
+                    <a href="#" id="SessionNoteSaveEdits">Save Edits</a>
+                </td>
+            </tr>
+            <tr>
+                @*Hidden empty table column to pass Session UserId to avoid an extra Ajax call in jscript:*@
+                <td id="SessionUserName" style="display: none">@User.Identity.Name</td>
+                <td id="SessionUserId" style="display:none">@Model.User_Id</td>
+                <td></td>
+                <td id="EmailAuthorLabel" text-align="right" style="display:none">
+                    <strong>Tutor Email:</strong>
+                </td>
+                <td id="authorEmail" style="display:none"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="EnterTutorNotesDiv" style="display:none">
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <strong id="EnterTutorNotesLabel"></strong>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <strong>Session Date:</strong>
+                </td>
+                <td>
+                    @Html.TextBox("EnterSessionDate  ", DateTime.Now.ToString("MM/dd/yyyy"), new { id = "SessionDate", style = "width: 75px;", @class = "date-picker" })
+                </td>
+                <td>                                                                                                                                       
+                    <strong>Note:</strong>
+                </td>
+                <td>
+                    @Html.TextArea("EnterSessionNote", null, new { id = "NewSessionNote", style = "width: 500px;", cols = 35, rows = 8, autofocus = "true" })        
+                </td>
+                <td id="Save-Button">
+                    <a href="#" id="SaveSessionNote"> <img src="~/Images/save-button.png" style="border:none" /> </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div id="ReturnToDashboard">
+        @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+        <br />
+        <br />
+        <a href="@Url.Action("Logout", "Home")">LogOut</a>
+    </div>
+
+    <script type='text/javascript'>
+        $(function () {
+            $('.date-picker').datepicker();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#student_Id").change(UpdateStudentDetails);
+    </script>
+
+    <script type="text/javascript">
+        $("#reportsDDL").change(UpdateDocumentLink);
+    </script>
+
+    <script type="text/javascript">
+        $("#SessionNotesDDL").change(UpdateSessionNote);
+    </script>
+
+    <script type="text/javascript">
+        $("#SaveSessionNote").click(function () {
+            SaveSessionNote(_studentId);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#SessionNoteSaveEdits").click(function () {
+            var text = $("#SessionNoteText");
+            SaveEditedSessionNote(text);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#parentEmail").click(function () { EmailToParent(_studentId); });
+    </script>
+
+    <script type="text/javascript">
+        $("#authorEmail").click(function () { EmailToAuthor(_latestAuthor_Email); });
+    </script>
+
+    <script type="text/javascript">
+        $("#primaryTutorEmail").click(function () { EmailToPrimaryTutor(_latestPrimaryTutor_Email); });
+    </script>
+
+    <script type="text/javascript">
+        $("#associateTutor0Email").click(function () { EmailToAssociateTutor(0); });
+    </script>
+
+    <script type="text/javascript">
+        $("#associateTutor1Email").click(function () { EmailToAssociateTutor(1); });
+    </script>
+
+    <script type="text/javascript">
+        $("#associateTutor2Email").click(function () { EmailToAssociateTutor(2); });
+    </script>   
+     
+    <script type="text/javascript">
+        $("#teacherEmail").click(function () { EmailToTeacher(_latestTeacher_Email); });
+    </script>  
+
+    <script type="text/javascript">
+        $("#caseManagerEmail").click(function () { EmailToCaseManager(_latestCaseManager_Email); });
+    </script>
+
+</body>
+</html>

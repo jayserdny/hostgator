@@ -1,0 +1,62 @@
+﻿@model MVC5_Seneca.EntityModels.HfedSchedule
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>HFED Schedule</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+               @Html.DisplayNameFor(model => model.Date)
+            </dt>
+            <dd>
+                <strong>@Html.DisplayFor(model => model.Date)</strong>
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Provider)
+            </dt>
+            <dd>
+                <strong>@Html.DisplayFor(model => model.Provider.Name)</strong>
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Location)
+            </dt>
+            <dd>
+                <strong>@Html.DisplayFor(model => model.Location.Name)</strong>
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PointPerson)
+            </dt>
+            <dd>
+                <strong>@Html.DisplayFor(model => model.PointPerson.FullName)</strong>
+            </dd>
+        </dl>
+    
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                <input type="submit" value="Delete" class="btn"  style="background-color: aqua; font-weight:bold" />
+            </div>
+            <br />
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

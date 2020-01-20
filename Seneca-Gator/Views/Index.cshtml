@@ -1,0 +1,78 @@
+﻿@model MVC5_Seneca.EntityModels.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <style>
+        .field-validation-error {
+            color: red
+        }
+    </style>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body>
+    <div id="register-div">
+        <table>
+            <tr></tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.ActionLink("Register", "Register")
+                </td>
+            </tr>
+        </table>
+        <br />
+    </div>
+    <div id="login-div">
+        @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
+        {
+            <table>
+                <tr>
+                    <td></td>
+                    <td style="text-decoration:underline">Seneca Heights Education Program</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Name)</td>
+                    <td>@Html.EditorFor(model => model.Name, new { htmlattributes = new { autofocus = "autofocus" } })</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(model => model.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.PasswordHash)</td>
+                    <td>@Html.EditorFor(model => model.PasswordHash)</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label class="field-validation-error">@Html.DisplayFor(model => model.LoginErrorMessage)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(model => model.PasswordHash)</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Login" />
+                    </td>
+                </tr>
+
+
+            </table>
+        }
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿@model MVC5_Seneca.ViewModels.ContactsDisplayViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Contact List</title>
+</head>
+<body>
+<div>
+    <h4>Seneca Heights Education Project Contact List</h4>
+</div>
+<div id="AdministratorDiv">
+    <table>
+        <tr>
+            <td><b>Administrators</b></td>
+        </tr>
+        @foreach (var admin in Model.Administrators)
+        {
+        <tr>
+            <td>@Html.DisplayFor(a => admin.FirstName) @Html.DisplayFor(a => admin.LastName)&nbsp;&nbsp;&nbsp;</td> 
+            <td>@Html.DisplayFor(s => admin.Title) &nbsp; &nbsp;&nbsp;</td>
+            <td>@Html.DisplayFor(a => admin.PhoneNumber)&nbsp;&nbsp;&nbsp;</td>
+            <td><a href="mailto:@(admin.Email)?Subject=Seneca%20Heights%20Education%20Program">@admin.Email</a></td>
+        </tr>
+    }     
+    </table>
+</div>
+    <br/>
+<div>
+    <table>
+        <tr>
+            <td><b>Staff Members&nbsp;&nbsp;&nbsp;</b></td><td><b>Title</b></td>
+        </tr>
+        @foreach (var staff in Model.Staff)
+        {
+            <tr>
+                <td>@Html.DisplayFor(s => staff.FirstName) @Html.DisplayFor(s => staff.LastName) &nbsp; &nbsp;&nbsp;</td>
+                <td>@Html.DisplayFor(s => staff.Title) &nbsp; &nbsp;&nbsp;</td>
+                <td>@Html.DisplayFor(s => staff.PhoneNumber) &nbsp; &nbsp; &nbsp;</td>
+                <td><a href="mailto:@(staff.Email)?Subject=Seneca%20Heights%20Education%20Program">@staff.Email</a></td>
+            </tr>
+        }       
+    </table>
+</div> 
+<br/>
+<div>
+    <table>
+        <tr>
+            <td>
+                @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+﻿@model MVC5_Seneca.ViewModels.AddEditTutorNoteViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>TutorNote</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.User.Id, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <div class="col-md-5">
+                    @Html.DropDownListFor(u => Model.Users, Model.Users)
+                    Model.Users.Select(u => new SelectListItem())
+                    @*@Html.ValidationMessageFor(x => x.User.Id, "", new { @class = "text-danger" })*@
+                </div>
+            </div>            
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Student.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-5">
+                    @Html.DropDownListFor(s => Model.Students, Model.Students)
+                    Model.Students.Select(s => new SelectListItem())
+                    @*@Html.ValidationMessageFor(model => model.Student.Id, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">                 
+                    @Html.TextBoxFor(x => x.Date, "{0:MM/dd/yyyy}", new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.SessionNote, new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    @Html.TextAreaFor(model => model.SessionNote, new { style = "width:750px" })
+                    @Html.ValidationMessageFor(model => model.SessionNote, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+    
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

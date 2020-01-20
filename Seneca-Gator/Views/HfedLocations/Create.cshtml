@@ -1,0 +1,67 @@
+﻿@model MVC5_Seneca.EntityModels.HfedLocation
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+        
+        <div>
+            <h4>New HFED Delivery Location</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { style = "width:400px", autofocus="autofocus" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { style = "width: 300px" }, })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+                         
+            <div class="form-group">
+                @Html.LabelFor(model => model.MainPhone, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MainPhone, new { htmlAttributes = new { style = "width: 150px" }, })
+                    @Html.ValidationMessageFor(model => model.MainPhone, "", new { @class = "text-danger" })
+                </div>
+            </div> 
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationNote, htmlAttributes: new { @class = "col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LocationNote, new { htmlAttributes = new { style = "width: 300px" }, })
+                    @Html.ValidationMessageFor(model => model.LocationNote, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class=" col-md-10">
+                    <input type="submit" value="Create" class="btn" />
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

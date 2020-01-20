@@ -1,0 +1,68 @@
+﻿@model MVC5_Seneca.ViewModels.UploadFileViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    @using (Html.BeginForm("Upload", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <fieldset>
+            <legend>Upload a file</legend>
+            <div>
+                <table>
+                    <tr>
+                        <td><strong>Id:</strong></td>
+                        <td>@Html.DropDownList("studentId", Model.Students, "-Select Student-")</td>
+                        <td>(Required)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Id:</strong></td>
+                        <td>@Html.DropDownList("documentTypeId", Model.DocumentTypes, "-Select Doc Type-")</td>
+                        <td>(Required)</td>
+                    </tr>
+
+                </table>               
+            </div>
+            <div style="color: red">
+                @Model.ErrorMessage
+            </div>
+            <div>
+                @Html.TextBox("file", "", new { type = "file", style = "width: 250", accept="application/pdf" }) (.PDF Files Only!)
+            </div>
+            <br />
+            <div>
+                <input type="submit" value="Upload" />
+            </div>
+        </fieldset>
+        <br />
+        <div id="ReturnToDashboardDiv">
+            <table>
+                <tr>
+                    <td>
+                        @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br />       
+        <div id="Note">
+            <table>
+                <tr>
+                    <td>Note: If you want to add an existing report to another student</td>
+                </tr>
+                <tr>
+                    <td>(no duplicate names allowed), you must copy the file and rename it before uploading.</td>
+                </tr>
+            </table>            
+        </div>
+    }
+</body>
+</html>

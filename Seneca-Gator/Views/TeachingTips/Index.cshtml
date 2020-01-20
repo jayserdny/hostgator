@@ -1,0 +1,45 @@
+﻿@model MVC5_Seneca.ViewModels.TeachingTipsViewModel  
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TeachingTips</title> 
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td id="Documents">@Html.HiddenFor(model => model.Documents)</td>
+                <td id="Categories">@Html.HiddenFor((model => model.Categories))</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td style="text-decoration: underline">
+                    <strong>Seneca Heights Education Program Teaching Tips</strong>
+                </td>
+            </tr>
+        </table>
+    </div> 
+
+    @foreach (var item in Model.Documents)
+    {
+        <div>@Html.Raw(item)</div>
+    }
+
+    <br />
+    <div>
+        <table>
+            <tr>
+                <td>
+                    @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

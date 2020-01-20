@@ -1,0 +1,111 @@
+﻿@model IEnumerable<MVC5_Seneca.EntityModels.Student>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        <h4>Add/Edit Students</h4>
+        <p>
+            @Html.ActionLink("Create a New Student", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Parent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrimaryTutor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BirthDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.School)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GradeLevel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SpecialClass)
+                </th>  
+                <th>
+                    @Html.DisplayNameFor(model => model.Teacher)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Parent.FirstName)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.PrimaryTutor.FirstName) @Html.DisplayFor(modelItem => item.PrimaryTutor.LastName)
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.School.Name)
+                </td>
+                <td style="text-align: center">
+                    @switch (item.GradeLevel)
+                    {
+                        case -1:
+                            @Html.Raw("Pre-K")
+                            break;
+                        case 0:
+                            @Html.Raw("Kindergarten")
+                            ;
+                            break;
+                        default:
+                            @Html.DisplayFor(modelItem => item.GradeLevel)
+                            ;
+                            break;
+                    }
+                </td>
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.SpecialClass)
+                </td> 
+                <td style="text-align: center">
+                    @Html.DisplayFor(modelItem => item.Teacher.FirstName) @Html.DisplayFor(modelItem => item.Teacher.LastName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+            }
+        </table>
+        <div id="ReturnToDashboard">
+            @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+        </div>
+    </body>
+</html>

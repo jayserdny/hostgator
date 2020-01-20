@@ -1,0 +1,47 @@
+﻿@model MVC5_Seneca.EntityModels.HfedProvider
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>Delete HFED Food Provider</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                <strong>@Html.DisplayNameFor(model => model.Name)</strong>
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                <strong>@Html.DisplayNameFor(model => model.Address)</strong>
+            </dt>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                <input type="submit" value="Delete" class="btn" style ="background-color: aqua;font-weight :bold" />
+            </div>
+            <br />
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</body>
+</html>

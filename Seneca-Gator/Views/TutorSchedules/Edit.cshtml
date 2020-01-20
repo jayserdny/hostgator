@@ -1,0 +1,63 @@
+﻿@model MVC5_Seneca.ViewModels.TutorScheduleViewModel
+@{
+    Layout = null;
+}                                                                               
+<!DOCTYPE html>                                                   
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Edit</title>
+    </head>
+    <body>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            
+            <div>
+                <h4>Edit Tutor Schedule Day/Time</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                  
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <b>Tutor:</b>
+                        @Html.DisplayFor(model => model.Tutor.FullName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <b>Student:</b> 
+                        @Html.DisplayFor(model => model.Student.FirstName)
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DayName)
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(x => x.DayName,new SelectList(Model.DaysList, "DayName"))
+                            @Html.ValidationMessageFor(model => model.DayName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeOfDay)
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(x => x.TimeOfDay, new SelectList(Model.TimesList, "TimeOfDay")) 
+                        @Html.ValidationMessageFor(model => model.TimesList, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div>
+                        <input type="submit" value="Save" />
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </body>
+</html>

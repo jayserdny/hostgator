@@ -1,0 +1,72 @@
+﻿@model MVC5_Seneca.ViewModels.TutorScheduleViewModel 
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+    <style>
+        .field-validation-error {color: red}
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+        
+        <div>
+            <h4>Create New Tutor Schedule</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <b>Tutor</b>
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => x.Tutor.Id, new SelectList(Model.Tutors, "Id", "FullName"), " Select") (Required)
+                    @Html.ValidationMessageFor(model => model.Tutor.Id, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <b>Student</b>
+                <div class="col-md-5">
+                    @Html.DropDownListFor(x => x.Student.Id, new SelectList(Model.Students, "Id", "FirstName"), " Select") (Required)
+                    @Html.ValidationMessageFor(model => model.Student.Id, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <b>Day Of Week</b>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.DayName,  new SelectList(Model.DaysList, "DayName")) 
+                    @Html.ValidationMessageFor(model => model.DayName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <b>Time of Day</b>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.TimeOfDay, new SelectList(Model.TimesList, "TimeOfDay")) 
+                    @Html.ValidationMessageFor(model => model.TimesList , "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div>
+                    <label class="field-validation-error">@Model.ErrorMessage</label>
+                </div>
+                <div>
+                    <input type="submit" value="Create" />
+                </div>
+            </div>
+        </div>
+    }
+    <br/>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

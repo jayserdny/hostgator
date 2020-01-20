@@ -1,0 +1,36 @@
+﻿@model MVC5_Seneca.ViewModels.AddIdentityRoleViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddIdentityRole</title>
+</head>
+<body>
+    <div>
+        Enter New Identity Role
+    </div>
+    
+    <div>
+        @Html.EditorFor(m => Model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => Model.Name, "", new { @class = "text-danger" })
+    </div>
+        
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @*<input type="submit" value="Save" class="btn btn-default" />*@
+            @Html.ActionLink("Save", "IdentityRoleSave")   @*, new { name = Model.Name })*@
+        </div>
+    </div>
+
+    <div>
+        @Html.ActionLink("Return to Dashboard", "ReturnToDashboard", new { })
+    </div>
+
+</body>
+</html>
