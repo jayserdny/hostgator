@@ -1,5 +1,10 @@
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace MVC5_Seneca.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using MVC5_Seneca.DataAccessLayer;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,10 +19,9 @@ namespace MVC5_Seneca.Migrations
 
         protected override void Seed(MVC5_Seneca.DataAccessLayer.SenecaContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
+            //  This method will be called after migrating to the latest version.    
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
-        }
+            //  to avoid creating duplicate seed data.           
+       }
     }
 }

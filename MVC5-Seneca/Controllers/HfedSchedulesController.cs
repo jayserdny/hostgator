@@ -11,6 +11,7 @@ using MVC5_Seneca.ViewModels;
 using ClosedXML.Excel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using static MVC5_Seneca.Utilities;
 
 namespace MVC5_Seneca.Controllers
 {
@@ -388,10 +389,22 @@ namespace MVC5_Seneca.Controllers
             }
             cmdString += " WHERE Id=" + hfedSchedule.Id;
             db.Database.ExecuteSqlCommand(cmdString); 
+             
+            var usrId = User.Identity.GetUserId();   
+            var allUsers = db.Users.ToList();                                                     
+            foreach (ApplicationUser user in allUsers)
+            {
+                if (UserIsInRole(user, "ReceiveHfedScheduleChangeEmail"))
+                {
+                    var recipientId = user.Id;  // Email Lynn Rose that an update has occurred (01/15/2020)
+                    var unused = EmailHFEDScheduleChange(usrId, hfedSchedule.Id,
+                                           hfedSchedule.Provider.Id, recipientId);
+                }
+            }   
 
             return RedirectToAction("Index");
         }
-
+             
         private HfedScheduleViewModel GetDropDownData(HfedScheduleViewModel schedule)
         {
             schedule .HfedProviders = db.HfedProviders.OrderBy(p => p.Name).ToList();
@@ -654,6 +667,8 @@ namespace MVC5_Seneca.Controllers
                         cmdString += "Driver_Id='" + User.Identity.GetUserId() + "' ";
                         cmdString += " WHERE Id=" + sched.Id;
                         context.Database.ExecuteSqlCommand(cmdString);
+                        // Send email to driver
+                        //"You have signed up to deliver food from - to on date."
                     }
                 }
 
@@ -665,6 +680,8 @@ namespace MVC5_Seneca.Controllers
                         cmdString += "HfedDriverIds='',Driver_Id=null";
                         cmdString += " WHERE Id=" + sched.Id;
                         context.Database.ExecuteSqlCommand(cmdString);
+                        // Send email to driver
+                        //"You have unchecked your delivery on date."
                     }
                 }
             }
