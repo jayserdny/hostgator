@@ -278,7 +278,7 @@ namespace MVC5_Seneca.Controllers
                 hfedSchedule.DriverFullName = hfedSchedule.Driver.FullName;
             }
             else
-            { hfedSchedule.DriverFullName = "Nobody Yet"; }
+            { hfedSchedule.DriverFullName = "Nobody Yet"; }  // For non-admin users
             hfedSchedule.Provider = db.HfedProviders.Find(scheduletoEdit.Provider_Id);
             hfedSchedule.HfedDriversArray = hfedSchedule.HfedDriverIds.Split(',').ToArray();
             hfedSchedule.HfedClientsArray = hfedSchedule.HfedClientIds.Split(',').ToArray();
