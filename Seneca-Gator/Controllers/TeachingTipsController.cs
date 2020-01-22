@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
-using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types;
+﻿using System.Linq;
+using System.Web.Mvc;                                                                                                     
 using MVC5_Seneca.DataAccessLayer;
-using MVC5_Seneca.EntityModels;
-using MVC5_Seneca.Properties;
-using MVC5_Seneca.ViewModels;
+using MVC5_Seneca.EntityModels;          
+using MVC5_Seneca.ViewModels;                 
 
 namespace MVC5_Seneca.Controllers
 {
@@ -16,7 +12,7 @@ namespace MVC5_Seneca.Controllers
         // GET: TeachingTips
         public ActionResult Index()
         {   
-          TeachingTipsViewModel model = new TeachingTipsViewModel();
+            var model = new TeachingTipsViewModel();
             var sortedTips = _db.TipDocuments.OrderBy(t => t.Category.Id).ToList();
             var tipsCategories = _db.TipsCategories.ToList();     
             string[] categories = new string[tipsCategories.Count];
@@ -59,9 +55,7 @@ namespace MVC5_Seneca.Controllers
                         }
                     }    
                 }
-    
             }
-
             model.Documents = htmlStrings;
             return View(model);
         }
@@ -69,8 +63,12 @@ namespace MVC5_Seneca.Controllers
         public ActionResult ViewDocument(int? id)
         {
             var document = _db.TipDocuments.Find(id);
-            var blobLink = SaSutility(document);
-            return Redirect(blobLink);
+            if (document != null)
+            {   
+                var path = "~/TeachingTipsFiles/" + document.DocumentLink;
+                return File(path, "application/pdf", document.DocumentLink);
+            }   
+            return (RedirectToAction( "Index", "TeachingTips"));        
         }
 
         public MvcHtmlString OutputHtml(string html)
@@ -82,28 +80,5 @@ namespace MVC5_Seneca.Controllers
         {
             return RedirectToAction("Index", "Home");
         }
-
-        private static string SaSutility(TipDocument document)
-            // SAS == Shared Access Signature ; return a url to access report for 10 minutes:
-        {                                                                                                                                                       
-            var sasConstraints = new SharedAccessBlobPolicy
-            {
-                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
-                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(10),
-                Permissions = SharedAccessBlobPermissions.Read
-            };
-
-            // Parse the connection string and return a reference to the storage account.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Settings.Default.StorageConnectionString);
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            // Retrieve a reference to a container.
-            CloudBlobContainer container = blobClient.GetContainerReference("teachingtips");
-            // Retrieve reference to a blob named "myblob".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(document.DocumentLink);
-
-            var sasBlobToken = blockBlob.GetSharedAccessSignature(sasConstraints);
-
-            return blockBlob.Uri + sasBlobToken;
-        }  
     }
 }

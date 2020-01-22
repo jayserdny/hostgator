@@ -14,5 +14,8 @@
     <Setting Name="DocumentStoragePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">/StudentReportFiles/</Value>
     </Setting>
+    <Setting Name="TeachingTipsFilesStoragePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">/TeachingTipsFiles/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

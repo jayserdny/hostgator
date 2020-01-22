@@ -14,10 +14,10 @@ namespace MVC5_Seneca.Properties {
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        //private static MVC5_Seneca.Settings defaultInstance = ((MVC5_Seneca.Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new MVC5_Seneca.Settings())));
+        
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        
         public static Settings Default {
-        //public static MVC5_Seneca.Settings Default {
             get {
                 return defaultInstance;
             }
@@ -58,6 +58,15 @@ namespace MVC5_Seneca.Properties {
         public string DocumentStoragePath {
             get {
                 return ((string)(this["DocumentStoragePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("/TeachingTipsFiles/")]
+        public string TeachingTipsFilesStoragePath {
+            get {
+                return ((string)(this["TeachingTipsFilesStoragePath"]));
             }
         }
     }

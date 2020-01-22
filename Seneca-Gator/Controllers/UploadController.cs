@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System;              
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using MVC5_Seneca.EntityModels;
 using MVC5_Seneca.ViewModels;
 using MVC5_Seneca.DataAccessLayer;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using MVC5_Seneca.Properties;
+//using Microsoft.WindowsAzure.Storage;
+//using Microsoft.WindowsAzure.Storage.Blob;
+//using MVC5_Seneca.Properties;    
 
 namespace MVC5_Seneca.Controllers
 {
@@ -49,7 +49,7 @@ namespace MVC5_Seneca.Controllers
             return TempData["ErrorMessage"] as string;
         }
 
-        // POST: Upload                                  
+        // POST: Upload  
         public ActionResult Upload(HttpPostedFileBase file, int? studentId, int? documentTypeId)
         {
             if (studentId == null ) 
@@ -62,50 +62,57 @@ namespace MVC5_Seneca.Controllers
                 TempData["ErrorMessage"] = "Student ID AND Document Type required. Re-enter all.";
                 return RedirectToAction("Index");
             }          
+  
+            var fileName = Path.GetFileName(file.FileName);
+            string path = Server.MapPath(" ") + "\\" + fileName;
+            path = path.Replace("\\Upload", "\\StudentReportFiles");
+            path = path.Replace("\\", "/");
+            file.SaveAs(path);
+                                                                                             
+                    //{
+                    //    FileName = System.IO.Path.GetFileName(upload.FileName),
+                    //    FileType = FileType.Avatar,
+                    //    ContentType = upload.ContentType
+                    //};
+                    //using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    //{
+                    //    avatar.Content = reader.ReadBytes(upload.ContentLength);
+                    //}
+                    //student.Files = new List<File> { avatar };
 
-            try
-            {
-                if (file != null)
-                {
-                    var fileName = Path.GetFileName(file.FileName);
-                    string path = Server.MapPath(" ") + "\\" + fileName;
-                    path = path.Replace("\\Upload", "\\UploadFiles");
-                    path = path.Replace("\\", "/");
-                    file.SaveAs(path);
+                    //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Settings.Default.StorageConnectionString);
+                    //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    //CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
+                    //CloudBlockBlob blob = container.GetBlockBlobReference(fileName);
 
-                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Settings.Default.StorageConnectionString);
-                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                    CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
-                    CloudBlockBlob blob = container.GetBlockBlobReference(fileName);
+                    //if (blob.Exists())
+                    //{
+                    //    TempData["ErrorMessage"] = "There is already a file with this name. Re-enter all.";
+                    //    return RedirectToAction("Index");
+                    //}
 
-                    if (blob.Exists())
-                    {
-                        TempData["ErrorMessage"] = "There is already a file with this name. Re-enter all.";
-                        return RedirectToAction("Index");
-                    }
+                    //if (fileName != null && fileName.ToUpper().Substring(fileName.Length - 3, 3) == "MP4")
+                    //{
+                    //    blob.Properties.ContentType = "video/mp4";
+                    //}
+                    //else
+                    //{
+                    //    blob.Properties.ContentType = "application/pdf";
+                    //}
 
-                    if (fileName != null && fileName.ToUpper().Substring(fileName.Length - 3, 3) == "MP4")
-                    {
-                        blob.Properties.ContentType = "video/mp4";
-                    }
-                    else
-                    {
-                        blob.Properties.ContentType = "application/pdf";
-                    }
+                    //using (var fileStream = System.IO.File.OpenRead(path))
+                    //{
+                    //    //blob.UploadFromStream(fileStream);
+                    //}
 
-                    using (var fileStream = System.IO.File.OpenRead(path))
-                    {
-                        blob.UploadFromStream(fileStream);
-                    }
+                    //System.IO.File.Delete(path);
 
-                    System.IO.File.Delete(path);
-
-                    int i = path.IndexOf("UploadFiles", StringComparison.Ordinal);
-                    path = path.Remove(0, i + 12);
+                    //int i = path.IndexOf("UploadFiles", StringComparison.Ordinal);
+                    //path = path.Remove(0, i + 12);
 
                     var studentReport = new StudentReport
                     {
-                        DocumentLink = path.Replace(@"\", "/"),
+                        DocumentLink = fileName,
                         Student = _db.Students.Find(studentId),
                         DocumentType = _db.DocumentTypes.Find(documentTypeId),
                         DocumentDate = DateTime.Now
@@ -114,21 +121,18 @@ namespace MVC5_Seneca.Controllers
                     _db.SaveChanges(); 
                     
                     return RedirectToAction("Edit","StudentReports", new {id = studentReport.Id });
-                } // If(File != null)
-                if (User.IsInRole("Administrator"))
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home"); // Dashboard                 
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+               
+
+                //if (User.IsInRole("Administrator"))
+                //{
+                //    return RedirectToAction("Index");
+                //}
+                //else
+                //{
+                //    return RedirectToAction("Index", "Home"); // Dashboard                 
+                //}
         }
+
         public ActionResult ReturnToDashboard()
         {
             return RedirectToAction("Index", "Home");

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -224,34 +223,12 @@ namespace MVC5_Seneca.Controllers
                 return new HttpUnauthorizedResult();   
             }
 
-            var report = _db.StudentReports.Find(id);
-            var blobLink = SaSutility(report);
-            return Redirect(blobLink);
-        }
-        private static string SaSutility(StudentReport report)
-        // SAS == Shared Access Signature
-        // return a url to access report for 10 minutes:
-        {
-            //var url = "https://senecablob.blob.core.windows.net/studentreports/" + report.DocumentLink;
-            var sasConstraints = new SharedAccessBlobPolicy
-            {
-                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
-                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(10),
-                Permissions = SharedAccessBlobPermissions.Read
-            };
-
-            // Parse the connection string and return a reference to the storage account.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(Settings.Default.StorageConnectionString);
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            // Retrieve a reference to a container.
-            CloudBlobContainer container = blobClient.GetContainerReference("studentreports");
-            // Retrieve reference to a blob named "myblob".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(report.DocumentLink);
-                                                                                                                     
-            var sasBlobToken = blockBlob.GetSharedAccessSignature(sasConstraints);
-
-            return blockBlob.Uri + sasBlobToken;
-        }
-                                                                
+            var report = _db.StudentReports.Find(id); 
+            if (report != null)
+            {                                                                                                     
+                return Redirect("~/StudentReportFiles/" + report.DocumentLink);      
+            }
+            return new HttpUnauthorizedResult();               
+        }                                                     
     }
 }
